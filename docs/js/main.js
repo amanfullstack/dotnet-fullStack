@@ -18,30 +18,72 @@ function initializeTheme() {
     const themeToggle = document.getElementById('themeToggle');
     const htmlElement = document.documentElement;
 
+    if (!themeToggle) {
+        console.warn('Theme toggle element not found');
+        return;
+    }
+
     // Check localStorage for saved theme
     const savedTheme = localStorage.getItem('theme') || 'light';
     htmlElement.setAttribute('data-theme', savedTheme);
     updateThemeIcon(savedTheme);
 
+    // Prevent default interaction
+    themeToggle.style.cursor = 'pointer';
+    themeToggle.style.zIndex = '1001';
+    themeToggle.style.position = 'relative';
+
     // Theme toggle listener
-    themeToggle.addEventListener('click', function() {
+    themeToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
         const currentTheme = htmlElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
         htmlElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
         updateThemeIcon(newTheme);
+
+        console.log('Theme changed to:', newTheme);
+    });
+
+    // Double-check localStorage on page load
+    window.addEventListener('load', function() {
+        const theme = localStorage.getItem('theme') || 'light';
+        htmlElement.setAttribute('data-theme', theme);
+        updateThemeIcon(theme);
     });
 }
 
 function updateThemeIcon(theme) {
     const icon = document.querySelector('.theme-icon');
-    icon.textContent = theme === 'light' ? '🌙' : '☀️';
+    if (icon) {
+        icon.textContent = theme === 'light' ? '🌙' : '☀️';
+        icon.style.cursor = 'pointer';
+    }
 }
 
 /* ============================================================
    NAVIGATION
    ============================================================ */
+
+/* ============================================================
+   SIDEBAR UTILITIES
+   ============================================================ */
+
+function closeSidebarMenu() {
+    const sidebar = document.getElementById('sidebar');
+    const navToggle = document.getElementById('navToggle');
+
+    if (sidebar) {
+        sidebar.classList.remove('active');
+    }
+    if (navToggle) {
+        navToggle.classList.remove('active');
+    }
+    console.log('Sidebar closed');
+}
 
 function initializeNavigation() {
     const navToggle = document.getElementById('navToggle');
@@ -49,35 +91,68 @@ function initializeNavigation() {
     const sidebar = document.getElementById('sidebar');
     const sidebarClose = document.getElementById('sidebarClose');
 
-    if (!navToggle || !navMenu) return; // Exit if navigation elements not found
-
-    const navLinks = document.querySelectorAll('.nav-menu a, .phase-list a');
+    if (!navToggle || !navMenu) {
+        console.warn('Navigation elements not found');
+        return;
+    }
 
     // Mobile menu toggle
-    navToggle.addEventListener('click', function() {
-        if (sidebar) sidebar.classList.toggle('active');
+    navToggle.style.cursor = 'pointer';
+    navToggle.style.pointerEvents = 'auto';
+    navToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Hamburger menu clicked');
+
+        if (sidebar) {
+            sidebar.classList.toggle('active');
+            console.log('Sidebar toggled, now:', sidebar.classList.contains('active') ? 'OPEN' : 'CLOSED');
+        }
         navToggle.classList.toggle('active');
     });
 
-    // Close sidebar
+    // Close sidebar button
     if (sidebarClose) {
-        sidebarClose.addEventListener('click', function() {
-            if (sidebar) sidebar.classList.remove('active');
-            navToggle.classList.remove('active');
+        sidebarClose.style.cursor = 'pointer';
+        sidebarClose.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeSidebarMenu();
         });
     }
 
-    // Navigation links
+    // Nav menu links (with data-section)
+    const navLinks = document.querySelectorAll('.nav-menu a');
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            if (this.getAttribute('data-section')) {
+            const section = this.getAttribute('data-section');
+            if (section) {
                 e.preventDefault();
-                const section = this.getAttribute('data-section');
                 goToSection(section);
-                if (sidebar) sidebar.classList.remove('active');
-                navToggle.classList.remove('active');
+                closeSidebarMenu();
             }
         });
+    });
+
+    // Phase list links - close sidebar after onclick
+    const phaseLinks = document.querySelectorAll('.phase-list a');
+    phaseLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            console.log('Phase link clicked:', this.textContent);
+            // Allow onclick handler to execute, then close
+            setTimeout(() => {
+                closeSidebarMenu();
+            }, 50);
+        });
+    });
+
+    // Close sidebar when clicking outside
+    document.addEventListener('click', function(e) {
+        if (sidebar && sidebar.classList.contains('active')) {
+            if (!sidebar.contains(e.target) && !navToggle.contains(e.target)) {
+                closeSidebarMenu();
+            }
+        }
     });
 
     // Highlight current section
@@ -173,12 +248,25 @@ function expandPhase(button) {
 }
 
 function selectPhase(phaseNumber) {
-    const card = document.querySelector(`[data-phase="${phaseNumber}"]`);
-    if (card) {
-        const button = card.querySelector('.expand-btn');
-        expandPhase(button);
-        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+    // First navigate to documentation section
+    goToSection('documentation');
+
+    // Then find and expand the phase card
+    setTimeout(() => {
+        const card = document.querySelector(`[data-phase="${phaseNumber}"]`);
+        if (card) {
+            const button = card.querySelector('.expand-btn');
+            if (button) {
+                expandPhase(button);
+            }
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            console.warn('Phase card not found:', phaseNumber);
+        }
+
+        // Close sidebar when phase is selected
+        closeSidebarMenu();
+    }, 300);
 }
 
 function scrollToPhase(phaseNumber) {
@@ -331,6 +419,7 @@ window.expandPhase = expandPhase;
 window.selectPhase = selectPhase;
 window.scrollToPhase = scrollToPhase;
 window.toggleAnswer = toggleAnswer;
+window.closeSidebarMenu = closeSidebarMenu;
 
 // Ensure expandPhase is callable from inline onclick
 if (!window.expandPhase) {
