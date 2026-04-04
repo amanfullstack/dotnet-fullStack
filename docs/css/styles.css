@@ -1150,37 +1150,40 @@ a.btn:hover {
 /* Tablet */
 @media (max-width: 768px) {
     .navbar {
-        height: 60px;
+        height: 56px;
         width: 100%;
         position: fixed;
         left: 0;
         right: 0;
         z-index: 1000;
+        box-shadow: var(--shadow-md);
     }
 
     .nav-container {
         width: 100%;
-        padding: 0 var(--spacing-sm);
-        overflow: visible;
+        padding: 0 8px;
+        max-width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 100%;
+        height: 56px;
     }
 
     .nav-brand {
-        flex: 0 1 auto;
-        gap: var(--spacing-xs);
-        font-size: 1rem;
-        min-width: 0;
+        flex: 0 0 auto;
+        gap: 4px;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
     }
 
     .brand-text {
-        display: none;
+        display: none !important;
     }
 
     .brand-icon {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
+        margin: 0;
     }
 
     .nav-menu {
@@ -1194,32 +1197,72 @@ a.btn:hover {
         cursor: pointer;
         z-index: 1001;
         padding: 8px;
-        width: auto;
-        height: auto;
-        flex: 0 0 auto;
+        width: 40px;
+        height: 40px;
+        border: none;
+        background: transparent;
         margin: 0;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
     }
 
     .nav-toggle span {
-        width: 20px;
+        width: 22px;
         height: 2px;
+        background-color: var(--text-primary);
         display: block;
+        transition: all 0.3s ease;
+        border-radius: 1px;
     }
 
     .nav-toggle:hover {
-        background-color: var(--bg-secondary);
-        border-radius: var(--radius-md);
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+    }
+
+    [data-theme="dark"] .nav-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .nav-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
     }
 
     .theme-toggle {
         flex: 0 0 auto;
         width: 40px;
         height: 40px;
-        display: flex;
+        display: flex !important;
         align-items: center;
         justify-content: center;
         z-index: 1000;
         cursor: pointer;
+        background: transparent;
+        border: none;
+        margin: 0;
+    }
+
+    .theme-toggle:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+    }
+
+    [data-theme="dark"] .theme-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .theme-icon {
+        font-size: 1.1rem;
+        display: inline-block;
     }
 
     .main-content {
@@ -1391,26 +1434,28 @@ a.btn:hover {
     }
 
     .navbar {
-        height: 56px;
+        height: 52px;
         width: 100%;
         z-index: 1000;
+        box-shadow: var(--shadow-md);
     }
 
     .nav-container {
         width: 100%;
-        padding: 0 var(--spacing-xs);
-        overflow: visible;
+        padding: 0 4px;
+        max-width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 100%;
+        height: 52px;
     }
 
     .nav-brand {
-        flex: 0 1 auto;
+        flex: 0 0 auto;
         gap: 0;
-        font-size: 0.9rem;
-        min-width: 0;
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
     }
 
     .brand-text {
@@ -1418,7 +1463,8 @@ a.btn:hover {
     }
 
     .brand-icon {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
+        margin: 0;
     }
 
     .nav-menu {
@@ -1432,21 +1478,44 @@ a.btn:hover {
         cursor: pointer;
         z-index: 1001;
         padding: 6px;
-        width: auto;
-        height: auto;
-        flex: 0 0 auto;
+        width: 36px;
+        height: 36px;
+        border: none;
+        background: transparent;
         margin: 0;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
     }
 
     .nav-toggle span {
         width: 18px;
-        height: 2px;
+        height: 1.5px;
+        background-color: var(--text-primary);
         display: block;
+        transition: all 0.3s ease;
+        border-radius: 1px;
     }
 
     .nav-toggle:hover {
-        background-color: var(--bg-secondary);
-        border-radius: var(--radius-md);
+        background-color: rgba(0, 0, 0, 0.07);
+        border-radius: 6px;
+    }
+
+    [data-theme="dark"] .nav-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+    }
+
+    .nav-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
     }
 
     .theme-toggle {
@@ -1458,6 +1527,23 @@ a.btn:hover {
         justify-content: center;
         z-index: 1000;
         cursor: pointer;
+        background: transparent;
+        border: none;
+        margin: 0;
+    }
+
+    .theme-toggle:hover {
+        background-color: rgba(0, 0, 0, 0.07);
+        border-radius: 6px;
+    }
+
+    [data-theme="dark"] .theme-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .theme-icon {
+        font-size: 1rem;
+        display: inline-block;
     }
 
     .main-content {
@@ -1763,6 +1849,47 @@ a.btn:hover {
 /* ============================================================
    PRINT STYLES
    ============================================================ */
+
+/* Extra Small Phones */
+@media (max-width: 360px) {
+    .navbar {
+        height: 48px;
+    }
+
+    .nav-container {
+        height: 48px;
+        padding: 0 2px;
+    }
+
+    .brand-icon {
+        font-size: 1rem;
+    }
+
+    .nav-toggle {
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+    }
+
+    .nav-toggle span {
+        width: 16px;
+        height: 1.5px;
+    }
+
+    .theme-toggle {
+        width: 32px;
+        height: 32px;
+    }
+
+    .theme-icon {
+        font-size: 0.9rem;
+    }
+
+    .main-content {
+        margin-top: 48px;
+        padding: var(--spacing-sm);
+    }
+}
 
 @media print {
     .navbar,
