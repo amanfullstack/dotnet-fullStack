@@ -106,7 +106,7 @@ public class GlobalErrorHandlingMiddleware
                 detail = exception.Message
             },
 
-            KeyNotFoundException => new
+            System.Collections.Generic.KeyNotFoundException => new
             {
                 status = HttpStatusCode.NotFound,
                 message = "Resource not found.",

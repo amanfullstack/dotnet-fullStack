@@ -1,7 +1,9 @@
 using ProductCatalogAPI.Data;
 using ProductCatalogAPI.Services;
 using ProductCatalogAPI.Middleware;
+using ProductCatalogAPI.GraphQL;
 using Microsoft.EntityFrameworkCore;
+using HotChocolate.Execution.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +41,23 @@ builder.Services.AddResponseCaching();
 // Transient: New instance every time (good for stateless services)
 // Scoped: One instance per request (good for DbContext and business logic)
 // Singleton: One instance for application lifetime (good for configuration)
+
+// EF Core Service (ORM approach)
 builder.Services.AddScoped<IProductService, ProductService>();
+
+// ADO.NET Service (Raw SQL approach)
+builder.Services.AddScoped<IProductAdoService, ProductAdoService>();
+
+// GraphQL Services (Query Language approach)
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<ProductQuery>()
+    .AddMutationType<ProductMutation>()
+    .AddErrorFilter(error =>
+    {
+        Console.WriteLine($"[GraphQL Error] {error.Exception?.Message}");
+        return error;
+    });
 
 // Add standard ASP.NET Core services
 builder.Services.AddControllers();
@@ -88,6 +106,11 @@ app.UseMiddleware<PerformanceMiddleware>();
 // This handles HTTP cache headers sent by controllers
 // Caches responses based on [ResponseCache] attributes
 app.UseResponseCaching();
+
+// IMPORTANT: Add GraphQL middleware
+// Handles GraphQL queries at: /graphql/
+// Provides playground at: /graphql/
+app.MapGraphQL("/graphql");
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())

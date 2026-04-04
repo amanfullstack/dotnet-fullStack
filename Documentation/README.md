@@ -50,6 +50,14 @@ Cheatsheets and quick lookups while coding.
 - Code snippets
 - Troubleshooting guide
 
+### **Phase 8: GraphQL & HotChocolate** 📡
+Master modern API design with GraphQL and HotChocolate.
+- GraphQL fundamentals and concepts
+- Queries, mutations, subscriptions
+- Schema design and resolvers
+- Apollo Federation for microservices
+- Complete testing guide and setup
+
 ---
 
 ## 📋 Recommended Learning Path
@@ -63,7 +71,8 @@ Cheatsheets and quick lookups while coding.
 5. 03-Implementation/01-Service-Layer-Pattern.md
 6. 03-Implementation/02-Middleware-Basics.md
 7. 04-Caching/01-Caching-Quickstart.md
-8. 06-Interview-Prep/01-Important-Concepts.md
+8. 09-GraphQL-Complete/01-GraphQL-Testing-Guide.md
+9. 06-Interview-Prep/01-Important-Concepts.md
 ```
 
 ### **For Intermediate Learners** (Reinforcing Knowledge)
@@ -73,8 +82,10 @@ Cheatsheets and quick lookups while coding.
 3. 03-Implementation/03-Error-Handling.md
 4. 04-Caching/02-Caching-Strategies.md
 5. 04-Caching/03-In-Memory-vs-Distributed.md
-6. 05-Operations/01-Logging-Setup.md
-7. 06-Interview-Prep/02-Common-Questions.md
+6. 08-Data-Access/00-Comparison.md
+7. 09-GraphQL-Complete/02-GraphQL-Concepts-Complete.md
+8. 05-Operations/01-Logging-Setup.md
+9. 06-Interview-Prep/02-Common-Questions.md
 ```
 
 ### **For Interview Preparation** (Focus on Key Concepts)
@@ -83,7 +94,8 @@ Cheatsheets and quick lookups while coding.
 2. 06-Interview-Prep/02-Common-Questions.md
 3. 06-Interview-Prep/03-Design-Patterns.md
 4. 06-Interview-Prep/04-Best-Practices.md
-5. 06-Interview-Prep/05-Coding-Challenges.md
+5. 08-Data-Access/00-Comparison.md
+6. 09-GraphQL-Complete/02-GraphQL-Concepts-Complete.md
 7. 07-Quick-Reference/Commands-Cheatsheet.md
 ```
 
@@ -93,8 +105,10 @@ Cheatsheets and quick lookups while coding.
 2. Follow entire 02-Core-Concepts sequence
 3. Follow entire 03-Implementation sequence
 4. Follow entire 04-Caching sequence
-5. Complete 05-Operations
-6. Review 06-Interview-Prep while coding
+5. Complete 08-Data-Access (EF Core, ADO.NET, GraphQL)
+6. Complete 09-GraphQL-Complete guide
+7. Complete 05-Operations
+8. Review 06-Interview-Prep while coding
 ```
 
 ---
@@ -141,6 +155,15 @@ Cheatsheets and quick lookups while coding.
 - [ ] Commands for quick lookup
 - [ ] Code snippets for copy-paste
 - [ ] Common issues and solutions
+
+### Phase 8️⃣ - GraphQL & HotChocolate
+- [ ] GraphQL fundamentals and advantages
+- [ ] Query, Mutation, Subscription types
+- [ ] Schema design and introspection
+- [ ] Resolvers and field resolution
+- [ ] Testing GraphQL APIs
+- [ ] Apollo Federation concepts
+- [ ] HotChocolate setup and configuration
 
 ---
 
@@ -192,10 +215,19 @@ Documentation/
 │   ├── 04-Best-Practices.md
 │   └── 05-Coding-Challenges.md
 │
-└── 07-Quick-Reference/
-    ├── Commands-Cheatsheet.md
-    ├── Code-Snippets.md
-    └── Troubleshooting.md
+├── 07-Quick-Reference/
+│   ├── Commands-Cheatsheet.md
+│   ├── Code-Snippets.md
+│   └── Troubleshooting.md
+│
+├── 08-Data-Access/
+│   ├── 00-Comparison.md
+│   └── 01-Testing-Guide.md
+│
+└── 09-GraphQL-Complete/
+    ├── 01-GraphQL-Testing-Guide.md
+    ├── 02-GraphQL-Concepts-Complete.md
+    └── 03-HotChocolate-Setup-Guide.md
 ```
 
 ---
@@ -211,7 +243,9 @@ Documentation/
 | 05 | Operations | 2-3 hours |
 | 06 | Interview Prep | 2-3 hours |
 | 07 | Quick Reference | As needed |
-| **Total** | **All Phases** | **~20-25 hours** |
+| 08 | Data Access (EF, ADO, GraphQL) | 2-3 hours |
+| 09 | GraphQL & HotChocolate | 3-4 hours |
+| **Total** | **All Phases** | **~26-32 hours** |
 
 ---
 
@@ -264,6 +298,8 @@ Documentation/
 | 05 | Operations | 3 | Logging, Monitoring, Deploy | 3h |
 | 06 | Interview Prep | 5 | Concepts, Q&A, Patterns | 3h |
 | 07 | Quick Reference | 3 | Commands, Snippets, Help | On-demand |
+| 08 | Data Access | 2 | EF Core, ADO.NET, GraphQL | 3h |
+| 09 | GraphQL | 3 | Testing, Concepts, Setup | 4h |
 
 ---
 
@@ -345,8 +381,12 @@ Found in: `07-Quick-Reference/Troubleshooting.md`
 
 - [ ] Explain N-Tier architecture from memory
 - [ ] Draw REST API flow diagram
+- [ ] Compare EF Core, ADO.NET, and GraphQL approaches
+- [ ] Explain GraphQL advantages (no over/under-fetching)
 - [ ] Implement caching from scratch
 - [ ] Set up Redis for production
+- [ ] Design GraphQL schema
+- [ ] Write resolvers in HotChocolate
 - [ ] Answer all interview questions
 - [ ] Write code without referencing
 - [ ] Optimize slow queries
