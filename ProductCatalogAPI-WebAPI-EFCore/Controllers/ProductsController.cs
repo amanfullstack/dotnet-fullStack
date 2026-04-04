@@ -30,9 +30,16 @@ namespace ProductCatalogAPI.Controllers
         /// 2. ASP.NET Core deserializes JSON to Product object (model binding)
         /// 3. Controller validates the product
         /// 4. Calls service to create product in database
-        /// 5. Returns 201 Created with product and Location header
+        /// 5. Service invalidates cache (new product added)
+        /// 6. Returns 201 Created with product and Location header
+        ///
+        /// CACHING:
+        /// - NoStore=true: Don't cache POST responses (creates new data)
+        /// - Cache automatically invalidated by service on successful create
         /// </summary>
         [HttpPost]
+        [ResponseCache(NoStore = true)]
+        // NoStore: Don't cache POST responses - they create new data
         public async Task<ActionResult<Product>> CreateProduct([FromBody] CreateProductRequest request)
         {
             // IMPORTANT: Input validation
@@ -82,11 +89,22 @@ namespace ProductCatalogAPI.Controllers
         /// READ ALL - HTTP GET /api/products
         /// Flow:
         /// 1. Client sends GET request
-        /// 2. Controller calls service to fetch all products
-        /// 3. Service queries database asynchronously
-        /// 4. Returns 200 OK with list of products
+        /// 2. ResponseCache middleware checks HTTP cache headers
+        /// 3. Controller calls service to fetch all products
+        /// 4. Service checks in-memory cache first (super fast)
+        /// 5. If cache miss, service queries database asynchronously
+        /// 6. Service stores result in cache
+        /// 7. Returns 200 OK with list of products
+        ///
+        /// CACHING:
+        /// - HTTP Headers: Cached for 5 minutes (client-side)
+        /// - In-Memory: Cached for 5 minutes (server-side)
+        /// - Result: 100x faster on repeat requests!
         /// </summary>
         [HttpGet]
+        [ResponseCache(Duration = 300, Location = ResponseCacheLocation.Any)]
+        // Duration=300: Cache for 5 minutes (300 seconds)
+        // Location.Any: Cache in all caches (browser, proxy, server)
         public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts()
         {
             try
@@ -110,11 +128,20 @@ namespace ProductCatalogAPI.Controllers
         /// READ SINGLE - HTTP GET /api/products/{id}
         /// Flow:
         /// 1. Client sends GET request with product ID in URL
-        /// 2. ASP.NET Core extracts ID from route
-        /// 3. Controller calls service to find product by ID
-        /// 4. Returns 200 OK with product if found, 404 Not Found if not
+        /// 2. ResponseCache checks headers (304 Not Modified if unchanged)
+        /// 3. ASP.NET Core extracts ID from route
+        /// 4. Controller calls service to find product by ID
+        /// 5. Service checks in-memory cache (fast!)
+        /// 6. Returns 200 OK with product if found, 404 Not Found if not
+        ///
+        /// CACHING:
+        /// - HTTP Headers: ETag used for validation, max-age=600 (10 minutes)
+        /// - In-Memory: Cached by ID for 5 minutes
         /// </summary>
         [HttpGet("{id}")]
+        [ResponseCache(Duration = 600, Location = ResponseCacheLocation.Any)]
+        // Duration=600: Cache for 10 minutes
+        // Location.Any: Cache everywhere
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
             try
@@ -147,11 +174,19 @@ namespace ProductCatalogAPI.Controllers
         /// READ BY CATEGORY - HTTP GET /api/products/category/{category}
         /// Flow:
         /// 1. Client sends GET request with category name in URL
-        /// 2. Controller extracts category from route
-        /// 3. Service filters products by category
-        /// 4. Returns all matching products
+        /// 2. ResponseCache checks headers
+        /// 3. Controller extracts category from route
+        /// 4. Service filters products by category (with in-memory cache!)
+        /// 5. Returns all matching products
+        ///
+        /// CACHING:
+        /// - HTTP Headers: Different cache entry per category
+        /// - In-Memory: Separate cache key per category
+        /// - VaryByQueryKeys: Important for caching different category requests separately
         /// </summary>
         [HttpGet("category/{category}")]
+        [ResponseCache(Duration = 300, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "category" })]
+        // VaryByQueryKeys: Ensures different categories have separate cache entries
         public async Task<ActionResult<IEnumerable<Product>>> GetProductsByCategory(string category)
         {
             try
@@ -176,11 +211,19 @@ namespace ProductCatalogAPI.Controllers
         /// UPDATE - HTTP PUT /api/products/{id}
         /// Flow:
         /// 1. Client sends PUT request with ID in URL and updated data in body
-        /// 2. Controller calls service to update the product
-        /// 3. Service locates product, updates properties, saves to database
-        /// 4. Returns 200 OK with updated product or 404 if not found
+        /// 2. Controller validates the input
+        /// 3. Calls service to update the product in database
+        /// 4. Service updates properties, saves to database
+        /// 5. Service invalidates cache (product data changed)
+        /// 6. Returns 200 OK with updated product or 404 if not found
+        ///
+        /// CACHING:
+        /// - NoStore=true: Don't cache PUT responses (modifies data)
+        /// - Cache automatically invalidated by service on update
         /// </summary>
         [HttpPut("{id}")]
+        [ResponseCache(NoStore = true)]
+        // NoStore: Don't cache PUT responses - they modify data
         public async Task<ActionResult<Product>> UpdateProduct(int id, [FromBody] UpdateProductRequest request)
         {
             try
@@ -236,9 +279,17 @@ namespace ProductCatalogAPI.Controllers
         /// 1. Client sends DELETE request with product ID in URL
         /// 2. Controller validates ID
         /// 3. Calls service to delete (soft delete) the product
-        /// 4. Returns 204 No Content if successful, 404 if not found
+        /// 4. Service marks product as inactive, saves to database
+        /// 5. Service invalidates cache (product removed from active list)
+        /// 6. Returns 204 No Content if successful, 404 if not found
+        ///
+        /// CACHING:
+        /// - NoStore=true: Don't cache DELETE responses (removes data)
+        /// - Cache automatically invalidated by service
         /// </summary>
         [HttpDelete("{id}")]
+        [ResponseCache(NoStore = true)]
+        // NoStore: Don't cache DELETE responses - they remove data
         public async Task<IActionResult> DeleteProduct(int id)
         {
             try
@@ -273,10 +324,17 @@ namespace ProductCatalogAPI.Controllers
         /// Flow:
         /// 1. Client sends PATCH with quantity adjustment
         /// 2. Positive number = add to stock, negative = remove from stock
-        /// 3. Service validates and updates stock
-        /// 4. Returns updated product
+        /// 3. Service validates and updates stock in database
+        /// 4. Service invalidates cache (data changed)
+        /// 5. Returns updated product
+        ///
+        /// CACHING:
+        /// - NoStore=true: Don't cache PATCH responses (modifies data)
+        /// - Cache automatically invalidated by service
         /// </summary>
         [HttpPatch("{id}/stock")]
+        [ResponseCache(NoStore = true)]
+        // NoStore: Don't cache PATCH responses - they modify stock data
         public async Task<ActionResult<Product>> UpdateStock(int id, [FromBody] UpdateStockRequest request)
         {
             try

@@ -1,5 +1,6 @@
 using ProductCatalogAPI.Data;
 using ProductCatalogAPI.Services;
+using ProductCatalogAPI.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,15 @@ builder.Services
         options.UseSqlServer(connectionString)
             .EnableSensitiveDataLogging(builder.Environment.IsDevelopment())
     );
+
+// IMPORTANT: Register in-memory caching service
+// This enables IMemoryCache dependency injection throughout the app
+// Cache is stored in application memory and survives until app restart
+builder.Services.AddMemoryCache();
+
+// IMPORTANT: Register response caching middleware
+// This caches HTTP responses based on cache headers
+builder.Services.AddResponseCaching();
 
 // IMPORTANT: Register service layer
 // Transient: New instance every time (good for stateless services)
@@ -53,7 +63,31 @@ var app = builder.Build();
  *
  * The middleware pipeline determines how HTTP requests are processed.
  * Order matters: middleware runs in the order it's added.
+ *
+ * Middleware Execution Order:
+ *   1. GlobalErrorHandlingMiddleware    ← Catches ALL exceptions from downstream
+ *   2. RequestLoggingMiddleware         ← Logs all requests/responses
+ *   3. PerformanceMiddleware            ← Measures request execution time
+ *   4. ResponseCachingMiddleware        ← Handles HTTP response caching
+ *   5. Swagger middleware (dev only)    ← API documentation
+ *   6. CORS middleware                  ← Cross-origin requests
+ *   7. Controllers                      ← Your API endpoints
  */
+
+// IMPORTANT: Add custom middleware in correct order
+// Error handling FIRST (catches exceptions from all downstream middleware)
+app.UseMiddleware<GlobalErrorHandlingMiddleware>();
+
+// Request logging EARLY (captures all requests/responses)
+app.UseMiddleware<RequestLoggingMiddleware>();
+
+// Performance tracking EARLY (captures timing for all requests)
+app.UseMiddleware<PerformanceMiddleware>();
+
+// IMPORTANT: Add response caching middleware
+// This handles HTTP cache headers sent by controllers
+// Caches responses based on [ResponseCache] attributes
+app.UseResponseCaching();
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())

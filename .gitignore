@@ -1,0 +1,69 @@
+# .NET Build Results
+**/bin/
+**/obj/
+**/Debug/
+**/Release/
+**/x64/
+**/x86/
+
+# Visual Studio
+.vs/
+*.sln.docstates
+.vscode/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local
+
+# Redis
+dump.rdb
+
+# Temporary
+*.tmp
+tmp/
+temp/
+
+# Node modules (for React/Angular projects)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Test results
+TestResults/
+*.trx
+
+# Build output
+publish/
+PublishProfiles/
+
+# Coverage
+coverage/
