@@ -1,0 +1,88 @@
+### Product Catalog API - Test Examples
+### NOTE: Requires dotnet run to be executed first
+### Base URL: http://localhost:5000
+
+### IMPORTANT FLOW #1: CREATE A NEW PRODUCT
+### This tests the CREATE flow (INSERT into database)
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{
+  "name": "Gaming Laptop",
+  "description": "High-performance laptop for gaming",
+  "price": 1299.99,
+  "stockQuantity": 15,
+  "category": "Electronics"
+}
+
+### IMPORTANT FLOW #2: CREATE SECOND PRODUCT
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{
+  "name": "Wireless Mouse",
+  "description": "Ergonomic wireless mouse",
+  "price": 49.99,
+  "stockQuantity": 50,
+  "category": "Accessories"
+}
+
+### IMPORTANT FLOW #3: GET ALL PRODUCTS
+### This tests the READ ALL flow (SELECT * with filtering)
+### Should return both products you just created
+GET http://localhost:5000/api/products
+
+### IMPORTANT FLOW #4: GET SINGLE PRODUCT BY ID
+### Replace 1 with actual product ID from create response
+GET http://localhost:5000/api/products/1
+
+### IMPORTANT FLOW #5: GET PRODUCTS BY CATEGORY
+### Filters products by category name (uses index for performance)
+GET http://localhost:5000/api/products/category/Electronics
+
+### IMPORTANT FLOW #6: UPDATE A PRODUCT
+### Updates existing product (changes name and price)
+### ID must exist in database
+PUT http://localhost:5000/api/products/1
+Content-Type: application/json
+
+{
+  "name": "Updated Gaming Laptop Pro",
+  "description": "Updated description with better specs",
+  "price": 1399.99,
+  "stockQuantity": 20,
+  "category": "Electronics"
+}
+
+### IMPORTANT FLOW #7: UPDATE PRODUCT STOCK
+### Uses PATCH to adjust inventory (positive = add, negative = remove)
+PATCH http://localhost:5000/api/products/1/stock
+Content-Type: application/json
+
+{
+  "quantityAdjustment": 5
+}
+
+### IMPORTANT FLOW #8: DELETE A PRODUCT (SOFT DELETE)
+### Marks product as inactive (data preserved in database)
+DELETE http://localhost:5000/api/products/1
+
+### Additional Test Cases
+
+### Test: Create product with invalid price
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{
+  "name": "Invalid Product",
+  "description": "Price is zero",
+  "price": 0,
+  "stockQuantity": 10,
+  "category": "Test"
+}
+
+### Test: Get non-existent product
+GET http://localhost:5000/api/products/999
+
+### Test: Get products by category (no results expected)
+GET http://localhost:5000/api/products/category/NonExistent
