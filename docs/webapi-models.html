@@ -1,0 +1,334 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Models & DTOs - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo"><div class="logo-badge">D</div>DevDocs</a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html" class="active">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span><input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link active"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a><span class="sep">/</span>
+          <a href="webapi.html">Web API</a><span class="sep">/</span>
+          <span class="current">Models &amp; DTOs</span>
+        </nav>
+
+        <div class="page-title-block">
+          <h1 class="page-title">📦 Models &amp; DTOs</h1>
+          <p class="page-subtitle">Entity models define the database schema. DTOs define what the API accepts and returns. Keeping them separate is essential.</p>
+          <div class="page-meta">
+            <span class="badge badge-beginner">Beginner</span>
+            <span class="badge badge-primary">Web API</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-content">
+            <p class="callout-title">Model vs DTO</p>
+            <p class="callout-body">A <strong>Model</strong> (entity) maps directly to a database table — it's what EF Core works with. A <strong>DTO</strong> (Data Transfer Object) is what the API exposes to clients. They're kept separate so you can change the DB schema without breaking the API contract, and to avoid over-posting vulnerabilities.</p>
+          </div>
+        </div>
+
+        <!-- ===== ENTITY MODEL ===== -->
+        <h2 id="entity-model">Entity Model</h2>
+        <p>The <code>Product</code> entity maps to the <code>Products</code> table. Data annotations configure column constraints.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Models/Product.cs</span>
+          </div>
+          <pre><code class="language-csharp">using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+public class Product
+{
+    [Key]                          // Primary key (auto-increment)
+    public int Id { get; set; }
+
+    [Required]
+    [StringLength(200)]
+    public string Name { get; set; } = string.Empty;
+
+    [StringLength(1000)]
+    public string? Description { get; set; }
+
+    [Required]
+    [Column(TypeName = "decimal(18,2)")]
+    [Range(0.01, 999999)]
+    public decimal Price { get; set; }
+
+    [Required]
+    [StringLength(100)]
+    public string Category { get; set; } = string.Empty;
+
+    [Range(0, int.MaxValue)]
+    public int StockQuantity { get; set; }
+
+    public bool IsActive { get; set; } = true;    // Soft delete flag
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAt { get; set; }
+}</code></pre>
+        </div>
+
+        <!-- ===== DTOS ===== -->
+        <h2 id="dtos">Data Transfer Objects (DTOs)</h2>
+        <p>DTOs are separate classes for API input/output. They prevent internal fields (like <code>IsActive</code>, <code>CreatedAt</code>) from being set by clients.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Models/DTOs/CreateProductRequest.cs</span>
+          </div>
+          <pre><code class="language-csharp">public class CreateProductRequest
+{
+    [Required(ErrorMessage = "Name is required")]
+    [StringLength(200, MinimumLength = 2)]
+    public string Name { get; set; } = string.Empty;
+
+    [StringLength(1000)]
+    public string? Description { get; set; }
+
+    [Required]
+    [Range(0.01, 999999, ErrorMessage = "Price must be between 0.01 and 999999")]
+    public decimal Price { get; set; }
+
+    [Required]
+    [StringLength(100)]
+    public string Category { get; set; } = string.Empty;
+
+    [Range(0, int.MaxValue)]
+    public int StockQuantity { get; set; } = 0;
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Models/DTOs/UpdateProductRequest.cs</span>
+          </div>
+          <pre><code class="language-csharp">public class UpdateProductRequest
+{
+    [Required]
+    [StringLength(200, MinimumLength = 2)]
+    public string Name { get; set; } = string.Empty;
+
+    [StringLength(1000)]
+    public string? Description { get; set; }
+
+    [Required]
+    [Range(0.01, 999999)]
+    public decimal Price { get; set; }
+
+    [Required]
+    [StringLength(100)]
+    public string Category { get; set; } = string.Empty;
+
+    [Range(0, int.MaxValue)]
+    public int StockQuantity { get; set; }
+}</code></pre>
+        </div>
+
+        <!-- ===== MAPPING ===== -->
+        <h2 id="manual-mapping">Manual Mapping (No AutoMapper)</h2>
+        <p>In the service layer, map DTOs to entities manually. This is explicit and doesn't require extra dependencies for simple cases.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Services/ProductService.cs — Create mapping</span>
+          </div>
+          <pre><code class="language-csharp">public async Task&lt;Product&gt; CreateAsync(CreateProductRequest request)
+{
+    // Map DTO → Entity
+    var product = new Product
+    {
+        Name          = request.Name,
+        Description   = request.Description,
+        Price         = request.Price,
+        Category      = request.Category,
+        StockQuantity = request.StockQuantity,
+        IsActive      = true,
+        CreatedAt     = DateTime.UtcNow
+    };
+
+    _context.Products.Add(product);
+    await _context.SaveChangesAsync();
+    return product;
+}
+
+public async Task&lt;Product?&gt; UpdateAsync(int id, UpdateProductRequest request)
+{
+    var product = await _context.Products.FindAsync(id);
+    if (product == null) return null;
+
+    // Map DTO fields onto existing entity
+    product.Name          = request.Name;
+    product.Description   = request.Description;
+    product.Price         = request.Price;
+    product.Category      = request.Category;
+    product.StockQuantity = request.StockQuantity;
+    product.UpdatedAt     = DateTime.UtcNow;
+
+    await _context.SaveChangesAsync();
+    return product;
+}</code></pre>
+        </div>
+
+        <!-- ===== VALIDATION ===== -->
+        <h2 id="validation">Automatic Validation with [ApiController]</h2>
+        <p>The <code>[ApiController]</code> attribute automatically validates the model and returns a 400 response if validation fails — no manual <code>ModelState.IsValid</code> check needed.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Automatic 400 response</span>
+          </div>
+          <pre><code class="language-json">// POST /api/products with invalid body
+// Response: 400 Bad Request
+{
+  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+  "title": "One or more validation errors occurred.",
+  "status": 400,
+  "errors": {
+    "Name":  ["Name is required"],
+    "Price": ["Price must be between 0.01 and 999999"]
+  }
+}</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview tip: Why DTOs?</p>
+            <p class="callout-body">Three reasons: (1) <strong>Security</strong> — prevent over-posting (client sets fields they shouldn't). (2) <strong>Decoupling</strong> — API contract can evolve independently from DB schema. (3) <strong>Projection</strong> — return only the fields the client needs, improving performance.</p>
+          </div>
+        </div>
+
+        <nav class="page-nav">
+          <a href="webapi-controllers.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">&#8592;</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">Controllers &amp; REST</span></div>
+          </a>
+          <a href="webapi-di.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">Dependency Injection</span></div>
+            <span class="page-nav-arrow">&#8594;</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">N</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">&#169; 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

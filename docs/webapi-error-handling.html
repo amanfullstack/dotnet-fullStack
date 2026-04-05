@@ -1,0 +1,342 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Error Handling - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo"><div class="logo-badge">D</div>DevDocs</a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html" class="active">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span><input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link active"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a><span class="sep">/</span>
+          <a href="webapi.html">Web API</a><span class="sep">/</span>
+          <span class="current">Error Handling</span>
+        </nav>
+
+        <div class="page-title-block">
+          <h1 class="page-title">🚨 Error Handling</h1>
+          <p class="page-subtitle">Global exception handling, ProblemDetails standard, custom exceptions, and returning consistent error responses from your API.</p>
+          <div class="page-meta">
+            <span class="badge badge-intermediate">Intermediate</span>
+            <span class="badge badge-primary">Web API</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-content">
+            <p class="callout-title">The goal</p>
+            <p class="callout-body">A production API should never leak stack traces to clients, always return a consistent JSON error format, log all errors server-side, and return appropriate HTTP status codes. One global error handler is better than try-catch in every controller.</p>
+          </div>
+        </div>
+
+        <!-- ===== PROBLEM DETAILS ===== -->
+        <h2 id="problem-details">ProblemDetails Standard (RFC 7807)</h2>
+        <p>ASP.NET Core uses the <code>ProblemDetails</code> format for error responses. It's an industry standard your clients can reliably parse.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Error Response Format</span>
+          </div>
+          <pre><code class="language-json">// 404 Not Found
+{
+  "type":   "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+  "title":  "Not Found",
+  "status": 404,
+  "detail": "Product with ID 99 was not found.",
+  "traceId": "00-abc123-def456-00"
+}
+
+// 400 Validation Error
+{
+  "type":   "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+  "title":  "One or more validation errors occurred.",
+  "status": 400,
+  "errors": {
+    "Name":  ["The Name field is required."],
+    "Price": ["Price must be between 0.01 and 999999."]
+  }
+}</code></pre>
+        </div>
+
+        <!-- ===== GLOBAL HANDLER ===== -->
+        <h2 id="global-exception-handler">Global Exception Handler</h2>
+        <p>Register a global handler that catches unhandled exceptions anywhere in the pipeline and returns a safe error response.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Middleware/GlobalExceptionHandler.cs</span>
+          </div>
+          <pre><code class="language-csharp">using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+
+public class GlobalExceptionHandler : IExceptionHandler
+{
+    private readonly ILogger&lt;GlobalExceptionHandler&gt; _logger;
+
+    public GlobalExceptionHandler(ILogger&lt;GlobalExceptionHandler&gt; logger)
+    {
+        _logger = logger;
+    }
+
+    public async ValueTask&lt;bool&gt; TryHandleAsync(
+        HttpContext context,
+        Exception exception,
+        CancellationToken cancellationToken)
+    {
+        // Log every unhandled exception
+        _logger.LogError(exception,
+            "Unhandled exception: {Message} | Path: {Path}",
+            exception.Message,
+            context.Request.Path);
+
+        // Map exception type to HTTP status code
+        var (statusCode, title) = exception switch
+        {
+            NotFoundException     => (404, "Not Found"),
+            ValidationException   => (400, "Validation Error"),
+            UnauthorizedAccessException => (401, "Unauthorized"),
+            _ => (500, "Internal Server Error")
+        };
+
+        var problemDetails = new ProblemDetails
+        {
+            Status = statusCode,
+            Title  = title,
+            Detail = exception.Message,
+            Instance = context.Request.Path
+        };
+
+        context.Response.StatusCode  = statusCode;
+        context.Response.ContentType = "application/problem+json";
+        await context.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+
+        return true; // Exception handled — stop propagation
+    }
+}</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Program.cs — Register Handler</span>
+          </div>
+          <pre><code class="language-csharp">// Register the exception handler service
+builder.Services.AddExceptionHandler&lt;GlobalExceptionHandler&gt;();
+builder.Services.AddProblemDetails();
+
+// Add to middleware pipeline (must be FIRST)
+app.UseExceptionHandler();</code></pre>
+        </div>
+
+        <!-- ===== CUSTOM EXCEPTIONS ===== -->
+        <h2 id="custom-exceptions">Custom Exception Classes</h2>
+        <p>Define custom exceptions for domain-specific errors. The global handler maps them to appropriate status codes.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Exceptions/DomainExceptions.cs</span>
+          </div>
+          <pre><code class="language-csharp">// 404 — Resource not found
+public class NotFoundException : Exception
+{
+    public NotFoundException(string resourceType, object id)
+        : base($"{resourceType} with ID {id} was not found.") { }
+}
+
+// 400 — Invalid input / business rule violation
+public class ValidationException : Exception
+{
+    public ValidationException(string message) : base(message) { }
+}
+
+// 409 — Conflict (duplicate resource, etc.)
+public class ConflictException : Exception
+{
+    public ConflictException(string message) : base(message) { }
+}
+
+// Usage in ProductService:
+public async Task&lt;Product&gt; GetByIdAsync(int id)
+{
+    var product = await _context.Products.FindAsync(id);
+    if (product == null)
+        throw new NotFoundException(nameof(Product), id); // → 404
+    return product;
+}</code></pre>
+        </div>
+
+        <!-- ===== TRY-CATCH IN SERVICE ===== -->
+        <h2 id="service-error-handling">Error Handling in Services</h2>
+        <p>With a global handler, controllers don't need try-catch. Services can still catch specific exceptions when they need to perform cleanup or retry logic.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Clean Controller (no try-catch needed)</span>
+          </div>
+          <pre><code class="language-csharp">// Controller is clean — global handler catches any exception
+[HttpGet("{id:int}")]
+public async Task&lt;ActionResult&lt;Product&gt;&gt; GetById(int id)
+{
+    var product = await _service.GetByIdAsync(id);
+    return Ok(product);
+    // If product not found, service throws NotFoundException
+    // Global handler catches it and returns 404 ProblemDetails
+}
+
+// Service handles specific DB exceptions
+public async Task&lt;Product&gt; CreateAsync(CreateProductRequest request)
+{
+    try
+    {
+        var product = MapToEntity(request);
+        _context.Products.Add(product);
+        await _context.SaveChangesAsync();
+        return product;
+    }
+    catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("UNIQUE") == true)
+    {
+        throw new ConflictException($"A product named '{request.Name}' already exists.");
+    }
+    // All other exceptions propagate to GlobalExceptionHandler
+}</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview tip</p>
+            <p class="callout-body">Use a global exception handler (<code>IExceptionHandler</code> in .NET 8) instead of try-catch in every controller. It centralizes error logging, maps exceptions to status codes, and ensures consistent ProblemDetails responses. Never expose raw exception messages or stack traces to clients in production.</p>
+          </div>
+        </div>
+
+        <nav class="page-nav">
+          <a href="webapi-caching.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">&#8592;</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">Caching Strategies</span></div>
+          </a>
+          <a href="webapi-graphql.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">GraphQL</span></div>
+            <span class="page-nav-arrow">&#8594;</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">N</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">&#169; 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

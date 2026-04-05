@@ -1,0 +1,826 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview Q&amp;A - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-badge">D</div>
+      DevDocs
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html" class="active">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span>
+        <input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link active"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="sep">/</span>
+          <span class="current">Interview Q&amp;A</span>
+        </nav>
+
+        <div class="page-title-block">
+          <h1 class="page-title">💡 Interview Q&amp;A</h1>
+          <p class="page-subtitle">50+ .NET backend interview questions with detailed answers — covering Web API, EF Core, ADO.NET, LINQ, Collections, Middleware, and Caching.</p>
+          <div class="page-meta">
+            <span class="badge badge-danger">Advanced</span>
+            <span class="badge badge-accent">Interview Prep</span>
+            <span class="badge badge-primary">50+ Questions</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">How to use this page</p>
+            <p class="callout-body">Click any question to expand the answer. Try answering yourself first — that's the best way to prepare. Focus on understanding the WHY, not memorizing the answer.</p>
+          </div>
+        </div>
+
+        <!-- ═══════════ WEB API & ARCHITECTURE ═══════════ -->
+        <h2 id="webapi-questions">Web API &amp; Architecture</h2>
+        <div class="qa-list">
+
+          <details class="qa-item">
+            <summary class="qa-question">Q1. What is ASP.NET Core Web API? How does it differ from MVC? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>ASP.NET Core Web API is a framework for building HTTP services that return data (JSON/XML) instead of HTML. MVC returns rendered HTML views for browsers. Web API targets API consumers — mobile apps, SPAs, other backend services.</p>
+              <p><strong>Key differences:</strong></p>
+              <ul>
+                <li>Web API uses <code>[ApiController]</code>; MVC uses <code>[Controller]</code></li>
+                <li>Web API returns <code>ActionResult&lt;T&gt;</code> with data; MVC returns views via <code>IActionResult</code></li>
+                <li>Web API supports content negotiation (JSON/XML); MVC returns HTML</li>
+                <li><code>[ApiController]</code> automatically validates models and returns 400 on failure</li>
+                <li>Web API is stateless; MVC can use session state</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q2. Explain the N-Tier architecture in a real project. <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>N-Tier separates concerns into distinct layers. In ProductCatalogAPI:</p>
+              <ul>
+                <li><strong>Controllers</strong> — handle HTTP requests, validate input, call services, return HTTP responses</li>
+                <li><strong>Services</strong> — contain business logic, caching, orchestration; call DbContext or repositories</li>
+                <li><strong>Data (DbContext)</strong> — all database communication via EF Core or ADO.NET</li>
+                <li><strong>Models</strong> — Entity models (DB) and DTOs (API contract) are separate classes</li>
+              </ul>
+              <p>Benefits: each layer is independently testable, changes don't cascade across layers, and implementations can be swapped (e.g., SQL Server → PostgreSQL).</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q3. What HTTP status codes do you return and when? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><code>200 OK</code> — successful GET, PUT, PATCH with response body</li>
+                <li><code>201 Created</code> — successful POST; include <code>Location</code> header pointing to new resource</li>
+                <li><code>204 No Content</code> — successful DELETE or PUT with no body</li>
+                <li><code>400 Bad Request</code> — validation failure, invalid input</li>
+                <li><code>401 Unauthorized</code> — not authenticated (no/invalid token)</li>
+                <li><code>403 Forbidden</code> — authenticated but not authorized for the action</li>
+                <li><code>404 Not Found</code> — resource does not exist</li>
+                <li><code>409 Conflict</code> — duplicate resource or concurrency conflict</li>
+                <li><code>500 Internal Server Error</code> — unhandled exception</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q4. What is model binding? What sources does it use? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Model binding automatically maps HTTP request data to action method parameters. ASP.NET Core reads from multiple sources:</p>
+              <ul>
+                <li><code>[FromRoute]</code> — URL path segment (e.g., <code>/products/{id}</code>)</li>
+                <li><code>[FromQuery]</code> — query string (e.g., <code>?category=Electronics</code>)</li>
+                <li><code>[FromBody]</code> — JSON request body (POST/PUT); requires <code>Content-Type: application/json</code></li>
+                <li><code>[FromHeader]</code> — HTTP request header</li>
+                <li><code>[FromForm]</code> — multipart form data</li>
+              </ul>
+              <p>With <code>[ApiController]</code>, complex types on POST/PUT default to <code>[FromBody]</code> and simple types default to <code>[FromQuery]</code>.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q5. What are DTOs and why use them instead of entities directly? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>DTOs (Data Transfer Objects) are API-facing classes separate from database entity models. Benefits:</p>
+              <ul>
+                <li><strong>Security</strong> — hide sensitive fields (passwords, internal fields) from responses</li>
+                <li><strong>Shape</strong> — return only fields clients need; reduce payload size</li>
+                <li><strong>Versioning</strong> — change entity structure without breaking the API contract</li>
+                <li><strong>Validation</strong> — put request validation attributes on DTOs, not entities</li>
+                <li><strong>Separation</strong> — DB concerns in entities, API concerns in DTOs</li>
+              </ul>
+              <p>Common pattern: <code>CreateProductRequest</code> for POST body, <code>ProductResponse</code> for all responses, <code>UpdateProductRequest</code> for PUT.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q6. What is IActionResult vs ActionResult&lt;T&gt;? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><code>IActionResult</code> is a non-generic interface — it can return any result type (Ok, NotFound, BadRequest) but Swagger and the compiler have no information about the success response type.</p>
+              <p><code>ActionResult&lt;T&gt;</code> is the generic version. It explicitly declares the success return type, enabling Swagger to infer response schemas and giving you compile-time type safety. You can still return <code>NotFound()</code> alongside a typed result.</p>
+              <p><strong>Best practice:</strong> Use <code>ActionResult&lt;T&gt;</code> for better Swagger documentation and IDE support. Use <code>IActionResult</code> only when the return type truly varies beyond success/failure.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q7. How does input validation work with [ApiController]? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>With <code>[ApiController]</code>, if a model fails validation, ASP.NET Core automatically returns <code>400 Bad Request</code> with a <code>ValidationProblemDetails</code> JSON response before the action method even runs. You don't need to check <code>ModelState.IsValid</code> manually.</p>
+              <p>Add data annotations to DTOs: <code>[Required]</code>, <code>[StringLength(100, MinimumLength=3)]</code>, <code>[Range(0, 9999)]</code>, <code>[EmailAddress]</code>, <code>[RegularExpression(@"^\d{5}$")]</code>.</p>
+              <p>For complex cross-property validation, implement <code>IValidatableObject</code> or use FluentValidation library.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q8. What is content negotiation? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Content negotiation is the process where client and server agree on the response format. The client sends an <code>Accept</code> header (e.g., <code>Accept: application/json</code> or <code>application/xml</code>) and ASP.NET Core chooses a matching formatter.</p>
+              <p>Default: JSON. To add XML support: <code>builder.Services.AddControllers().AddXmlSerializerFormatters()</code>. If no matching formatter exists, returns <code>406 Not Acceptable</code>.</p>
+            </div>
+          </details>
+
+        </div><!-- /.qa-list webapi -->
+
+        <!-- ═══════════ DI & MIDDLEWARE ═══════════ -->
+        <h2 id="di-middleware-questions">Dependency Injection &amp; Middleware</h2>
+        <div class="qa-list">
+
+          <details class="qa-item">
+            <summary class="qa-question">Q9. What is Dependency Injection and why is it important? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Dependency Injection (DI) is a pattern where a class receives dependencies from an external container instead of creating them itself. In ASP.NET Core, the built-in DI container manages service lifetimes and injects them via constructor parameters.</p>
+              <p><strong>Why it matters:</strong></p>
+              <ul>
+                <li><strong>Testability</strong> — inject mock implementations in unit tests</li>
+                <li><strong>Loose coupling</strong> — depend on interfaces, not concrete classes</li>
+                <li><strong>Single Responsibility</strong> — classes don't manage their own dependencies</li>
+                <li><strong>Lifetime management</strong> — the container handles creation, sharing, and disposal</li>
+              </ul>
+              <p>Register: <code>builder.Services.AddScoped&lt;IProductService, ProductService&gt;()</code>. Inject: <code>public ProductsController(IProductService service)</code>.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q10. What are the 3 DI lifetimes? When do you use each? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>Singleton</strong> — one instance for the entire app lifetime. Shared by all requests. Use for: stateless services, caches, configuration helpers.<br><code>builder.Services.AddSingleton&lt;IMyService, MyService&gt;()</code></li>
+                <li><strong>Scoped</strong> — one instance per HTTP request. All components within the same request share the same instance. Use for: DbContext, business services.<br><code>builder.Services.AddScoped&lt;IProductService, ProductService&gt;()</code></li>
+                <li><strong>Transient</strong> — new instance every time it's requested from the container. Most lightweight. Use for: lightweight, stateless services.<br><code>builder.Services.AddTransient&lt;IEmailSender, EmailSender&gt;()</code></li>
+              </ul>
+              <p><strong>Captive dependency trap:</strong> Injecting a Scoped service into a Singleton causes the Scoped service to live as long as the Singleton (forever), leaking request data. .NET throws <code>InvalidOperationException</code> at startup in Development mode.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q11. What is middleware? How does it work? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Middleware is software assembled into a pipeline that handles HTTP requests and responses. Each middleware component can inspect/modify the request, pass it to the next middleware (via <code>await _next(context)</code>), and then inspect/modify the response on the way back.</p>
+              <p>Pipeline order in <code>Program.cs</code>:</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">app.UseMiddleware&lt;GlobalErrorHandlingMiddleware&gt;(); // 1st — catch all errors
+app.UseMiddleware&lt;RequestLoggingMiddleware&gt;();       // 2nd — log requests
+app.UseMiddleware&lt;PerformanceMiddleware&gt;();          // 3rd — timing
+app.UseResponseCaching();                           // 4th — cache headers
+app.UseCors("AllowFrontend");
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();</code></pre>
+              </div>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q12. Why does middleware ORDER matter? Give a real example. <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Each middleware wraps the next one. Wrong order = bugs and security holes.</p>
+              <p><strong>Real example — Authentication before Authorization:</strong> <code>UseAuthentication</code> must come before <code>UseAuthorization</code>. Authentication sets <code>HttpContext.User</code> from the token/cookie. Authorization then checks if that user has permission. If order is reversed, <code>HttpContext.User</code> is empty and all authorization checks fail.</p>
+              <p><strong>Error handling must be first:</strong> <code>UseExceptionHandler</code> must be the first middleware so it can catch exceptions from all subsequent middleware. If it's last, exceptions from routing/auth won't be caught.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q13. app.Use() vs app.Run() vs app.Map() — what's the difference? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><code>app.Use()</code> — adds middleware that calls <code>next()</code> to continue the pipeline. Can process both request (before <code>await next()</code>) and response (after).</li>
+                <li><code>app.Run()</code> — terminal middleware. Never calls <code>next()</code>. Useful for a final catch-all handler. Nothing after it in the same branch executes.</li>
+                <li><code>app.Map("/api", branch =&gt; { ... })</code> — branches the pipeline based on URL path. Each branch has its own middleware. Useful for sub-apps or admin sections.</li>
+              </ul>
+            </div>
+          </details>
+
+        </div><!-- /.qa-list di-middleware -->
+
+        <!-- ═══════════ EF CORE ═══════════ -->
+        <h2 id="efcore-questions">Entity Framework Core</h2>
+        <div class="qa-list">
+
+          <details class="qa-item">
+            <summary class="qa-question">Q14. What is EF Core and what problem does it solve? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>EF Core is an ORM (Object-Relational Mapper) for .NET. It solves the impedance mismatch between OOP and relational databases — you define C# classes, and EF Core generates SQL, creates tables, and maps rows back to objects automatically.</p>
+              <p>Without EF Core: write raw SQL for every operation, manually map result rows to objects, handle schema changes manually, write parameterization for every query. EF Core eliminates this boilerplate while providing LINQ queries, migrations, change tracking, and relationship management.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q15. Code-First vs Database-First — when do you use each? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Code-First:</strong> Define C# entity classes → run <code>dotnet ef migrations add</code> → EF Core generates the database. Code is the source of truth. Best for new projects — schema changes are in version control as migration files.</p>
+              <p><strong>Database-First:</strong> Have an existing database → run <code>dotnet ef dbcontext scaffold</code> → EF Core generates entity classes and DbContext. Database is the source of truth. Best for existing legacy databases you can't modify.</p>
+              <p><strong>Recommendation:</strong> Code-First for new projects — migrations enable team collaboration, rollbacks, and CI/CD pipeline automation.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q16. How does EF Core change tracking work? What is AsNoTracking? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>When you load entities with EF Core, the DbContext records their original state as a snapshot. When you call <code>SaveChanges()</code>, EF Core compares current state to the snapshot and generates INSERT/UPDATE/DELETE SQL for changed entities.</p>
+              <p>Entity states: <code>Added</code>, <code>Modified</code>, <code>Deleted</code>, <code>Unchanged</code>, <code>Detached</code>.</p>
+              <p><code>AsNoTracking()</code> tells EF Core to skip the snapshot — entities are loaded but not tracked. This is ~30% faster for read-only queries because EF skips the overhead of tracking state. Use it for all GET endpoints that don't modify data:</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// With tracking (needed for UPDATE/DELETE)
+var product = await _context.Products.FindAsync(id);
+
+// Without tracking (faster, for read-only)
+var products = await _context.Products.AsNoTracking().ToListAsync();</code></pre>
+              </div>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q17. What is a migration? Walk me through the commands. <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>A migration is a versioned C# file representing a schema change. EF Core compares your current entity model to the last migration snapshot and generates the diff.</p>
+              <ul>
+                <li><code>dotnet ef migrations add InitialCreate</code> — creates a migration file with <code>Up()</code> and <code>Down()</code> methods</li>
+                <li><code>dotnet ef database update</code> — applies pending migrations to the database</li>
+                <li><code>dotnet ef migrations remove</code> — removes the last unapplied migration</li>
+                <li><code>dotnet ef database update PreviousMigration</code> — rolls back to a specific migration</li>
+                <li><code>dotnet ef database drop</code> — drops the entire database</li>
+              </ul>
+              <p>Never manually edit migration files. If you need to change a migration, remove it and recreate it.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q18. What is soft delete? How do you implement it in EF Core? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Soft delete marks records as inactive instead of physically deleting rows. Benefits: preserves history, enables recovery, maintains referential integrity.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// 1. Add IsActive flag to entity
+public class Product {
+    public bool IsActive { get; set; } = true;
+}
+
+// 2. Global query filter in DbContext.OnModelCreating
+modelBuilder.Entity&lt;Product&gt;()
+    .HasQueryFilter(p =&gt; p.IsActive);
+
+// 3. "Delete" method sets IsActive = false
+product.IsActive = false;
+await _context.SaveChangesAsync();
+
+// All queries now automatically exclude IsActive=false
+// Use .IgnoreQueryFilters() for admin screens that show deleted items</code></pre>
+              </div>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q19. What is the N+1 problem? How do you fix it? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>N+1 occurs when you load N entities and then trigger 1 additional query per entity for related data — N+1 total queries instead of 2.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// BAD: N+1 problem (101 queries for 100 products)
+var products = await _context.Products.ToListAsync(); // 1 query
+foreach(var p in products) {
+    var category = p.Category; // 100 lazy load queries!
+}
+
+// GOOD: Eager loading with Include (2 queries or 1 JOIN)
+var products = await _context.Products
+    .Include(p =&gt; p.Category)
+    .ToListAsync();</code></pre>
+              </div>
+            </div>
+          </details>
+
+        </div><!-- /.qa-list efcore -->
+
+        <!-- ═══════════ ADO.NET ═══════════ -->
+        <h2 id="adonet-questions">ADO.NET</h2>
+        <div class="qa-list">
+
+          <details class="qa-item">
+            <summary class="qa-question">Q20. What is ADO.NET and when do you choose it over EF Core? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>ADO.NET is .NET's low-level data access layer. You write raw SQL statements and manually map results to objects. No abstraction, maximum control.</p>
+              <p><strong>Choose ADO.NET when:</strong></p>
+              <ul>
+                <li>Complex reporting queries with many JOINs/subqueries EF Core can't express well</li>
+                <li>Bulk operations — inserting/updating thousands of rows (<code>SqlBulkCopy</code>)</li>
+                <li>Maximum performance for critical hot paths</li>
+                <li>Legacy databases with stored procedures</li>
+              </ul>
+              <p><strong>Best practice (used in ProductCatalogAPI):</strong> use both — EF Core for standard CRUD, ADO.NET for complex queries and bulk operations.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q21. What are parameterized queries? Why are they critical? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Parameterized queries use placeholders instead of string concatenation for values. The driver sends SQL and values separately, so user input can never be interpreted as SQL code.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// DANGEROUS — SQL Injection vulnerability!
+string sql = "SELECT * FROM Products WHERE Name = '" + userInput + "'";
+// Input: '; DROP TABLE Products; -- → deletes your database!
+
+// SAFE — Parameterized query
+string sql = "SELECT * FROM Products WHERE Name = @Name";
+command.Parameters.AddWithValue("@Name", userInput);
+// Input is treated as a literal value, not SQL code</code></pre>
+              </div>
+              <p>Always use parameterized queries for ANY user-provided input. This is the #1 defense against SQL injection — OWASP's top web vulnerability.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q22. How do you implement a transaction in ADO.NET? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Use <code>SqlTransaction</code> to wrap multiple operations in an atomic unit — all succeed or all roll back.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">using var connection = new SqlConnection(_connectionString);
+await connection.OpenAsync();
+using var transaction = connection.BeginTransaction();
+try {
+    // Debit account
+    var cmd1 = new SqlCommand("UPDATE Accounts SET Balance -= @Amount WHERE Id=@From", connection, transaction);
+    cmd1.Parameters.AddWithValue("@Amount", amount);
+    cmd1.Parameters.AddWithValue("@From", fromId);
+    await cmd1.ExecuteNonQueryAsync();
+
+    // Credit account
+    var cmd2 = new SqlCommand("UPDATE Accounts SET Balance += @Amount WHERE Id=@To", connection, transaction);
+    cmd2.Parameters.AddWithValue("@Amount", amount);
+    cmd2.Parameters.AddWithValue("@To", toId);
+    await cmd2.ExecuteNonQueryAsync();
+
+    await transaction.CommitAsync();
+} catch {
+    await transaction.RollbackAsync();
+    throw;
+}</code></pre>
+              </div>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q23. What is connection pooling and how does it work? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Connection pooling reuses database connections instead of creating a new TCP connection for every query. Opening a new DB connection costs ~100-200ms. The pool maintains pre-created connections that are leased and returned.</p>
+              <p>In .NET it's automatic — enabled by default. When you call <code>connection.Close()</code> or a <code>using</code> block ends, the connection returns to the pool (not physically closed). The pool is per connection string. Always use <code>using</code> to promptly return connections. Configure pool size in the connection string: <code>Min Pool Size=5;Max Pool Size=100;</code></p>
+            </div>
+          </details>
+
+        </div><!-- /.qa-list adonet -->
+
+        <!-- ═══════════ LINQ & COLLECTIONS ═══════════ -->
+        <h2 id="linq-questions">LINQ &amp; Collections</h2>
+        <div class="qa-list">
+
+          <details class="qa-item">
+            <summary class="qa-question">Q24. What is LINQ? What are the two syntax styles? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>LINQ (Language Integrated Query) lets you query any <code>IEnumerable&lt;T&gt;</code> or <code>IQueryable&lt;T&gt;</code> — in-memory collections, databases, XML — with consistent C# syntax.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// Method syntax (preferred — more flexible for chaining)
+var results = products
+    .Where(p =&gt; p.Price &gt; 100 &amp;&amp; p.IsActive)
+    .OrderBy(p =&gt; p.Name)
+    .Select(p =&gt; new { p.Id, p.Name, p.Price })
+    .ToList();
+
+// Query syntax (SQL-like, sometimes more readable for joins)
+var results = from p in products
+              where p.Price &gt; 100 &amp;&amp; p.IsActive
+              orderby p.Name
+              select new { p.Id, p.Name, p.Price };</code></pre>
+              </div>
+              <p>Both compile to identical IL. Method syntax is more flexible for complex operations.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q25. What is deferred execution? Why does it matter? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Deferred execution means a LINQ query is defined but NOT executed until you iterate over it. <code>Where()</code>, <code>Select()</code>, <code>OrderBy()</code> build a query definition. Actual execution happens when you call <code>ToList()</code>, <code>First()</code>, <code>Count()</code>, or enter a <code>foreach</code>.</p>
+              <p><strong>Why it matters with EF Core:</strong> You can compose queries conditionally — add <code>.Where()</code> clauses based on parameters — and EF Core generates a single optimized SQL query when you finally materialize. Without deferred execution, each filter would be a separate DB round trip.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// Composing a query — no DB call yet
+var query = _context.Products.Where(p =&gt; p.IsActive);
+if (!string.IsNullOrEmpty(category))
+    query = query.Where(p =&gt; p.Category == category);
+if (minPrice.HasValue)
+    query = query.Where(p =&gt; p.Price &gt;= minPrice.Value);
+
+// Single DB call happens HERE
+var results = await query.ToListAsync();</code></pre>
+              </div>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q26. IEnumerable vs IQueryable — what's the difference? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>IEnumerable&lt;T&gt;</strong> — executes in memory (C# process). Filter happens after all data is loaded. Use for in-memory collections.</p>
+              <p><strong>IQueryable&lt;T&gt;</strong> — builds an expression tree. EF Core translates it to SQL. Filter happens in the database — only matching rows returned. Use with EF Core/LINQ to SQL.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// BAD: Loads ALL products into memory, then filters in C#
+var expensive = _context.Products
+    .AsEnumerable()            // forces in-memory execution!
+    .Where(p =&gt; p.Price &gt; 100)
+    .ToList();
+
+// GOOD: SQL WHERE clause filters in database
+var expensive = _context.Products
+    .Where(p =&gt; p.Price &gt; 100)   // translates to SQL WHERE
+    .ToList();</code></pre>
+              </div>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q27. What collection types exist in C# and when do you use each? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><code>List&lt;T&gt;</code> — ordered, index access, duplicates allowed. General-purpose default.</li>
+                <li><code>Dictionary&lt;TKey,TValue&gt;</code> — O(1) key lookup. Use when finding by unique key frequently.</li>
+                <li><code>HashSet&lt;T&gt;</code> — unique elements, O(1) Contains. Use for deduplication or set operations.</li>
+                <li><code>Queue&lt;T&gt;</code> — FIFO. Use for job/message queues, BFS.</li>
+                <li><code>Stack&lt;T&gt;</code> — LIFO. Use for undo/redo, DFS, parsing expressions.</li>
+                <li><code>SortedDictionary&lt;TKey,TValue&gt;</code> — sorted by key, O(log n). Use when you need ordered enumeration.</li>
+                <li><code>ConcurrentDictionary&lt;TKey,TValue&gt;</code> — thread-safe. Use in multi-threaded code.</li>
+                <li><code>IEnumerable&lt;T&gt;</code> — read-only lazy sequence. Use as parameter/return type for flexibility.</li>
+              </ul>
+            </div>
+          </details>
+
+        </div><!-- /.qa-list linq -->
+
+        <!-- ═══════════ CACHING ═══════════ -->
+        <h2 id="caching-questions">Caching &amp; Performance</h2>
+        <div class="qa-list">
+
+          <details class="qa-item">
+            <summary class="qa-question">Q28. What caching strategies did you implement? Explain each. <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>ProductCatalogAPI implements 5 caching strategies:</p>
+              <ul>
+                <li><strong>IMemoryCache</strong> — in-process RAM cache. ~1ms. Single server. Invalidated on data changes. Best for frequently-accessed lookup data.</li>
+                <li><strong>Response Caching</strong> — HTTP <code>Cache-Control</code> headers via <code>[ResponseCache(Duration=300)]</code>. Browser/proxy caches response. Zero server load on cache hit.</li>
+                <li><strong>IDistributedCache</strong> — shared cache interface (Redis, SQL Server). ~5ms. Works across multiple servers.</li>
+                <li><strong>Redis</strong> — high-performance distributed cache. Survives app restarts. Used in production for multi-server apps.</li>
+                <li><strong>HybridCache (.NET 9)</strong> — checks memory first → then Redis → then DB. Best of all worlds.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q29. How do you implement IMemoryCache? Show cache invalidation. <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// Registration in Program.cs
+builder.Services.AddMemoryCache();
+
+// Usage in service
+public async Task&lt;IEnumerable&lt;Product&gt;&gt; GetAllAsync()
+{
+    const string key = "products:all";
+    if (_cache.TryGetValue(key, out IEnumerable&lt;Product&gt; cached))
+        return cached; // ✓ HIT — returned in ~1ms
+
+    var products = await _context.Products.AsNoTracking().ToListAsync();
+    _cache.Set(key, products, TimeSpan.FromMinutes(5)); // TTL: 5 min
+    return products; // ✗ MISS — fetched from DB (~150ms)
+}
+
+// Invalidation on data change
+public async Task CreateProductAsync(CreateProductRequest req)
+{
+    // ... create product ...
+    _cache.Remove("products:all"); // Stale cache cleared
+}</code></pre>
+              </div>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q30. What performance improvement did you achieve with caching? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Benchmark from ProductCatalogAPI — GetAll endpoint with 100 sequential requests:</p>
+              <table class="comparison-table">
+                <thead><tr><th>Scenario</th><th>Total Time</th><th>DB Queries</th></tr></thead>
+                <tbody>
+                  <tr><td>Without cache</td><td>~15 seconds</td><td>100 queries</td></tr>
+                  <tr><td>With IMemoryCache</td><td>~250ms</td><td>1 query</td></tr>
+                  <tr><td>Improvement</td><td><strong>60x faster</strong></td><td><strong>99% reduction</strong></td></tr>
+                </tbody>
+              </table>
+              <p>In production with hundreds of requests per minute for the same product list, this eliminates essentially all database load for read operations.</p>
+            </div>
+          </details>
+
+        </div><!-- /.qa-list caching -->
+
+        <!-- ═══════════ ASYNC & GENERAL ═══════════ -->
+        <h2 id="async-questions">Async/Await &amp; General</h2>
+        <div class="qa-list">
+
+          <details class="qa-item">
+            <summary class="qa-question">Q31. Why is async/await critical in Web API applications? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>ASP.NET Core handles requests on a thread pool (typically ~250 threads). Without async, a thread blocked waiting for a DB query can't handle other requests — under load, threads exhaust and the app becomes unresponsive.</p>
+              <p>With <code>async/await</code>, when you <code>await _context.ToListAsync()</code>, the current thread is returned to the pool while waiting for the database. When the DB responds, any available thread picks up the work. This means one server can handle thousands of concurrent requests instead of ~250.</p>
+              <p><strong>Rule:</strong> use <code>async/await</code> for all I/O (DB, HTTP, file). Never use <code>.Result</code> or <code>.Wait()</code> — they block a thread and can deadlock.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q32. What is CORS and how do you configure it? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>CORS (Cross-Origin Resource Sharing) is a browser security mechanism that blocks web pages from calling APIs on a different domain. When your React app on <code>localhost:3000</code> calls the API on <code>localhost:5000</code>, the browser requires the API to explicitly allow this origin.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// Program.cs
+builder.Services.AddCors(options =&gt; options.AddPolicy("AllowFrontend",
+    policy =&gt; policy
+        .WithOrigins("http://localhost:3000", "http://localhost:4200")
+        .AllowAnyMethod()
+        .AllowAnyHeader()));
+
+// In pipeline (before MapControllers)
+app.UseCors("AllowFrontend");</code></pre>
+              </div>
+              <p>In production: specify exact origins only. Never use <code>.AllowAnyOrigin()</code> in production.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q33. What is GraphQL vs REST — when do you use each? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>REST:</strong> Multiple endpoints, each returns a fixed structure. Simple, well-known, HTTP cache-friendly. Best for: most APIs, microservices, public APIs.</p>
+              <p><strong>GraphQL:</strong> Single endpoint, client specifies exactly what fields they need. Eliminates over-fetching (unused fields) and under-fetching (needing multiple requests). Best for: mobile apps (minimize bandwidth), dashboards fetching varied data, APIs consumed by many different clients needing different data shapes.</p>
+              <p>In .NET, use HotChocolate for GraphQL: define Query/Mutation types, register with <code>AddGraphQLServer()</code>, expose at <code>/graphql</code> with Banana Cake Pop playground.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q34. How do you handle global error handling in a Web API? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Best practice: custom global exception middleware as the first middleware in the pipeline. It wraps all subsequent middleware in a try-catch, catches any unhandled exception, logs it, and returns a standardized <code>ProblemDetails</code> response.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">public class GlobalErrorHandlingMiddleware(RequestDelegate next, ILogger&lt;GlobalErrorHandlingMiddleware&gt; logger)
+{
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try {
+            await next(context);
+        } catch (Exception ex) {
+            logger.LogError(ex, "Unhandled exception for {Path}", context.Request.Path);
+            context.Response.StatusCode = 500;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsJsonAsync(new {
+                Status = 500,
+                Message = "An internal error occurred."
+            });
+        }
+    }
+}</code></pre>
+              </div>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q35. What is the Options pattern and how do you use IConfiguration? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>The Options pattern binds configuration sections to strongly-typed C# classes, giving compile-time safety and IntelliSense instead of magic strings.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// appsettings.json
+{
+  "CacheSettings": {
+    "DefaultTtlMinutes": 5,
+    "ProductsKey": "products:all"
+  }
+}
+
+// Typed settings class
+public class CacheSettings {
+    public int DefaultTtlMinutes { get; set; }
+    public string ProductsKey { get; set; } = "";
+}
+
+// Program.cs registration
+builder.Services.Configure&lt;CacheSettings&gt;(
+    builder.Configuration.GetSection("CacheSettings"));
+
+// Inject and use
+public ProductService(IOptions&lt;CacheSettings&gt; options) {
+    var ttl = options.Value.DefaultTtlMinutes;
+}</code></pre>
+              </div>
+            </div>
+          </details>
+
+        </div><!-- /.qa-list async -->
+
+        <div class="callout callout-success" style="margin-top:3rem;">
+          <span class="callout-icon">🎯</span>
+          <div class="callout-content">
+            <p class="callout-title">Final interview tip</p>
+            <p class="callout-body">Don't just memorize answers — interviewers follow up with "why?" and "can you give an example?" Link every answer back to your real project (ProductCatalogAPI). Explain trade-offs. That's what separates experienced developers.</p>
+          </div>
+        </div>
+
+        <nav class="page-nav">
+          <a href="performance.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">←</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">Performance Comparison</span></div>
+          </a>
+          <a href="learning-paths.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">Learning Paths</span></div>
+            <span class="page-nav-arrow">→</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">N</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

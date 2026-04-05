@@ -1,0 +1,389 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GraphQL & HotChocolate - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo"><div class="logo-badge">D</div>DevDocs</a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html" class="active">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span><input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link active"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a><span class="sep">/</span>
+          <a href="webapi.html">Web API</a><span class="sep">/</span>
+          <span class="current">GraphQL</span>
+        </nav>
+
+        <div class="page-title-block">
+          <h1 class="page-title">🌐 GraphQL &amp; HotChocolate</h1>
+          <p class="page-subtitle">Build flexible APIs with GraphQL using the HotChocolate library for .NET. Queries, mutations, subscriptions, and when to use GraphQL vs REST.</p>
+          <div class="page-meta">
+            <span class="badge badge-advanced">Advanced</span>
+            <span class="badge badge-primary">Web API</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-content">
+            <p class="callout-title">What is GraphQL?</p>
+            <p class="callout-body">GraphQL is a query language for APIs. Unlike REST (multiple endpoints per resource), GraphQL has a single endpoint. Clients specify exactly what data they need in the request — no over-fetching, no under-fetching. Facebook created it in 2012 and open-sourced it in 2015.</p>
+          </div>
+        </div>
+
+        <!-- ===== REST vs GRAPHQL ===== -->
+        <h2 id="rest-vs-graphql">REST vs GraphQL</h2>
+        <table class="data-table">
+          <thead>
+            <tr><th>Aspect</th><th>REST</th><th>GraphQL</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Endpoints</td><td>Multiple (one per resource)</td><td>Single (<code>/graphql</code>)</td></tr>
+            <tr><td>Data fetching</td><td>Fixed response shape</td><td>Client picks fields it needs</td></tr>
+            <tr><td>Over-fetching</td><td>Common</td><td>Eliminated</td></tr>
+            <tr><td>Under-fetching</td><td>Multiple requests needed</td><td>One request for nested data</td></tr>
+            <tr><td>Versioning</td><td>v1, v2 routes needed</td><td>Evolve schema, no versioning</td></tr>
+            <tr><td>Caching</td><td>HTTP cache (easy)</td><td>Per-query cache (harder)</td></tr>
+            <tr><td>Learning curve</td><td>Low</td><td>Medium</td></tr>
+            <tr><td>Best for</td><td>Simple CRUD APIs</td><td>Complex, client-driven data needs</td></tr>
+          </tbody>
+        </table>
+
+        <!-- ===== SETUP ===== -->
+        <h2 id="setup">HotChocolate Setup</h2>
+        <p>HotChocolate is the leading GraphQL server for .NET. Install and configure it alongside your existing ASP.NET Core app.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Install NuGet Packages</span>
+          </div>
+          <pre><code class="language-bash">dotnet add package HotChocolate.AspNetCore
+dotnet add package HotChocolate.Data.EntityFramework</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Program.cs — Register GraphQL</span>
+          </div>
+          <pre><code class="language-csharp">builder.Services
+    .AddGraphQLServer()
+    .AddQueryType&lt;Query&gt;()
+    .AddMutationType&lt;Mutation&gt;()
+    .AddSubscriptionType&lt;Subscription&gt;()
+    .AddFiltering()    // Enables [UseFiltering] on resolvers
+    .AddSorting()      // Enables [UseSorting]  on resolvers
+    .AddProjections(); // Enables [UseProjection] for EF Core
+
+// Map GraphQL endpoint (use alongside REST — they can coexist)
+app.MapGraphQL(); // Available at /graphql</code></pre>
+        </div>
+
+        <!-- ===== QUERIES ===== -->
+        <h2 id="queries">Queries (Read Data)</h2>
+        <p>A Query class defines all readable operations. Each method becomes a GraphQL field clients can query.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">GraphQL/Query.cs</span>
+          </div>
+          <pre><code class="language-csharp">public class Query
+{
+    // Get all products — with built-in filtering, sorting, pagination
+    [UseDbContext(typeof(ProductDbContext))]
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable&lt;Product&gt; GetProducts([ScopedService] ProductDbContext context)
+        => context.Products;
+
+    // Get single product by ID
+    [UseDbContext(typeof(ProductDbContext))]
+    public async Task&lt;Product?&gt; GetProductById(
+        int id,
+        [ScopedService] ProductDbContext context)
+        => await context.Products.FindAsync(id);
+}</code></pre>
+        </div>
+
+        <h3>Client GraphQL Query</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Client sends to POST /graphql</span>
+          </div>
+          <pre><code class="language-graphql"># Request only the fields you need — no over-fetching
+query {
+  products(
+    where: { category: { eq: "Electronics" } }
+    order: { price: ASC }
+  ) {
+    id
+    name
+    price
+    category
+  }
+}
+
+# Nested query — get product with related data in one request
+query {
+  productById(id: 1) {
+    id
+    name
+    price
+    reviews {
+      rating
+      comment
+    }
+  }
+}</code></pre>
+        </div>
+
+        <!-- ===== MUTATIONS ===== -->
+        <h2 id="mutations">Mutations (Write Data)</h2>
+        <p>Mutations are GraphQL's equivalent of POST, PUT, DELETE. They change data and return the updated state.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">GraphQL/Mutation.cs</span>
+          </div>
+          <pre><code class="language-csharp">public class Mutation
+{
+    public async Task&lt;Product&gt; CreateProduct(
+        CreateProductInput input,
+        [ScopedService] ProductDbContext context)
+    {
+        var product = new Product
+        {
+            Name          = input.Name,
+            Price         = input.Price,
+            Category      = input.Category,
+            StockQuantity = input.StockQuantity,
+            IsActive      = true,
+            CreatedAt     = DateTime.UtcNow
+        };
+
+        context.Products.Add(product);
+        await context.SaveChangesAsync();
+        return product;
+    }
+
+    public async Task&lt;Product?&gt; DeleteProduct(
+        int id,
+        [ScopedService] ProductDbContext context)
+    {
+        var product = await context.Products.FindAsync(id);
+        if (product == null) return null;
+
+        product.IsActive = false; // Soft delete
+        await context.SaveChangesAsync();
+        return product;
+    }
+}
+
+// Input type (DTO for GraphQL)
+public record CreateProductInput(
+    string Name,
+    decimal Price,
+    string Category,
+    int StockQuantity
+);</code></pre>
+        </div>
+
+        <h3>Client Mutation</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">GraphQL Mutation Request</span>
+          </div>
+          <pre><code class="language-graphql">mutation {
+  createProduct(input: {
+    name: "Laptop Pro"
+    price: 1299.99
+    category: "Electronics"
+    stockQuantity: 50
+  }) {
+    id
+    name
+    price
+    createdAt
+  }
+}</code></pre>
+        </div>
+
+        <!-- ===== SUBSCRIPTIONS ===== -->
+        <h2 id="subscriptions">Subscriptions (Real-Time)</h2>
+        <p>Subscriptions push data to clients over WebSocket when something changes — ideal for live dashboards, notifications, and stock updates.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">GraphQL/Subscription.cs</span>
+          </div>
+          <pre><code class="language-csharp">public class Subscription
+{
+    // Client subscribes to this — receives event whenever a product is created
+    [Subscribe]
+    [Topic("ProductCreated")]
+    public Product OnProductCreated([EventMessage] Product product) => product;
+}
+
+// In Mutation.cs — publish the event after creating a product
+public async Task&lt;Product&gt; CreateProduct(
+    CreateProductInput input,
+    [ScopedService] ProductDbContext context,
+    [Service] ITopicEventSender eventSender)
+{
+    var product = ...; // Create product
+    await context.SaveChangesAsync();
+
+    // Notify all subscribers
+    await eventSender.SendAsync("ProductCreated", product);
+    return product;
+}
+
+// Program.cs — add WebSocket support for subscriptions
+app.UseWebSockets();
+app.MapGraphQL();</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">When to use GraphQL vs REST</p>
+            <ul style="margin:0;padding-left:1.2rem;">
+              <li>Use <strong>REST</strong> for simple CRUD APIs, public APIs, when HTTP caching is important.</li>
+              <li>Use <strong>GraphQL</strong> when clients have diverse data needs, deep nested fetching, or you want to avoid over/under-fetching.</li>
+              <li>Both can coexist in the same ASP.NET Core app — REST controllers + <code>MapGraphQL()</code>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <nav class="page-nav">
+          <a href="webapi-error-handling.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">&#8592;</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">Error Handling</span></div>
+          </a>
+          <a href="ef-core.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">Entity Framework Core</span></div>
+            <span class="page-nav-arrow">&#8594;</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">N</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">&#169; 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,710 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADO.NET - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<!-- Reading Progress Bar -->
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<!-- Search Modal -->
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<!-- Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-badge">D</div>
+      DevDocs
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span>
+        <input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link active"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="index.html#data-access">Data Access</a>
+          <span class="sep">/</span>
+          <span class="current">ADO.NET</span>
+        </nav>
+
+        <!-- Page Title -->
+        <div class="page-title-block">
+          <h1 class="page-title">💾 ADO.NET</h1>
+          <p class="page-subtitle">Raw database access with SqlConnection, SqlCommand, and SqlDataReader — maximum control and performance.</p>
+          <div class="page-meta">
+            <span class="badge badge-intermediate">Intermediate</span>
+            <span class="badge badge-primary">Data Access</span>
+          </div>
+        </div>
+
+        <!-- Intro callout -->
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-content">
+            <p class="callout-title">What is ADO.NET?</p>
+            <p class="callout-body">ADO.NET is low-level database access built into the .NET framework. There is no abstraction layer — you write SQL directly and read results row by row. It is faster than EF Core for bulk operations and complex queries, but requires significantly more code. ADO.NET gives you complete control over every SQL statement that runs.</p>
+          </div>
+        </div>
+
+        <!-- ===================== KEY CLASSES ===================== -->
+        <h2 id="key-classes">Core ADO.NET Classes</h2>
+        <p>ADO.NET is built around a small set of classes in the <code>System.Data.SqlClient</code> (or <code>Microsoft.Data.SqlClient</code>) namespace. Understanding what each class does is the foundation for everything else.</p>
+
+        <ul class="kv-list">
+          <li>
+            <span class="kv-key">SqlConnection</span>
+            <span class="kv-val">Represents a connection to SQL Server. Must be opened before use and closed (or disposed) after. Closing returns the connection to the connection pool — not discarded.</span>
+          </li>
+          <li>
+            <span class="kv-key">SqlCommand</span>
+            <span class="kv-val">Represents a SQL statement or stored procedure to execute against the database. Linked to a <code>SqlConnection</code> and optionally a <code>SqlTransaction</code>.</span>
+          </li>
+          <li>
+            <span class="kv-key">SqlDataReader</span>
+            <span class="kv-val">A forward-only, read-only cursor over query results. Reads one row at a time with <code>while (reader.Read())</code>. The most memory-efficient way to read large result sets.</span>
+          </li>
+          <li>
+            <span class="kv-key">SqlParameter</span>
+            <span class="kv-val">Represents a parameterized input/output value for a <code>SqlCommand</code>. Always use parameters instead of string concatenation to prevent SQL injection.</span>
+          </li>
+          <li>
+            <span class="kv-key">SqlTransaction</span>
+            <span class="kv-val">Wraps multiple SQL statements in a single atomic unit. Either all statements commit or all roll back. Created from an open <code>SqlConnection</code>.</span>
+          </li>
+          <li>
+            <span class="kv-key">SqlDataAdapter</span>
+            <span class="kv-val">Bridges a <code>SqlCommand</code> and a <code>DataSet</code> (disconnected, in-memory table). Useful for batch operations and desktop applications; less common in modern Web APIs.</span>
+          </li>
+        </ul>
+
+        <!-- ===================== CLOSED CONNECTION ===================== -->
+        <h2 id="closed-connection">Closed Connection Pattern (Web APIs)</h2>
+        <p>In Web APIs, you open a connection, execute your query, read all results, then immediately close. The <code>using</code> statement guarantees the connection is returned to the pool even if an exception occurs.</p>
+
+        <h3>GetAll with SqlDataReader</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Repositories/ProductRepository.cs</span>
+          </div>
+          <pre><code class="language-csharp">public async Task&lt;List&lt;Product&gt;&gt; GetAllAsync()
+{
+    var products = new List&lt;Product&gt;();
+    var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+    // 'using' ensures connection is disposed (returned to pool) after the block
+    using var connection = new SqlConnection(connectionString);
+    await connection.OpenAsync();   // Grab a connection from the pool
+
+    using var command = new SqlCommand(
+        "SELECT Id, Name, Price, Category, StockQuantity, IsActive, CreatedAt " +
+        "FROM Products WHERE IsActive = 1 ORDER BY Name",
+        connection);
+
+    // ExecuteReaderAsync returns a forward-only cursor over the result set
+    using var reader = await command.ExecuteReaderAsync();
+
+    while (await reader.ReadAsync())   // Advance to the next row
+    {
+        products.Add(new Product
+        {
+            Id            = reader.GetInt32("Id"),
+            Name          = reader.GetString("Name"),
+            Price         = reader.GetDecimal("Price"),
+            Category      = reader.GetString("Category"),
+            StockQuantity = reader.GetInt32("StockQuantity"),
+            IsActive      = reader.GetBoolean("IsActive"),
+            CreatedAt     = reader.GetDateTime("CreatedAt")
+        });
+    }
+
+    return products;
+    // Connection automatically returned to pool here (end of 'using' block)
+}</code></pre>
+        </div>
+
+        <h3>GetById with Parameterized Query</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Repositories/ProductRepository.cs</span>
+          </div>
+          <pre><code class="language-csharp">public async Task&lt;Product?&gt; GetByIdAsync(int id)
+{
+    var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+    using var connection = new SqlConnection(connectionString);
+    await connection.OpenAsync();
+
+    using var command = new SqlCommand(
+        "SELECT Id, Name, Price, Category, StockQuantity, Description " +
+        "FROM Products WHERE Id = @Id AND IsActive = 1",
+        connection);
+
+    // @Id is a named parameter — value is bound separately, never concatenated
+    command.Parameters.AddWithValue("@Id", id);
+
+    using var reader = await command.ExecuteReaderAsync();
+
+    if (await reader.ReadAsync())   // Check if a row was returned
+    {
+        return new Product
+        {
+            Id            = reader.GetInt32("Id"),
+            Name          = reader.GetString("Name"),
+            Price         = reader.GetDecimal("Price"),
+            Category      = reader.GetString("Category"),
+            StockQuantity = reader.GetInt32("StockQuantity"),
+            Description   = reader.IsDBNull("Description") ? null : reader.GetString("Description")
+        };
+    }
+
+    return null;   // No row found for this Id
+}</code></pre>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-content">
+            <p class="callout-title">Always use parameterized queries</p>
+            <p class="callout-body">Never concatenate user input directly into SQL strings. Use <code>@ParameterName</code> placeholders and bind values with <code>Parameters.AddWithValue()</code>. Parameterized queries are also faster — SQL Server can cache and reuse the execution plan.</p>
+          </div>
+        </div>
+
+        <!-- ===================== CRUD ===================== -->
+        <h2 id="crud">CRUD with ADO.NET</h2>
+        <p>Each operation uses a different <code>SqlCommand</code> execution method: <code>ExecuteReaderAsync</code> for SELECT, <code>ExecuteScalarAsync</code> for INSERT (to retrieve the new ID), and <code>ExecuteNonQueryAsync</code> for UPDATE and DELETE.</p>
+
+        <h3>INSERT — Create a New Product</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Repositories/ProductRepository.cs</span>
+          </div>
+          <pre><code class="language-csharp">public async Task&lt;int&gt; CreateAsync(Product product)
+{
+    var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+    using var connection = new SqlConnection(connectionString);
+    await connection.OpenAsync();
+
+    // SCOPE_IDENTITY() returns the auto-generated Id for the just-inserted row
+    // It is scoped to the current connection — safe in concurrent environments
+    using var command = new SqlCommand(@"
+        INSERT INTO Products (Name, Price, Category, StockQuantity, Description, IsActive, CreatedAt)
+        VALUES (@Name, @Price, @Category, @StockQuantity, @Description, 1, GETUTCDATE());
+        SELECT SCOPE_IDENTITY();", connection);
+
+    command.Parameters.AddWithValue("@Name",          product.Name);
+    command.Parameters.AddWithValue("@Price",         product.Price);
+    command.Parameters.AddWithValue("@Category",      product.Category);
+    command.Parameters.AddWithValue("@StockQuantity", product.StockQuantity);
+    command.Parameters.AddWithValue("@Description",
+        (object?)product.Description ?? DBNull.Value);  // Handle nullable columns
+
+    // ExecuteScalarAsync returns the first column of the first row (the new Id)
+    var result = await command.ExecuteScalarAsync();
+    return Convert.ToInt32(result);
+}</code></pre>
+        </div>
+
+        <h3>SELECT with Filtering</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Repositories/ProductRepository.cs</span>
+          </div>
+          <pre><code class="language-csharp">public async Task&lt;List&lt;Product&gt;&gt; GetByCategoryAsync(string category, decimal? maxPrice = null)
+{
+    var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+    using var connection = new SqlConnection(connectionString);
+    await connection.OpenAsync();
+
+    // Build query conditionally — still parameterized, never concatenated
+    var sql = "SELECT Id, Name, Price, Category FROM Products WHERE IsActive = 1 AND Category = @Category";
+    if (maxPrice.HasValue)
+        sql += " AND Price &lt;= @MaxPrice";
+    sql += " ORDER BY Price ASC";
+
+    using var command = new SqlCommand(sql, connection);
+    command.Parameters.AddWithValue("@Category", category);
+    if (maxPrice.HasValue)
+        command.Parameters.AddWithValue("@MaxPrice", maxPrice.Value);
+
+    var products = new List&lt;Product&gt;();
+    using var reader = await command.ExecuteReaderAsync();
+    while (await reader.ReadAsync())
+    {
+        products.Add(new Product
+        {
+            Id       = reader.GetInt32("Id"),
+            Name     = reader.GetString("Name"),
+            Price    = reader.GetDecimal("Price"),
+            Category = reader.GetString("Category")
+        });
+    }
+    return products;
+}</code></pre>
+        </div>
+
+        <h3>UPDATE — Modify an Existing Product</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Repositories/ProductRepository.cs</span>
+          </div>
+          <pre><code class="language-csharp">public async Task&lt;bool&gt; UpdateAsync(int id, Product product)
+{
+    var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+    using var connection = new SqlConnection(connectionString);
+    await connection.OpenAsync();
+
+    // @@ROWCOUNT returns the number of rows affected by the last statement
+    using var command = new SqlCommand(@"
+        UPDATE Products
+        SET Name          = @Name,
+            Price         = @Price,
+            Category      = @Category,
+            StockQuantity = @StockQuantity,
+            UpdatedAt     = GETUTCDATE()
+        WHERE Id = @Id AND IsActive = 1;
+        SELECT @@ROWCOUNT;", connection);
+
+    command.Parameters.AddWithValue("@Id",            id);
+    command.Parameters.AddWithValue("@Name",          product.Name);
+    command.Parameters.AddWithValue("@Price",         product.Price);
+    command.Parameters.AddWithValue("@Category",      product.Category);
+    command.Parameters.AddWithValue("@StockQuantity", product.StockQuantity);
+
+    // ExecuteScalarAsync returns the row count from SELECT @@ROWCOUNT
+    var rowsAffected = Convert.ToInt32(await command.ExecuteScalarAsync());
+    return rowsAffected &gt; 0;   // true = product found and updated
+}</code></pre>
+        </div>
+
+        <h3>DELETE — Soft Delete</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Repositories/ProductRepository.cs</span>
+          </div>
+          <pre><code class="language-csharp">public async Task&lt;bool&gt; DeleteAsync(int id)
+{
+    var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+    using var connection = new SqlConnection(connectionString);
+    await connection.OpenAsync();
+
+    // Soft delete — UPDATE to IsActive = 0 instead of DELETE FROM
+    // The row stays in the database and can be recovered or audited later
+    using var command = new SqlCommand(@"
+        UPDATE Products
+        SET IsActive  = 0,
+            UpdatedAt = GETUTCDATE()
+        WHERE Id = @Id AND IsActive = 1", connection);
+
+    command.Parameters.AddWithValue("@Id", id);
+
+    // ExecuteNonQueryAsync returns rows affected directly — no SELECT needed
+    var rowsAffected = await command.ExecuteNonQueryAsync();
+    return rowsAffected &gt; 0;
+}</code></pre>
+        </div>
+
+        <!-- ===================== PARAMETERIZED QUERIES ===================== -->
+        <h2 id="parameterized-queries">Parameterized Queries — SQL Injection Prevention</h2>
+        <p>SQL injection is one of the most common and dangerous web vulnerabilities. An attacker manipulates a query by injecting SQL syntax through user input. Parameterized queries completely prevent this because the value is never interpreted as SQL.</p>
+
+        <h3>The Wrong Way (String Concatenation)</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">DANGEROUS — Do Not Use</span>
+          </div>
+          <pre><code class="language-csharp">// DANGEROUS — SQL injection vulnerability
+// If name = "'; DROP TABLE Products;--"
+// The query becomes: SELECT * FROM Products WHERE Name = ''; DROP TABLE Products;--'
+// The attacker just deleted your table.
+
+string name = Request.Query["name"];   // User-controlled input
+string sql  = "SELECT * FROM Products WHERE Name = '" + name + "'";
+
+using var command = new SqlCommand(sql, connection);
+using var reader  = await command.ExecuteReaderAsync();   // NEVER do this!</code></pre>
+        </div>
+
+        <h3>The Right Way (Parameterized)</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Repositories/ProductRepository.cs</span>
+          </div>
+          <pre><code class="language-csharp">// SAFE — parameterized query
+// The value is transmitted separately from the SQL text.
+// SQL Server treats @Name as a literal string value, never as SQL syntax.
+// Input "'; DROP TABLE Products;--" is safely stored or returned as plain text.
+
+string name = Request.Query["name"];
+
+using var command = new SqlCommand(
+    "SELECT * FROM Products WHERE Name = @Name", connection);
+
+// Option 1: AddWithValue — quick, type inferred from the value
+command.Parameters.AddWithValue("@Name", name);
+
+// Option 2: Add with explicit type — preferred for production code
+// Avoids implicit type conversion issues with SQL Server
+command.Parameters.Add("@Name", SqlDbType.NVarChar, 200).Value = name;
+
+using var reader = await command.ExecuteReaderAsync();  // Safe!</code></pre>
+        </div>
+
+        <div class="callout callout-danger">
+          <span class="callout-icon">🚨</span>
+          <div class="callout-content">
+            <p class="callout-title">NEVER concatenate user input into SQL strings</p>
+            <p class="callout-body">String concatenation with user-supplied values is an unconditional SQL injection vulnerability. Always use <code>@ParameterName</code> placeholders and bind values through <code>Parameters.AddWithValue()</code> or <code>Parameters.Add()</code>. This applies to search fields, IDs, category names, and every other user-controlled value.</p>
+          </div>
+        </div>
+
+        <!-- ===================== TRANSACTIONS ===================== -->
+        <h2 id="transactions">Transactions</h2>
+        <p>A transaction groups multiple SQL statements into a single atomic unit. Either all statements succeed and commit to the database, or any failure causes all statements to roll back — leaving the database exactly as it was before.</p>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-content">
+            <p class="callout-title">When to use transactions</p>
+            <p class="callout-body">Use transactions when two or more SQL statements must succeed or fail together. Classic examples: transferring money (debit one account, credit another), placing an order (insert order + deduct inventory), and bulk data imports where partial writes would leave inconsistent data.</p>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Repositories/ProductRepository.cs</span>
+          </div>
+          <pre><code class="language-csharp">// Transfer stock from one product to another — both UPDATE must succeed or neither applies
+public async Task&lt;bool&gt; TransferStockAsync(int fromProductId, int toProductId, int quantity)
+{
+    var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+    // Transactions require the "Open Connection" pattern — keep it open for both commands
+    using var connection = new SqlConnection(connectionString);
+    await connection.OpenAsync();
+
+    // Begin a transaction on the open connection
+    using var transaction = await connection.BeginTransactionAsync();
+
+    try
+    {
+        // STEP 1: Deduct stock from the source product
+        using var debitCmd = new SqlCommand(
+            "UPDATE Products SET StockQuantity = StockQuantity - @Qty WHERE Id = @FromId",
+            connection, (SqlTransaction)transaction);
+
+        debitCmd.Parameters.AddWithValue("@Qty",    quantity);
+        debitCmd.Parameters.AddWithValue("@FromId", fromProductId);
+        await debitCmd.ExecuteNonQueryAsync();
+
+        // STEP 2: Add stock to the destination product
+        using var creditCmd = new SqlCommand(
+            "UPDATE Products SET StockQuantity = StockQuantity + @Qty WHERE Id = @ToId",
+            connection, (SqlTransaction)transaction);
+
+        creditCmd.Parameters.AddWithValue("@Qty",   quantity);
+        creditCmd.Parameters.AddWithValue("@ToId",  toProductId);
+        await creditCmd.ExecuteNonQueryAsync();
+
+        // Both steps succeeded — write to the database
+        await transaction.CommitAsync();
+        return true;
+    }
+    catch (Exception ex)
+    {
+        // Something went wrong — undo all changes made in this transaction
+        await transaction.RollbackAsync();
+        _logger.LogError(ex, "Stock transfer failed, transaction rolled back.");
+        return false;
+    }
+    // Connection returns to pool here — both commands and the transaction are disposed
+}</code></pre>
+        </div>
+
+        <!-- ===================== CONNECTION POOLING ===================== -->
+        <h2 id="connection-pooling">Connection Pooling</h2>
+        <p>Opening a database connection is expensive (TCP handshake, authentication, session setup). .NET automatically pools connections so they can be reused. When you call <code>connection.Open()</code>, you are borrowing a connection from the pool, not creating a new one. When you <code>Dispose()</code> the connection, it returns to the pool.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">text</span>
+            <span class="code-file">appsettings.json — Connection String</span>
+          </div>
+          <pre><code class="language-json">{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=ProductCatalogDB;Trusted_Connection=true;Max Pool Size=100;Min Pool Size=5;Connection Timeout=30;"
+  }
+}
+
+// Key connection pool options:
+// Max Pool Size=100   — maximum simultaneous connections (default: 100)
+// Min Pool Size=5     — connections kept alive (always ready, no wait time)
+// Connection Timeout  — seconds to wait if pool is exhausted (throws if exceeded)</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Best Practice — using statement</span>
+          </div>
+          <pre><code class="language-csharp">// CORRECT — using statement returns connection to pool immediately after work
+using (var connection = new SqlConnection(connectionString))
+{
+    await connection.OpenAsync();    // Borrows from pool
+    // ... execute queries ...
+}   // connection.Dispose() called here — returns to pool, DOES NOT close TCP socket
+
+// Also correct — using declaration (C# 8+)
+using var connection = new SqlConnection(connectionString);
+await connection.OpenAsync();
+// ... queries ...
+// Disposed at end of enclosing scope
+
+// WRONG — holding connection open longer than needed
+var connection = new SqlConnection(connectionString);
+await connection.OpenAsync();
+// ... long business logic, external API calls, waiting ...
+// Connection is held the entire time — blocks pool slots unnecessarily
+// Other requests starve waiting for a free connection</code></pre>
+        </div>
+
+        <ul class="kv-list">
+          <li>
+            <span class="kv-key">Open connection</span>
+            <span class="kv-val">Borrows a connection from the pool (or creates a new one if pool is empty and under limit)</span>
+          </li>
+          <li>
+            <span class="kv-key">Close / Dispose</span>
+            <span class="kv-val">Returns the connection to the pool — the TCP socket stays open for the next borrower</span>
+          </li>
+          <li>
+            <span class="kv-key">Pool exhausted</span>
+            <span class="kv-val">Request waits up to <code>Connection Timeout</code> seconds, then throws <code>InvalidOperationException</code></span>
+          </li>
+          <li>
+            <span class="kv-key">Pooling disabled</span>
+            <span class="kv-val">Add <code>Pooling=false</code> to connection string — each open/close creates and destroys a real TCP connection (not recommended)</span>
+          </li>
+        </ul>
+
+        <!-- ===================== EF VS ADO ===================== -->
+        <h2 id="ef-vs-ado">EF Core vs ADO.NET — When to Use What</h2>
+        <p>EF Core and ADO.NET are complementary tools. Most production applications use both: EF Core for the majority of CRUD operations and ADO.NET for the queries that need raw SQL performance or cannot be expressed cleanly in LINQ.</p>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Criteria</th>
+              <th>EF Core</th>
+              <th>ADO.NET</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-feature">Setup time</td>
+              <td>Moderate — models, context, migrations</td>
+              <td class="check">Minimal — just a connection string</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Performance</td>
+              <td>Good — overhead of change tracking &amp; LINQ translation</td>
+              <td class="check">Fastest — zero abstraction overhead</td>
+            </tr>
+            <tr>
+              <td class="col-feature">SQL control</td>
+              <td>Limited — EF generates the SQL</td>
+              <td class="check">Complete — you write every statement</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Complex queries</td>
+              <td>Possible via raw SQL or complex LINQ (verbose)</td>
+              <td class="check">Natural — write any SQL you need</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Schema migrations</td>
+              <td class="check">Built-in — code-first, version-controlled</td>
+              <td class="cross">Manual SQL scripts required</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Transactions</td>
+              <td>Supported via <code>BeginTransactionAsync()</code></td>
+              <td class="check">First-class <code>SqlTransaction</code> support</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Amount of code</td>
+              <td class="check">Less — LINQ replaces SQL boilerplate</td>
+              <td>More — read loops, parameter binding, mapping</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Bulk operations</td>
+              <td>Slow — one INSERT per entity by default</td>
+              <td class="check">Fast — write optimized bulk INSERT / MERGE</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Reporting queries</td>
+              <td>Awkward — complex aggregations are verbose in LINQ</td>
+              <td class="check">Natural — arbitrary GROUP BY, window functions</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">✅</span>
+          <div class="callout-content">
+            <p class="callout-title">ProductCatalogAPI uses both — EF Core and ADO.NET</p>
+            <p class="callout-body">Standard CRUD (create, update, soft-delete, get by ID) uses EF Core for brevity and type safety. Complex reporting queries, bulk stock operations, and performance-critical endpoints use ADO.NET for raw SQL control. You do not have to choose — mix them in the same service class by injecting both <code>ProductDbContext</code> and <code>IConfiguration</code>.</p>
+          </div>
+        </div>
+
+        <!-- Page Nav -->
+        <nav class="page-nav">
+          <a href="ef-core.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">&#8592;</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">Entity Framework Core</span></div>
+          </a>
+          <a href="performance.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">Performance Comparison</span></div>
+            <span class="page-nav-arrow">&#8594;</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">N</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">&#169; 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

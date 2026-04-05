@@ -1,0 +1,339 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controllers & REST API - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo"><div class="logo-badge">D</div>DevDocs</a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html" class="active">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span><input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link active"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a><span class="sep">/</span>
+          <a href="webapi.html">Web API</a><span class="sep">/</span>
+          <span class="current">Controllers &amp; REST</span>
+        </nav>
+
+        <div class="page-title-block">
+          <h1 class="page-title">🎮 Controllers &amp; REST API</h1>
+          <p class="page-subtitle">How to write ASP.NET Core controllers — routing, HTTP methods, action results, model binding, and RESTful design.</p>
+          <div class="page-meta">
+            <span class="badge badge-beginner">Beginner</span>
+            <span class="badge badge-primary">Web API</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-content">
+            <p class="callout-title">What is a Controller?</p>
+            <p class="callout-body">A controller is a class that handles incoming HTTP requests. It maps URLs to C# methods (actions), reads input from the request (route params, query string, body), calls services, and returns an HTTP response with a status code and optional body.</p>
+          </div>
+        </div>
+
+        <!-- ===== CONTROLLER ANATOMY ===== -->
+        <h2 id="controller-anatomy">Controller Anatomy</h2>
+        <p>Every Web API controller inherits from <code>ControllerBase</code> and is decorated with two key attributes.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Controllers/ProductsController.cs</span>
+          </div>
+          <pre><code class="language-csharp">[ApiController]               // Enables automatic model validation + binding
+[Route("api/[controller]")]   // Sets base route: /api/products
+public class ProductsController : ControllerBase
+{
+    private readonly IProductService _service;
+    private readonly ILogger&lt;ProductsController&gt; _logger;
+
+    // Constructor injection — services provided by DI container
+    public ProductsController(IProductService service, ILogger&lt;ProductsController&gt; logger)
+    {
+        _service = service;
+        _logger  = logger;
+    }
+}</code></pre>
+        </div>
+
+        <div class="kv-list">
+          <div class="kv-row"><span class="kv-key">[ApiController]</span><span class="kv-val">Automatic 400 on validation errors, binding source inference, problem details responses</span></div>
+          <div class="kv-row"><span class="kv-key">ControllerBase</span><span class="kv-val">Base class for API controllers (no View support). Use Controller if you need Views (MVC).</span></div>
+          <div class="kv-row"><span class="kv-key">[Route]</span><span class="kv-val"><code>[controller]</code> resolves to the class name minus "Controller" — "ProductsController" → "products"</span></div>
+        </div>
+
+        <!-- ===== HTTP VERBS ===== -->
+        <h2 id="http-verbs">HTTP Methods (CRUD Mapping)</h2>
+        <p>REST maps HTTP verbs to CRUD operations. Each action method in the ProductsController follows this convention.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Full CRUD Controller</span>
+          </div>
+          <pre><code class="language-csharp">// GET /api/products — Read all
+[HttpGet]
+public async Task&lt;ActionResult&lt;IEnumerable&lt;Product&gt;&gt;&gt; GetAll()
+{
+    var products = await _service.GetAllAsync();
+    return Ok(products);
+}
+
+// GET /api/products/5 — Read one
+[HttpGet("{id:int}")]
+public async Task&lt;ActionResult&lt;Product&gt;&gt; GetById(int id)
+{
+    var product = await _service.GetByIdAsync(id);
+    if (product == null) return NotFound();
+    return Ok(product);
+}
+
+// GET /api/products/category/Electronics — Filter
+[HttpGet("category/{category}")]
+public async Task&lt;ActionResult&lt;IEnumerable&lt;Product&gt;&gt;&gt; GetByCategory(string category)
+{
+    var products = await _service.GetByCategoryAsync(category);
+    return Ok(products);
+}
+
+// POST /api/products — Create
+[HttpPost]
+public async Task&lt;ActionResult&lt;Product&gt;&gt; Create([FromBody] CreateProductRequest request)
+{
+    var product = await _service.CreateAsync(request);
+    // 201 Created with Location header pointing to the new resource
+    return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
+}
+
+// PUT /api/products/5 — Full update
+[HttpPut("{id:int}")]
+public async Task&lt;ActionResult&lt;Product&gt;&gt; Update(int id, [FromBody] UpdateProductRequest request)
+{
+    var product = await _service.UpdateAsync(id, request);
+    if (product == null) return NotFound();
+    return Ok(product);
+}
+
+// PATCH /api/products/5/stock — Partial update
+[HttpPatch("{id:int}/stock")]
+public async Task&lt;ActionResult&lt;Product&gt;&gt; UpdateStock(int id, [FromBody] int newStock)
+{
+    var product = await _service.UpdateStockAsync(id, newStock);
+    if (product == null) return NotFound();
+    return Ok(product);
+}
+
+// DELETE /api/products/5 — Soft delete
+[HttpDelete("{id:int}")]
+public async Task&lt;IActionResult&gt; Delete(int id)
+{
+    var success = await _service.DeleteAsync(id);
+    if (!success) return NotFound();
+    return NoContent(); // 204 — success but no body
+}</code></pre>
+        </div>
+
+        <!-- ===== ACTION RESULTS ===== -->
+        <h2 id="action-results">Action Results</h2>
+        <p>Returning the right status code is part of good REST design. ASP.NET Core provides helper methods on <code>ControllerBase</code>.</p>
+
+        <table class="data-table">
+          <thead>
+            <tr><th>Method</th><th>Status Code</th><th>When to use</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>Ok(data)</code></td><td>200</td><td>Successful GET, PUT, PATCH</td></tr>
+            <tr><td><code>Created(url, data)</code></td><td>201</td><td>Resource created via POST</td></tr>
+            <tr><td><code>CreatedAtAction(...)</code></td><td>201</td><td>POST with Location header</td></tr>
+            <tr><td><code>NoContent()</code></td><td>204</td><td>DELETE, PUT with no response body</td></tr>
+            <tr><td><code>BadRequest(errors)</code></td><td>400</td><td>Validation failure, bad input</td></tr>
+            <tr><td><code>Unauthorized()</code></td><td>401</td><td>Missing/invalid auth token</td></tr>
+            <tr><td><code>Forbidden()</code></td><td>403</td><td>Authenticated but not authorized</td></tr>
+            <tr><td><code>NotFound()</code></td><td>404</td><td>Resource does not exist</td></tr>
+            <tr><td><code>Conflict()</code></td><td>409</td><td>Duplicate resource, optimistic concurrency</td></tr>
+            <tr><td><code>StatusCode(500, msg)</code></td><td>500</td><td>Unexpected server error</td></tr>
+          </tbody>
+        </table>
+
+        <!-- ===== MODEL BINDING ===== -->
+        <h2 id="model-binding">Model Binding</h2>
+        <p>ASP.NET Core reads values from different parts of the request based on binding source attributes.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Binding Sources</span>
+          </div>
+          <pre><code class="language-csharp">// [FromRoute]   — URL segment: /api/products/{id}
+public IActionResult Get([FromRoute] int id) { }
+
+// [FromQuery]   — Query string: /api/products?page=2&amp;size=10
+public IActionResult GetPaged([FromQuery] int page = 1, [FromQuery] int size = 10) { }
+
+// [FromBody]    — Request body (JSON)
+public IActionResult Create([FromBody] CreateProductRequest request) { }
+
+// [FromHeader]  — HTTP header value
+public IActionResult Get([FromHeader(Name = "X-Api-Key")] string apiKey) { }
+
+// [FromForm]    — multipart/form-data (file uploads)
+public IActionResult Upload([FromForm] IFormFile file) { }
+
+// [ApiController] infers binding automatically:
+//   Simple types (int, string) → [FromRoute] or [FromQuery]
+//   Complex types              → [FromBody]</code></pre>
+        </div>
+
+        <!-- ===== ROUTE CONSTRAINTS ===== -->
+        <h2 id="route-constraints">Route Constraints</h2>
+        <p>Route constraints restrict which values can match a route segment. They prevent invalid inputs before they reach your action.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Route Constraints</span>
+          </div>
+          <pre><code class="language-csharp">[HttpGet("{id:int}")]           // only matches integers
+[HttpGet("{id:int:min(1)}")]    // integer ≥ 1
+[HttpGet("{name:alpha}")]       // only letters
+[HttpGet("{id:guid}")]          // only GUIDs
+[HttpGet("{date:datetime}")]    // only valid datetime strings
+
+// Example: prevents /api/products/abc from routing to GetById
+[HttpGet("{id:int}")]
+public async Task&lt;IActionResult&gt; GetById(int id) { ... }</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview tip: ActionResult vs IActionResult</p>
+            <p class="callout-body"><code>ActionResult&lt;T&gt;</code> is preferred because it clearly documents the success return type in Swagger and allows implicit conversion from <code>T</code>. <code>IActionResult</code> works too but provides no type information to OpenAPI tooling.</p>
+          </div>
+        </div>
+
+        <nav class="page-nav">
+          <a href="webapi-architecture.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">&#8592;</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">Architecture &amp; Setup</span></div>
+          </a>
+          <a href="webapi-models.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">Models &amp; DTOs</span></div>
+            <span class="page-nav-arrow">&#8594;</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">N</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">&#169; 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

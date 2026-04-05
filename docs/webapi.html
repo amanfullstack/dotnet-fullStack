@@ -1,0 +1,371 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web API Overview - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<!-- Reading Progress Bar -->
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<!-- Search Modal -->
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<!-- Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-badge">D</div>
+      DevDocs
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html" class="active">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span>
+        <input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link active"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="sep">/</span>
+          <span class="current">Web API</span>
+        </nav>
+
+        <!-- Page Title -->
+        <div class="page-title-block">
+          <h1 class="page-title">🌐 ASP.NET Core Web API</h1>
+          <p class="page-subtitle">Build RESTful HTTP APIs with ASP.NET Core — controllers, routing, DI, middleware, caching, and more.</p>
+          <div class="page-meta">
+            <span class="badge badge-intermediate">Intermediate</span>
+            <span class="badge badge-primary">Web API</span>
+          </div>
+        </div>
+
+        <!-- Intro callout -->
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-content">
+            <p class="callout-title">What is ASP.NET Core Web API?</p>
+            <p class="callout-body">ASP.NET Core Web API is a framework for building HTTP services that can be consumed by browsers, mobile apps, or other services. It follows REST conventions, uses attribute routing, and integrates tightly with dependency injection, middleware, and EF Core for database access.</p>
+          </div>
+        </div>
+
+        <!-- ============ OVERVIEW ============ -->
+        <h2 id="overview">What We Built: ProductCatalogAPI</h2>
+        <p>All examples in this section are drawn from a real <strong>ProductCatalogAPI</strong> project — a full CRUD API with EF Core, caching, soft delete, and proper architecture. The project is available in the <code>ProductCatalogAPI-WebAPI-EFCore/</code> folder.</p>
+
+        <div class="kv-list">
+          <div class="kv-row"><span class="kv-key">Framework</span><span class="kv-val">.NET 8.0 / ASP.NET Core 8</span></div>
+          <div class="kv-row"><span class="kv-key">Database</span><span class="kv-val">SQL Server LocalDB via EF Core 8</span></div>
+          <div class="kv-row"><span class="kv-key">Architecture</span><span class="kv-val">N-Tier: Controllers → Services → DbContext</span></div>
+          <div class="kv-row"><span class="kv-key">Endpoints</span><span class="kv-val">7 REST endpoints (GET, POST, PUT, DELETE, PATCH)</span></div>
+          <div class="kv-row"><span class="kv-key">Caching</span><span class="kv-val">In-Memory + HTTP Response Caching</span></div>
+          <div class="kv-row"><span class="kv-key">Run command</span><span class="kv-val">cd ProductCatalogAPI-WebAPI-EFCore &amp;&amp; dotnet run</span></div>
+        </div>
+
+        <!-- ============ TOPICS ============ -->
+        <h2 id="topics">Topics Covered</h2>
+        <p>These eight topics cover everything you need to pass a .NET Web API interview and build production-grade APIs.</p>
+
+        <div class="projects-grid" style="margin-top:1.5rem;">
+
+          <a href="webapi-architecture.html" class="project-card" style="--brand-color:#0ea5e9;text-decoration:none;color:inherit;">
+            <div class="project-card-top">
+              <div class="project-icon">🏗️</div>
+              <div class="project-title">Architecture &amp; Setup</div>
+              <div class="project-desc">N-Tier architecture, project structure, Program.cs configuration, and how all the pieces connect.</div>
+            </div>
+            <div class="project-card-footer">
+              <div class="stack-badges"><span class="stack-badge">Program.cs</span><span class="stack-badge">N-Tier</span><span class="stack-badge">Services</span></div>
+            </div>
+          </a>
+
+          <a href="webapi-controllers.html" class="project-card" style="--brand-color:#8b5cf6;text-decoration:none;color:inherit;">
+            <div class="project-card-top">
+              <div class="project-icon">🎮</div>
+              <div class="project-title">Controllers &amp; REST</div>
+              <div class="project-desc">HTTP methods, route attributes, action results, model binding, and RESTful API design principles.</div>
+            </div>
+            <div class="project-card-footer">
+              <div class="stack-badges"><span class="stack-badge">[ApiController]</span><span class="stack-badge">IActionResult</span><span class="stack-badge">Routes</span></div>
+            </div>
+          </a>
+
+          <a href="webapi-models.html" class="project-card" style="--brand-color:#10b981;text-decoration:none;color:inherit;">
+            <div class="project-card-top">
+              <div class="project-icon">📦</div>
+              <div class="project-title">Models &amp; DTOs</div>
+              <div class="project-desc">Entity models, Data Transfer Objects, validation attributes, and keeping API contracts clean.</div>
+            </div>
+            <div class="project-card-footer">
+              <div class="stack-badges"><span class="stack-badge">DTOs</span><span class="stack-badge">Annotations</span><span class="stack-badge">Mapping</span></div>
+            </div>
+          </a>
+
+          <a href="webapi-di.html" class="project-card" style="--brand-color:#f59e0b;text-decoration:none;color:inherit;">
+            <div class="project-card-top">
+              <div class="project-icon">💉</div>
+              <div class="project-title">Dependency Injection</div>
+              <div class="project-desc">Service lifetimes, constructor injection, registering services, and IoC container patterns.</div>
+            </div>
+            <div class="project-card-footer">
+              <div class="stack-badges"><span class="stack-badge">Scoped</span><span class="stack-badge">Singleton</span><span class="stack-badge">Transient</span></div>
+            </div>
+          </a>
+
+          <a href="webapi-middleware.html" class="project-card" style="--brand-color:#ef4444;text-decoration:none;color:inherit;">
+            <div class="project-card-top">
+              <div class="project-icon">⚙️</div>
+              <div class="project-title">Middleware</div>
+              <div class="project-desc">Request pipeline, built-in middleware, writing custom middleware, and pipeline ordering.</div>
+            </div>
+            <div class="project-card-footer">
+              <div class="stack-badges"><span class="stack-badge">Pipeline</span><span class="stack-badge">IMiddleware</span><span class="stack-badge">Use/Run/Map</span></div>
+            </div>
+          </a>
+
+          <a href="webapi-caching.html" class="project-card" style="--brand-color:#0ea5e9;text-decoration:none;color:inherit;">
+            <div class="project-card-top">
+              <div class="project-icon">⚡</div>
+              <div class="project-title">Caching Strategies</div>
+              <div class="project-desc">In-memory, distributed (Redis), response caching, cache invalidation, and performance gains.</div>
+            </div>
+            <div class="project-card-footer">
+              <div class="stack-badges"><span class="stack-badge">IMemoryCache</span><span class="stack-badge">Redis</span><span class="stack-badge">100x faster</span></div>
+            </div>
+          </a>
+
+          <a href="webapi-error-handling.html" class="project-card" style="--brand-color:#8b5cf6;text-decoration:none;color:inherit;">
+            <div class="project-card-top">
+              <div class="project-icon">🚨</div>
+              <div class="project-title">Error Handling</div>
+              <div class="project-desc">Global exception handling, ProblemDetails, custom exceptions, and validation error responses.</div>
+            </div>
+            <div class="project-card-footer">
+              <div class="stack-badges"><span class="stack-badge">ProblemDetails</span><span class="stack-badge">GlobalHandler</span><span class="stack-badge">400/500</span></div>
+            </div>
+          </a>
+
+          <a href="webapi-graphql.html" class="project-card" style="--brand-color:#e11d48;text-decoration:none;color:inherit;">
+            <div class="project-card-top">
+              <div class="project-icon">🌐</div>
+              <div class="project-title">GraphQL</div>
+              <div class="project-desc">HotChocolate setup, queries, mutations, subscriptions, and REST vs GraphQL trade-offs.</div>
+            </div>
+            <div class="project-card-footer">
+              <div class="stack-badges"><span class="stack-badge">HotChocolate</span><span class="stack-badge">Queries</span><span class="stack-badge">Mutations</span></div>
+            </div>
+          </a>
+
+        </div>
+
+        <!-- ============ QUICK START ============ -->
+        <h2 id="quick-start">Quick Start</h2>
+        <p>Get the API running locally in under 2 minutes.</p>
+
+        <ol class="step-list">
+          <li>
+            <span class="step-num">1</span>
+            <div>
+              <strong>Navigate to the project</strong>
+              <div class="code-block" style="margin-top:0.5rem;">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">bash</span>
+                </div>
+                <pre><code class="language-bash">cd d:\dotnet-fullStack\ProductCatalogAPI-WebAPI-EFCore</code></pre>
+              </div>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <div>
+              <strong>Restore packages and run</strong>
+              <div class="code-block" style="margin-top:0.5rem;">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">bash</span>
+                </div>
+                <pre><code class="language-bash">dotnet run</code></pre>
+              </div>
+              <p style="margin-top:0.5rem;">EF Core will auto-create the database on first run via <code>EnsureCreated()</code>.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <div>
+              <strong>Open Swagger UI</strong>
+              <p>Navigate to <code>http://localhost:5000/swagger</code> to explore and test all endpoints interactively.</p>
+            </div>
+          </li>
+        </ol>
+
+        <!-- ============ ENDPOINTS ============ -->
+        <h2 id="endpoints">API Endpoints</h2>
+        <p>The ProductCatalogAPI exposes 7 REST endpoints:</p>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Route</th>
+              <th>Description</th>
+              <th>Response</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="badge" style="background:#10b981;color:#fff;">GET</span></td><td><code>/api/products</code></td><td>Get all active products</td><td>200 + List</td></tr>
+            <tr><td><span class="badge" style="background:#10b981;color:#fff;">GET</span></td><td><code>/api/products/{id}</code></td><td>Get product by ID</td><td>200 / 404</td></tr>
+            <tr><td><span class="badge" style="background:#10b981;color:#fff;">GET</span></td><td><code>/api/products/category/{cat}</code></td><td>Filter by category</td><td>200 + List</td></tr>
+            <tr><td><span class="badge" style="background:#0ea5e9;color:#fff;">POST</span></td><td><code>/api/products</code></td><td>Create new product</td><td>201 Created</td></tr>
+            <tr><td><span class="badge" style="background:#f59e0b;color:#fff;">PUT</span></td><td><code>/api/products/{id}</code></td><td>Full update</td><td>200 / 404</td></tr>
+            <tr><td><span class="badge" style="background:#8b5cf6;color:#fff;">PATCH</span></td><td><code>/api/products/{id}/stock</code></td><td>Update stock only</td><td>200 / 404</td></tr>
+            <tr><td><span class="badge" style="background:#ef4444;color:#fff;">DELETE</span></td><td><code>/api/products/{id}</code></td><td>Soft delete (IsActive=false)</td><td>204 / 404</td></tr>
+          </tbody>
+        </table>
+
+        <!-- ============ ARCHITECTURE ============ -->
+        <h2 id="architecture">Architecture at a Glance</h2>
+        <p>The API follows a clean N-Tier pattern to keep concerns separated and code testable.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Request Flow</span>
+          </div>
+          <pre><code>HTTP Request
+    ↓
+Middleware Pipeline  (Auth, Logging, Error Handling, CORS)
+    ↓
+ProductsController   (Route matching, model binding, validation)
+    ↓
+ProductService       (Business logic, caching, orchestration)
+    ↓
+ProductDbContext     (EF Core → SQL → Database)
+    ↓
+HTTP Response        (Serialized JSON + status code)</code></pre>
+        </div>
+
+        <!-- Page Nav -->
+        <nav class="page-nav">
+          <a href="index.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">&#8592;</span>
+            <div><span class="page-nav-label">Back</span><span class="page-nav-title">Home</span></div>
+          </a>
+          <a href="webapi-architecture.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">Architecture &amp; Setup</span></div>
+            <span class="page-nav-arrow">&#8594;</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">N</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">&#169; 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

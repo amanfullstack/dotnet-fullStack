@@ -1,829 +1,634 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>.NET Full Stack Learning Hub - Interactive Documentation</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/material-design.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A practical, interview-focused .NET documentation hub built on a real ProductCatalogAPI project. Learn Web API, EF Core, LINQ, Middleware, Caching, and more.">
+  <meta property="og:title" content="DevDocs — Master Backend Development">
+  <title>DevDocs — Master Backend Development</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <span class="brand-icon">⚡</span>
-                <span class="brand-text">.NET Learning Hub</span>
-            </div>
-            <div class="nav-toggle" id="navToggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#home" data-section="home">Home</a></li>
-                <li><a href="#roadmap" data-section="roadmap">Roadmap</a></li>
-                <li><a href="#documentation" data-section="documentation">Docs</a></li>
-                <li><a href="#interview" data-section="interview">Interview</a></li>
-                <li><a href="#resources" data-section="resources">Resources</a></li>
-            </ul>
-            <div class="theme-toggle" id="themeToggle">
-                <span class="theme-icon">🌙</span>
-            </div>
-        </div>
+
+<!-- Reading Progress Bar -->
+<div id="readingProgress" class="progress-fill" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<!-- Search Modal -->
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-badge">D</div>
+      DevDocs
+    </a>
+    <nav class="header-nav">
+      <a href="index.html" class="active">Home</a>
+      <a href="webapi.html">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html">Interview</a>
     </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span>
+        <input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
 
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <h3>Quick Navigation</h3>
-            <button class="sidebar-close" id="sidebarClose">✕</button>
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+
+      <!-- Home -->
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li>
+            <a href="index.html" class="sidebar-link active">
+              <span class="sidebar-link-icon">🏠</span> Home
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Projects -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li>
+            <a href="webapi.html" class="sidebar-link">
+              <span class="sidebar-link-icon">🌐</span> Web API
+              <span class="badge badge-done">✅</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="sidebar-link">
+              <span class="sidebar-link-icon">🖥️</span> MVC
+              <span class="badge badge-soon">Soon</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="sidebar-link">
+              <span class="sidebar-link-icon">🔺</span> Angular
+              <span class="badge badge-soon">Soon</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="sidebar-link">
+              <span class="sidebar-link-icon">⚛️</span> React
+              <span class="badge badge-soon">Soon</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Web API Topics -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+        </ul>
+      </div>
+
+      <!-- Data Access -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+
+      <!-- Interview Prep -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper wide">
+
+      <!-- ═══════════════════════════════════════════════ HERO -->
+      <section class="hero-section">
+        <div class="hero-eyebrow">
+          <span class="eyebrow-badge">🚀 Open Source Learning Platform</span>
         </div>
-        <div class="sidebar-content">
-            <div class="sidebar-section">
-                <h4>Learning Phases</h4>
-                <ul class="phase-list">
-                    <li><a href="#" onclick="selectPhase(1)">📖 Phase 1: Foundation</a></li>
-                    <li><a href="#" onclick="selectPhase(2)">💡 Phase 2: Core Concepts</a></li>
-                    <li><a href="#" onclick="selectPhase(3)">⚙️ Phase 3: Implementation</a></li>
-                    <li><a href="#" onclick="selectPhase(4)">🚀 Phase 4: Advanced</a></li>
-                    <li><a href="#" onclick="selectPhase(5)">📊 Phase 5: Operations</a></li>
-                    <li><a href="#" onclick="selectPhase(6)">🎓 Phase 6: Interview</a></li>
-                    <li><a href="#" onclick="selectPhase(7)">⚡ Phase 7: Quick Ref</a></li>
-                    <li><a href="#" onclick="selectPhase(8)">🔄 Phase 8: Data Access</a></li>
-                    <li><a href="#" onclick="selectPhase(9)">📡 Phase 9: GraphQL</a></li>
-                </ul>
-            </div>
-            <div class="sidebar-section">
-                <h4>Search</h4>
-                <input type="text" id="searchBox" class="search-input" placeholder="Search docs...">
-            </div>
+        <h1 class="hero-title">Master .NET Full Stack <span class="gradient-text">Development</span></h1>
+        <p class="hero-subtitle">
+          A practical, interview-focused documentation hub built on a real ProductCatalogAPI project.
+          Learn Web API, EF Core, LINQ, Middleware, Caching, and more.
+        </p>
+        <div class="hero-cta">
+          <a href="webapi.html" class="btn btn-primary">Start Learning →</a>
+          <button class="btn btn-secondary" data-search-open onclick="openSearch()">🔍 Search Topics</button>
         </div>
-    </aside>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">15+</span>
+            <span class="stat-label">Topics</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">100+</span>
+            <span class="stat-label">Code Examples</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">50+</span>
+            <span class="stat-label">Interview Q&amp;A</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">Free</span>
+            <span class="stat-label">Forever</span>
+          </div>
+        </div>
+      </section>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Home Section -->
-        <section id="home" class="content-section active">
-            <div class="hero">
-                <div class="hero-content">
-                    <h1 class="hero-title">Master .NET Full Stack Development</h1>
-                    <p class="hero-subtitle">Complete interactive guide from basics to advanced concepts</p>
+      <!-- ═══════════════════════════════════════════ PROJECTS -->
+      <section class="content-section">
+        <div class="section-header">
+          <h2 class="section-title">📦 Learn by Building Real Projects</h2>
+          <p class="section-subtitle">Each project teaches specific concepts. Start with Web API, then progress to MVC and frontend.</p>
+        </div>
 
-                    <div class="hero-features">
-                        <div class="feature-card">
-                            <span class="feature-icon">🎯</span>
-                            <h3>9 Learning Phases</h3>
-                            <p>Foundation to Advanced</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">💻</span>
-                            <h3>Real Examples</h3>
-                            <p>ProductCatalogAPI</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">🚀</span>
-                            <h3>Interview Ready</h3>
-                            <p>Top 50 Questions</p>
-                        </div>
-                        <div class="feature-card">
-                            <span class="feature-icon">📈</span>
-                            <h3>~30 Hours</h3>
-                            <p>Complete Learning</p>
-                        </div>
-                    </div>
+        <div class="projects-grid">
 
-                    <div class="cta-buttons">
-                        <a href="docs.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">📚 View Full Docs</a>
-                        <button class="btn btn-secondary" onclick="goToSection('roadmap')">View Roadmap</button>
-                    </div>
-                </div>
-                <div class="hero-illustration">
-                    <div class="code-box">
-                        <span class="code-line"><span class="keyword">public</span> <span class="keyword">class</span> Learning</span>
-                        <span class="code-line">{</span>
-                        <span class="code-line indent">  <span class="keyword">public</span> <span class="type">void</span> MasterDotNet()</span>
-                        <span class="code-line indent">  {</span>
-                        <span class="code-line indent">    <span class="comment">// 9 phases ✓</span></span>
-                        <span class="code-line indent">    <span class="comment">// Real examples ✓</span></span>
-                        <span class="code-line indent">    <span class="comment">// Interview prep ✓</span></span>
-                        <span class="code-line indent">  }</span>
-                        <span class="code-line">}</span>
-                    </div>
-                </div>
+          <!-- Web API -->
+          <div class="project-card" style="--brand-color: #0ea5e9;">
+            <div class="project-card-top">
+              <span class="status-badge badge-success">✅ Available Now</span>
+              <h3 class="project-title">ProductCatalog Web API</h3>
+              <div class="stack-badges">
+                <span class="stack-badge">ASP.NET Core 8</span>
+                <span class="stack-badge">EF Core</span>
+                <span class="stack-badge">SQL Server</span>
+              </div>
+              <p class="project-desc">Production-ready REST API covering Controllers, Dependency Injection, Middleware, Caching (5 strategies), Error Handling, GraphQL, and more.</p>
             </div>
-
-            <!-- Stats -->
-            <div class="stats-section">
-                <div class="stat-card">
-                    <div class="stat-number">9</div>
-                    <div class="stat-label">Learning Phases</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">30+</div>
-                    <div class="stat-label">Hours of Content</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">100+</div>
-                    <div class="stat-label">Code Examples</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">50+</div>
-                    <div class="stat-label">Interview Q&A</div>
-                </div>
+            <div class="project-topics">
+              <h4 class="topics-label">Topics covered:</h4>
+              <div class="topics-list">
+                <span class="topic-tag">Architecture</span>
+                <span class="topic-tag">Controllers</span>
+                <span class="topic-tag">Models &amp; DTOs</span>
+                <span class="topic-tag">Dependency Injection</span>
+                <span class="topic-tag">Middleware</span>
+                <span class="topic-tag">EF Core</span>
+                <span class="topic-tag">ADO.NET</span>
+                <span class="topic-tag">Caching</span>
+                <span class="topic-tag">Error Handling</span>
+                <span class="topic-tag">GraphQL</span>
+              </div>
             </div>
-        </section>
-
-        <!-- Roadmap Section -->
-        <section id="roadmap" class="content-section">
-            <div class="section-header">
-                <h2>Learning Roadmap</h2>
-                <p>Choose your learning path based on your goals</p>
+            <div class="project-card-footer">
+              <a href="webapi.html" class="btn btn-primary">Explore Web API →</a>
             </div>
+          </div>
 
-            <div class="roadmap-grid">
-                <!-- Beginners Path -->
-                <div class="roadmap-card">
-                    <div class="roadmap-header beginner">
-                        <span class="badge">30 min</span>
-                        <h3>🏃 Quick Start</h3>
-                    </div>
-                    <ul class="roadmap-steps">
-                        <li>Phase 1: Foundation Overview</li>
-                        <li>Quick Reference: Commands</li>
-                        <li>Try first API call</li>
-                    </ul>
-                    <button class="btn btn-small" onclick="scrollToPhase(1)">Start</button>
-                </div>
-
-                <!-- Learning Path -->
-                <div class="roadmap-card">
-                    <div class="roadmap-header beginner">
-                        <span class="badge">1 week</span>
-                        <h3>📚 Complete Learning</h3>
-                    </div>
-                    <ul class="roadmap-steps">
-                        <li>Phase 1-3: Foundation to Implementation</li>
-                        <li>Phase 4-5: Advanced & Operations</li>
-                        <li>Implement all code examples</li>
-                        <li>Build your own project</li>
-                    </ul>
-                    <button class="btn btn-small" onclick="scrollToPhase(1)">Begin</button>
-                </div>
-
-                <!-- Interview Path -->
-                <div class="roadmap-card">
-                    <div class="roadmap-header interview">
-                        <span class="badge">3 days</span>
-                        <h3>🎓 Interview Prep</h3>
-                    </div>
-                    <ul class="roadmap-steps">
-                        <li>Phase 6: Important Concepts</li>
-                        <li>Phase 6: Common Questions (50+)</li>
-                        <li>Quick Reference: Code Patterns</li>
-                        <li>Mock Interview Q&A</li>
-                    </ul>
-                    <button class="btn btn-small" onclick="scrollToPhase(6)">Prepare</button>
-                </div>
-
-                <!-- Deep Dive Path -->
-                <div class="roadmap-card">
-                    <div class="roadmap-header advanced">
-                        <span class="badge">2-3 weeks</span>
-                        <h3>🚀 Master Everything</h3>
-                    </div>
-                    <ul class="roadmap-steps">
-                        <li>All 9 Phases (Linear)</li>
-                        <li>Implement each phase</li>
-                        <li>Refactor & optimize code</li>
-                        <li>Create portfolio project</li>
-                    </ul>
-                    <button class="btn btn-small" onclick="scrollToPhase(1)">Master</button>
-                </div>
+          <!-- MVC -->
+          <div class="project-card" style="--brand-color: #8b5cf6;">
+            <div class="project-card-top">
+              <span class="status-badge badge-warning">🔜 Coming Soon</span>
+              <h3 class="project-title">ProductCatalog MVC</h3>
+              <div class="stack-badges">
+                <span class="stack-badge">ASP.NET MVC</span>
+                <span class="stack-badge">Razor Views</span>
+                <span class="stack-badge">Tag Helpers</span>
+              </div>
+              <p class="project-desc">Server-side rendering with MVC pattern, Razor views, Tag Helpers, View Components, and Model Binding.</p>
             </div>
-        </section>
-
-        <!-- Documentation Section -->
-        <section id="documentation" class="content-section">
-            <div class="section-header">
-                <h2>Complete Documentation</h2>
-                <p>All 9 learning phases with detailed explanations</p>
-                <a href="docs.html" class="btn btn-primary" style="margin-top: 1rem; text-decoration: none; display: inline-block;">
-                    📘 Open Full Documentation Hub →
-                </a>
+            <div class="project-topics">
+              <h4 class="topics-label">Topics covered:</h4>
+              <div class="topics-list">
+                <span class="topic-tag">MVC Pattern</span>
+                <span class="topic-tag">Razor Views</span>
+                <span class="topic-tag">Tag Helpers</span>
+                <span class="topic-tag">Model Binding</span>
+                <span class="topic-tag">View Components</span>
+              </div>
             </div>
+            <div class="project-card-footer">
+              <button class="btn btn-secondary" disabled style="opacity:0.5;cursor:not-allowed;">Coming Soon</button>
+            </div>
+          </div>
 
-            <div class="phases-container">
-                <!-- Phase 1 -->
-                <div class="phase-card" data-phase="1">
-                    <div class="phase-title">
-                        <span class="phase-number">01</span>
-                        <h3>📖 Foundation</h3>
-                    </div>
-                    <p class="phase-description">Project structure, setup guide, tech stack & patterns</p>
-                    <div class="phase-topics">
-                        <span class="topic-tag">Project Setup</span>
-                        <span class="topic-tag">Architecture</span>
-                        <span class="topic-tag">Tech Stack</span>
-                    </div>
-                    <div class="phase-content" style="display: none;">
-                        <div class="topic">
-                            <h4>🎯 Learning Outcomes</h4>
-                            <ul>
-                                <li>Understand project structure and naming conventions</li>
-                                <li>Know all technologies and their versions</li>
-                                <li>Grasp N-Tier architecture concept</li>
-                                <li>Learn how to set up project from scratch</li>
-                            </ul>
-                        </div>
-                        <div class="topic">
-                            <h4>📂 Project Structure</h4>
-                            <pre><code class="language-plaintext">ProductCatalogAPI-WebAPI-EFCore/
-├── Controllers/          # API endpoints
-├── Services/             # Business logic
-├── Models/               # Data models
-├── Data/                 # DbContext
-├── Middleware/           # Custom pipeline
-├── GraphQL/              # GraphQL types
-└── Program.cs            # Configuration</code></pre>
-                        </div>
-                        <div class="topic">
-                            <h4>🛠️ Tech Stack</h4>
-                            <table class="tech-table">
-                                <tr>
-                                    <td><strong>.NET</strong></td>
-                                    <td>8.0</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Entity Framework Core</strong></td>
-                                    <td>8.0.8</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>HotChocolate (GraphQL)</strong></td>
-                                    <td>15.1.13</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Database</strong></td>
-                                    <td>SQL Server LocalDB</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <button class="expand-btn" onclick="expandPhase(this)">View Details</button>
-                </div>
+          <!-- Angular -->
+          <div class="project-card" style="--brand-color: #f97316;">
+            <div class="project-card-top">
+              <span class="status-badge badge-warning">🔜 Coming Soon</span>
+              <h3 class="project-title">ProductUI Angular</h3>
+              <div class="stack-badges">
+                <span class="stack-badge">Angular 17</span>
+                <span class="stack-badge">TypeScript</span>
+                <span class="stack-badge">RxJS</span>
+              </div>
+              <p class="project-desc">Full frontend with Angular components, services, HttpClient, routing, forms, and connecting to the Web API backend.</p>
+            </div>
+            <div class="project-topics">
+              <h4 class="topics-label">Topics covered:</h4>
+              <div class="topics-list">
+                <span class="topic-tag">Components</span>
+                <span class="topic-tag">Services</span>
+                <span class="topic-tag">HttpClient</span>
+                <span class="topic-tag">Routing</span>
+                <span class="topic-tag">Forms</span>
+                <span class="topic-tag">RxJS</span>
+              </div>
+            </div>
+            <div class="project-card-footer">
+              <button class="btn btn-secondary" disabled style="opacity:0.5;cursor:not-allowed;">Coming Soon</button>
+            </div>
+          </div>
 
-                <!-- Phase 2 -->
-                <div class="phase-card" data-phase="2">
-                    <div class="phase-title">
-                        <span class="phase-number">02</span>
-                        <h3>💡 Core Concepts</h3>
-                    </div>
-                    <p class="phase-description">REST API, Database Design, N-Tier Architecture, Entity Framework</p>
-                    <div class="phase-topics">
-                        <span class="topic-tag">REST API</span>
-                        <span class="topic-tag">Database</span>
-                        <span class="topic-tag">N-Tier</span>
-                    </div>
-                    <div class="phase-content" style="display: none;">
-                        <div class="topic">
-                            <h4>🎯 Learning Outcomes</h4>
-                            <ul>
-                                <li>RESTful API principles and HTTP methods</li>
-                                <li>Database design with relationships</li>
-                                <li>Entity Framework Core basics</li>
-                                <li>Service layer pattern</li>
-                            </ul>
-                        </div>
-                        <div class="topic">
-                            <h4>🏗️ N-Tier Architecture</h4>
-                            <pre><code class="language-plaintext">Presentation Layer (Controllers)
-        ↓
-Business Logic Layer (Services)
-        ↓
-Data Access Layer (DbContext, Repositories)
-        ↓
-Database (SQL Server)</code></pre>
-                        </div>
-                    </div>
-                    <button class="expand-btn" onclick="expandPhase(this)">View Details</button>
-                </div>
+          <!-- React -->
+          <div class="project-card" style="--brand-color: #38bdf8;">
+            <div class="project-card-top">
+              <span class="status-badge badge-warning">🔜 Coming Soon</span>
+              <h3 class="project-title">ProductUI React</h3>
+              <div class="stack-badges">
+                <span class="stack-badge">React 18</span>
+                <span class="stack-badge">TypeScript</span>
+                <span class="stack-badge">React Query</span>
+              </div>
+              <p class="project-desc">Modern React with hooks, React Query for data fetching, state management, and integration with the .NET backend.</p>
+            </div>
+            <div class="project-topics">
+              <h4 class="topics-label">Topics covered:</h4>
+              <div class="topics-list">
+                <span class="topic-tag">Hooks</span>
+                <span class="topic-tag">React Query</span>
+                <span class="topic-tag">State Mgmt</span>
+                <span class="topic-tag">Components</span>
+                <span class="topic-tag">API Integration</span>
+              </div>
+            </div>
+            <div class="project-card-footer">
+              <button class="btn btn-secondary" disabled style="opacity:0.5;cursor:not-allowed;">Coming Soon</button>
+            </div>
+          </div>
 
-                <!-- Phase 3 -->
-                <div class="phase-card" data-phase="3">
-                    <div class="phase-title">
-                        <span class="phase-number">03</span>
-                        <h3>⚙️ Implementation</h3>
-                    </div>
-                    <p class="phase-description">Service layer, middleware, DI, error handling, controllers</p>
-                    <div class="phase-topics">
-                        <span class="topic-tag">DI Pattern</span>
-                        <span class="topic-tag">Middleware</span>
-                        <span class="topic-tag">Error Handling</span>
-                    </div>
-                    <div class="phase-content" style="display: none;">
-                        <div class="topic">
-                            <h4>💉 Dependency Injection Example</h4>
-                            <pre><code class="language-csharp">// Register in Program.cs
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════ WEB API TOPICS -->
+      <section class="content-section">
+        <div class="section-header">
+          <h2 class="section-title">🔵 Web API Topics</h2>
+          <p class="section-subtitle">Complete coverage of ASP.NET Core Web API — the backbone of modern .NET backend development</p>
+        </div>
+
+        <div class="grid-topics">
+
+          <a href="webapi-architecture.html" class="topic-card">
+            <div class="topic-icon-wrap">🏗️</div>
+            <div class="topic-body">
+              <div class="topic-header-row">
+                <h3 class="topic-name">Architecture &amp; Setup</h3>
+                <span class="level-badge level-beginner">Beginner</span>
+              </div>
+              <p class="topic-desc">N-Tier architecture, project structure, Program.cs, appsettings, and how all pieces fit together.</p>
+            </div>
+          </a>
+
+          <a href="webapi-controllers.html" class="topic-card">
+            <div class="topic-icon-wrap">🎮</div>
+            <div class="topic-body">
+              <div class="topic-header-row">
+                <h3 class="topic-name">Controllers &amp; REST</h3>
+                <span class="level-badge level-beginner">Beginner</span>
+              </div>
+              <p class="topic-desc">REST endpoints, HTTP methods (GET/POST/PUT/DELETE/PATCH), routing, model binding, status codes.</p>
+            </div>
+          </a>
+
+          <a href="webapi-models.html" class="topic-card">
+            <div class="topic-icon-wrap">📦</div>
+            <div class="topic-body">
+              <div class="topic-header-row">
+                <h3 class="topic-name">Models &amp; DTOs</h3>
+                <span class="level-badge level-beginner">Beginner</span>
+              </div>
+              <p class="topic-desc">Entity models, request/response DTOs, data annotations, validation attributes, AutoMapper patterns.</p>
+            </div>
+          </a>
+
+          <a href="webapi-di.html" class="topic-card">
+            <div class="topic-icon-wrap">💉</div>
+            <div class="topic-body">
+              <div class="topic-header-row">
+                <h3 class="topic-name">Dependency Injection</h3>
+                <span class="level-badge level-intermediate">Intermediate</span>
+              </div>
+              <p class="topic-desc">Built-in DI container, service lifetimes (Singleton/Scoped/Transient), registration patterns, constructor injection.</p>
+            </div>
+          </a>
+
+          <a href="webapi-middleware.html" class="topic-card">
+            <div class="topic-icon-wrap">⚙️</div>
+            <div class="topic-body">
+              <div class="topic-header-row">
+                <h3 class="topic-name">Middleware Pipeline</h3>
+                <span class="level-badge level-intermediate">Intermediate</span>
+              </div>
+              <p class="topic-desc">Request pipeline, custom middleware, order matters, GlobalErrorHandler, RequestLogging, PerformanceMiddleware.</p>
+            </div>
+          </a>
+
+          <a href="webapi-caching.html" class="topic-card">
+            <div class="topic-icon-wrap">⚡</div>
+            <div class="topic-body">
+              <div class="topic-header-row">
+                <h3 class="topic-name">Caching Strategies</h3>
+                <span class="level-badge level-advanced">Advanced</span>
+              </div>
+              <p class="topic-desc">All 5 approaches: IMemoryCache, Response Caching, IDistributedCache, Redis, HybridCache with code.</p>
+            </div>
+          </a>
+
+          <a href="webapi-error-handling.html" class="topic-card">
+            <div class="topic-icon-wrap">🚨</div>
+            <div class="topic-body">
+              <div class="topic-header-row">
+                <h3 class="topic-name">Error Handling</h3>
+                <span class="level-badge level-intermediate">Intermediate</span>
+              </div>
+              <p class="topic-desc">Global exception middleware, ProblemDetails pattern, custom exceptions, try-catch best practices.</p>
+            </div>
+          </a>
+
+          <a href="webapi-graphql.html" class="topic-card">
+            <div class="topic-icon-wrap">🌐</div>
+            <div class="topic-body">
+              <div class="topic-header-row">
+                <h3 class="topic-name">GraphQL</h3>
+                <span class="level-badge level-advanced">Advanced</span>
+              </div>
+              <p class="topic-desc">HotChocolate setup, schema, queries, mutations, Banana Cake Pop playground, comparison with REST.</p>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════ DATA ACCESS -->
+      <section class="content-section">
+        <div class="section-header">
+          <h2 class="section-title">🟢 Data Access</h2>
+          <p class="section-subtitle">Master database access patterns from raw SQL to ORM</p>
+        </div>
+
+        <div class="grid-auto">
+
+          <a href="ef-core.html" class="topic-card">
+            <div class="topic-icon-wrap">🗄️</div>
+            <div class="topic-body">
+              <div class="topic-header-row">
+                <h3 class="topic-name">Entity Framework Core</h3>
+                <span class="level-badge level-intermediate">Intermediate</span>
+              </div>
+              <p class="topic-desc">Code-First, migrations, DbContext, CRUD, change tracking, soft delete, performance tips.</p>
+            </div>
+          </a>
+
+          <a href="ado-net.html" class="topic-card">
+            <div class="topic-icon-wrap">💾</div>
+            <div class="topic-body">
+              <div class="topic-header-row">
+                <h3 class="topic-name">ADO.NET</h3>
+                <span class="level-badge level-intermediate">Intermediate</span>
+              </div>
+              <p class="topic-desc">Raw SQL, SqlConnection, SqlCommand, SqlDataReader, parameterized queries, connection pooling.</p>
+            </div>
+          </a>
+
+          <a href="linq.html" class="topic-card">
+            <div class="topic-icon-wrap">🔗</div>
+            <div class="topic-body">
+              <div class="topic-header-row">
+                <h3 class="topic-name">LINQ &amp; Filtering</h3>
+                <span class="level-badge level-intermediate">Intermediate</span>
+              </div>
+              <p class="topic-desc">Method &amp; query syntax, Where/Select/Join/GroupBy, deferred execution, IQueryable vs IEnumerable.</p>
+            </div>
+          </a>
+
+          <a href="collections.html" class="topic-card">
+            <div class="topic-icon-wrap">📊</div>
+            <div class="topic-body">
+              <div class="topic-header-row">
+                <h3 class="topic-name">Collections</h3>
+                <span class="level-badge level-beginner">Beginner</span>
+              </div>
+              <p class="topic-desc">List, Dictionary, HashSet, Queue, Stack, SortedDictionary, IEnumerable vs IQueryable — when to use each.</p>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════ LEARNING PATHS -->
+      <section class="content-section">
+        <div class="section-header">
+          <h2 class="section-title">🎯 Choose Your Learning Path</h2>
+          <p class="section-subtitle">Structured paths for different goals and time commitments</p>
+        </div>
+
+        <div class="grid-3">
+
+          <!-- Quick Start -->
+          <div class="path-card">
+            <div class="path-number">01</div>
+            <div class="path-body">
+              <h3 class="path-title">Quick Start</h3>
+              <div class="path-time">⏱ ~30 minutes</div>
+              <p class="path-best">Best for: Quick refresher or interview prep in limited time</p>
+              <ol class="path-steps">
+                <li>Architecture Overview</li>
+                <li>Key REST endpoints</li>
+                <li>DI basics</li>
+                <li>Caching concept</li>
+                <li>Top 10 interview Q&amp;A</li>
+              </ol>
+            </div>
+            <div class="path-footer">
+              <a href="webapi-architecture.html" class="btn btn-primary">Start Quick Path</a>
+            </div>
+          </div>
+
+          <!-- Deep Dive -->
+          <div class="path-card path-card-featured">
+            <div class="path-number">02</div>
+            <div class="path-body">
+              <h3 class="path-title">Deep Dive</h3>
+              <div class="path-time">⏱ ~20-25 hours</div>
+              <p class="path-best">Best for: Thorough understanding of every topic</p>
+              <ol class="path-steps">
+                <li>All 8 Web API topics</li>
+                <li>EF Core + ADO.NET</li>
+                <li>LINQ + Collections</li>
+                <li>All interview questions</li>
+                <li>Build your own API</li>
+              </ol>
+            </div>
+            <div class="path-footer">
+              <a href="webapi.html" class="btn btn-primary">Start Deep Dive</a>
+            </div>
+          </div>
+
+          <!-- Interview Intensive -->
+          <div class="path-card">
+            <div class="path-number">03</div>
+            <div class="path-body">
+              <h3 class="path-title">Interview Intensive</h3>
+              <div class="path-time">⏱ ~8-10 hours</div>
+              <p class="path-best">Best for: Job interviews (cracking the coding round)</p>
+              <ol class="path-steps">
+                <li>Architecture + DI patterns</li>
+                <li>Caching + Middleware</li>
+                <li>EF Core vs ADO.NET</li>
+                <li>50+ interview Q&amp;A</li>
+              </ol>
+            </div>
+            <div class="path-footer">
+              <a href="interview.html" class="btn btn-primary">Start Interview Prep</a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════ CODE SNIPPET -->
+      <section class="content-section">
+        <div class="section-header">
+          <h2 class="section-title">💻 Quick Taste — Real Code from ProductCatalogAPI</h2>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+            </div>
+            <span class="code-lang">csharp</span>
+            <span class="code-file">Program.cs</span>
+          </div>
+          <pre><code class="language-csharp">// Program.cs — ProductCatalogAPI Setup
+var builder = WebApplication.CreateBuilder(args);
+
+// 1. Register Services (Dependency Injection)
+builder.Services.AddDbContext&lt;ProductDbContext&gt;(options =&gt;
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddMemoryCache();          // In-Memory Cache
+builder.Services.AddResponseCaching();     // HTTP Response Caching
+builder.Services.AddControllers();
 builder.Services.AddScoped&lt;IProductService, ProductService&gt;();
+builder.Services.AddScoped&lt;IProductAdoService, ProductAdoService&gt;();
 
-// Use in Controller
-public class ProductsController
-{
-    public ProductsController(IProductService service)
-    {
-        _service = service;  // Injected!
-    }
-}</code></pre>
-                        </div>
-                    </div>
-                    <button class="expand-btn" onclick="expandPhase(this)">View Details</button>
-                </div>
+// 2. GraphQL with HotChocolate
+builder.Services.AddGraphQLServer()
+    .AddQueryType&lt;ProductQuery&gt;()
+    .AddMutationType&lt;ProductMutation&gt;();
 
-                <!-- Phase 4 -->
-                <div class="phase-card" data-phase="4">
-                    <div class="phase-title">
-                        <span class="phase-number">04</span>
-                        <h3>🚀 Advanced Patterns</h3>
-                    </div>
-                    <p class="phase-description">5 caching strategies, middleware pipeline, performance optimization</p>
-                    <div class="phase-topics">
-                        <span class="topic-tag">Caching</span>
-                        <span class="topic-tag">Performance</span>
-                        <span class="topic-tag">Optimization</span>
-                    </div>
-                    <div class="phase-content" style="display: none;">
-                        <div class="topic">
-                            <h4>5️⃣ Caching Strategies</h4>
-                            <ol>
-                                <li><strong>In-Memory Cache</strong> - Fast, single server</li>
-                                <li><strong>HTTP Cache Headers</strong> - Browser caching</li>
-                                <li><strong>Response Caching</strong> - Middleware level</li>
-                                <li><strong>Distributed Cache (Redis)</strong> - Multi-server</li>
-                                <li><strong>Query Compilation</strong> - EF Core built-in</li>
-                            </ol>
-                        </div>
-                    </div>
-                    <button class="expand-btn" onclick="expandPhase(this)">View Details</button>
-                </div>
+// 3. CORS for React (3000) and Angular (4200)
+builder.Services.AddCors(options =&gt; options.AddPolicy("AllowFrontend",
+    policy =&gt; policy.WithOrigins("http://localhost:3000", "http://localhost:4200")
+                    .AllowAnyMethod().AllowAnyHeader()));
 
-                <!-- Phase 5 -->
-                <div class="phase-card" data-phase="5">
-                    <div class="phase-title">
-                        <span class="phase-number">05</span>
-                        <h3>📊 Operations</h3>
-                    </div>
-                    <p class="phase-description">Logging setup, monitoring, deployment strategies</p>
-                    <div class="phase-topics">
-                        <span class="topic-tag">Logging</span>
-                        <span class="topic-tag">Monitoring</span>
-                        <span class="topic-tag">Deployment</span>
-                    </div>
-                    <div class="phase-content" style="display: none;">
-                        <div class="topic">
-                            <h4>📝 Logging Setup</h4>
-                            <pre><code class="language-csharp">_logger.LogInformation("Request: {Method} {Path}", httpMethod, path);
-_logger.LogError(ex, "Error occurred: {Message}", ex.Message);
-_logger.LogWarning("Deprecation: Use NewMethod instead");</code></pre>
-                        </div>
-                    </div>
-                    <button class="expand-btn" onclick="expandPhase(this)">View Details</button>
-                </div>
+var app = builder.Build();
 
-                <!-- Phase 6 -->
-                <div class="phase-card" data-phase="6">
-                    <div class="phase-title">
-                        <span class="phase-number">06</span>
-                        <h3>🎓 Interview Prep</h3>
-                    </div>
-                    <p class="phase-description">Key concepts, 50+ Q&A, design patterns, best practices</p>
-                    <div class="phase-topics">
-                        <span class="topic-tag">Q&A</span>
-                        <span class="topic-tag">Patterns</span>
-                        <span class="topic-tag">Best Practices</span>
-                    </div>
-                    <div class="phase-content" style="display: none;">
-                        <div class="topic">
-                            <h4>🎯 Top Interview Questions</h4>
-                            <ol>
-                                <li>What is N-Tier architecture?</li>
-                                <li>Explain async/await pattern</li>
-                                <li>What are design patterns?</li>
-                                <li>Difference between EF Core and ADO.NET?</li>
-                                <li>How does dependency injection work?</li>
-                            </ol>
-                        </div>
-                    </div>
-                    <button class="expand-btn" onclick="expandPhase(this)">View Details</button>
-                </div>
+// 4. Middleware Pipeline (ORDER MATTERS!)
+app.UseMiddleware&lt;GlobalErrorHandlingMiddleware&gt;();  // 1st — catch all errors
+app.UseMiddleware&lt;RequestLoggingMiddleware&gt;();        // 2nd — log requests
+app.UseMiddleware&lt;PerformanceMiddleware&gt;();           // 3rd — measure timing
+app.UseResponseCaching();                            // 4th — HTTP cache headers
+app.UseCors("AllowFrontend");
+app.MapControllers();
+app.MapGraphQL();
 
-                <!-- Phase 7 -->
-                <div class="phase-card" data-phase="7">
-                    <div class="phase-title">
-                        <span class="phase-number">07</span>
-                        <h3>⚡ Quick Reference</h3>
-                    </div>
-                    <p class="phase-description">Commands cheatsheet, code snippets, troubleshooting</p>
-                    <div class="phase-topics">
-                        <span class="topic-tag">Commands</span>
-                        <span class="topic-tag">Snippets</span>
-                        <span class="topic-tag">Help</span>
-                    </div>
-                    <div class="phase-content" style="display: none;">
-                        <div class="topic">
-                            <h4>💻 Essential Commands</h4>
-                            <pre><code class="language-bash"># Build project
-dotnet build
-
-# Run application
-dotnet run
-
-# Create migration
-dotnet ef migrations add InitialCreate
-
-# Update database
-dotnet ef database update</code></pre>
-                        </div>
-                    </div>
-                    <button class="expand-btn" onclick="expandPhase(this)">View Details</button>
-                </div>
-
-                <!-- Phase 8 -->
-                <div class="phase-card" data-phase="8">
-                    <div class="phase-title">
-                        <span class="phase-number">08</span>
-                        <h3>🔄 Data Access</h3>
-                    </div>
-                    <p class="phase-description">EF Core vs ADO.NET vs GraphQL comparison & testing</p>
-                    <div class="phase-topics">
-                        <span class="topic-tag">EF Core</span>
-                        <span class="topic-tag">ADO.NET</span>
-                        <span class="topic-tag">GraphQL</span>
-                    </div>
-                    <div class="phase-content" style="display: none;">
-                        <div class="topic">
-                            <h4>📊 Comparison Table</h4>
-                            <table class="comparison-table">
-                                <tr>
-                                    <th>Aspect</th>
-                                    <th>EF Core</th>
-                                    <th>ADO.NET</th>
-                                    <th>GraphQL</th>
-                                </tr>
-                                <tr>
-                                    <td><strong>Speed</strong></td>
-                                    <td>150ms</td>
-                                    <td>50ms ⚡</td>
-                                    <td>80ms</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>DX</strong></td>
-                                    <td>Excellent</td>
-                                    <td>Tedious</td>
-                                    <td>Excellent</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Bandwidth</strong></td>
-                                    <td>300 bytes</td>
-                                    <td>300 bytes</td>
-                                    <td>50 bytes ✓</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <button class="expand-btn" onclick="expandPhase(this)">View Details</button>
-                </div>
-
-                <!-- Phase 9 -->
-                <div class="phase-card" data-phase="9">
-                    <div class="phase-title">
-                        <span class="phase-number">09</span>
-                        <h3>📡 GraphQL</h3>
-                    </div>
-                    <p class="phase-description">GraphQL concepts, HotChocolate setup, testing, Apollo Federation</p>
-                    <div class="phase-topics">
-                        <span class="topic-tag">GraphQL</span>
-                        <span class="topic-tag">HotChocolate</span>
-                        <span class="topic-tag">Schema</span>
-                    </div>
-                    <div class="phase-content" style="display: none;">
-                        <div class="topic">
-                            <h4>✨ GraphQL vs REST</h4>
-                            <pre><code class="language-graphql">// GraphQL: Request ONLY what you need
-query {
-  productById(id: 1) {
-    name
-    price
-  }
-}
-
-// Response: Only those fields
-{
-  "data": {
-    "productById": {
-      "name": "Laptop",
-      "price": 999.99
-    }
-  }
-}</code></pre>
-                        </div>
-                    </div>
-                    <button class="expand-btn" onclick="expandPhase(this)">View Details</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Interview Section -->
-        <section id="interview" class="content-section">
-            <div class="section-header">
-                <h2>Interview Preparation</h2>
-                <p>50+ questions with detailed answers</p>
-            </div>
-
-            <div class="interview-grid">
-                <div class="interview-card">
-                    <h3>🎯 Architecture Questions</h3>
-                    <ul>
-                        <li>What is N-Tier architecture?</li>
-                        <li>Explain MVC vs ADO patterns</li>
-                        <li>What are design patterns?</li>
-                        <li>How does DI work?</li>
-                        <li>What is SOC (Separation of Concerns)?</li>
-                    </ul>
-                    <button class="btn btn-small" onclick="alert('Answers available in Phase 6')">View Answers</button>
-                </div>
-
-                <div class="interview-card">
-                    <h3>💻 Coding Questions</h3>
-                    <ul>
-                        <li>Implement caching logic</li>
-                        <li>Design database schema</li>
-                        <li>Create REST API endpoints</li>
-                        <li>Handle errors gracefully</li>
-                        <li>Optimize queries</li>
-                    </ul>
-                    <button class="btn btn-small" onclick="alert('Code examples in Phase 3')">View Code</button>
-                </div>
-
-                <div class="interview-card">
-                    <h3>🚀 Advanced Topics</h3>
-                    <ul>
-                        <li>What is async/await?</li>
-                        <li>How does caching work?</li>
-                        <li>Explain middleware pipeline</li>
-                        <li>What is GraphQL?</li>
-                        <li>Difference EF vs ADO.NET?</li>
-                    </ul>
-                    <button class="btn btn-small" onclick="alert('Details in Phase 4 & 8')">Learn More</button>
-                </div>
-
-                <div class="interview-card">
-                    <h3>🎓 Behavioral Questions</h3>
-                    <ul>
-                        <li>Tell about your project</li>
-                        <li>How you handle challenges</li>
-                        <li>Your learning approach</li>
-                        <li>Team collaboration example</li>
-                        <li>How you optimize code</li>
-                    </ul>
-                    <button class="btn btn-small" onclick="alert('Tips in Phase 6')">Get Tips</button>
-                </div>
-            </div>
-
-            <!-- Quick Q&A -->
-            <div class="qa-section">
-                <h3>🔥 Top 10 Quick Questions & Answers</h3>
-                <div class="qa-list">
-                    <div class="qa-item">
-                        <div class="qa-question" onclick="toggleAnswer(this)">
-                            <span class="qa-number">1</span>
-                            <span class="qa-text">What is async/await and why is it important?</span>
-                            <span class="qa-toggle">+</span>
-                        </div>
-                        <div class="qa-answer" style="display: none;">
-                            <p><strong>Answer:</strong> Async/await allows non-blocking code execution. While waiting for I/O (database, network), the thread can handle other requests. Essential for scalability!</p>
-                            <pre><code class="language-csharp">public async Task&lt;List&lt;Product&gt;&gt; GetProductsAsync()
-{
-    // Thread released here, can handle other requests
-    return await _service.GetAllProductsAsync();
-}</code></pre>
-                        </div>
-                    </div>
-
-                    <div class="qa-item">
-                        <div class="qa-question" onclick="toggleAnswer(this)">
-                            <span class="qa-number">2</span>
-                            <span class="qa-text">Explain N-Tier Architecture</span>
-                            <span class="qa-toggle">+</span>
-                        </div>
-                        <div class="qa-answer" style="display: none;">
-                            <p><strong>Answer:</strong> N-Tier separates concerns: Presentation (UI/Controllers) → Business Logic (Services) → Data Access (DbContext) → Database. Each layer has single responsibility.</p>
-                        </div>
-                    </div>
-
-                    <div class="qa-item">
-                        <div class="qa-question" onclick="toggleAnswer(this)">
-                            <span class="qa-number">3</span>
-                            <span class="qa-text">When would you use EF Core vs ADO.NET?</span>
-                            <span class="qa-toggle">+</span>
-                        </div>
-                        <div class="qa-answer" style="display: none;">
-                            <p><strong>Answer:</strong> EF Core for standard CRUD (rapid development, LINQ). ADO.NET for complex queries, stored procedures, maximum performance. GraphQL for flexible client queries.</p>
-                        </div>
-                    </div>
-
-                    <div class="qa-item">
-                        <div class="qa-question" onclick="toggleAnswer(this)">
-                            <span class="qa-number">4</span>
-                            <span class="qa-text">What are the 5 caching strategies?</span>
-                            <span class="qa-toggle">+</span>
-                        </div>
-                        <div class="qa-answer" style="display: none;">
-                            <p><strong>Answer:</strong> (1) In-Memory Cache, (2) HTTP Cache Headers, (3) Response Caching Middleware, (4) Redis (distributed), (5) EF Query Compilation.</p>
-                        </div>
-                    </div>
-
-                    <div class="qa-item">
-                        <div class="qa-question" onclick="toggleAnswer(this)">
-                            <span class="qa-number">5</span>
-                            <span class="qa-text">What is GraphQL and its advantages?</span>
-                            <span class="qa-toggle">+</span>
-                        </div>
-                        <div class="qa-answer" style="display: none;">
-                            <p><strong>Answer:</strong> GraphQL is a query language. Advantages: no over/under-fetching, self-documenting schema, single endpoint, better for mobile (less bandwidth), perfect for multiple clients with varying needs.</p>
-                        </div>
-                    </div>
-
-                    <div class="qa-item">
-                        <div class="qa-question" onclick="toggleAnswer(this)">
-                            <span class="qa-number">6</span>
-                            <span class="qa-text">Explain Dependency Injection</span>
-                            <span class="qa-toggle">+</span>
-                        </div>
-                        <div class="qa-answer" style="display: none;">
-                            <p><strong>Answer:</strong> DI is a pattern where dependencies are injected rather than created. Benefits: testability (use mocks), loose coupling, flexibility (swap implementations).</p>
-                        </div>
-                    </div>
-
-                    <div class="qa-item">
-                        <div class="qa-question" onclick="toggleAnswer(this)">
-                            <span class="qa-number">7</span>
-                            <span class="qa-text">What is middleware and how does it work?</span>
-                            <span class="qa-toggle">+</span>
-                        </div>
-                        <div class="qa-answer" style="display: none;">
-                            <p><strong>Answer:</strong> Middleware is a component in the request pipeline. Each middleware can inspect/modify request, call next middleware, or short-circuit pipeline. Example: error handling, logging, authentication.</p>
-                        </div>
-                    </div>
-
-                    <div class="qa-item">
-                        <div class="qa-question" onclick="toggleAnswer(this)">
-                            <span class="qa-number">8</span>
-                            <span class="qa-text">How would you optimize a slow API?</span>
-                            <span class="qa-toggle">+</span>
-                        </div>
-                        <div class="qa-answer" style="display: none;">
-                            <p><strong>Answer:</strong> (1) Profile to find bottleneck, (2) Add caching (in-memory or Redis), (3) Optimize queries (eager loading, indexes), (4) Use async/await, (5) Consider ADO.NET or pagination.</p>
-                        </div>
-                    </div>
-
-                    <div class="qa-item">
-                        <div class="qa-question" onclick="toggleAnswer(this)">
-                            <span class="qa-number">9</span>
-                            <span class="qa-text">What is soft delete and why use it?</span>
-                            <span class="qa-toggle">+</span>
-                        </div>
-                        <div class="qa-answer" style="display: none;">
-                            <p><strong>Answer:</strong> Soft delete sets IsActive=false instead of hard delete. Benefits: preserve audit history, recover data, maintain referential integrity, comply with data retention policies.</p>
-                        </div>
-                    </div>
-
-                    <div class="qa-item">
-                        <div class="qa-question" onclick="toggleAnswer(this)">
-                            <span class="qa-number">10</span>
-                            <span class="qa-text">What is the N+1 query problem?</span>
-                            <span class="qa-toggle">+</span>
-                        </div>
-                        <div class="qa-answer" style="display: none;">
-                            <p><strong>Answer:</strong> 1 query gets records, then N more queries get related data = 1+N queries. Solution: eager loading (.Include()), batch loaders, or single optimized query. Critical for performance!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Resources Section -->
-        <section id="resources" class="content-section">
-            <div class="section-header">
-                <h2>Resources & Tools</h2>
-                <p>External resources and helpful tools</p>
-            </div>
-
-            <div class="resources-grid">
-                <div class="resource-card">
-                    <h3>🔗 Documentation</h3>
-                    <ul>
-                        <li><a href="https://learn.microsoft.com/en-us/dotnet/" target="_blank">.NET Official Docs</a></li>
-                        <li><a href="https://learn.microsoft.com/en-us/ef/core/" target="_blank">EF Core Documentation</a></li>
-                        <li><a href="https://chillicream.com/docs/hotchocolate/introduction" target="_blank">HotChocolate Docs</a></li>
-                        <li><a href="https://graphql.org/" target="_blank">GraphQL Official</a></li>
-                    </ul>
-                </div>
-
-                <div class="resource-card">
-                    <h3>🛠️ Tools</h3>
-                    <ul>
-                        <li><a href="https://www.postman.com/" target="_blank">Postman - API Testing</a></li>
-                        <li><a href="https://altairgraphql.dev/" target="_blank">Altair GraphQL Client</a></li>
-                        <li><a href="https://www.insomnia.rest/" target="_blank">Insomnia REST Client</a></li>
-                        <li><a href="https://code.visualstudio.com/" target="_blank">VS Code</a></li>
-                    </ul>
-                </div>
-
-                <div class="resource-card">
-                    <h3>📚 Learning Resources</h3>
-                    <ul>
-                        <li><a href="https://www.microsoft.com/en-us/learning/azure-training.aspx" target="_blank">Microsoft Learn</a></li>
-                        <li><a href="https://www.pluralsight.com/" target="_blank">Pluralsight</a></li>
-                        <li><a href="https://www.udemy.com/" target="_blank">Udemy Courses</a></li>
-                        <li><a href="https://www.youtube.com/@TimCorey" target="_blank">Tim Corey Channel</a></li>
-                    </ul>
-                </div>
-
-                <div class="resource-card">
-                    <h3>💬 Community</h3>
-                    <ul>
-                        <li><a href="https://stackoverflow.com/questions/tagged/.net" target="_blank">Stack Overflow .NET</a></li>
-                        <li><a href="https://www.reddit.com/r/dotnet/" target="_blank">r/dotnet Reddit</a></li>
-                        <li><a href="https://github.com/" target="_blank">GitHub - Share Code</a></li>
-                        <li><a href="https://discord.gg/dotnet" target="_blank">.NET Discord Community</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Quick Start Guide -->
-            <div class="quick-start-guide">
-                <h3>🚀 Quick Start Your Project</h3>
-                <div class="code-block">
-                    <pre><code class="language-bash"># 1. Create new project
-dotnet new globaljson --sdk-version 8.0.0 --roll-forward latestMinor
-
-# 2. Create solution
-dotnet new sln -n MyProject
-
-# 3. Create API project
-dotnet new webapi -n MyProject.API
-
-# 4. Add to solution
-dotnet sln add MyProject.API
-
-# 5. Add EF Core
-dotnet add MyProject.API package Microsoft.EntityFrameworkCore.SqlServer
-
-# 6. Create DbContext
-# (See Phase 2 for example)
-
-# 7. Run migrations
-dotnet ef migrations add Initial
-
-# 8. Start app
-dotnet run</code></pre>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>About</h4>
-                <p>Complete .NET learning guide with real-world examples</p>
-            </div>
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#documentation">Docs</a></li>
-                    <li><a href="#interview">Interview</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Hosting</h4>
-                <p>Hosted on GitHub Pages</p>
-                <p style="font-size: 0.9em; margin-top: 0.5em;">Made with ❤️ for learning</p>
-            </div>
+app.Run();</code></pre>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 .NET Learning Hub. All rights reserved.</p>
-        </div>
-    </footer>
+      </section>
 
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="js/main.js"></script>
+      <!-- ══════════════════════════════════════ CTA -->
+      <section class="cta-section" style="background: linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 100%); border-radius: 16px; padding: 3rem 2.5rem; text-align: center; margin-bottom: 3rem;">
+        <h2 style="color: #fff; font-size: 2rem; font-weight: 800; margin: 0 0 0.75rem;">Ready to master .NET development?</h2>
+        <p style="color: rgba(255,255,255,0.88); font-size: 1.125rem; max-width: 560px; margin: 0 auto 2rem;">
+          Start with Web API — the foundation of modern .NET backend. Built on a real, production-ready project.
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <a href="webapi.html" class="btn btn-primary" style="background: #fff; color: #0ea5e9; font-weight: 700;">Start with Web API</a>
+          <a href="interview.html" class="btn btn-secondary" style="background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.3);">View Interview Q&amp;A</a>
+        </div>
+      </section>
+
+    </div><!-- /.content-wrapper -->
+  </main>
+</div><!-- /.page-wrapper -->
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">N</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+
 </body>
 </html>

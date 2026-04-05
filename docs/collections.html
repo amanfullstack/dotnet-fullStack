@@ -1,0 +1,811 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collections in C# - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<!-- Reading Progress Bar -->
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<!-- Search Modal -->
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<!-- Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-badge">D</div>
+      DevDocs
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span>
+        <input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link active"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="index.html#data-access">Data Access</a>
+          <span class="sep">/</span>
+          <span class="current">Collections in C#</span>
+        </nav>
+
+        <!-- Page Title Block -->
+        <div class="page-title-block">
+          <h1 class="page-title">📊 Collections in C#</h1>
+          <p class="page-subtitle">Master List, Dictionary, HashSet, Queue, Stack, and when to use IEnumerable vs IQueryable.</p>
+          <div class="page-meta">
+            <span class="badge badge-beginner">Beginner</span>
+            <span class="badge badge-primary">Data Access</span>
+          </div>
+        </div>
+
+        <!-- Overview callout -->
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-content">
+            <p class="callout-title">What are Collections?</p>
+            <p class="callout-body">Collections are fundamental data structures in C# that allow you to store, organize, and manipulate groups of related objects. The .NET Base Class Library provides a rich set of generic collection types in <span class="hl">System.Collections.Generic</span>. Choosing the right collection type directly impacts performance, correctness, and code clarity. This page covers the types you will use in real .NET projects and interviews every day.</p>
+          </div>
+        </div>
+
+        <!-- ===================================================== -->
+        <h2 id="list">List&lt;T&gt; — Dynamic Array</h2>
+
+        <p><span class="hl">List&lt;T&gt;</span> is the most-used collection in .NET. It wraps an array internally and grows automatically as elements are added. It preserves insertion order and allows duplicate values. When in doubt about which collection to use, <span class="hl">List&lt;T&gt;</span> is the safe default.</p>
+
+        <h3>When to use List&lt;T&gt;</h3>
+        <ul>
+          <li>You need ordered, index-based access: <span class="hl">list[0]</span>, <span class="hl">list[^1]</span></li>
+          <li>You need to iterate items in the order they were inserted</li>
+          <li>Duplicate values are allowed and meaningful (e.g., a shopping cart with two of the same item)</li>
+          <li>You frequently add items to the end — this is O(1) amortised</li>
+        </ul>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C# — List&lt;T&gt; basics</span>
+          </div>
+          <pre><code class="language-csharp">using System.Collections.Generic;
+
+// 1. Creating a list
+var products = new List&lt;string&gt;();
+var prices   = new List&lt;decimal&gt; { 9.99m, 19.99m, 4.50m };
+
+// 2. Adding elements
+products.Add("Laptop");
+products.Add("Mouse");
+products.Add("Keyboard");
+products.AddRange(new[] { "Monitor", "Webcam" });   // add multiple at once
+
+// 3. Accessing by index (O(1))
+string first = products[0];    // "Laptop"
+string last  = products[^1];   // "Webcam"  (C# 8+ index-from-end)
+
+// 4. Checking membership (O(n) linear scan)
+bool hasLaptop = products.Contains("Laptop");  // true
+
+// 5. Removing elements
+products.Remove("Mouse");      // removes first occurrence by value
+products.RemoveAt(0);          // removes element at index 0
+
+// 6. Count and capacity
+int count    = products.Count;     // current number of elements
+int capacity = products.Capacity;  // size of internal array (auto-managed)
+
+// 7. LINQ works naturally on any List&lt;T&gt;
+var cheap = prices.Where(p => p &lt; 10m).ToList();   // [ 9.99, 4.50 ]
+var total = prices.Sum();                          // 34.48
+var max   = prices.Max();                          // 19.99
+
+// 8. Iterating
+foreach (string product in products)
+{
+    Console.WriteLine(product);
+}
+
+// 9. Sorting
+products.Sort();                              // default comparer (alphabetical for strings)
+products.Sort((a, b) => b.CompareTo(a));      // reverse alphabetical
+products.Sort((a, b) => a.Length.CompareTo(b.Length));  // by string length
+
+// 10. Useful utility methods
+products.Reverse();                           // reverse in place
+int idx = products.IndexOf("Keyboard");       // find index (-1 if not found)
+products.Clear();                             // remove all elements</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">✅</span>
+          <div class="callout-content">
+            <p class="callout-title">Good for ordered, index-based access</p>
+            <p class="callout-body">Adding to the end is O(1) amortised. Reading or writing by index is O(1). <span class="hl">List&lt;T&gt;</span> is memory-efficient and cache-friendly because elements are stored contiguously in memory.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-content">
+            <p class="callout-title">Slow on large removals from the middle</p>
+            <p class="callout-body"><span class="hl">RemoveAt(i)</span> and <span class="hl">Insert(i, value)</span> are O(n) on large lists because all elements after position <span class="hl">i</span> must shift. <span class="hl">Contains</span> is also O(n). If you need fast lookups use a <span class="hl">Dictionary</span> or <span class="hl">HashSet</span>; for frequent middle insertions use <span class="hl">LinkedList&lt;T&gt;</span>.</p>
+          </div>
+        </div>
+
+        <!-- ===================================================== -->
+        <h2 id="dictionary">Dictionary&lt;TKey, TValue&gt; — Key-Value Store</h2>
+
+        <p><span class="hl">Dictionary&lt;TKey, TValue&gt;</span> stores key-value pairs backed by a hash table. It provides O(1) average-case lookup, insertion, and deletion. Keys must be unique; values may repeat. This is the go-to collection whenever you need fast lookup by a known key — ID to object, string to configuration value, etc.</p>
+
+        <h3>When to use Dictionary</h3>
+        <ul>
+          <li>You need fast lookup by a unique key (e.g., product ID → product object)</li>
+          <li>You are building a cache, frequency counter, or configuration map</li>
+          <li>You need to map one value to another (e.g., country code → country name)</li>
+          <li>The key is not a sequential integer — otherwise an array/list is simpler</li>
+        </ul>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C# — Dictionary&lt;TKey, TValue&gt;</span>
+          </div>
+          <pre><code class="language-csharp">// 1. Creating
+var productById = new Dictionary&lt;int, string&gt;();
+var prices = new Dictionary&lt;string, decimal&gt;
+{
+    ["Laptop"]   = 999.99m,
+    ["Mouse"]    = 29.99m,
+    ["Keyboard"] = 79.99m
+};
+
+// 2. Adding and updating
+productById[1] = "Laptop";     // add or update (no exception)
+productById.Add(2, "Mouse");   // throws ArgumentException if key already exists
+
+// 3. Safe reading — always prefer TryGetValue over direct indexer
+if (prices.TryGetValue("Laptop", out decimal price))
+{
+    Console.WriteLine($"Laptop costs {price:C}");
+}
+
+// Direct indexer — throws KeyNotFoundException if key is missing
+// decimal p = prices["Monitor"];  ❌ dangerous if key might not exist
+
+// 4. Checking for keys and values
+bool hasLaptop = prices.ContainsKey("Laptop");     // true  — O(1)
+bool hasCheap  = prices.ContainsValue(9.99m);      // false — O(n)
+
+// 5. Removing
+prices.Remove("Mouse");   // returns true if key was found and removed
+
+// 6. Iterating (order is not guaranteed)
+foreach (KeyValuePair&lt;string, decimal&gt; kvp in prices)
+{
+    Console.WriteLine($"{kvp.Key}: {kvp.Value:C}");
+}
+
+// C# 7+ tuple deconstruction
+foreach (var (name, cost) in prices)
+{
+    Console.WriteLine($"{name}: {cost:C}");
+}
+
+// 7. Keys and Values as separate collections
+IEnumerable&lt;string&gt;  keys   = prices.Keys;
+IEnumerable&lt;decimal&gt; values = prices.Values;
+
+// 8. GetOrAdd pattern (manual, single-threaded)
+if (!prices.ContainsKey("Monitor"))
+    prices["Monitor"] = 249.99m;
+
+// 9. Frequency counter pattern
+string[] words = { "apple", "banana", "apple", "cherry", "banana", "apple" };
+var frequency = new Dictionary&lt;string, int&gt;();
+foreach (string word in words)
+{
+    frequency[word] = frequency.GetValueOrDefault(word, 0) + 1;
+}
+// frequency = { "apple": 3, "banana": 2, "cherry": 1 }</code></pre>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>List&lt;T&gt;</th>
+              <th>Dictionary&lt;TKey, TValue&gt;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-feature">Lookup by value/key</td>
+              <td>O(n) — scans all elements</td>
+              <td class="check">O(1) — hash table lookup</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Access by index</td>
+              <td class="check">O(1) — direct array access</td>
+              <td class="cross">Not supported (no integer index)</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Insert / Add</td>
+              <td class="check">O(1) amortised (append)</td>
+              <td class="check">O(1) amortised</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Ordered by insertion</td>
+              <td class="check">Yes</td>
+              <td class="cross">No (use SortedDictionary for sorted keys)</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Duplicate entries</td>
+              <td class="check">Allowed</td>
+              <td class="cross">Keys must be unique</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Memory per element</td>
+              <td class="check">Low</td>
+              <td>Higher (hash buckets + linked lists for collision)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- ===================================================== -->
+        <h2 id="hashset">HashSet&lt;T&gt; — Unique Elements</h2>
+
+        <p><span class="hl">HashSet&lt;T&gt;</span> stores only unique elements, silently ignoring duplicates. Like <span class="hl">Dictionary</span>, it is backed by a hash table and provides O(1) average-case <span class="hl">Add</span>, <span class="hl">Remove</span>, and <span class="hl">Contains</span>. Its superpower is mathematical set operations: union, intersection, and difference.</p>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">Use HashSet for deduplication and fast membership checks</p>
+            <p class="callout-body">When you receive a list of IDs and need to eliminate duplicates, pass it to a <span class="hl">HashSet&lt;T&gt;</span> constructor. For repeated "is this item in the set?" checks in a loop, <span class="hl">HashSet.Contains</span> is O(1) vs O(n) for <span class="hl">List.Contains</span> — a critical difference for large datasets.</p>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C# — HashSet&lt;T&gt; and set operations</span>
+          </div>
+          <pre><code class="language-csharp">// 1. Creating — duplicates are silently ignored
+var tagSet = new HashSet&lt;string&gt; { "dotnet", "csharp", "api", "dotnet" };
+Console.WriteLine(tagSet.Count);  // 3 — "dotnet" was not added twice
+
+// 2. Add / Remove / Contains — all O(1)
+tagSet.Add("ef-core");
+bool added = tagSet.Add("csharp");     // returns false — already exists
+tagSet.Remove("api");
+bool has = tagSet.Contains("ef-core"); // true
+
+// 3. Deduplication of an existing list
+var rawIds    = new List&lt;int&gt; { 1, 2, 3, 2, 4, 1, 5 };
+var uniqueIds = new HashSet&lt;int&gt;(rawIds);
+// uniqueIds = { 1, 2, 3, 4, 5 }  — order not guaranteed
+
+// 4. Set operations — modify the set in place
+var setA = new HashSet&lt;int&gt; { 1, 2, 3, 4 };
+var setB = new HashSet&lt;int&gt; { 3, 4, 5, 6 };
+
+setA.UnionWith(setB);       // setA = { 1, 2, 3, 4, 5, 6 }  (A ∪ B)
+
+var setC = new HashSet&lt;int&gt; { 1, 2, 3, 4 };
+setC.IntersectWith(setB);   // setC = { 3, 4 }              (A ∩ B)
+
+var setD = new HashSet&lt;int&gt; { 1, 2, 3, 4 };
+setD.ExceptWith(setB);      // setD = { 1, 2 }              (A \ B)
+
+var setE = new HashSet&lt;int&gt; { 1, 2, 3, 4 };
+setE.SymmetricExceptWith(setB);  // setE = { 1, 2, 5, 6 }  (in A or B but not both)
+
+// 5. Non-destructive subset / overlap queries
+bool overlaps   = setA.Overlaps(setB);            // any element in common?
+bool isSubset   = setA.IsSubsetOf(setB);           // every element of A is in B?
+bool isSuperset = setA.IsSupersetOf(setB);         // every element of B is in A?
+bool equals     = setA.SetEquals(setB);            // same elements?
+
+// 6. Real-world: fast role-based access check
+var allowedRoles = new HashSet&lt;string&gt;(StringComparer.OrdinalIgnoreCase)
+{
+    "Admin", "Editor", "Moderator"
+};
+
+string userRole = "admin";
+if (allowedRoles.Contains(userRole))   // O(1) — not O(n) like a list
+{
+    Console.WriteLine("Access granted");
+}</code></pre>
+        </div>
+
+        <!-- ===================================================== -->
+        <h2 id="queue-stack">Queue and Stack</h2>
+
+        <h3>Queue&lt;T&gt; — First In, First Out (FIFO)</h3>
+
+        <p>A <span class="hl">Queue&lt;T&gt;</span> processes items in the order they were added — the first item added is the first item removed. Classic use cases: background job queues, print spoolers, request pipelines, and breadth-first graph traversal.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C# — Queue&lt;T&gt; (FIFO)</span>
+          </div>
+          <pre><code class="language-csharp">var jobQueue = new Queue&lt;string&gt;();
+
+// Enqueue = add to the back of the line
+jobQueue.Enqueue("SendEmail");
+jobQueue.Enqueue("GenerateReport");
+jobQueue.Enqueue("ResizeImage");
+
+Console.WriteLine(jobQueue.Count);   // 3
+
+// Peek = look at the front without removing it
+string nextJob = jobQueue.Peek();    // "SendEmail" — still in the queue
+
+// Dequeue = remove and return the front item
+string job1 = jobQueue.Dequeue();   // "SendEmail"   — removed
+string job2 = jobQueue.Dequeue();   // "GenerateReport" — removed
+
+Console.WriteLine(jobQueue.Count);  // 1
+
+// Safe pattern — TryDequeue avoids InvalidOperationException on empty queue
+while (jobQueue.TryDequeue(out string job))
+{
+    Console.WriteLine($"Processing: {job}");
+}
+
+// Check membership (O(n) scan)
+bool hasPending = jobQueue.Contains("ResizeImage");</code></pre>
+        </div>
+
+        <h3>Stack&lt;T&gt; — Last In, First Out (LIFO)</h3>
+
+        <p>A <span class="hl">Stack&lt;T&gt;</span> returns the most-recently-added item first — last in, first out. Classic use cases: undo/redo history, expression parsing, call stack simulation, and depth-first graph traversal.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C# — Stack&lt;T&gt; (LIFO)</span>
+          </div>
+          <pre><code class="language-csharp">var undoHistory = new Stack&lt;string&gt;();
+
+// Push = add to the top of the stack
+undoHistory.Push("TypedText");
+undoHistory.Push("BoldText");
+undoHistory.Push("InsertImage");
+
+Console.WriteLine(undoHistory.Count);   // 3
+
+// Peek = look at the top without removing
+string latest = undoHistory.Peek();     // "InsertImage"
+
+// Pop = remove and return the top item
+string undone1 = undoHistory.Pop();     // "InsertImage"
+string undone2 = undoHistory.Pop();     // "BoldText"
+
+Console.WriteLine(undoHistory.Count);   // 1
+
+// Safe pattern — TryPop
+while (undoHistory.TryPop(out string action))
+{
+    Console.WriteLine($"Undoing: {action}");
+}
+
+// Real-world: balanced bracket checker
+static bool IsBalanced(string input)
+{
+    var stack = new Stack&lt;char&gt;();
+    var pairs = new Dictionary&lt;char, char&gt;
+    {
+        [')'] = '(',
+        [']'] = '[',
+        ['}'] = '{'
+    };
+
+    foreach (char c in input)
+    {
+        if (c == '(' || c == '[' || c == '{')
+        {
+            stack.Push(c);
+        }
+        else if (pairs.TryGetValue(c, out char open))
+        {
+            if (!stack.TryPop(out char top) || top != open)
+                return false;
+        }
+    }
+    return stack.Count == 0;
+}
+
+Console.WriteLine(IsBalanced("({[]})"));  // true
+Console.WriteLine(IsBalanced("({[}])"));  // false</code></pre>
+        </div>
+
+        <!-- ===================================================== -->
+        <h2 id="ienumerable-vs-iqueryable">IEnumerable vs IQueryable</h2>
+
+        <p>This is one of the most important distinctions in .NET data access — and one of the most common interview questions. Getting it wrong with EF Core can cause catastrophic performance problems at scale.</p>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>IEnumerable&lt;T&gt;</th>
+              <th>IQueryable&lt;T&gt;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-feature">Namespace</td>
+              <td><span class="hl">System.Collections.Generic</span></td>
+              <td><span class="hl">System.Linq</span></td>
+            </tr>
+            <tr>
+              <td class="col-feature">Where the filter runs</td>
+              <td>In C# memory (on the app server)</td>
+              <td class="check">In the database (translated to SQL)</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Data loaded before filtering?</td>
+              <td class="cross">Yes — ALL rows loaded first, then filtered</td>
+              <td class="check">No — only matching rows are fetched</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Use with EF Core / LINQ to SQL</td>
+              <td class="cross">Avoid — causes SELECT * + client-side filter</td>
+              <td class="check">Yes — generates efficient SQL WHERE clause</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Use with in-memory collections</td>
+              <td class="check">Yes — List, Array, HashSet, etc.</td>
+              <td class="cross">No — requires an IQueryProvider (EF Core, etc.)</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Execution model</td>
+              <td>Deferred — iterates a C# enumerator</td>
+              <td class="check">Deferred — builds an expression tree; SQL fires on materialisation</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Supports arbitrary C# lambdas</td>
+              <td class="check">Yes — any C# code in the lambda</td>
+              <td class="cross">No — only translatable expressions (subset of C#)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C# — Wrong vs Right approach with EF Core</span>
+          </div>
+          <pre><code class="language-csharp">// ❌ WRONG — AsEnumerable() forces the DB query too early
+// EF Core loads ALL products into memory FIRST, then C# applies the filter.
+// On a table with 1 million rows you transfer 1M rows across the network.
+var wrongResult = _context.Products
+    .AsEnumerable()                           // ❌ fires: SELECT * FROM Products
+    .Where(p => p.Price &gt; 100)               // runs in C# — too late!
+    .OrderBy(p => p.Name)
+    .ToList();
+// SQL: SELECT Id, Name, Price, ... FROM Products   ← no WHERE clause
+
+
+// ✅ CORRECT — keep IQueryable composed, then materialise at the end
+// EF Core translates the entire chain into a single SQL statement.
+// Only the matching rows are fetched from the database.
+var correctResult = _context.Products
+    .Where(p => p.Price &gt; 100)               // IQueryable — no DB call yet
+    .OrderBy(p => p.Name)                    // IQueryable — still no DB call
+    .Select(p => new { p.Id, p.Name, p.Price })  // projection — no DB call yet
+    .ToList();                                // ← SQL executes NOW
+// SQL: SELECT Id, Name, Price FROM Products
+//      WHERE Price &gt; 100
+//      ORDER BY Name
+
+
+// ✅ Composing a dynamic query before materialising
+IQueryable&lt;Product&gt; query = _context.Products.Where(p => p.IsActive);
+
+if (!string.IsNullOrEmpty(searchTerm))
+    query = query.Where(p => p.Name.Contains(searchTerm)); // add another condition
+
+if (categoryId.HasValue)
+    query = query.Where(p => p.CategoryId == categoryId.Value);
+
+// Single SQL query with all conditions combined:
+var results = await query
+    .OrderBy(p => p.Name)
+    .Skip(pageIndex * pageSize)
+    .Take(pageSize)
+    .ToListAsync();   // ← one SQL call with all WHERE clauses, OFFSET, LIMIT
+
+
+// ✅ IEnumerable is perfectly fine for in-memory collections
+var numbers = new List&lt;int&gt; { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+IEnumerable&lt;int&gt; evens = numbers.Where(n => n % 2 == 0);  // fine!
+
+// ✅ Convert to IEnumerable AFTER the DB query
+List&lt;Product&gt; loaded = await _context.Products
+    .Where(p => p.IsActive)
+    .ToListAsync();                           // DB query runs here
+
+// Now it's safe to use in-memory operations
+var grouped = loaded.GroupBy(p => p.CategoryId); // in-memory grouping</code></pre>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-content">
+            <p class="callout-title">Methods that materialise IQueryable to IEnumerable</p>
+            <p class="callout-body">Calling <span class="hl">.AsEnumerable()</span>, <span class="hl">.ToList()</span>, <span class="hl">.ToArray()</span>, <span class="hl">.ToDictionary()</span>, or iterating with <span class="hl">foreach</span> forces the database query to execute immediately — without any filter conditions you planned to add later. Always compose your full query first, then materialise once at the end.</p>
+          </div>
+        </div>
+
+        <!-- ===================================================== -->
+        <h2 id="concurrent-collections">Thread-Safe Collections</h2>
+
+        <p>The standard <span class="hl">List&lt;T&gt;</span>, <span class="hl">Dictionary</span>, and other collections are <strong>not thread-safe</strong>. Concurrent reads and writes without synchronisation lead to data corruption and race conditions. The <span class="hl">System.Collections.Concurrent</span> namespace provides alternatives designed for multi-threaded scenarios.</p>
+
+        <ul>
+          <li><span class="hl">ConcurrentDictionary&lt;K,V&gt;</span> — thread-safe dictionary with atomic <span class="hl">GetOrAdd</span> / <span class="hl">AddOrUpdate</span></li>
+          <li><span class="hl">ConcurrentQueue&lt;T&gt;</span> — lock-free FIFO queue; ideal for producer/consumer pipelines</li>
+          <li><span class="hl">ConcurrentBag&lt;T&gt;</span> — unordered bag optimised for the same thread adding and removing</li>
+          <li><span class="hl">ConcurrentStack&lt;T&gt;</span> — thread-safe LIFO stack</li>
+          <li><span class="hl">BlockingCollection&lt;T&gt;</span> — bounded, blocking producer/consumer queue</li>
+        </ul>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C# — Concurrent collections in practice</span>
+          </div>
+          <pre><code class="language-csharp">using System.Collections.Concurrent;
+
+// 1. ConcurrentDictionary — thread-safe application-level cache
+var cache = new ConcurrentDictionary&lt;string, Product&gt;();
+
+// GetOrAdd: atomically returns existing value OR adds and returns a new one
+Product p = cache.GetOrAdd("prod-1", key => LoadFromDatabase(key));
+
+// AddOrUpdate: add if absent, update if present — all in one atomic step
+cache.AddOrUpdate(
+    key:                  "prod-1",
+    addValue:             newProduct,
+    updateValueFactory:   (key, existing) => newProduct
+);
+
+// TryRemove: safe removal (returns false if key not found, no exception)
+if (cache.TryRemove("prod-1", out Product removed))
+{
+    Console.WriteLine($"Removed: {removed.Name}");
+}
+
+// 2. ConcurrentQueue — safe producer/consumer pipeline
+var workQueue = new ConcurrentQueue&lt;string&gt;();
+
+// Multiple producer threads safely enqueue
+Parallel.For(0, 10, i => workQueue.Enqueue($"Job-{i}"));
+
+// Consumer thread safely dequeues
+while (workQueue.TryDequeue(out string job))
+{
+    Console.WriteLine($"Processing: {job}");
+}
+
+// 3. ConcurrentBag — collect results from Parallel.ForEach
+var results = new ConcurrentBag&lt;int&gt;();
+
+Parallel.ForEach(Enumerable.Range(1, 100), num =>
+{
+    results.Add(num * num);   // multiple threads writing safely
+});
+
+Console.WriteLine($"Collected {results.Count} results");
+Console.WriteLine($"Sum: {results.Sum()}");</code></pre>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-content">
+            <p class="callout-title">In ASP.NET Core: most collections are per-request</p>
+            <p class="callout-body">Each HTTP request gets its own <strong>scoped</strong> service instance, so collections used within a single request do not need to be thread-safe. You only need concurrent collections when storing state in a <strong>singleton</strong> service that is shared across all requests — such as an in-memory cache, a request rate limiter, or a connection pool.</p>
+          </div>
+        </div>
+
+        <!-- ===================================================== -->
+        <h2 id="when-to-use">Quick Reference: When to Use What</h2>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Collection</th>
+              <th>Use When</th>
+              <th>Key Performance</th>
+              <th>Common Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-feature"><span class="hl">List&lt;T&gt;</span></td>
+              <td>Ordered sequence, indexed access, duplicates allowed</td>
+              <td>Add O(1), Get[i] O(1), Contains O(n)</td>
+              <td>Shopping cart, search results</td>
+            </tr>
+            <tr>
+              <td class="col-feature"><span class="hl">Dictionary&lt;K,V&gt;</span></td>
+              <td>Fast lookup by unique key</td>
+              <td>Get/Set/Remove O(1) avg</td>
+              <td>User cache by ID, config map</td>
+            </tr>
+            <tr>
+              <td class="col-feature"><span class="hl">HashSet&lt;T&gt;</span></td>
+              <td>Unique elements only; fast membership check</td>
+              <td>Add/Remove/Contains O(1) avg</td>
+              <td>Visited URLs, allowed roles</td>
+            </tr>
+            <tr>
+              <td class="col-feature"><span class="hl">Queue&lt;T&gt;</span></td>
+              <td>Process items in order (FIFO)</td>
+              <td>Enqueue/Dequeue O(1)</td>
+              <td>Background job queue, BFS</td>
+            </tr>
+            <tr>
+              <td class="col-feature"><span class="hl">Stack&lt;T&gt;</span></td>
+              <td>Process most-recent item first (LIFO)</td>
+              <td>Push/Pop O(1)</td>
+              <td>Undo/redo, call stack, DFS</td>
+            </tr>
+            <tr>
+              <td class="col-feature"><span class="hl">SortedDictionary&lt;K,V&gt;</span></td>
+              <td>Key-value store that must stay sorted by key</td>
+              <td>Get/Set O(log n)</td>
+              <td>Leaderboard, schedule by time</td>
+            </tr>
+            <tr>
+              <td class="col-feature"><span class="hl">LinkedList&lt;T&gt;</span></td>
+              <td>Frequent insert/remove in the middle; doubly-linked</td>
+              <td>Insert/Remove O(1) with node ref</td>
+              <td>LRU cache eviction list</td>
+            </tr>
+            <tr>
+              <td class="col-feature"><span class="hl">ConcurrentDictionary&lt;K,V&gt;</span></td>
+              <td>Multi-threaded key-value store without external locking</td>
+              <td>O(1) with fine-grained striped locks</td>
+              <td>Singleton in-memory cache</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">✅</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview quick-answer framework</p>
+            <p class="callout-body">When asked "which collection would you use for X?" — think through three questions: (1) Do you need ordered/indexed access? → <span class="hl">List</span>. (2) Do you need fast lookup by a unique key? → <span class="hl">Dictionary</span>. (3) Do you need unique elements only? → <span class="hl">HashSet</span>. Add the thread-safe variant (<span class="hl">Concurrent*</span>) if multiple threads share the collection.</p>
+          </div>
+        </div>
+
+        <!-- Page Navigation -->
+        <nav class="page-nav">
+          <a href="index.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">←</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">Home</span></div>
+          </a>
+          <a href="linq.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">LINQ &amp; Filtering</span></div>
+            <span class="page-nav-arrow">→</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">N</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

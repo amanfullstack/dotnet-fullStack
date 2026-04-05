@@ -1,0 +1,845 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entity Framework Core - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<!-- Reading Progress Bar -->
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<!-- Search Modal -->
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<!-- Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-badge">D</div>
+      DevDocs
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html">Web API</a>
+      <a href="ef-core.html" class="active">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span>
+        <input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link active"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="index.html#data-access">Data Access</a>
+          <span class="sep">/</span>
+          <span class="current">Entity Framework Core</span>
+        </nav>
+
+        <!-- Page Title -->
+        <div class="page-title-block">
+          <h1 class="page-title">🗄️ Entity Framework Core</h1>
+          <p class="page-subtitle">ORM for .NET — map C# classes to database tables, write CRUD with LINQ, and manage schema with migrations.</p>
+          <div class="page-meta">
+            <span class="badge badge-intermediate">Intermediate</span>
+            <span class="badge badge-primary">Data Access</span>
+          </div>
+        </div>
+
+        <!-- Intro callout -->
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-content">
+            <p class="callout-title">What is EF Core?</p>
+            <p class="callout-body">EF Core is an ORM (Object-Relational Mapper). It lets you work with a database using C# objects instead of raw SQL. You define classes (models), and EF Core handles generating SQL queries, tracking changes, and keeping your schema in sync with your code through migrations.</p>
+          </div>
+        </div>
+
+        <!-- ===================== CODE-FIRST ===================== -->
+        <h2 id="code-first">Code-First Approach (Recommended)</h2>
+        <p>In the code-first workflow, you write C# classes first and EF Core generates the database schema from them. This keeps your schema version-controlled alongside your code.</p>
+
+        <ol class="step-list">
+          <li>
+            <span class="step-num">1</span>
+            <div>
+              <strong>Define your model class</strong>
+              <p>Create a plain C# class with properties that map to database columns. Use data annotations or Fluent API to configure constraints.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <div>
+              <strong>Create a DbContext</strong>
+              <p>Inherit from <code>DbContext</code> and add a <code>DbSet&lt;T&gt;</code> property for each entity. Configure the model inside <code>OnModelCreating</code>.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <div>
+              <strong>Add a migration</strong>
+              <p>Run <code>dotnet ef migrations add InitialCreate</code> to generate a migration file that describes the schema change.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">4</span>
+            <div>
+              <strong>Apply the migration</strong>
+              <p>Run <code>dotnet ef database update</code> to execute the migration SQL against your database. The database is created if it does not exist.</p>
+            </div>
+          </li>
+        </ol>
+
+        <h3>Entity Model with Data Annotations</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Models/Product.cs</span>
+          </div>
+          <pre><code class="language-csharp">using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+public class Product
+{
+    // Primary key — EF Core auto-configures Id as PK by convention
+    public int Id { get; set; }
+
+    [Required]
+    [MaxLength(200)]
+    public string Name { get; set; } = string.Empty;
+
+    [MaxLength(1000)]
+    public string? Description { get; set; }
+
+    // decimal(18,2) maps to SQL Server money-safe type
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal Price { get; set; }
+
+    public int StockQuantity { get; set; }
+
+    [Required]
+    [MaxLength(100)]
+    public string Category { get; set; } = string.Empty;
+
+    // Soft-delete flag — never remove rows, just hide them
+    public bool IsActive { get; set; } = true;
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public DateTime? UpdatedAt { get; set; }
+}</code></pre>
+        </div>
+
+        <h3>DbContext Configuration</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Data/ProductDbContext.cs</span>
+          </div>
+          <pre><code class="language-csharp">using Microsoft.EntityFrameworkCore;
+
+public class ProductDbContext : DbContext
+{
+    // Constructor receives options from DI (connection string, provider)
+    public ProductDbContext(DbContextOptions&lt;ProductDbContext&gt; options)
+        : base(options) { }
+
+    // DbSet exposes Products table as a queryable collection
+    public DbSet&lt;Product&gt; Products { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity&lt;Product&gt;(entity =&gt;
+        {
+            entity.HasKey(e =&gt; e.Id);
+
+            entity.Property(e =&gt; e.Name)
+                  .IsRequired()
+                  .HasMaxLength(200);
+
+            entity.Property(e =&gt; e.Price)
+                  .HasColumnType("decimal(18,2)");
+
+            // Global query filter — all queries automatically add WHERE IsActive = 1
+            entity.HasQueryFilter(p =&gt; p.IsActive);
+
+            // Index on Category for fast category filtering
+            entity.HasIndex(e =&gt; e.Category);
+        });
+    }
+}
+
+// Register in Program.cs:
+// builder.Services.AddDbContext&lt;ProductDbContext&gt;(options =&gt;
+//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));</code></pre>
+        </div>
+
+        <h3>Migration Commands</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">bash</span>
+            <span class="code-file">Terminal</span>
+          </div>
+          <pre><code class="language-bash"># Create a new migration (generates a file in /Migrations)
+dotnet ef migrations add InitialCreate
+
+# Apply pending migrations to the database (creates DB if needed)
+dotnet ef database update
+
+# View migration history in the database
+dotnet ef migrations list</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">✅</span>
+          <div class="callout-content">
+            <p class="callout-title">Code-first keeps schema in version control</p>
+            <p class="callout-body">Migration files are plain C# code you commit to Git. Every schema change is tracked, reversible, and reviewable in pull requests — the same way you track code changes.</p>
+          </div>
+        </div>
+
+        <!-- ===================== CRUD ===================== -->
+        <h2 id="crud">CRUD Operations</h2>
+        <p>EF Core wraps your SQL in async LINQ methods. Always use the <code>Async</code> variants (<code>ToListAsync</code>, <code>FindAsync</code>, <code>SaveChangesAsync</code>) in ASP.NET Core to avoid thread starvation.</p>
+
+        <h3>Create</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Services/ProductService.cs</span>
+          </div>
+          <pre><code class="language-csharp">public async Task&lt;Product&gt; CreateAsync(CreateProductDto dto)
+{
+    var product = new Product
+    {
+        Name          = dto.Name,
+        Price         = dto.Price,
+        Category      = dto.Category,
+        StockQuantity = dto.StockQuantity,
+        Description   = dto.Description,
+        IsActive      = true,
+        CreatedAt     = DateTime.UtcNow
+    };
+
+    // EF Core marks entity as "Added" state
+    await _context.Products.AddAsync(product);
+
+    // Generates and executes INSERT INTO Products (...)
+    await _context.SaveChangesAsync();
+
+    // product.Id is now populated with the database-assigned ID
+    return product;
+}</code></pre>
+        </div>
+
+        <h3>Read</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Services/ProductService.cs</span>
+          </div>
+          <pre><code class="language-csharp">// GET ALL — read-only, no change tracking overhead
+public async Task&lt;List&lt;Product&gt;&gt; GetAllAsync()
+{
+    return await _context.Products
+        .AsNoTracking()          // Skip change tracking for read-only
+        .OrderBy(p =&gt; p.Name)
+        .ToListAsync();
+}
+
+// GET BY ID — FindAsync checks the identity map cache first
+public async Task&lt;Product?&gt; GetByIdAsync(int id)
+{
+    // Best choice for PK lookups — checks DbContext cache first
+    return await _context.Products.FindAsync(id);
+}
+
+// GET FILTERED — composed LINQ translated to WHERE clause
+public async Task&lt;List&lt;Product&gt;&gt; GetByCategoryAsync(string category)
+{
+    return await _context.Products
+        .AsNoTracking()
+        .Where(p =&gt; p.Category == category)
+        .OrderBy(p =&gt; p.Price)
+        .ToListAsync();
+        // SQL: SELECT ... FROM Products WHERE IsActive=1 AND Category=@p0
+        //      ORDER BY Price
+}</code></pre>
+        </div>
+
+        <h3>Update</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Services/ProductService.cs</span>
+          </div>
+          <pre><code class="language-csharp">public async Task&lt;Product?&gt; UpdateAsync(int id, UpdateProductDto dto)
+{
+    // FindAsync uses tracked entity if already loaded
+    var product = await _context.Products.FindAsync(id);
+    if (product == null) return null;
+
+    // Modify properties — EF Core's change tracker detects these
+    product.Name          = dto.Name;
+    product.Price         = dto.Price;
+    product.Category      = dto.Category;
+    product.StockQuantity = dto.StockQuantity;
+    product.UpdatedAt     = DateTime.UtcNow;
+
+    // EF Core generates: UPDATE Products SET Name=@p0, Price=@p1 ... WHERE Id=@id
+    // Only changed columns are included in the UPDATE statement
+    await _context.SaveChangesAsync();
+
+    return product;
+}</code></pre>
+        </div>
+
+        <h3>Delete (Soft vs Hard)</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Services/ProductService.cs</span>
+          </div>
+          <pre><code class="language-csharp">// SOFT DELETE (recommended) — set IsActive = false, row stays in DB
+public async Task&lt;bool&gt; DeleteAsync(int id)
+{
+    var product = await _context.Products.FindAsync(id);
+    if (product == null) return false;
+
+    product.IsActive  = false;           // Hide from all queries (global filter)
+    product.UpdatedAt = DateTime.UtcNow;
+
+    await _context.SaveChangesAsync();   // UPDATE Products SET IsActive=0 WHERE Id=@id
+    return true;
+}
+
+// HARD DELETE — permanently removes the row from the database
+public async Task&lt;bool&gt; HardDeleteAsync(int id)
+{
+    // IgnoreQueryFilters bypasses the IsActive global filter
+    var product = await _context.Products
+        .IgnoreQueryFilters()
+        .FirstOrDefaultAsync(p =&gt; p.Id == id);
+
+    if (product == null) return false;
+
+    _context.Products.Remove(product);   // Marks entity as "Deleted" state
+    await _context.SaveChangesAsync();   // DELETE FROM Products WHERE Id=@id
+    return true;
+}</code></pre>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-content">
+            <p class="callout-title">Always use async methods in ASP.NET Core</p>
+            <p class="callout-body">Use <code>ToListAsync()</code>, <code>FindAsync()</code>, <code>SaveChangesAsync()</code> — never the synchronous versions. Synchronous database calls block the thread pool and reduce throughput under load.</p>
+          </div>
+        </div>
+
+        <!-- ===================== CHANGE TRACKING ===================== -->
+        <h2 id="change-tracking">Change Tracking</h2>
+        <p>EF Core automatically tracks the state of every entity it loads. When you call <code>SaveChangesAsync()</code>, it generates the exact SQL needed to sync those changes to the database.</p>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>State</th>
+              <th>Meaning</th>
+              <th>SQL Generated</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-feature">Added</td>
+              <td>New entity, not yet in DB</td>
+              <td><code>INSERT INTO ...</code></td>
+            </tr>
+            <tr>
+              <td class="col-feature">Modified</td>
+              <td>Existing entity with changed properties</td>
+              <td><code>UPDATE ... SET ...</code></td>
+            </tr>
+            <tr>
+              <td class="col-feature">Deleted</td>
+              <td>Marked for removal</td>
+              <td><code>DELETE FROM ...</code></td>
+            </tr>
+            <tr>
+              <td class="col-feature">Unchanged</td>
+              <td>Loaded but not modified</td>
+              <td>No SQL</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Detached</td>
+              <td>Not tracked by this context</td>
+              <td>No SQL</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Services/ProductService.cs</span>
+          </div>
+          <pre><code class="language-csharp">// WITH TRACKING (default) — EF Core watches for changes
+var product = await _context.Products.FindAsync(id);
+product.Price = 799.99m;
+await _context.SaveChangesAsync(); // EF detects the change automatically — no explicit Update() call needed
+
+// WITHOUT TRACKING — read-only queries, faster and lower memory
+var products = await _context.Products
+    .AsNoTracking()        // Tells EF Core: "I won't modify these, skip the tracking overhead"
+    .ToListAsync();
+
+// Check entity state manually (useful for debugging)
+var entry = _context.Entry(product);
+Console.WriteLine(entry.State); // EntityState.Unchanged / Modified / Added / Deleted</code></pre>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Criteria</th>
+              <th>With Tracking (default)</th>
+              <th>AsNoTracking()</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-feature">Speed</td>
+              <td>Slightly slower (bookkeeping overhead)</td>
+              <td class="check">Faster (no bookkeeping)</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Memory</td>
+              <td>Higher (entities cached in context)</td>
+              <td class="check">Lower (no cache)</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Can SaveChanges?</td>
+              <td class="check">Yes — changes auto-detected</td>
+              <td class="cross">No — must re-attach or use Attach()</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Best for</td>
+              <td>Create / Update / Delete operations</td>
+              <td class="check">GET endpoints, reports, read-only APIs</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- ===================== SOFT DELETE ===================== -->
+        <h2 id="soft-delete">Soft Delete Pattern</h2>
+        <p>Instead of removing rows, set an <code>IsActive</code> flag to <code>false</code>. A global query filter in <code>OnModelCreating</code> ensures soft-deleted records are automatically excluded from every query without any extra <code>Where()</code> clauses in your service code.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Data/ProductDbContext.cs</span>
+          </div>
+          <pre><code class="language-csharp">protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    // Global query filter — automatically appended to EVERY query on Products
+    // Every LINQ query now implicitly adds: WHERE IsActive = 1
+    modelBuilder.Entity&lt;Product&gt;()
+        .HasQueryFilter(p =&gt; p.IsActive);
+
+    // These queries are now equivalent:
+    //   context.Products.ToListAsync()
+    //   context.Products.Where(p =&gt; p.IsActive).ToListAsync()
+
+    // To bypass the filter when you need soft-deleted records:
+    //   context.Products.IgnoreQueryFilters().ToListAsync()
+    //   (useful for admin panels, audit logs, recovery tools)
+}</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">✅</span>
+          <div class="callout-content">
+            <p class="callout-title">Soft delete preserves data history</p>
+            <p class="callout-body">Soft-deleted records are never lost. You can recover them, audit who deleted what and when, and maintain referential integrity. Hard deletes can cause foreign key violations and make audit trails impossible to reconstruct.</p>
+          </div>
+        </div>
+
+        <!-- ===================== RELATIONSHIPS ===================== -->
+        <h2 id="relationships">Relationships</h2>
+        <p>EF Core understands navigation properties and uses them to build JOINs. Define the relationship in your model classes; EF Core infers the foreign key by convention or you can configure it explicitly.</p>
+
+        <h3>One-to-Many: Category &rarr; Products</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Models/Category.cs &amp; Product.cs</span>
+          </div>
+          <pre><code class="language-csharp">public class Category
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+
+    // Navigation property — collection side (one category has many products)
+    public ICollection&lt;Product&gt; Products { get; set; } = new List&lt;Product&gt;();
+}
+
+public class Product
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+
+    // Foreign key — EF Core matches this to Category.Id by convention
+    public int CategoryId { get; set; }
+
+    // Navigation property — reference side (product belongs to one category)
+    public Category Category { get; set; } = null!;
+}</code></pre>
+        </div>
+
+        <h3>Eager Loading with Include and ThenInclude</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Services/ProductService.cs</span>
+          </div>
+          <pre><code class="language-csharp">// Eager loading — fetch products AND their category in one SQL JOIN
+var products = await _context.Products
+    .Include(p =&gt; p.Category)               // JOIN Categories ON CategoryId = Id
+    .AsNoTracking()
+    .ToListAsync();
+
+// ThenInclude — load nested relationships (Category -&gt; ParentCategory)
+var products = await _context.Products
+    .Include(p =&gt; p.Category)
+        .ThenInclude(c =&gt; c.ParentCategory) // JOIN on the related entity's navigation
+    .AsNoTracking()
+    .ToListAsync();
+
+// Filtered Include — only load active sub-entities (EF Core 5+)
+var categories = await _context.Categories
+    .Include(c =&gt; c.Products.Where(p =&gt; p.Price &gt; 100))
+    .AsNoTracking()
+    .ToListAsync();</code></pre>
+        </div>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Loading Strategy</th>
+              <th>How</th>
+              <th>Best For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-feature">Eager Loading</td>
+              <td><code>Include()</code> / <code>ThenInclude()</code></td>
+              <td>Known upfront — avoids N+1 queries</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Explicit Loading</td>
+              <td><code>context.Entry(e).Collection(...).LoadAsync()</code></td>
+              <td>Conditional — only load when needed</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Lazy Loading</td>
+              <td>Proxy navigation (requires config)</td>
+              <td>Avoid in APIs — causes N+1 query problems</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- ===================== MIGRATIONS ===================== -->
+        <h2 id="migrations">Migrations</h2>
+        <p>Migrations are versioned, incremental schema change files. Each migration has an <code>Up()</code> method (apply) and a <code>Down()</code> method (revert). EF Core tracks which migrations have been applied in a <code>__EFMigrationsHistory</code> table.</p>
+
+        <ul class="kv-list">
+          <li>
+            <span class="kv-key"><code>migrations add Name</code></span>
+            <span class="kv-val">Generates a new migration file in <code>/Migrations</code> based on the diff between your models and the last snapshot</span>
+          </li>
+          <li>
+            <span class="kv-key"><code>database update</code></span>
+            <span class="kv-val">Applies all pending migrations to the database; creates the database if it does not exist</span>
+          </li>
+          <li>
+            <span class="kv-key"><code>database update Name</code></span>
+            <span class="kv-val">Applies or reverts migrations up to (or back to) a specific migration name</span>
+          </li>
+          <li>
+            <span class="kv-key"><code>migrations remove</code></span>
+            <span class="kv-val">Removes the last migration file — only works if it has not been applied to the database</span>
+          </li>
+          <li>
+            <span class="kv-key"><code>database drop</code></span>
+            <span class="kv-val">Drops the entire database (destructive — use only in development)</span>
+          </li>
+          <li>
+            <span class="kv-key"><code>migrations list</code></span>
+            <span class="kv-val">Lists all migrations and shows which ones have been applied</span>
+          </li>
+        </ul>
+
+        <h3>Generated Migration File Structure</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Migrations/20240101000000_InitialCreate.cs</span>
+          </div>
+          <pre><code class="language-csharp">public partial class InitialCreate : Migration
+{
+    // Up() — applied when running 'database update'
+    protected override void Up(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.CreateTable(
+            name: "Products",
+            columns: table =&gt; new
+            {
+                Id = table.Column&lt;int&gt;(nullable: false)
+                    .Annotation("SqlServer:Identity", "1, 1"),
+                Name = table.Column&lt;string&gt;(maxLength: 200, nullable: false),
+                Price = table.Column&lt;decimal&gt;(type: "decimal(18,2)", nullable: false),
+                Category = table.Column&lt;string&gt;(maxLength: 100, nullable: false),
+                IsActive = table.Column&lt;bool&gt;(nullable: false, defaultValue: true),
+                CreatedAt = table.Column&lt;DateTime&gt;(nullable: false)
+            },
+            constraints: table =&gt;
+            {
+                table.PrimaryKey("PK_Products", x =&gt; x.Id);
+            });
+
+        migrationBuilder.CreateIndex(
+            name: "IX_Products_Category",
+            table: "Products",
+            column: "Category");
+    }
+
+    // Down() — applied when reverting with 'database update PreviousMigration'
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropTable(name: "Products");
+    }
+}</code></pre>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-content">
+            <p class="callout-title">Never edit generated migration files manually</p>
+            <p class="callout-body">Manually editing migration files desynchronizes them from the model snapshot (<code>Migrations/ProductDbContextModelSnapshot.cs</code>) and breaks future migrations. If you need to change a migration, remove it with <code>dotnet ef migrations remove</code> and regenerate it.</p>
+          </div>
+        </div>
+
+        <!-- ===================== PERFORMANCE ===================== -->
+        <h2 id="performance">Performance Tips</h2>
+        <p>EF Core is fast by default, but a few common patterns cause unnecessary overhead. The following table contrasts mistakes with the recommended approaches.</p>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>Common Mistake</th>
+              <th>Best Practice</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-feature">Read-only lists</td>
+              <td><code>ToListAsync()</code> with tracking on</td>
+              <td><code>.AsNoTracking().ToListAsync()</code></td>
+            </tr>
+            <tr>
+              <td class="col-feature">Single PK lookup</td>
+              <td><code>FirstOrDefaultAsync(p =&gt; p.Id == id)</code></td>
+              <td><code>FindAsync(id)</code> — checks identity cache first</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Existence check</td>
+              <td><code>.Count() &gt; 0</code> — fetches count of all rows</td>
+              <td><code>.AnyAsync(p =&gt; ...)</code> — stops at first match</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Partial data</td>
+              <td>Load entire entity, use 2 fields</td>
+              <td><code>.Select(p =&gt; new { p.Id, p.Name })</code></td>
+            </tr>
+            <tr>
+              <td class="col-feature">Related data</td>
+              <td>Lazy loading in a loop (N+1)</td>
+              <td><code>.Include()</code> once before the loop</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Hot path queries</td>
+              <td>Standard LINQ query re-compiled each call</td>
+              <td><code>EF.CompileAsyncQuery()</code> for compiled queries</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C#</span>
+            <span class="code-file">Services/ProductService.cs</span>
+          </div>
+          <pre><code class="language-csharp">// Select only needed columns — reduces data transfer and memory allocation
+var summaries = await _context.Products
+    .AsNoTracking()
+    .Where(p =&gt; p.Category == category)
+    .Select(p =&gt; new ProductSummaryDto        // Project to DTO — EF translates to SELECT Id, Name, Price
+    {
+        Id       = p.Id,
+        Name     = p.Name,
+        Price    = p.Price
+    })
+    .ToListAsync();
+
+// AnyAsync — stops scanning after the first matching row
+bool exists = await _context.Products
+    .AnyAsync(p =&gt; p.Name == name);
+
+// Compiled query — query plan is compiled once and reused on every call
+// Best for frequently called queries (e.g., GetById called hundreds of times/second)
+private static readonly Func&lt;ProductDbContext, int, Task&lt;Product?&gt;&gt; GetByIdQuery =
+    EF.CompileAsyncQuery(
+        (ProductDbContext ctx, int id) =&gt; ctx.Products.FirstOrDefault(p =&gt; p.Id == id)
+    );
+
+// Usage — reuses compiled query plan
+var product = await GetByIdQuery(_context, productId);</code></pre>
+        </div>
+
+        <!-- Page Nav -->
+        <nav class="page-nav">
+          <a href="linq.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">&#8592;</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">LINQ &amp; Filtering</span></div>
+          </a>
+          <a href="ado-net.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">ADO.NET</span></div>
+            <span class="page-nav-arrow">&#8594;</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">N</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">&#169; 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

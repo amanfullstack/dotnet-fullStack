@@ -1,0 +1,429 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning Paths - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-badge">D</div>
+      DevDocs
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span>
+        <input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="sep">/</span>
+          <span class="current">Learning Paths</span>
+        </nav>
+
+        <div class="page-title-block">
+          <h1 class="page-title">🎯 Learning Paths</h1>
+          <p class="page-subtitle">Structured learning journeys tailored to your goal — quick refresher, deep understanding, or interview prep.</p>
+          <div class="page-meta">
+            <span class="badge badge-primary">3 Paths</span>
+            <span class="badge badge-success">All Levels</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">🗺️</span>
+          <div class="callout-content">
+            <p class="callout-title">Choose your path</p>
+            <p class="callout-body">Pick based on your goal and time. You can combine paths — start with Quick Start for an overview, then go deep with Deep Dive for each topic.</p>
+          </div>
+        </div>
+
+        <!-- ═══════════ PATH 1: QUICK START ═══════════ -->
+        <h2 id="quick-start">⚡ Quick Start — 30 Minutes</h2>
+
+        <div class="path-card" style="margin-bottom: 2rem;">
+          <span class="path-num">01</span>
+          <p class="path-title">Quick Start</p>
+          <div class="path-time">⏱ ~30 minutes</div>
+          <p style="color: var(--text-3); font-size: var(--text-sm); margin-bottom: 1.5rem;">
+            <strong>Best for:</strong> Quick refresher, limited time, need a high-level overview before a meeting or a light interview.
+          </p>
+          <ol class="path-steps">
+            <li><a href="webapi-architecture.html">Architecture &amp; N-Tier Overview</a> <span style="color:var(--text-4);">— 5 min</span></li>
+            <li><a href="webapi-controllers.html">Key REST endpoints (GET/POST/PUT/DELETE)</a> <span style="color:var(--text-4);">— 5 min</span></li>
+            <li><a href="webapi-di.html">Dependency Injection basics</a> <span style="color:var(--text-4);">— 5 min</span></li>
+            <li><a href="ef-core.html">EF Core Code-First in 5 minutes</a> <span style="color:var(--text-4);">— 5 min</span></li>
+            <li><a href="interview.html">Top 10 interview Q&amp;A</a> <span style="color:var(--text-4);">— 10 min</span></li>
+          </ol>
+          <a href="webapi-architecture.html" class="btn btn-primary">Start Quick Path →</a>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-content">
+            <p class="callout-title">Not enough for a technical interview</p>
+            <p class="callout-body">Quick Start gives you the big picture. For technical interviews, use the Interview Intensive path (8-10 hours) to cover all topics properly.</p>
+          </div>
+        </div>
+
+        <!-- ═══════════ PATH 2: DEEP DIVE ═══════════ -->
+        <h2 id="deep-dive">🏊 Deep Dive — 20-25 Hours</h2>
+
+        <div class="path-card path-card-featured" style="margin-bottom: 2rem;">
+          <span class="path-num">02</span>
+          <p class="path-title">Deep Dive</p>
+          <div class="path-time">⏱ ~20-25 hours (spread over 2-4 weeks)</div>
+          <p style="color: var(--text-3); font-size: var(--text-sm); margin-bottom: 1.5rem;">
+            <strong>Best for:</strong> Thorough understanding, building production applications, senior developer preparation.
+          </p>
+
+          <h4 style="margin-top:1rem;">Week 1 — Web API Foundations</h4>
+          <ol class="path-steps">
+            <li><a href="webapi-architecture.html">Architecture &amp; Project Structure</a></li>
+            <li><a href="webapi-controllers.html">Controllers &amp; REST API Design</a></li>
+            <li><a href="webapi-models.html">Models, DTOs, Data Annotations</a></li>
+            <li><a href="webapi-di.html">Dependency Injection — 3 lifetimes deep</a></li>
+            <li><a href="webapi-middleware.html">Middleware Pipeline — custom middleware</a></li>
+          </ol>
+
+          <h4 style="margin-top:1rem;">Week 2 — Advanced Web API</h4>
+          <ol class="path-steps">
+            <li><a href="webapi-caching.html">All 5 Caching Strategies</a></li>
+            <li><a href="webapi-error-handling.html">Global Error Handling &amp; ProblemDetails</a></li>
+            <li><a href="webapi-graphql.html">GraphQL with HotChocolate</a></li>
+          </ol>
+
+          <h4 style="margin-top:1rem;">Week 3 — Data Access</h4>
+          <ol class="path-steps">
+            <li><a href="ef-core.html">EF Core — Code First, CRUD, migrations, change tracking</a></li>
+            <li><a href="ado-net.html">ADO.NET — raw SQL, transactions, parameterized queries</a></li>
+            <li><a href="linq.html">LINQ — every operator, deferred execution, IQueryable</a></li>
+            <li><a href="collections.html">Collections — when to use which type</a></li>
+          </ol>
+
+          <h4 style="margin-top:1rem;">Week 4 — Mastery</h4>
+          <ol class="path-steps">
+            <li><a href="performance.html">Performance comparison &amp; optimization</a></li>
+            <li><a href="interview.html">All 35+ interview questions</a></li>
+            <li>Build your own API from scratch (no copy-paste)</li>
+            <li>Code review: can you explain every line?</li>
+          </ol>
+
+          <a href="webapi-architecture.html" class="btn btn-primary" style="margin-top:1rem;">Start Deep Dive →</a>
+        </div>
+
+        <!-- ═══════════ PATH 3: INTERVIEW INTENSIVE ═══════════ -->
+        <h2 id="interview-intensive">🎓 Interview Intensive — 8-10 Hours</h2>
+
+        <div class="path-card" style="margin-bottom: 2rem;">
+          <span class="path-num">03</span>
+          <p class="path-title">Interview Intensive</p>
+          <div class="path-time">⏱ ~8-10 hours over 5 days</div>
+          <p style="color: var(--text-3); font-size: var(--text-sm); margin-bottom: 1.5rem;">
+            <strong>Best for:</strong> Job interviews in 1-2 weeks. Focused on topics most commonly asked in .NET backend roles.
+          </p>
+
+          <ul class="step-list">
+            <li>
+              <span class="step-num">1</span>
+              <div>
+                <strong>Day 1 — Architecture &amp; DI (2 hours)</strong>
+                <p>N-Tier architecture, Program.cs structure, Dependency Injection lifetimes, <code>[ApiController]</code> vs <code>[Controller]</code>, HTTP status codes, DTOs vs entities, model binding, content negotiation.</p>
+                <a href="webapi-architecture.html" class="btn btn-sm btn-ghost" style="margin-top:0.5rem">Start Day 1 →</a>
+              </div>
+            </li>
+            <li>
+              <span class="step-num">2</span>
+              <div>
+                <strong>Day 2 — EF Core &amp; ADO.NET (2 hours)</strong>
+                <p>Code-First vs DB-First, migrations, change tracking, <code>AsNoTracking()</code>, soft delete, N+1 problem, <code>Include()</code>. Then ADO.NET: parameterized queries, <code>SqlDataReader</code>, transactions, connection pooling. EF Core vs ADO.NET comparison.</p>
+                <a href="ef-core.html" class="btn btn-sm btn-ghost" style="margin-top:0.5rem">Start Day 2 →</a>
+              </div>
+            </li>
+            <li>
+              <span class="step-num">3</span>
+              <div>
+                <strong>Day 3 — Caching &amp; Middleware (2 hours)</strong>
+                <p>All 5 caching strategies with when to use each. Middleware pipeline order and why it matters. Custom middleware implementation. Response caching headers. Cache invalidation strategies.</p>
+                <a href="webapi-caching.html" class="btn btn-sm btn-ghost" style="margin-top:0.5rem">Start Day 3 →</a>
+              </div>
+            </li>
+            <li>
+              <span class="step-num">4</span>
+              <div>
+                <strong>Day 4 — LINQ, Collections &amp; Async (2 hours)</strong>
+                <p>LINQ method syntax, deferred execution, <code>IEnumerable</code> vs <code>IQueryable</code> (critical!). When to use List, Dictionary, HashSet, Queue, Stack. Why <code>async/await</code> is essential in Web APIs. <code>Task</code> vs <code>Task&lt;T&gt;</code>.</p>
+                <a href="linq.html" class="btn btn-sm btn-ghost" style="margin-top:0.5rem">Start Day 4 →</a>
+              </div>
+            </li>
+            <li>
+              <span class="step-num">5</span>
+              <div>
+                <strong>Day 5 — Interview Q&amp;A Review (2 hours)</strong>
+                <p>Go through all 35+ interview questions. For each: answer out loud in 2-3 sentences before expanding. Then read the answer. Note gaps. Re-read the relevant topic page for any you couldn't answer confidently.</p>
+                <a href="interview.html" class="btn btn-primary btn-sm" style="margin-top:0.5rem">Go to Interview Q&amp;A →</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- ═══════════ TOPIC ORDER ═══════════ -->
+        <h2 id="topic-order">📚 Recommended Topic Order</h2>
+
+        <p>If you're starting from scratch, follow this order — each topic builds on the previous:</p>
+
+        <ul class="step-list">
+          <li>
+            <span class="step-num">1</span>
+            <div>
+              <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+                <a href="collections.html"><strong>Collections in C#</strong></a>
+                <span class="badge badge-beginner">Beginner</span>
+                <span style="color:var(--text-4);font-size:var(--text-xs);">~1 hour</span>
+              </div>
+              <p>Foundation — List, Dictionary, HashSet, IEnumerable vs IQueryable. You'll use these everywhere.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <div>
+              <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+                <a href="linq.html"><strong>LINQ &amp; Filtering</strong></a>
+                <span class="badge badge-intermediate">Intermediate</span>
+                <span style="color:var(--text-4);font-size:var(--text-xs);">~2 hours</span>
+              </div>
+              <p>Query data from any collection or database. Deferred execution is key to EF Core performance.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <div>
+              <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+                <a href="ef-core.html"><strong>Entity Framework Core</strong></a>
+                <span class="badge badge-intermediate">Intermediate</span>
+                <span style="color:var(--text-4);font-size:var(--text-xs);">~3 hours</span>
+              </div>
+              <p>The primary data access method. Code-First, CRUD, migrations, change tracking, soft delete, relationships.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">4</span>
+            <div>
+              <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+                <a href="ado-net.html"><strong>ADO.NET</strong></a>
+                <span class="badge badge-intermediate">Intermediate</span>
+                <span style="color:var(--text-4);font-size:var(--text-xs);">~2 hours</span>
+              </div>
+              <p>Raw SQL for performance-critical paths. Parameterized queries (security), transactions, connection pooling.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">5</span>
+            <div>
+              <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+                <a href="performance.html"><strong>Performance Comparison</strong></a>
+                <span class="badge badge-advanced">Advanced</span>
+                <span style="color:var(--text-4);font-size:var(--text-xs);">~1.5 hours</span>
+              </div>
+              <p>Understand the real numbers. Caching impact, N+1 problem, decision matrix for choosing technologies.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">6</span>
+            <div>
+              <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+                <a href="interview.html"><strong>Interview Q&amp;A</strong></a>
+                <span class="badge badge-danger">Interview</span>
+                <span style="color:var(--text-4);font-size:var(--text-xs);">~2 hours</span>
+              </div>
+              <p>35+ questions covering everything above. Read only after studying all topics — test yourself first.</p>
+            </div>
+          </li>
+        </ul>
+
+        <!-- ═══════════ STUDY TIPS ═══════════ -->
+        <h2 id="tips">💡 Study Tips</h2>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">✍️</span>
+          <div class="callout-content">
+            <p class="callout-title">Type the code examples yourself</p>
+            <p class="callout-body">Don't copy-paste. Type every code example manually. Your fingers and brain learn differently — muscle memory helps recall in interviews and when coding under pressure.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">🗣️</span>
+          <div class="callout-content">
+            <p class="callout-title">Explain it out loud</p>
+            <p class="callout-body">After each topic, close your laptop and explain it in your own words as if teaching someone. If you can't explain it simply, you haven't understood it yet. This is how you prepare for verbal interview questions.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">🔍</span>
+          <div class="callout-content">
+            <p class="callout-title">Use search (Ctrl+K) during review</p>
+            <p class="callout-body">This site has search built in. During review sessions, type a concept you're unsure about to find it quickly across all pages.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">🧠</span>
+          <div class="callout-content">
+            <p class="callout-title">Understand WHY, not just WHAT</p>
+            <p class="callout-body">Don't memorize code. Understand why each pattern exists. Why use IMemoryCache? Why does middleware order matter? Why use DTOs? Interviewers always follow with "why" — rote memorization won't get you through.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">🔗</span>
+          <div class="callout-content">
+            <p class="callout-title">Connect to the real project</p>
+            <p class="callout-body">Every topic in this site is implemented in ProductCatalogAPI. After reading a topic, find the relevant code in the project. Seeing patterns in real production code cements understanding better than any tutorial.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">📱</span>
+          <div class="callout-content">
+            <p class="callout-title">Access from anywhere</p>
+            <p class="callout-body">This site is hosted on GitHub Pages — it works on your phone, tablet, and any browser. Bookmark it and review during commutes, lunch, or any spare time. Consistent review beats marathon cramming.</p>
+          </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 100%); border-radius: var(--r-2xl); padding: 3rem 2.5rem; text-align: center; margin-top: 3rem;">
+          <h3 style="color: white; font-size: var(--text-2xl); margin: 0 0 0.75rem;">Ready to start?</h3>
+          <p style="color: rgba(255,255,255,0.88); font-size: var(--text-base); margin: 0 0 2rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+            Pick a path and start today. Even 30 minutes a day builds up fast.
+          </p>
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="collections.html" class="btn btn-primary" style="background: white; color: #0ea5e9; font-weight: 700;">Start Learning →</a>
+            <a href="interview.html" class="btn btn-secondary" style="background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.3);">Interview Q&amp;A</a>
+          </div>
+        </div>
+
+        <nav class="page-nav">
+          <a href="interview.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">←</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">Interview Q&amp;A</span></div>
+          </a>
+          <a href="index.html" class="page-nav-item">
+            <div><span class="page-nav-label">Back to</span><span class="page-nav-title">Home</span></div>
+            <span class="page-nav-arrow">→</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">N</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

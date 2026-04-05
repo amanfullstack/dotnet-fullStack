@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dependency Injection - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo"><div class="logo-badge">D</div>DevDocs</a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html" class="active">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span><input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link active"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a><span class="sep">/</span>
+          <a href="webapi.html">Web API</a><span class="sep">/</span>
+          <span class="current">Dependency Injection</span>
+        </nav>
+
+        <div class="page-title-block">
+          <h1 class="page-title">💉 Dependency Injection</h1>
+          <p class="page-subtitle">ASP.NET Core has a built-in IoC container. Understand service lifetimes, constructor injection, and how to register and resolve services.</p>
+          <div class="page-meta">
+            <span class="badge badge-intermediate">Intermediate</span>
+            <span class="badge badge-primary">Web API</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-content">
+            <p class="callout-title">What is Dependency Injection?</p>
+            <p class="callout-body">DI is a design pattern where a class receives its dependencies from the outside rather than creating them itself. ASP.NET Core includes a built-in IoC (Inversion of Control) container that creates and manages object lifetimes automatically.</p>
+          </div>
+        </div>
+
+        <!-- ===== SERVICE LIFETIMES ===== -->
+        <h2 id="service-lifetimes">Service Lifetimes</h2>
+        <p>This is the most-asked DI interview topic. You must know all three lifetimes and when to use each.</p>
+
+        <table class="data-table">
+          <thead>
+            <tr><th>Lifetime</th><th>When created</th><th>When destroyed</th><th>Use for</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Singleton</strong></td>
+              <td>First request / app startup</td>
+              <td>App shutdown</td>
+              <td>Config, caching, logging, HttpClient</td>
+            </tr>
+            <tr>
+              <td><strong>Scoped</strong></td>
+              <td>Each HTTP request</td>
+              <td>End of HTTP request</td>
+              <td>DbContext, business services (most common)</td>
+            </tr>
+            <tr>
+              <td><strong>Transient</strong></td>
+              <td>Every injection point</td>
+              <td>When injected object is disposed</td>
+              <td>Lightweight stateless utilities</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- ===== REGISTRATION ===== -->
+        <h2 id="registration">Registering Services</h2>
+        <p>Services are registered in <code>Program.cs</code> using <code>builder.Services</code>.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Program.cs — Service Registration</span>
+          </div>
+          <pre><code class="language-csharp">// ── Scoped (one per HTTP request) ────────────────────────────
+// DbContext is always Scoped — it tracks changes per request
+builder.Services.AddDbContext&lt;ProductDbContext&gt;(options =>
+    options.UseSqlServer(connectionString));
+
+// Business service — scoped because it uses DbContext
+builder.Services.AddScoped&lt;IProductService, ProductService&gt;();
+
+// ── Singleton (one for entire app lifetime) ──────────────────
+// Caching service — safe as singleton (thread-safe)
+builder.Services.AddMemoryCache();  // registers IMemoryCache as singleton
+builder.Services.AddSingleton&lt;IConfiguration&gt;(builder.Configuration);
+
+// ── Transient (new every injection) ─────────────────────────
+// Rarely needed. Useful for stateless utility classes.
+builder.Services.AddTransient&lt;IGuidGenerator, GuidGenerator&gt;();
+
+// ── Register concrete type without interface ──────────────────
+builder.Services.AddScoped&lt;ProductService&gt;();
+
+// ── Register with factory ─────────────────────────────────────
+builder.Services.AddScoped&lt;IProductService&gt;(sp =>
+    new ProductService(
+        sp.GetRequiredService&lt;ProductDbContext&gt;(),
+        sp.GetRequiredService&lt;IMemoryCache&gt;()
+    ));</code></pre>
+        </div>
+
+        <!-- ===== CONSTRUCTOR INJECTION ===== -->
+        <h2 id="constructor-injection">Constructor Injection</h2>
+        <p>The most common pattern. The DI container automatically resolves constructor parameters when it creates the class.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Controller Constructor Injection</span>
+          </div>
+          <pre><code class="language-csharp">public class ProductsController : ControllerBase
+{
+    // DI container fills these from the registered services
+    private readonly IProductService _service;
+    private readonly ILogger&lt;ProductsController&gt; _logger;
+    private readonly IMemoryCache _cache;
+
+    public ProductsController(
+        IProductService service,
+        ILogger&lt;ProductsController&gt; logger,
+        IMemoryCache cache)
+    {
+        _service = service;
+        _logger  = logger;
+        _cache   = cache;
+    }
+}
+
+// Service with its own injected dependencies
+public class ProductService : IProductService
+{
+    private readonly ProductDbContext _context;
+    private readonly IMemoryCache _cache;
+    private readonly ILogger&lt;ProductService&gt; _logger;
+
+    public ProductService(
+        ProductDbContext context,
+        IMemoryCache cache,
+        ILogger&lt;ProductService&gt; logger)
+    {
+        _context = context;
+        _cache   = cache;
+        _logger  = logger;
+    }
+}</code></pre>
+        </div>
+
+        <!-- ===== INTERFACES ===== -->
+        <h2 id="interfaces">Why Program to Interfaces</h2>
+        <p>Registering as <code>IProductService</code> (interface) rather than <code>ProductService</code> (concrete class) makes code testable — you can swap implementations during tests.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Services/IProductService.cs</span>
+          </div>
+          <pre><code class="language-csharp">public interface IProductService
+{
+    Task&lt;IEnumerable&lt;Product&gt;&gt; GetAllAsync();
+    Task&lt;Product?&gt; GetByIdAsync(int id);
+    Task&lt;IEnumerable&lt;Product&gt;&gt; GetByCategoryAsync(string category);
+    Task&lt;Product&gt; CreateAsync(CreateProductRequest request);
+    Task&lt;Product?&gt; UpdateAsync(int id, UpdateProductRequest request);
+    Task&lt;Product?&gt; UpdateStockAsync(int id, int newStock);
+    Task&lt;bool&gt; DeleteAsync(int id);
+}
+
+// In unit tests, swap real service for a mock:
+// var mockService = new Mock&lt;IProductService&gt;();
+// mockService.Setup(s => s.GetAllAsync()).ReturnsAsync(fakeProducts);
+// controller = new ProductsController(mockService.Object, ...);</code></pre>
+        </div>
+
+        <!-- ===== CAPTIVE DEPENDENCY ===== -->
+        <h2 id="captive-dependency">Captive Dependency Warning</h2>
+        <p>Never inject a shorter-lived service into a longer-lived one. This is a common mistake that causes bugs.</p>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-content">
+            <p class="callout-title">Never inject Scoped into Singleton</p>
+            <p class="callout-body">If a Singleton holds a reference to a Scoped service, the scoped service lives forever (captured by the singleton). For DbContext in a singleton, use <code>IServiceScopeFactory</code> to create a scope manually instead.</p>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Correct: Use IServiceScopeFactory in Singleton</span>
+          </div>
+          <pre><code class="language-csharp">// WRONG — captive dependency: DbContext is scoped, BackgroundService is singleton
+public class MyBackgroundService : BackgroundService
+{
+    private readonly ProductDbContext _context; // ❌ singleton captures scoped
+    public MyBackgroundService(ProductDbContext context) { _context = context; }
+}
+
+// CORRECT — create scope on demand
+public class MyBackgroundService : BackgroundService
+{
+    private readonly IServiceScopeFactory _scopeFactory;
+    public MyBackgroundService(IServiceScopeFactory scopeFactory) { _scopeFactory = scopeFactory; }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        using var scope   = _scopeFactory.CreateScope();  // New scope per operation
+        var context       = scope.ServiceProvider.GetRequiredService&lt;ProductDbContext&gt;();
+        // use context safely
+    }
+}</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview cheat sheet</p>
+            <ul style="margin:0;padding-left:1.2rem;">
+              <li><strong>Transient</strong> = new every time. Use for lightweight, stateless utilities.</li>
+              <li><strong>Scoped</strong> = new per request. Use for DbContext, business services.</li>
+              <li><strong>Singleton</strong> = one instance ever. Use for caching, config, HttpClientFactory.</li>
+              <li><strong>Never</strong> inject Scoped → Singleton (captive dependency).</li>
+            </ul>
+          </div>
+        </div>
+
+        <nav class="page-nav">
+          <a href="webapi-models.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">&#8592;</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">Models &amp; DTOs</span></div>
+          </a>
+          <a href="webapi-middleware.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">Middleware</span></div>
+            <span class="page-nav-arrow">&#8594;</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">N</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">&#169; 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

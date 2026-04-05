@@ -1,0 +1,338 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Middleware Pipeline - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo"><div class="logo-badge">D</div>DevDocs</a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html" class="active">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span><input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link active"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a><span class="sep">/</span>
+          <a href="webapi.html">Web API</a><span class="sep">/</span>
+          <span class="current">Middleware</span>
+        </nav>
+
+        <div class="page-title-block">
+          <h1 class="page-title">⚙️ Middleware Pipeline</h1>
+          <p class="page-subtitle">Every HTTP request passes through a chain of middleware components. Learn how to use built-in middleware and write your own.</p>
+          <div class="page-meta">
+            <span class="badge badge-intermediate">Intermediate</span>
+            <span class="badge badge-primary">Web API</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-content">
+            <p class="callout-title">What is Middleware?</p>
+            <p class="callout-body">Middleware is software assembled into an application pipeline to handle requests and responses. Each component can process the request, pass it to the next component, and then process the response on the way back. Think of it as a chain of responsibility.</p>
+          </div>
+        </div>
+
+        <!-- ===== PIPELINE ORDER ===== -->
+        <h2 id="pipeline-order">Pipeline Order (Matters!)</h2>
+        <p>The order middleware is registered in <code>Program.cs</code> determines the order it executes. This is critical — wrong order causes bugs.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Correct Middleware Order in Program.cs</span>
+          </div>
+          <pre><code class="language-csharp">var app = builder.Build();
+
+// ① Exception handling — must be FIRST to catch errors from any middleware below
+app.UseExceptionHandler("/error");
+// or in development:
+app.UseDeveloperExceptionPage();
+
+// ② HTTPS redirection — early, before anything that needs secure connection
+app.UseHttpsRedirection();
+
+// ③ Static files — short-circuits before routing (no auth check needed)
+app.UseStaticFiles();
+
+// ④ Routing — maps URL to route endpoint (before Auth)
+app.UseRouting();
+
+// ⑤ CORS — must come before UseAuthorization for preflight to work
+app.UseCors("AllowFrontend");
+
+// ⑥ Authentication — verifies identity (who you are)
+app.UseAuthentication();
+
+// ⑦ Authorization — verifies permissions (what you can do)
+app.UseAuthorization();
+
+// ⑧ Response caching — cache responses
+app.UseResponseCaching();
+
+// ⑨ Custom middleware
+app.UseMiddleware&lt;RequestLoggingMiddleware&gt;();
+app.UseMiddleware&lt;TimingMiddleware&gt;();
+
+// ⑩ Controllers — terminal middleware (handles request, returns response)
+app.MapControllers();</code></pre>
+        </div>
+
+        <!-- ===== CUSTOM MIDDLEWARE ===== -->
+        <h2 id="custom-middleware">Writing Custom Middleware</h2>
+        <p>Two approaches: inline with <code>app.Use()</code> or a dedicated class.</p>
+
+        <h3>Inline Middleware</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Inline with app.Use()</span>
+          </div>
+          <pre><code class="language-csharp">// app.Use() — passes to next middleware
+app.Use(async (context, next) =>
+{
+    // Code runs BEFORE next middleware (request phase)
+    Console.WriteLine($"→ {context.Request.Method} {context.Request.Path}");
+
+    await next(context);   // Call next middleware in pipeline
+
+    // Code runs AFTER next middleware (response phase)
+    Console.WriteLine($"← {context.Response.StatusCode}");
+});
+
+// app.Run() — terminal, does NOT call next (short-circuits pipeline)
+app.Run(async context =>
+{
+    await context.Response.WriteAsync("Hello from terminal middleware");
+});
+
+// app.Map() — branch pipeline based on path
+app.Map("/health", healthApp =>
+{
+    healthApp.Run(async context =>
+    {
+        await context.Response.WriteAsync("Healthy");
+    });
+});</code></pre>
+        </div>
+
+        <h3>Class-Based Middleware</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Middleware/RequestLoggingMiddleware.cs</span>
+          </div>
+          <pre><code class="language-csharp">public class RequestLoggingMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly ILogger&lt;RequestLoggingMiddleware&gt; _logger;
+
+    // RequestDelegate is injected by the framework — it's the next middleware
+    public RequestLoggingMiddleware(RequestDelegate next, ILogger&lt;RequestLoggingMiddleware&gt; logger)
+    {
+        _next   = next;
+        _logger = logger;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        var stopwatch = Stopwatch.StartNew();
+
+        _logger.LogInformation(
+            "→ {Method} {Path}",
+            context.Request.Method,
+            context.Request.Path);
+
+        await _next(context);   // Call next middleware
+
+        stopwatch.Stop();
+        _logger.LogInformation(
+            "← {StatusCode} in {ElapsedMs}ms",
+            context.Response.StatusCode,
+            stopwatch.ElapsedMilliseconds);
+    }
+}
+
+// Register in Program.cs:
+// app.UseMiddleware&lt;RequestLoggingMiddleware&gt;();</code></pre>
+        </div>
+
+        <!-- ===== IMiddleware ===== -->
+        <h2 id="imiddleware">IMiddleware Interface</h2>
+        <p><code>IMiddleware</code> is a factory-activated alternative. The class is resolved from DI (supports scoped services), unlike the convention-based approach.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">IMiddleware — DI-friendly</span>
+          </div>
+          <pre><code class="language-csharp">public class ApiKeyMiddleware : IMiddleware
+{
+    // Constructor can inject Scoped or Transient services
+    private readonly IApiKeyService _apiKeyService;
+
+    public ApiKeyMiddleware(IApiKeyService apiKeyService)
+    {
+        _apiKeyService = apiKeyService;
+    }
+
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+    {
+        if (!context.Request.Headers.TryGetValue("X-Api-Key", out var key))
+        {
+            context.Response.StatusCode = 401;
+            await context.Response.WriteAsync("Missing API Key");
+            return; // Short-circuit — do NOT call next
+        }
+
+        if (!await _apiKeyService.IsValidAsync(key!))
+        {
+            context.Response.StatusCode = 403;
+            await context.Response.WriteAsync("Invalid API Key");
+            return;
+        }
+
+        await next(context); // Valid key — continue pipeline
+    }
+}
+
+// Register in Program.cs:
+// builder.Services.AddScoped&lt;ApiKeyMiddleware&gt;();  // must register as service
+// app.UseMiddleware&lt;ApiKeyMiddleware&gt;();</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">Use/Run/Map summary</p>
+            <ul style="margin:0;padding-left:1.2rem;">
+              <li><code>Use</code> — process request AND pass to next. Most middleware uses this.</li>
+              <li><code>Run</code> — terminal. Handles request, does NOT call next. Short-circuits pipeline.</li>
+              <li><code>Map</code> — branch pipeline based on path prefix (/api, /health, etc.).</li>
+            </ul>
+          </div>
+        </div>
+
+        <nav class="page-nav">
+          <a href="webapi-di.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">&#8592;</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">Dependency Injection</span></div>
+          </a>
+          <a href="webapi-caching.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">Caching Strategies</span></div>
+            <span class="page-nav-arrow">&#8594;</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">N</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">&#169; 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

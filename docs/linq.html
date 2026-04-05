@@ -1,0 +1,794 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LINQ &amp; Filtering - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<!-- Reading Progress Bar -->
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<!-- Search Modal -->
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<!-- Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-badge">D</div>
+      DevDocs
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span>
+        <input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link active"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="index.html#data-access">Data Access</a>
+          <span class="sep">/</span>
+          <span class="current">LINQ &amp; Filtering</span>
+        </nav>
+
+        <!-- Page Title Block -->
+        <div class="page-title-block">
+          <h1 class="page-title">🔗 LINQ &amp; Filtering</h1>
+          <p class="page-subtitle">Language Integrated Query — filter, sort, project, and aggregate data with elegant C# syntax.</p>
+          <div class="page-meta">
+            <span class="badge badge-intermediate">Intermediate</span>
+            <span class="badge badge-primary">Data Access</span>
+          </div>
+        </div>
+
+        <!-- Overview callout -->
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-content">
+            <p class="callout-title">What is LINQ?</p>
+            <p class="callout-body">LINQ (Language Integrated Query) is a set of C# language features and extension methods in <span class="hl">System.Linq</span> that let you query any <span class="hl">IEnumerable&lt;T&gt;</span> or <span class="hl">IQueryable&lt;T&gt;</span> source using the same consistent syntax — whether that source is a list, an array, an XML document, or a SQL database via EF Core. LINQ comes in two syntaxes: <strong>method syntax</strong> (also called fluent or lambda syntax) and <strong>query syntax</strong> (SQL-like). Both compile to the same IL.</p>
+          </div>
+        </div>
+
+        <!-- ===================================================== -->
+        <h2 id="method-vs-query">Method Syntax vs Query Syntax</h2>
+
+        <p>Both syntaxes are equivalent — they produce the same compiled output. Method syntax is the dominant style in modern C# codebases and is the one you will see in EF Core repositories. Query syntax is sometimes more readable for complex multi-join scenarios.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C# — Same query, two syntaxes</span>
+          </div>
+          <pre><code class="language-csharp">var products = new List&lt;Product&gt;
+{
+    new Product { Id = 1, Name = "Laptop",   Price = 999.99m, Category = "Electronics" },
+    new Product { Id = 2, Name = "Mouse",    Price = 29.99m,  Category = "Electronics" },
+    new Product { Id = 3, Name = "Desk",     Price = 349.00m, Category = "Furniture" },
+    new Product { Id = 4, Name = "Keyboard", Price = 79.99m,  Category = "Electronics" },
+};
+
+// ─── Method Syntax (preferred in modern C#) ───────────────────────────────
+var methodResult = products
+    .Where(p => p.Category == "Electronics" &amp;&amp; p.Price &lt; 500)
+    .OrderBy(p => p.Price)
+    .Select(p => new { p.Name, p.Price });
+
+// ─── Query Syntax (SQL-like) ──────────────────────────────────────────────
+var queryResult =
+    from p in products
+    where p.Category == "Electronics" &amp;&amp; p.Price &lt; 500
+    orderby p.Price
+    select new { p.Name, p.Price };
+
+// Both produce:
+// { Name = "Mouse",    Price = 29.99  }
+// { Name = "Keyboard", Price = 79.99  }
+
+// Query syntax MUST end with a select or group clause.
+// Method syntax can be chained arbitrarily without a terminal keyword.</code></pre>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">Method syntax is preferred in modern C#</p>
+            <p class="callout-body">Method syntax integrates naturally with the rest of C# (lambda expressions, var, IDE auto-complete). Some LINQ operators — <span class="hl">Count</span>, <span class="hl">Skip</span>, <span class="hl">Take</span>, <span class="hl">Distinct</span>, <span class="hl">Zip</span> — have no query-syntax equivalent and must always be written in method syntax. Use query syntax only if it significantly improves readability (typically for complex multi-source joins).</p>
+          </div>
+        </div>
+
+        <!-- ===================================================== -->
+        <h2 id="filtering">Filtering with Where</h2>
+
+        <p><span class="hl">Where</span> is the core filtering operator. It accepts a predicate (a lambda returning <span class="hl">bool</span>) and returns every element for which the predicate is true. Multiple <span class="hl">Where</span> calls can be chained — they are combined with AND logic and, when used with EF Core, merged into a single SQL <span class="hl">WHERE</span> clause.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C# — Filtering patterns</span>
+          </div>
+          <pre><code class="language-csharp">// 1. Single condition
+var expensive = products.Where(p => p.Price &gt; 500);
+
+// 2. AND — both conditions must be true
+var cheapElectronics = products
+    .Where(p => p.Category == "Electronics" &amp;&amp; p.Price &lt; 100);
+
+// 3. OR — either condition can be true
+var budgetOrFurniture = products
+    .Where(p => p.Price &lt; 50 || p.Category == "Furniture");
+
+// 4. String methods — all translate to SQL when used with EF Core
+var namedLap = products.Where(p => p.Name.Contains("Lap"));          // LIKE '%Lap%'
+var startK   = products.Where(p => p.Name.StartsWith("Key"));        // LIKE 'Key%'
+var endrd    = products.Where(p => p.Name.EndsWith("rd"));           // LIKE '%rd'
+var toLower  = products.Where(p => p.Name.ToLower() == "laptop");    // LOWER(Name) = 'laptop'
+
+// 5. Null checks
+var hasDesc  = products.Where(p => p.Description != null);
+var noDesc   = products.Where(p => p.Description == null);
+
+// 6. Chained Where — results in a single SQL WHERE with AND
+var result = products
+    .Where(p => p.IsActive)
+    .Where(p => p.Category == "Electronics")   // AND IsActive AND Category = 'Electronics'
+    .Where(p => p.Price &lt; 200);               // AND Price &lt; 200
+
+// 7. Dynamic conditional filtering (build query step by step)
+IQueryable&lt;Product&gt; query = _context.Products.AsQueryable();
+
+if (!string.IsNullOrEmpty(searchTerm))
+    query = query.Where(p => p.Name.Contains(searchTerm));
+
+if (minPrice.HasValue)
+    query = query.Where(p => p.Price &gt;= minPrice.Value);
+
+if (maxPrice.HasValue)
+    query = query.Where(p => p.Price &lt;= maxPrice.Value);
+
+// Only ONE SQL query is executed, with all conditions combined
+var filtered = await query.ToListAsync();</code></pre>
+        </div>
+
+        <!-- ===================================================== -->
+        <h2 id="projection">Select — Projection</h2>
+
+        <p><span class="hl">Select</span> transforms each element into a new shape. It is the LINQ equivalent of SQL's <span class="hl">SELECT</span> column list. Use it to pick specific properties, compute new values, or map entities to DTOs. When used with EF Core, projection limits the columns in the generated SQL — a significant performance win.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C# — Select (projection)</span>
+          </div>
+          <pre><code class="language-csharp">// 1. Select specific properties — SQL: SELECT Name, Price FROM Products
+var names = products.Select(p => p.Name);                 // IEnumerable&lt;string&gt;
+var namePrices = products.Select(p => new { p.Name, p.Price });  // anonymous type
+
+// 2. Map to a DTO (recommended over anonymous types for API responses)
+var dtos = products
+    .Where(p => p.IsActive)
+    .Select(p => new ProductDto
+    {
+        Id          = p.Id,
+        Name        = p.Name,
+        Price       = p.Price,
+        DisplayName = $"{p.Name} ({p.Category})"   // computed value
+    })
+    .ToList();
+
+// 3. Select with index (in-memory only — not translateable to SQL)
+var indexed = products
+    .Select((p, index) => new { Index = index + 1, p.Name });
+
+// 4. SelectMany — flatten nested collections into a single sequence
+var orders = new List&lt;Order&gt;
+{
+    new Order { Id = 1, Items = new[] { "Laptop", "Mouse" } },
+    new Order { Id = 2, Items = new[] { "Desk" } },
+    new Order { Id = 3, Items = new[] { "Keyboard", "Webcam" } }
+};
+
+// Without SelectMany you get IEnumerable&lt;string[]&gt;
+IEnumerable&lt;string[]&gt; nested = orders.Select(o => o.Items);  // 3 arrays
+
+// With SelectMany you get IEnumerable&lt;string&gt; — all items in one flat list
+IEnumerable&lt;string&gt; allItems = orders.SelectMany(o => o.Items);
+// [ "Laptop", "Mouse", "Desk", "Keyboard", "Webcam" ]
+
+// 5. SelectMany with result selector — correlate parent and child
+var orderItems = orders.SelectMany(
+    collectionSelector: o => o.Items,
+    resultSelector:     (order, item) => new { order.Id, Item = item }
+);
+// { Id=1, Item="Laptop" }, { Id=1, Item="Mouse" }, { Id=2, Item="Desk" }, ...</code></pre>
+        </div>
+
+        <!-- ===================================================== -->
+        <h2 id="sorting">OrderBy / ThenBy — Sorting</h2>
+
+        <p>LINQ provides four primary sorting operators: <span class="hl">OrderBy</span>, <span class="hl">OrderByDescending</span>, <span class="hl">ThenBy</span>, and <span class="hl">ThenByDescending</span>. With EF Core these translate directly to SQL <span class="hl">ORDER BY</span> clauses.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C# — Sorting</span>
+          </div>
+          <pre><code class="language-csharp">// 1. Ascending (default)
+var byPrice = products.OrderBy(p => p.Price);
+// SQL: ORDER BY Price ASC
+
+// 2. Descending
+var mostExpensive = products.OrderByDescending(p => p.Price);
+// SQL: ORDER BY Price DESC
+
+// 3. Multiple sort criteria with ThenBy
+var sortedProducts = products
+    .OrderBy(p => p.Category)                  // primary sort: category A-Z
+    .ThenByDescending(p => p.Price)            // secondary: highest price first
+    .ThenBy(p => p.Name);                      // tertiary: name A-Z within same price
+// SQL: ORDER BY Category ASC, Price DESC, Name ASC
+
+// 4. Sort by computed value
+var byNameLength = products.OrderBy(p => p.Name.Length);
+
+// 5. Conditional sorting (dynamic — build OrderBy at runtime)
+IOrderedQueryable&lt;Product&gt; sorted = sortField switch
+{
+    "name"  =&gt; _context.Products.OrderBy(p => p.Name),
+    "price" =&gt; _context.Products.OrderBy(p => p.Price),
+    _       =&gt; _context.Products.OrderBy(p => p.Id)
+};
+
+if (descending)
+    sorted = sorted.OrderByDescending(p => p.Id);   // re-order
+
+// 6. Getting top N results (sort + take)
+var top5 = products
+    .OrderByDescending(p => p.Price)
+    .Take(5)
+    .ToList();
+
+// 7. Do NOT use OrderBy before Where — the DB optimiser handles ordering last
+// ❌ sub-optimal: order first, then filter
+var bad  = products.OrderBy(p => p.Price).Where(p => p.Price &gt; 100);
+// ✅ better: filter first, then order
+var good = products.Where(p => p.Price &gt; 100).OrderBy(p => p.Price);</code></pre>
+        </div>
+
+        <!-- ===================================================== -->
+        <h2 id="grouping">GroupBy and Aggregation</h2>
+
+        <p><span class="hl">GroupBy</span> partitions elements into groups based on a key selector. Each group is an <span class="hl">IGrouping&lt;TKey, TElement&gt;</span> — it has a <span class="hl">Key</span> property and is itself an <span class="hl">IEnumerable&lt;TElement&gt;</span> of the grouped items. Aggregation methods (<span class="hl">Count</span>, <span class="hl">Sum</span>, <span class="hl">Average</span>, <span class="hl">Min</span>, <span class="hl">Max</span>) are usually applied after grouping.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C# — GroupBy and aggregation</span>
+          </div>
+          <pre><code class="language-csharp">// 1. Simple grouping — group products by category
+var grouped = products.GroupBy(p => p.Category);
+
+foreach (IGrouping&lt;string, Product&gt; group in grouped)
+{
+    Console.WriteLine($"Category: {group.Key}  ({group.Count()} items)");
+    foreach (Product p in group)
+        Console.WriteLine($"  - {p.Name}: {p.Price:C}");
+}
+
+// 2. GroupBy with a projection — project each group into a summary object
+var categorySummaries = products
+    .GroupBy(p => p.Category)
+    .Select(g => new
+    {
+        Category     = g.Key,
+        Count        = g.Count(),
+        AveragePrice = g.Average(p => p.Price),
+        TotalValue   = g.Sum(p => p.Price),
+        MinPrice     = g.Min(p => p.Price),
+        MaxPrice     = g.Max(p => p.Price),
+        Names        = g.Select(p => p.Name).ToList()
+    })
+    .OrderByDescending(x => x.TotalValue)
+    .ToList();
+
+// Result example:
+// { Category="Electronics", Count=3, AveragePrice=369.99, TotalValue=1109.97, ... }
+// { Category="Furniture",   Count=1, AveragePrice=349.00, TotalValue=349.00,  ... }
+
+// 3. GroupBy with EF Core — generates GROUP BY in SQL
+var dbSummary = await _context.Products
+    .GroupBy(p => p.CategoryId)
+    .Select(g => new
+    {
+        CategoryId = g.Key,
+        Count      = g.Count(),
+        Average    = g.Average(p => p.Price)
+    })
+    .ToListAsync();
+// SQL: SELECT CategoryId, COUNT(*), AVG(Price)
+//      FROM Products
+//      GROUP BY CategoryId
+
+// 4. HAVING equivalent — filter groups after aggregation
+var bigCategories = products
+    .GroupBy(p => p.Category)
+    .Where(g => g.Count() &gt;= 2)              // HAVING COUNT(*) &gt;= 2
+    .Select(g => g.Key)
+    .ToList();
+
+// 5. Standalone aggregation (no grouping needed)
+decimal totalValue  = products.Sum(p => p.Price);          // 1458.97
+decimal avgPrice    = products.Average(p => p.Price);      // 364.74
+Product cheapest    = products.MinBy(p => p.Price)!;       // Mouse  (C# 10+)
+Product mostCostly  = products.MaxBy(p => p.Price)!;       // Laptop (C# 10+)</code></pre>
+        </div>
+
+        <!-- ===================================================== -->
+        <h2 id="joins">Join Operations</h2>
+
+        <p>LINQ provides explicit join operators, but in EF Core you rarely need them because navigation properties let you traverse relationships naturally. Understanding when to use each approach is important for both interview discussions and performance optimisation.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C# — Inner Join</span>
+          </div>
+          <pre><code class="language-csharp">var categories = new List&lt;Category&gt;
+{
+    new Category { Id = 1, Name = "Electronics" },
+    new Category { Id = 2, Name = "Furniture" },
+    new Category { Id = 3, Name = "Stationery" }  // no products in this category
+};
+
+var products = new List&lt;Product&gt;
+{
+    new Product { Id = 1, Name = "Laptop",   CategoryId = 1, Price = 999.99m },
+    new Product { Id = 2, Name = "Mouse",    CategoryId = 1, Price = 29.99m  },
+    new Product { Id = 3, Name = "Desk",     CategoryId = 2, Price = 349.00m },
+    new Product { Id = 4, Name = "Keyboard", CategoryId = 1, Price = 79.99m  }
+};
+
+// ─── Inner Join (Join) ────────────────────────────────────────────────────
+// Returns only rows that have a matching record in BOTH collections.
+// "Stationery" is excluded because no products have CategoryId = 3.
+var innerJoin = products.Join(
+    inner:            categories,
+    outerKeySelector: p => p.CategoryId,
+    innerKeySelector: c => c.Id,
+    resultSelector:   (p, c) => new { p.Name, c.Name, p.Price }
+);
+// Equivalent method syntax with navigation property in EF Core:
+// _context.Products.Select(p => new { p.Name, p.Category.Name, p.Price })</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C# — Left Join (GroupJoin + SelectMany)</span>
+          </div>
+          <pre><code class="language-csharp">// ─── Left Join (GroupJoin + SelectMany + DefaultIfEmpty) ─────────────────
+// Returns ALL categories, even if they have no products.
+// Products that match appear as normal; unmatched categories get null product.
+var leftJoin = categories
+    .GroupJoin(
+        inner:            products,
+        outerKeySelector: c => c.Id,
+        innerKeySelector: p => p.CategoryId,
+        resultSelector:   (c, prods) => new { Category = c, Products = prods }
+    )
+    .SelectMany(
+        collectionSelector: x => x.Products.DefaultIfEmpty(),  // null if no products
+        resultSelector:     (x, p) => new
+        {
+            CategoryName = x.Category.Name,
+            ProductName  = p?.Name ?? "(none)",
+            Price        = p?.Price
+        }
+    );
+// Result includes: "Stationery" / "(none)" / null — the unmatched category
+
+// ─── EF Core — use Include() for navigation properties (simpler!) ─────────
+// Rather than explicit joins, EF Core with navigation properties is cleaner:
+var withCategory = await _context.Products
+    .Include(p => p.Category)             // adds INNER JOIN in SQL automatically
+    .Select(p => new
+    {
+        ProductName  = p.Name,
+        CategoryName = p.Category.Name,
+        p.Price
+    })
+    .ToListAsync();
+
+// Use explicit Join only when no navigation property exists or for
+// cross-context queries involving two separate DbContexts.</code></pre>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">Navigation properties vs explicit joins in EF Core</p>
+            <p class="callout-body">If your entities have navigation properties configured (e.g., <span class="hl">Product.Category</span>), prefer <span class="hl">.Include()</span> or dot-navigation in <span class="hl">Select</span>. EF Core generates the correct JOIN automatically. Use explicit <span class="hl">.Join()</span> only when working with collections that lack a relational key or when joining across contexts.</p>
+          </div>
+        </div>
+
+        <!-- ===================================================== -->
+        <h2 id="deferred-execution">Deferred vs Immediate Execution</h2>
+
+        <p>This is one of the most important LINQ concepts for performance — and a top interview question. LINQ queries are <strong>lazy by default</strong>: the query is defined but not executed until you actually iterate over the results.</p>
+
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Execution Type</th>
+              <th>Operators</th>
+              <th>When it runs</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-feature">Deferred (lazy)</td>
+              <td><span class="hl">Where</span>, <span class="hl">Select</span>, <span class="hl">OrderBy</span>, <span class="hl">GroupBy</span>, <span class="hl">Skip</span>, <span class="hl">Take</span>, <span class="hl">SelectMany</span></td>
+              <td>Not until iterated</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Immediate</td>
+              <td><span class="hl">ToList()</span>, <span class="hl">ToArray()</span>, <span class="hl">ToDictionary()</span>, <span class="hl">Count()</span>, <span class="hl">First()</span>, <span class="hl">Single()</span>, <span class="hl">Sum()</span>, <span class="hl">Any()</span>, <span class="hl">All()</span>, <span class="hl">Max()</span>, <span class="hl">Min()</span></td>
+              <td>Immediately when called</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C# — Deferred vs immediate execution</span>
+          </div>
+          <pre><code class="language-csharp">var numbers = new List&lt;int&gt; { 1, 2, 3, 4, 5 };
+
+// ─── Deferred execution — query is defined but NOT executed yet ───────────
+IEnumerable&lt;int&gt; query = numbers.Where(n => n &gt; 2);
+// At this point: zero iterations have happened. "query" is just a description.
+
+// ─── Deferred — query executes NOW when foreach iterates ─────────────────
+foreach (int n in query)           // ← execution starts here
+{
+    Console.WriteLine(n);          // 3, 4, 5
+}
+
+// ─── Deferred — query executes again on second iteration ─────────────────
+Console.WriteLine(query.Count()); // query runs AGAIN → 3
+
+// ─── Source modification affects deferred queries ────────────────────────
+numbers.Add(6);
+Console.WriteLine(query.Count()); // 4 — now includes 6 (query re-evaluates!)
+
+// ─── Immediate execution — snapshot taken right now ─────────────────────
+List&lt;int&gt; snapshot = numbers.Where(n => n &gt; 2).ToList();
+numbers.Add(7);
+Console.WriteLine(snapshot.Count); // still 4 — list is a fixed snapshot
+
+// ─── EF Core: deferred = no SQL yet; immediate = SQL fires ───────────────
+// This is just defining the query (IQueryable) — no database round-trip:
+IQueryable&lt;Product&gt; dbQuery = _context.Products
+    .Where(p => p.Price &gt; 100)
+    .OrderBy(p => p.Name);
+
+// Adding more conditions is still free (no DB call):
+if (onlyActive)
+    dbQuery = dbQuery.Where(p => p.IsActive);
+
+// SQL executes HERE — one round-trip, all conditions in the WHERE clause:
+List&lt;Product&gt; results = await dbQuery.ToListAsync();
+
+// ─── Multiple enumerations — a common performance mistake ────────────────
+IQueryable&lt;Product&gt; q = _context.Products.Where(p => p.IsActive);
+
+int  total   = await q.CountAsync();    // ← SQL round-trip 1
+List&lt;Product&gt; page = await q            // ← SQL round-trip 2
+    .Skip(0).Take(10).ToListAsync();
+
+// ✅ Better: capture in one list if the set is small
+// Or use a single projection that returns both in one query.</code></pre>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-content">
+            <p class="callout-title">Common mistake: modifying the source after defining a deferred query</p>
+            <p class="callout-body">Because deferred queries re-evaluate the source on each iteration, modifying a list after defining a LINQ query changes the results of future iterations. This is usually unexpected. When you need a fixed snapshot, always call <span class="hl">.ToList()</span> immediately after the query definition.</p>
+          </div>
+        </div>
+
+        <!-- ===================================================== -->
+        <h2 id="common-methods">Essential LINQ Methods Reference</h2>
+
+        <ul class="kv-list">
+          <li>
+            <span class="kv-key"><span class="hl">First()</span></span>
+            <span class="kv-val">Returns the first element matching the predicate. Throws <code>InvalidOperationException</code> if none found. Use when you are certain at least one exists.</span>
+          </li>
+          <li>
+            <span class="kv-key"><span class="hl">FirstOrDefault()</span></span>
+            <span class="kv-val">Returns the first match or <code>default(T)</code> (null for reference types) if none found. The safe alternative to <code>First()</code>.</span>
+          </li>
+          <li>
+            <span class="kv-key"><span class="hl">Single()</span></span>
+            <span class="kv-val">Returns the one and only element matching the predicate. Throws if zero OR more than one element matches. Use to assert uniqueness.</span>
+          </li>
+          <li>
+            <span class="kv-key"><span class="hl">SingleOrDefault()</span></span>
+            <span class="kv-val">Returns the match or null; throws only if MORE than one element matches. Use when zero is acceptable but duplicates indicate a bug.</span>
+          </li>
+          <li>
+            <span class="kv-key"><span class="hl">Any()</span></span>
+            <span class="kv-val">Returns <code>true</code> if at least one element matches the predicate (or if the sequence is non-empty when called without a predicate). More efficient than <code>Count() &gt; 0</code>.</span>
+          </li>
+          <li>
+            <span class="kv-key"><span class="hl">All()</span></span>
+            <span class="kv-val">Returns <code>true</code> if every element in the sequence satisfies the predicate. Short-circuits on the first failure.</span>
+          </li>
+          <li>
+            <span class="kv-key"><span class="hl">Count()</span></span>
+            <span class="kv-val">Returns the number of elements matching the optional predicate. For EF Core: generates <code>SELECT COUNT(*)</code>. Avoid using <code>Count() &gt; 0</code> as an existence check — use <code>Any()</code> instead.</span>
+          </li>
+          <li>
+            <span class="kv-key"><span class="hl">Sum() / Average()</span></span>
+            <span class="kv-val">Aggregates a numeric property across all elements. For EF Core: <code>SELECT SUM(…)</code> / <code>SELECT AVG(…)</code>.</span>
+          </li>
+          <li>
+            <span class="kv-key"><span class="hl">Min() / Max()</span></span>
+            <span class="kv-val">Returns the minimum or maximum value of a property. Use <code>MinBy()</code> / <code>MaxBy()</code> (C# 10) to return the entire object with the min/max key.</span>
+          </li>
+          <li>
+            <span class="kv-key"><span class="hl">Distinct()</span></span>
+            <span class="kv-val">Removes duplicate elements from the sequence. Works on the full object (requires <code>Equals</code> / <code>GetHashCode</code>) or use <code>DistinctBy(p => p.CategoryId)</code> (C# 10).</span>
+          </li>
+          <li>
+            <span class="kv-key"><span class="hl">Take(n)</span></span>
+            <span class="kv-val">Returns the first <code>n</code> elements. Essential for pagination. EF Core generates <code>FETCH NEXT n ROWS</code> / <code>LIMIT n</code>.</span>
+          </li>
+          <li>
+            <span class="kv-key"><span class="hl">Skip(n)</span></span>
+            <span class="kv-val">Skips the first <code>n</code> elements and returns the rest. Used with <code>Take</code> for page-based pagination: <code>Skip(page * size).Take(size)</code>.</span>
+          </li>
+          <li>
+            <span class="kv-key"><span class="hl">ToList()</span></span>
+            <span class="kv-val">Materialises the query into a <code>List&lt;T&gt;</code>. Triggers immediate execution. Use at the end of a query chain.</span>
+          </li>
+          <li>
+            <span class="kv-key"><span class="hl">ToDictionary()</span></span>
+            <span class="kv-val">Materialises into a <code>Dictionary&lt;TKey, TValue&gt;</code>. Throws on duplicate keys. Useful for building fast-lookup maps: <code>.ToDictionary(p => p.Id)</code>.</span>
+          </li>
+          <li>
+            <span class="kv-key"><span class="hl">Contains()</span></span>
+            <span class="kv-val">Checks whether the sequence contains a specific value. With EF Core and a collection of values it generates an <code>IN (…)</code> clause: <code>.Where(p => ids.Contains(p.Id))</code>.</span>
+          </li>
+        </ul>
+
+        <!-- ===================================================== -->
+        <h2 id="performance">Performance Tips</h2>
+
+        <p>LINQ is expressive but can silently hide expensive operations. These guidelines will keep your LINQ code fast in both in-memory and database-backed scenarios.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">C# — LINQ performance patterns</span>
+          </div>
+          <pre><code class="language-csharp">// ─── 1. Use IQueryable with EF Core, not IEnumerable ─────────────────────
+// ❌ Bad — loads ALL products, then filters in memory
+IEnumerable&lt;Product&gt; bad = _context.Products;
+var result = bad.Where(p => p.Price &gt; 100).ToList();
+
+// ✅ Good — filter is sent to the database
+IQueryable&lt;Product&gt; good = _context.Products.Where(p => p.Price &gt; 100);
+var result2 = good.ToList();
+
+
+// ─── 2. Select only the columns you need ─────────────────────────────────
+// ❌ Bad — SELECT * (transfers all 20 columns across network)
+var allColumns = await _context.Products
+    .Where(p => p.IsActive)
+    .ToListAsync();
+
+// ✅ Good — SELECT Id, Name, Price (only 3 columns)
+var projected = await _context.Products
+    .Where(p => p.IsActive)
+    .Select(p => new ProductDto { Id = p.Id, Name = p.Name, Price = p.Price })
+    .ToListAsync();
+
+
+// ─── 3. Use Any() instead of Count() > 0 ────────────────────────────────
+// ❌ Bad — COUNT(*) scans all matching rows
+bool existsBad = _context.Products.Where(p => p.IsActive).Count() &gt; 0;
+
+// ✅ Good — EXISTS query stops at the first match
+bool existsGood = await _context.Products.AnyAsync(p => p.IsActive);
+
+
+// ─── 4. Use First() not ToList().First() ─────────────────────────────────
+// ❌ Bad — loads ALL matching products, then picks the first in memory
+Product bad2 = _context.Products.Where(p => p.Name == "Laptop").ToList().First();
+
+// ✅ Good — SELECT TOP 1 / LIMIT 1 in the SQL
+Product good2 = await _context.Products.FirstOrDefaultAsync(p => p.Name == "Laptop")!;
+
+
+// ─── 5. Avoid N+1 queries — use Include() instead of lazy loading ─────────
+// ❌ Bad — 1 query for products + 1 query per product for category
+var productsBad = await _context.Products.ToListAsync();
+foreach (var p in productsBad)
+{
+    Console.WriteLine(p.Category.Name);  // triggers a new SQL query per product!
+}
+
+// ✅ Good — single JOIN query loads both products and categories
+var productsGood = await _context.Products
+    .Include(p => p.Category)            // LEFT JOIN Categories
+    .ToListAsync();
+
+
+// ─── 6. Pagination — always use Skip + Take on IQueryable ────────────────
+int page     = 2;
+int pageSize = 20;
+var paged = await _context.Products
+    .Where(p => p.IsActive)
+    .OrderBy(p => p.Id)              // ORDER BY is required before Skip/Take
+    .Skip((page - 1) * pageSize)
+    .Take(pageSize)
+    .ToListAsync();
+// SQL: ... ORDER BY Id OFFSET 20 ROWS FETCH NEXT 20 ROWS ONLY
+
+
+// ─── 7. Compiled queries for hot paths ────────────────────────────────────
+// EF Core compiles queries automatically (query plan cache). For the very
+// hottest paths you can use EF.CompileAsyncQuery for max speed:
+private static readonly Func&lt;AppDbContext, int, Task&lt;Product?&gt;&gt; GetByIdQuery =
+    EF.CompileAsyncQuery((AppDbContext ctx, int id) =>
+        ctx.Products.FirstOrDefault(p => p.Id == id));
+
+// Usage (skips expression tree build every time):
+Product? product = await GetByIdQuery(_context, 42);</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">✅</span>
+          <div class="callout-content">
+            <p class="callout-title">LINQ performance checklist</p>
+            <p class="callout-body">
+              Keep these rules in mind when writing LINQ for EF Core:
+              (1) Stay on <span class="hl">IQueryable</span> until you call <span class="hl">ToList()</span>;
+              (2) Project with <span class="hl">Select</span> to avoid SELECT *;
+              (3) Replace <span class="hl">Count() &gt; 0</span> with <span class="hl">Any()</span>;
+              (4) Use <span class="hl">FirstOrDefault</span> directly instead of <span class="hl">ToList().First()</span>;
+              (5) Avoid accessing navigation properties in a loop without <span class="hl">Include</span>;
+              (6) Always <span class="hl">OrderBy</span> before <span class="hl">Skip/Take</span>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Page Navigation -->
+        <nav class="page-nav">
+          <a href="collections.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">←</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">Collections in C#</span></div>
+          </a>
+          <a href="ef-core.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">Entity Framework Core</span></div>
+            <span class="page-nav-arrow">→</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">N</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

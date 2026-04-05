@@ -1,0 +1,345 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Architecture & Project Setup - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo"><div class="logo-badge">D</div>DevDocs</a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html" class="active">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span><input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link active"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a><span class="sep">/</span>
+          <a href="webapi.html">Web API</a><span class="sep">/</span>
+          <span class="current">Architecture</span>
+        </nav>
+
+        <div class="page-title-block">
+          <h1 class="page-title">🏗️ Architecture &amp; Project Setup</h1>
+          <p class="page-subtitle">How to structure an ASP.NET Core Web API project using N-Tier architecture — Controllers, Services, DbContext, and Program.cs.</p>
+          <div class="page-meta">
+            <span class="badge badge-beginner">Beginner</span>
+            <span class="badge badge-primary">Web API</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-content">
+            <p class="callout-title">Why Architecture Matters</p>
+            <p class="callout-body">A clean architecture separates concerns so each layer has one job. This makes code easier to test, maintain, and extend. The standard ASP.NET Core pattern uses Controllers for routing, Services for business logic, and a DbContext for data access.</p>
+          </div>
+        </div>
+
+        <!-- ===== PROJECT STRUCTURE ===== -->
+        <h2 id="project-structure">Project Structure</h2>
+        <p>A well-organized Web API project follows a layered folder structure. Each folder has a single responsibility.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Project Structure</span>
+          </div>
+          <pre><code>ProductCatalogAPI/
+├── Controllers/
+│   └── ProductsController.cs    ← HTTP routing & request handling
+├── Services/
+│   ├── IProductService.cs       ← Interface (contract)
+│   └── ProductService.cs        ← Business logic + caching
+├── Data/
+│   └── ProductDbContext.cs      ← EF Core DbContext
+├── Models/
+│   ├── Product.cs               ← Entity (maps to DB table)
+│   └── DTOs/
+│       ├── CreateProductRequest.cs
+│       └── UpdateProductRequest.cs
+├── Migrations/                  ← Auto-generated by EF Core
+├── Program.cs                   ← App bootstrap & DI registration
+└── ProductCatalogAPI.csproj     ← Project file with NuGet packages</code></pre>
+        </div>
+
+        <!-- ===== N-TIER ARCHITECTURE ===== -->
+        <h2 id="n-tier">N-Tier Architecture</h2>
+        <p>Each request flows through three layers. Each layer only calls the one below it — controllers never touch the database directly.</p>
+
+        <div class="kv-list">
+          <div class="kv-row"><span class="kv-key">Layer 1: Controller</span><span class="kv-val">Receives HTTP request, validates input, calls service, returns HTTP response</span></div>
+          <div class="kv-row"><span class="kv-key">Layer 2: Service</span><span class="kv-val">Business logic, caching, orchestration, calls DbContext</span></div>
+          <div class="kv-row"><span class="kv-key">Layer 3: DbContext</span><span class="kv-val">EF Core — translates LINQ to SQL, manages connections &amp; transactions</span></div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Flow</span>
+          </div>
+          <pre><code>HTTP Request → ProductsController → IProductService → ProductDbContext → SQL Server
+HTTP Response ←               ←                   ←                  ←</code></pre>
+        </div>
+
+        <!-- ===== PROGRAM.CS ===== -->
+        <h2 id="program-cs">Program.cs — App Bootstrap</h2>
+        <p><code>Program.cs</code> is the entry point. It configures services (dependency injection container) and the middleware pipeline. Everything is registered here before the app starts.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Program.cs</span>
+          </div>
+          <pre><code class="language-csharp">var builder = WebApplication.CreateBuilder(args);
+
+// ── SERVICES (DI Container) ──────────────────────────────────
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// Database — EF Core with SQL Server
+builder.Services.AddDbContext&lt;ProductDbContext&gt;(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Business logic service
+builder.Services.AddScoped&lt;IProductService, ProductService&gt;();
+
+// In-memory caching
+builder.Services.AddMemoryCache();
+
+// Response caching middleware
+builder.Services.AddResponseCaching();
+
+// CORS — allow React (3000) and Angular (4200)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+        policy.WithOrigins("http://localhost:3000", "http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod());
+});
+
+var app = builder.Build();
+
+// ── MIDDLEWARE PIPELINE (order matters!) ─────────────────────
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+app.UseCors("AllowFrontend");
+app.UseResponseCaching();
+app.UseAuthorization();
+app.MapControllers();
+
+// Auto-create database on startup
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService&lt;ProductDbContext&gt;();
+    db.Database.EnsureCreated();
+}
+
+app.Run();</code></pre>
+        </div>
+
+        <!-- ===== DBCONTEXT ===== -->
+        <h2 id="dbcontext">DbContext Configuration</h2>
+        <p>The DbContext is the bridge between your C# code and the database. It holds <code>DbSet&lt;T&gt;</code> properties for each entity and configuration in <code>OnModelCreating</code>.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">Data/ProductDbContext.cs</span>
+          </div>
+          <pre><code class="language-csharp">public class ProductDbContext : DbContext
+{
+    public ProductDbContext(DbContextOptions&lt;ProductDbContext&gt; options)
+        : base(options) { }
+
+    public DbSet&lt;Product&gt; Products { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // Soft delete — only return IsActive=true by default
+        modelBuilder.Entity&lt;Product&gt;()
+            .HasQueryFilter(p => p.IsActive);
+
+        // Index for performance
+        modelBuilder.Entity&lt;Product&gt;()
+            .HasIndex(p => p.Category);
+
+        // Decimal precision
+        modelBuilder.Entity&lt;Product&gt;()
+            .Property(p => p.Price)
+            .HasColumnType("decimal(18,2)");
+    }
+}</code></pre>
+        </div>
+
+        <!-- ===== appsettings ===== -->
+        <h2 id="appsettings">Connection String</h2>
+        <p>The connection string lives in <code>appsettings.json</code> and is injected into <code>AddDbContext</code>.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">appsettings.json</span>
+          </div>
+          <pre><code class="language-json">{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=ProductCatalogDB;Trusted_Connection=True;"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.EntityFrameworkCore.Database.Command": "Warning"
+    }
+  }
+}</code></pre>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-content">
+            <p class="callout-title">Never commit secrets</p>
+            <p class="callout-body">Use <code>appsettings.Development.json</code> or environment variables for real connection strings and API keys. The <code>.gitignore</code> template excludes <code>appsettings.*.json</code> by default.</p>
+          </div>
+        </div>
+
+        <!-- ===== INTERVIEW TIPS ===== -->
+        <h2 id="interview-tips">Interview Tips</h2>
+        <div class="callout callout-success">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">Common questions on this topic</p>
+            <ul style="margin:0;padding-left:1.2rem;">
+              <li><strong>What is the difference between AddSingleton, AddScoped, and AddTransient?</strong> — Singleton: one instance forever. Scoped: one per HTTP request. Transient: new instance every time.</li>
+              <li><strong>Why separate controllers from services?</strong> — Controllers handle HTTP concerns; services handle business logic. This makes services testable without HTTP context.</li>
+              <li><strong>Where does middleware run relative to controllers?</strong> — Middleware runs before routing reaches a controller. Each middleware component can short-circuit the pipeline.</li>
+            </ul>
+          </div>
+        </div>
+
+        <nav class="page-nav">
+          <a href="webapi.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">&#8592;</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">Web API Overview</span></div>
+          </a>
+          <a href="webapi-controllers.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">Controllers &amp; REST</span></div>
+            <span class="page-nav-arrow">&#8594;</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">N</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">&#169; 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -124,6 +124,8 @@
     margin-bottom: var(--spacing-lg);
     line-height: 1.8;
     color: var(--text-primary);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .doc-content ul,
@@ -150,12 +152,16 @@
     color: var(--primary-color);
     margin: var(--spacing-lg) 0 var(--spacing-md) 0;
     font-size: 1.2rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .doc-content h4 {
     color: var(--secondary-color);
     margin: var(--spacing-lg) 0 var(--spacing-md) 0;
     font-size: 1.05rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Tables in Documentation */
@@ -167,6 +173,7 @@
     background-color: var(--bg-secondary);
     border-radius: var(--radius-lg);
     overflow: hidden;
+    table-layout: auto;
 }
 
 .tech-table th,
@@ -176,12 +183,20 @@
     padding: var(--spacing-md);
     text-align: left;
     font-weight: 600;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    white-space: normal;
 }
 
 .tech-table td,
 .comparison-table td {
     padding: var(--spacing-md);
     border-bottom: 1px solid var(--border-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    white-space: normal;
 }
 
 .tech-table tr:hover,
@@ -218,6 +233,8 @@
     font-size: 0.9rem;
     line-height: 1.7;
     color: #e0e0e0 !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 :not(pre) > code {
@@ -227,6 +244,8 @@
     border-radius: 6px !important;
     font-size: 0.85rem !important;
     border: 1px solid var(--border-color) !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Architecture Diagrams */
@@ -349,19 +368,33 @@
     .doc-section h2 {
         font-size: 1.2rem;
         padding-bottom: var(--spacing-sm);
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .doc-section h3 {
         font-size: 1rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .doc-section h4 {
         font-size: 0.95rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .doc-content p {
         font-size: 0.95rem;
         line-height: 1.6;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .doc-content ul,
+    .doc-content ol {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .phase-navigation {
@@ -392,13 +425,20 @@
     .comparison-table th {
         font-size: 0.8rem;
         padding: var(--spacing-sm);
+        white-space: normal;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
     }
 
     .tech-table td,
     .comparison-table td {
         font-size: 0.8rem;
         padding: var(--spacing-sm);
-        word-break: break-word;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        white-space: normal;
     }
 
     .architecture-diagram {
@@ -501,22 +541,28 @@
         font-size: 1rem;
         padding-bottom: var(--spacing-xs);
         margin-bottom: var(--spacing-md);
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .doc-section h3 {
         font-size: 0.9rem;
-        margin: var(--spacing-md) 0 var(--spacing-sm) 0;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .doc-section h4 {
         font-size: 0.85rem;
-        margin: var(--spacing-md) 0 var(--spacing-sm) 0;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .doc-content p {
         font-size: 0.85rem;
         line-height: 1.5;
         margin-bottom: var(--spacing-md);
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .doc-content ul,
@@ -524,12 +570,16 @@
         margin-left: var(--spacing-lg);
         margin-bottom: var(--spacing-md);
         padding-left: 0;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .doc-content li {
         font-size: 0.85rem;
         margin-bottom: var(--spacing-sm);
         line-height: 1.5;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .phase-navigation {
@@ -574,13 +624,20 @@
         font-size: 0.7rem;
         padding: var(--spacing-xs);
         background-color: var(--primary-color);
+        white-space: normal;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
     }
 
     .tech-table td,
     .comparison-table td {
         font-size: 0.7rem;
         padding: var(--spacing-xs);
-        word-break: break-word;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        white-space: normal;
     }
 
     .architecture-diagram {
