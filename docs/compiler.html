@@ -267,6 +267,49 @@
 </head>
 <body>
 <div class="dark-mode" data-theme="light">
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="site-logo">
+        <div class="logo-badge">D</div>
+        DevDocs
+      </a>
+      <nav class="header-nav">
+        <a href="index.html">Home</a>
+        <a href="webapi.html">Web API</a>
+        <a href="ef-core.html">EF Core</a>
+        <a href="linq.html">LINQ</a>
+        <a href="interview.html">Interview</a>
+        <a href="compiler.html" class="active">Compiler</a>
+      </nav>
+      <div class="header-actions">
+        <div class="search-bar" data-search-open onclick="openSearch()">
+          <span>🔍</span>
+          <input type="text" placeholder="Search..." readonly>
+          <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+        </div>
+        <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+        <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+        <button class="menu-btn" id="menuBtn" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Search Modal -->
+  <div id="searchModal" class="search-modal">
+    <div class="search-modal-box animate-fade">
+      <div class="search-modal-input-wrap">
+        <span class="search-modal-icon">🔍</span>
+        <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+        <button id="searchClose" class="search-close-btn">ESC</button>
+      </div>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
   <div class="site-container">
     <main class="site-main">
       <div class="compiler-container">
