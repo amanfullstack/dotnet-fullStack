@@ -515,7 +515,8 @@ document.getElementById('run-btn').addEventListener('click', async () => {
     const result = await executor.execute(code, lang, '', '');
 
     if (result.success && result.output) {
-      consoleContent.innerHTML = `<pre class="console-line success">${escapeHtml(result.output)}</pre>`;
+      const formatted = formatOutput(result.output, lang);
+      consoleContent.innerHTML = `<pre class="console-line success">${formatted}</pre>`;
     } else if (result.error) {
       consoleContent.innerHTML = `<pre class="console-line error">${escapeHtml(result.error)}</pre>`;
     } else {
@@ -525,13 +526,33 @@ document.getElementById('run-btn').addEventListener('click', async () => {
     if (result.duration) {
       consoleContent.innerHTML += `<div class="console-meta">⏱️ ${result.duration}ms</div>`;
     }
+
+    // Scroll to output
+    scrollToOutput();
   } catch (err) {
     consoleContent.innerHTML = `<pre class="console-line error">Error: ${escapeHtml(err.message)}</pre>`;
+    scrollToOutput();
   } finally {
     runBtn.disabled = false;
     runBtn.textContent = '▶ Run';
   }
 });
+
+// Format output based on language
+function formatOutput(output, lang) {
+  // Just escape HTML - executor already handles language-specific formatting
+  return escapeHtml(output);
+}
+
+// Scroll to output section
+function scrollToOutput() {
+  const outputSection = document.querySelector('.compiler-layout');
+  if (outputSection) {
+    setTimeout(() => {
+      outputSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
+  }
+}
 
 // Clear console
 document.getElementById('clear-btn').addEventListener('click', () => {
