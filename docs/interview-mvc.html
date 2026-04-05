@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASP.NET MVC - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-badge">D</div>
+      DevDocs
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html" class="active">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span>
+        <input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+          <li><a href="webapi-data-access.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Data Access</a></li>
+          <li><a href="csharp.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+          <li><a href="interview-csharp.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
+          <li><a href="interview-solid.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> SOLID Principles</a></li>
+          <li><a href="interview-patterns.html" class="sidebar-link"><span class="sidebar-link-icon">🧩</span> Design Patterns</a></li>
+          <li><a href="interview-sql.html" class="sidebar-link"><span class="sidebar-link-icon">🗃️</span> SQL</a></li>
+          <li><a href="interview-mvc.html" class="sidebar-link active"><span class="sidebar-link-icon">🖥️</span> ASP.NET MVC</a></li>
+          <li><a href="interview-react.html" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React</a></li>
+          <li><a href="interview-angular.html" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="interview.html">Interview Prep</a>
+          <span class="sep">/</span>
+          <span class="current">ASP.NET MVC</span>
+        </nav>
+
+        <div class="page-title-block">
+          <h1 class="page-title">🖥️ ASP.NET MVC</h1>
+          <p class="page-subtitle">Server-side rendering with HTML forms — understand when MVC differs from Web API</p>
+          <div class="page-meta">
+            <span class="badge badge-accent">Interview Prep</span>
+            <span class="badge badge-primary">ASP.NET Architecture</span>
+            <span class="badge badge-intermediate">Intermediate</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">What is MVC?</p>
+            <p class="callout-body"><strong>MVC (Model-View-Controller)</strong> is a server-side architectural pattern that separates concerns into three layers. <strong>Controllers</strong> handle incoming HTTP requests and orchestrate business logic. <strong>Views</strong> render HTML markup (Razor templates in ASP.NET). <strong>Models</strong> hold data and validation rules. Unlike Web APIs that return JSON, MVC applications render complete HTML pages on the server and send them to the browser. This guide covers ASP.NET Core MVC using the Product Catalog admin panel scenario — the same business logic you've already learned, but now rendered as server-side forms instead of JSON.</p>
+          </div>
+        </div>
+
+        <!-- Quick Reference Table -->
+        <h2 id="mvc-overview">MVC Component Reference</h2>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>MVC Component</th>
+              <th>Responsibility</th>
+              <th>Technology / File Pattern</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Model</strong></td>
+              <td>Data structure, validation rules, business logic</td>
+              <td>C# class (e.g., <code>Product.cs</code>), ViewModel for views</td>
+            </tr>
+            <tr>
+              <td><strong>View</strong></td>
+              <td>Render HTML to the browser, display model data</td>
+              <td>Razor template (e.g., <code>Products/Index.cshtml</code>), <code>@Model</code>, <code>@Html</code></td>
+            </tr>
+            <tr>
+              <td><strong>Controller</strong></td>
+              <td>Handle HTTP requests, call services, pass data to views</td>
+              <td>C# class inheriting <code>Controller</code>, action methods returning <code>IActionResult</code></td>
+            </tr>
+            <tr>
+              <td><strong>Routing</strong></td>
+              <td>Map URLs to controller actions</td>
+              <td>Route attributes <code>[Route(...)]</code>, convention-based routing in Program.cs</td>
+            </tr>
+            <tr>
+              <td><strong>Filters</strong></td>
+              <td>Cross-cutting concerns (auth, validation, logging, error handling)</td>
+              <td><code>[Authorize]</code>, <code>[ValidateAntiForgeryToken]</code>, custom <code>IActionFilter</code></td>
+            </tr>
+            <tr>
+              <td><strong>View Engine</strong></td>
+              <td>Parse Razor syntax and generate HTML</td>
+              <td>ASP.NET Core Razor (built-in), supports <code>@if</code>, <code>@foreach</code>, <code>@Model</code>, <code>@Html</code></td>
+            </tr>
+            <tr>
+              <td><strong>ViewModel</strong></td>
+              <td>Data transfer object shaped for the view (may combine multiple models)</td>
+              <td>Separate C# class (e.g., <code>ProductEditViewModel</code>) with <code>@model</code> directive in view</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- ═══════════ Interview Q&A ═══════════ -->
+        <h2 id="mvc-interview">Interview Questions on ASP.NET MVC</h2>
+        <div class="qa-list">
+
+          <details class="qa-item">
+            <summary class="qa-question">Q47. What is the difference between ASP.NET MVC and ASP.NET Core? Why is Core better? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>ASP.NET MVC</strong> (the .NET Framework version) is a mature, full-featured framework released in 2009. It runs only on Windows and depends on the .NET Framework runtime. It is powerful but heavyweight, with many built-in abstractions that can hide complexity.</p>
+              <p><strong>ASP.NET Core</strong> (released in 2016, now just ".NET") is a complete rewrite designed for the cloud era. Key improvements:</p>
+              <ul>
+                <li><strong>Cross-platform</strong> — runs on Linux, macOS, and Windows; deploy to any container environment</li>
+                <li><strong>Lightweight</strong> — smaller footprint, faster startup time, uses only what you need</li>
+                <li><strong>Open-source</strong> — full source available on GitHub, community contributions, transparency</li>
+                <li><strong>Unified platform</strong> — Web API and MVC share the same underlying stack (both inherit from <code>ControllerBase</code>)</li>
+                <li><strong>Built-in DI</strong> — dependency injection in the core, not an add-on</li>
+                <li><strong>Modern middleware pipeline</strong> — simpler, more predictable request handling</li>
+                <li><strong>Better performance</strong> — benchmarks show 3-10x faster request handling than .NET Framework MVC</li>
+                <li><strong>First-class async/await</strong> — all APIs are async by default, no sync-over-async pitfalls</li>
+              </ul>
+              <p><strong>In interviews:</strong> you should always assume ASP.NET Core unless explicitly told otherwise. The .NET Framework version is legacy. Say "ASP.NET Core MVC is the modern choice for new projects because it's cross-platform, lightweight, and has unified Web API + MVC architecture."</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q48. Describe the MVC execution pipeline from HTTP request to response. <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>The flow is: <strong>Request → Routing → Controller instantiation → Action execution → Service call → Model population → View rendering → Response HTML.</strong></p>
+              <div style="background:#1e293b;color:#e2e8f0;padding:20px;border-radius:8px;font-family:monospace;font-size:13px;line-height:1.6;margin:15px 0;overflow-x:auto;">
+<strong>Step 1: Browser sends HTTP Request</strong>
+GET /Products/Edit/42
+Host: localhost:5000
+
+<strong>Step 2: Routing Module matches URL to action</strong>
+Route: /Products/{action}/{id}
+Matched Controller: ProductsController
+Matched Action: Edit(42)
+
+<strong>Step 3: Create controller instance (via DI container)</strong>
+new ProductsController(IProductService service, ...)
+
+<strong>Step 4: Filters execute (Authorization filter)</strong>
+[Authorize] — check if user is logged in
+
+<strong>Step 5: Bind route/query data to action parameters</strong>
+id = 42
+
+<strong>Step 6: Model validation (if model binding involved)</strong>
+Check [Required], [Range], custom [ValidationAttribute]
+
+<strong>Step 7: Call controller action</strong>
+var result = await controller.Edit(42);
+
+<strong>Step 8: Action executes, calls business logic</strong>
+var product = await _service.GetProductAsync(42);
+
+<strong>Step 9: Action returns result (e.g., View(...) or IActionResult)</strong>
+return View(new ProductEditViewModel { ... });
+
+<strong>Step 10: View Engine (Razor) renders HTML</strong>
+Parse @Model, @foreach, @Html.TextBox, etc.
+Generate HTML string
+
+<strong>Step 11: Action Result executes</strong>
+Send HTML as response body with Status 200 OK
+
+<strong>Step 12: Send response to browser</strong>
+HTTP/1.1 200 OK
+Content-Type: text/html
+&lt;!DOCTYPE html&gt;
+  &lt;body&gt; ... &lt;/body&gt;
+&lt;/html&gt;
+              </div>
+              <p><strong>In code:</strong> A simple Product edit flow looks like this:</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ProductsController.cs
+[Route("[controller]")]
+public class ProductsController : Controller
+{
+    private readonly IProductService _service;
+    public ProductsController(IProductService service) => _service = service;
+
+    // GET /Products/Edit/42
+    [HttpGet("Edit/{id}")]
+    public async Task&lt;IActionResult&gt; Edit(int id)   // Step 5: id bound from URL
+    {
+        var product = await _service.GetProductAsync(id);  // Step 8: call service
+        if (product is null) return NotFound();
+
+        var viewModel = new ProductEditViewModel     // Step 9: populate ViewModel
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Price = product.Price,
+            Category = product.Category
+        };
+
+        return View(viewModel);  // Step 9: return View with model
+                                 // Step 10: Razor renders &lt;form&gt;, &lt;input&gt;, etc.
+    }
+}</code></pre>
+              </div>
+              <p>The key insight: <strong>MVC renders HTML on the server.</strong> The browser receives a complete HTML page, not JSON. Every form submission cycles through this pipeline again.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q49. What are MVC Filters? Name the 5 types and explain their execution order. <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Filters</strong> are middleware-like components that run at specific points in the request/response lifecycle. They allow cross-cutting concerns (authentication, logging, validation, error handling) without polluting controller actions. There are five types, and they execute in a specific order.</p>
+              <div style="background:#1e293b;color:#e2e8f0;padding:20px;border-radius:8px;font-family:monospace;font-size:12px;line-height:1.8;margin:15px 0;overflow-x:auto;">
+<strong>EXECUTION ORDER:</strong>
+
+→ Request arrives
+
+→ 1️⃣  <strong>AUTHORIZATION FILTER</strong> (first, guards entry)
+   Implementations: [Authorize], [AllowAnonymous]
+   Runs: before action, can short-circuit
+
+→ 2️⃣  <strong>RESOURCE FILTER</strong> (second, guards resource access)
+   Implementations: Custom IResourceFilter
+   Runs: after auth, before model binding
+   Use case: caching, short-circuit expensive operations
+
+→ 3️⃣  <strong>ACTION FILTER</strong> (third, wraps action)
+   Implementations: [ActionName], custom IActionFilter
+   Runs: before AND after action execution
+   Use case: logging inputs/outputs, timing
+
+→ 4️⃣  <strong>RESULT FILTER</strong> (fourth, wraps result execution)
+   Implementations: Custom IResultFilter
+   Runs: before AND after result.ExecuteAsync()
+   Use case: modify response, logging
+
+→ 5️⃣  <strong>EXCEPTION FILTER</strong> (catches unhandled exceptions)
+   Implementations: Custom IExceptionFilter
+   Runs: if any filter/action throws
+   Use case: global error handling, logging
+
+→ Response sent to browser
+              </div>
+              <p><strong>Code example — logging with Action Filter:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// Custom Action Filter for logging
+public class TimingActionFilter : IActionFilter
+{
+    private readonly ILogger&lt;TimingActionFilter&gt; _logger;
+    public TimingActionFilter(ILogger&lt;TimingActionFilter&gt; logger) => _logger = logger;
+
+    // Runs BEFORE the action executes
+    public void OnActionExecuting(ActionExecutingContext context)
+    {
+        context.HttpContext.Items["StartTime"] = DateTime.UtcNow;
+        _logger.LogInformation("Action {Action} starting", context.ActionDescriptor.DisplayName);
+    }
+
+    // Runs AFTER the action executes
+    public void OnActionExecuted(ActionExecutedContext context)
+    {
+        var startTime = (DateTime)context.HttpContext.Items["StartTime"];
+        var elapsed = (DateTime.UtcNow - startTime).TotalMilliseconds;
+        _logger.LogInformation("Action {Action} completed in {Elapsed}ms",
+            context.ActionDescriptor.DisplayName, elapsed);
+    }
+}
+
+// Register in Program.cs
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add&lt;TimingActionFilter&gt;();  // global filter
+});
+
+// Or use attribute on specific action
+[ServiceFilter(typeof(TimingActionFilter))]
+public async Task&lt;IActionResult&gt; Edit(int id) { /* ... */ }</code></pre>
+              </div>
+              <p><strong>Authorization Filter example — product ownership check:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// Custom Authorization Filter — ensure user owns product before edit
+public class ProductOwnerAuthorizationFilter : IAsyncAuthorizationFilter
+{
+    private readonly IProductService _service;
+
+    public ProductOwnerAuthorizationFilter(IProductService service) => _service = service;
+
+    public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
+    {
+        var userId = context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var productIdStr = context.RouteData.Values["id"]?.ToString();
+
+        if (!int.TryParse(productIdStr, out var productId))
+        {
+            context.Result = new BadRequestResult();
+            return;
+        }
+
+        var product = await _service.GetProductAsync(productId);
+        if (product?.OwnerId != userId)
+        {
+            context.Result = new ForbidResult();  // Stop here, return 403
+        }
+    }
+}
+
+// Use on action
+[ServiceFilter(typeof(ProductOwnerAuthorizationFilter))]
+public async Task&lt;IActionResult&gt; Delete(int id)
+{
+    await _service.DeleteProductAsync(id);
+    return RedirectToAction(nameof(Index));
+}</code></pre>
+              </div>
+              <p><strong>Key point:</strong> The five filter types have a strict execution order. Understand that order so you can place cross-cutting logic at the right stage in the pipeline.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q50. What are ViewBag, ViewData, and TempData? When would you use each? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>All three are ways to pass data from a controller action to a view (or persist it across redirects). The differences are subtle but important.</p>
+              <table class="data-table" style="margin:15px 0;">
+                <thead>
+                  <tr>
+                    <th>Mechanism</th>
+                    <th>Scope</th>
+                    <th>Type</th>
+                    <th>Best for</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>ViewBag</strong></td>
+                    <td>Current action → current view only</td>
+                    <td>Dynamic (no compile-time type checking)</td>
+                    <td>Small, ad-hoc data to the view (page title, flags)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>ViewData</strong></td>
+                    <td>Current action → current view + child views</td>
+                    <td>Dictionary&lt;string, object&gt; (cast needed)</td>
+                    <td>Legacy code, shared data across layout and partials</td>
+                  </tr>
+                  <tr>
+                    <td><strong>TempData</strong></td>
+                    <td>Current action → next action (survives redirect)</td>
+                    <td>Dictionary&lt;string, object&gt; (cast needed)</td>
+                    <td>One-time messages across redirects (error alerts, success notifications)</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p><strong>ViewBag example — pass ad-hoc data to view:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ProductsController.cs
+public async Task&lt;IActionResult&gt; Index()
+{
+    var products = await _service.GetAllProductsAsync();
+
+    ViewBag.PageTitle = "Product Catalog";           // Pass via ViewBag
+    ViewBag.TotalCount = products.Count();
+    ViewBag.IsAdmin = User.IsInRole("Admin");
+
+    return View(products);
+}</code></pre>
+              </div>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">html</span>
+                </div>
+                <pre><code class="language-html">&lt;!-- Views/Products/Index.cshtml --&gt;
+&lt;h1&gt;@ViewBag.PageTitle&lt;/h1&gt;
+
+&lt;p&gt;Total Products: &lt;strong&gt;@ViewBag.TotalCount&lt;/strong&gt;&lt;/p&gt;
+
+@if ((bool)ViewBag.IsAdmin)
+{
+    &lt;a href="@Url.Action("Create")"&gt;+ New Product&lt;/a&gt;
+}</code></pre>
+              </div>
+              <p><strong>ViewData example — shared with layout/partials:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ProductsController.cs
+public async Task&lt;IActionResult&gt; Edit(int id)
+{
+    var product = await _service.GetProductAsync(id);
+    ViewData["Title"] = $"Edit Product: {product.Name}";  // Accessible in layout
+    ViewData["BreadcrumbItems"] = new[] { "Products", product.Name };
+
+    return View(product);
+}</code></pre>
+              </div>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">html</span>
+                </div>
+                <pre><code class="language-html">&lt;!-- Views/Shared/_Layout.cshtml --&gt;
+&lt;title&gt;@ViewData["Title"] - My App&lt;/title&gt;
+
+&lt;!-- Breadcrumb partial --&gt;
+@if (ViewData["BreadcrumbItems"] is string[] items)
+{
+    &lt;div class="breadcrumb"&gt;
+        @foreach (var item in items)
+        {
+            &lt;span&gt;@item&lt;/span&gt;
+        }
+    &lt;/div&gt;
+}</code></pre>
+              </div>
+              <p><strong>TempData example — success message after form submission:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ProductsController.cs
+[HttpPost]
+public async Task&lt;IActionResult&gt; Create(CreateProductViewModel vm)
+{
+    if (!ModelState.IsValid)
+        return View(vm);
+
+    var product = new Product { Name = vm.Name, Price = vm.Price };
+    await _service.CreateProductAsync(product);
+
+    // Store message in TempData — survives the redirect
+    TempData["SuccessMessage"] = $"Product '{product.Name}' created successfully!";
+
+    return RedirectToAction(nameof(Index));  // TempData persists to the next request
+}</code></pre>
+              </div>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">html</span>
+                </div>
+                <pre><code class="language-html">&lt;!-- Views/Products/Index.cshtml --&gt;
+@if (TempData["SuccessMessage"] is string message)
+{
+    &lt;div class="alert alert-success alert-dismissible"&gt;
+        @message
+        &lt;button type="button" class="btn-close"&gt;&lt;/button&gt;
+    &lt;/div&gt;
+}</code></pre>
+              </div>
+              <p><strong>Interview tip:</strong> "ViewBag and ViewData pass data to the current view. ViewBag is cleaner syntax (dynamic); ViewData requires casting. TempData persists across a redirect, which is why I use it for success/error messages after form posts. Avoid TempData for large data — it's stored in the session, which doesn't scale."</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q51. What are strongly-typed views and ViewModels? Why create a separate ViewModel class? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>A <strong>strongly-typed view</strong> declares its model using the <code>@model</code> directive at the top of the .cshtml file. This gives you IntelliSense in the editor and compile-time type checking — instead of casting <code>ViewData["Product"]</code>, you write <code>@Model.Name</code> directly.</p>
+              <p>A <strong>ViewModel</strong> is a dedicated C# class shaped exactly for a specific view — it may combine data from multiple domain models, include validation metadata, and exclude sensitive fields. Never pass a database entity directly to a view; instead, project it into a ViewModel.</p>
+              <p><strong>Why separate ViewModel from domain model?</strong></p>
+              <ul>
+                <li><strong>View-specific concerns:</strong> A view might need a dropdown list of categories, a "IsEditing" boolean, and a collection of related items — none of which are part of the domain model.</li>
+                <li><strong>Security:</strong> The domain Product entity might have an internal cost field — you don't want that exposed to the view. A ViewModel includes only what the UI needs.</li>
+                <li><strong>Flexibility:</strong> Changing the view's layout doesn't force changes to the domain model. The ViewModel is a contract between controller and view; the domain model is internal to the business layer.</li>
+                <li><strong>Testing:</strong> You can test the controller's mapping logic (entity → ViewModel) in isolation from the view rendering.</li>
+              </ul>
+              <p><strong>Domain model (entity):</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// Models/Product.cs — from the database
+public class Product
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public decimal Price { get; set; }
+    public decimal Cost { get; set; }              // ❌ internal only, hide from view
+    public string Category { get; set; } = string.Empty;
+    public int StockQuantity { get; set; }
+    public bool IsActive { get; set; }
+    public DateTime CreatedAt { get; set; }
+
+    public decimal Profit => Price - Cost;         // ❌ not for display
+}</code></pre>
+              </div>
+              <p><strong>ViewModel for edit action:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ViewModels/ProductEditViewModel.cs — shaped for the view
+public class ProductEditViewModel
+{
+    public int Id { get; set; }
+
+    [Required(ErrorMessage = "Product name is required")]
+    [StringLength(100)]
+    public string Name { get; set; } = string.Empty;
+
+    [Required]
+    [Range(0.01, 999999)]
+    public decimal Price { get; set; }
+
+    [Required]
+    public string Category { get; set; } = string.Empty;
+
+    [Range(0, 10000)]
+    public int StockQuantity { get; set; }
+
+    // ✅ For the view dropdowns and UI logic
+    public List&lt;string&gt; AvailableCategories { get; set; } = new();
+    public bool CanEdit { get; set; }               // view needs to know if user can edit
+    public string? LastModifiedBy { get; set; }
+}
+
+// ViewModel for the index/list view
+public class ProductListItemViewModel
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public decimal Price { get; set; }
+    public string Category { get; set; } = string.Empty;
+    public int Stock { get; set; }
+    public string StatusBadge { get; set; } = string.Empty;  // "In Stock", "Low Stock", "Out"
+}</code></pre>
+              </div>
+              <p><strong>Controller mapping domain model to ViewModel:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ProductsController.cs
+[HttpGet("Edit/{id}")]
+public async Task&lt;IActionResult&gt; Edit(int id)
+{
+    var product = await _service.GetProductAsync(id);
+    if (product is null) return NotFound();
+
+    // Map domain model → ViewModel
+    var vm = new ProductEditViewModel
+    {
+        Id = product.Id,
+        Name = product.Name,
+        Price = product.Price,
+        Category = product.Category,
+        StockQuantity = product.StockQuantity,
+        AvailableCategories = await _service.GetCategoriesAsync(),  // only for view
+        CanEdit = User.IsInRole("Admin"),                           // only for view
+        LastModifiedBy = product.LastModifiedBy
+    };
+
+    // Cost is NOT copied — it stays internal
+    return View(vm);
+}</code></pre>
+              </div>
+              <p><strong>Strongly-typed view using the ViewModel:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">html</span>
+                </div>
+                <pre><code class="language-html">&lt;!-- Views/Products/Edit.cshtml --&gt;
+@model ProductEditViewModel
+
+&lt;h1&gt;Edit Product&lt;/h1&gt;
+
+&lt;form method="post" asp-action="Update"&gt;
+    &lt;div class="form-group"&gt;
+        &lt;label asp-for="Name"&gt;&lt;/label&gt;
+        &lt;input asp-for="Name" class="form-control" /&gt;
+        &lt;span asp-validation-for="Name"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+        &lt;label asp-for="Category"&gt;&lt;/label&gt;
+        &lt;select asp-for="Category" asp-items="Model.AvailableCategories.Select(c => new SelectListItem { Text = c, Value = c })"&gt;
+        &lt;/select&gt;
+    &lt;/div&gt;
+
+    @if (Model.CanEdit)
+    {
+        &lt;button type="submit" class="btn btn-primary"&gt;Save&lt;/button&gt;
+    }
+    else
+    {
+        &lt;p class="text-warning"&gt;You do not have permission to edit this product.&lt;/p&gt;
+    }
+&lt;/form&gt;</code></pre>
+              </div>
+              <p><strong>Key benefits:</strong> You get IntelliSense on <code>@Model.Name</code>, validation metadata is tied to the view's needs (not the domain model's internal rules), and the view is isolated from database concerns. The domain model and view can evolve independently.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q52. What are HTML Helpers? When should you use @Html.TextBox, @Html.DropDownList, @Html.ValidationMessage? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>HTML Helpers</strong> are methods that generate HTML markup. They bind to your ViewModel properties, auto-populate values, generate proper <code>name</code> attributes for model binding, and include validation attributes. They improve productivity and reduce typos.</p>
+              <p><strong>Common HTML Helpers:</strong></p>
+              <table class="data-table" style="margin:15px 0;">
+                <thead>
+                  <tr>
+                    <th>Helper</th>
+                    <th>Generates</th>
+                    <th>Use case</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>@Html.TextBox("name", value)</code></td>
+                    <td><code>&lt;input type="text" name="name" value="..." /&gt;</code></td>
+                    <td>Simple text input</td>
+                  </tr>
+                  <tr>
+                    <td><code>@Html.TextBoxFor(m => m.ProductName)</code></td>
+                    <td><code>&lt;input type="text" name="ProductName" value="..." /&gt;</code></td>
+                    <td>Strongly-typed; uses ViewModel property</td>
+                  </tr>
+                  <tr>
+                    <td><code>@Html.DropDownList("category", items)</code></td>
+                    <td><code>&lt;select name="category"&gt;&lt;option&gt;...&lt;/select&gt;</code></td>
+                    <td>Select list</td>
+                  </tr>
+                  <tr>
+                    <td><code>@Html.DropDownListFor(m => m.Category, items)</code></td>
+                    <td><code>&lt;select name="Category"&gt;...&lt;/select&gt;</code></td>
+                    <td>Strongly-typed; binds to ViewModel property</td>
+                  </tr>
+                  <tr>
+                    <td><code>@Html.CheckBox("isActive")</code></td>
+                    <td><code>&lt;input type="checkbox" name="isActive" /&gt;</code></td>
+                    <td>Boolean toggle</td>
+                  </tr>
+                  <tr>
+                    <td><code>@Html.ValidationMessage("Name")</code></td>
+                    <td><code>&lt;span class="field-validation-error"&gt;...&lt;/span&gt;</code></td>
+                    <td>Display validation errors for a property</td>
+                  </tr>
+                  <tr>
+                    <td><code>@Html.ValidationSummary()</code></td>
+                    <td><code>&lt;div&gt;&lt;ul&gt;&lt;li&gt;errors&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;</code></td>
+                    <td>Display all validation errors at once</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p><strong>Example — Product edit form with helpers:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">html</span>
+                </div>
+                <pre><code class="language-html">&lt;!-- Views/Products/Edit.cshtml --&gt;
+@model ProductEditViewModel
+
+&lt;form method="post" asp-action="Update"&gt;
+    @Html.ValidationSummary()  &lt;!-- Show all errors at top --&gt;
+
+    &lt;div class="form-group"&gt;
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name)
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+        @Html.LabelFor(m => m.Price)
+        @Html.TextBoxFor(m => m.Price, new { @class = "form-control", type = "number", step = "0.01" })
+        @Html.ValidationMessageFor(m => m.Price)
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+        @Html.LabelFor(m => m.Category)
+        @Html.DropDownListFor(m => m.Category,
+            new SelectList(Model.AvailableCategories),
+            "-- Select Category --",
+            new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Category)
+    &lt;/div&gt;
+
+    &lt;div class="form-check"&gt;
+        @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+        @Html.LabelFor(m => m.IsActive, "Is Active?")
+    &lt;/div&gt;
+
+    &lt;button type="submit" class="btn btn-primary"&gt;Save&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+              </div>
+              <p><strong>Why use strongly-typed helpers?</strong> They automatically:</p>
+              <ul>
+                <li>Bind the <code>name</code> attribute to the ViewModel property name (required for model binding on POST)</li>
+                <li>Populate the current value if the form is re-displayed (useful for validation failures)</li>
+                <li>Generate the correct input type (text, number, date, email, etc.)</li>
+                <li>Apply CSS classes from validation attributes</li>
+                <li>Provide compile-time IntelliSense — if you rename the property, the helpers break, catching the error early</li>
+              </ul>
+              <p><strong>Modern alternative — Tag Helpers:</strong> ASP.NET Core also supports Tag Helpers like <code>&lt;input asp-for="Name" /&gt;</code> which work similarly but use HTML-like syntax instead of helper methods. Many teams prefer tag helpers for cleaner code.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q53. Explain Razor syntax. Give examples of @Model, @foreach, @if, and @Html. <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Razor</strong> is ASP.NET's template engine. It blends C# and HTML — any line starting with <code>@</code> is C# code, the rest is HTML. Razor compiles to a C# class that generates HTML at runtime.</p>
+              <p><strong>Core Razor syntax:</strong></p>
+              <ul>
+                <li><code>@Model</code> — access the ViewModel passed from the controller</li>
+                <li><code>@{ ... }</code> — code block (multi-line C# statements)</li>
+                <li><code>@if (...) { ... }</code> — conditional rendering</li>
+                <li><code>@foreach (...) { ... }</code> — loop over collections</li>
+                <li><code>@(expression)</code> — evaluate an expression and output the result</li>
+                <li><code>@Html.</code> — call HTML helpers</li>
+                <li><code>@DateTime.Now</code> — inline expression output to HTML</li>
+              </ul>
+              <p><strong>Complete Product catalog view example:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">html</span>
+                </div>
+                <pre><code class="language-html">&lt;!-- Views/Products/Index.cshtml --&gt;
+@model IEnumerable&lt;ProductListItemViewModel&gt;
+
+&lt;h1&gt;Product Catalog&lt;/h1&gt;
+
+@* C# code block: declare local variables *@
+@{
+    var totalProducts = Model.Count();
+    var lowStockCount = Model.Count(p => p.Stock < 10);
+    var lastUpdated = DateTime.Now.ToString("yyyy-MM-dd");
+}
+
+&lt;!-- Output expressions --&gt;
+&lt;p&gt;Total: &lt;strong&gt;@totalProducts&lt;/strong&gt; products (Last updated: @lastUpdated)&lt;/p&gt;
+
+@* Conditional rendering *@
+@if (lowStockCount > 0)
+{
+    &lt;div class="alert alert-warning"&gt;
+        ⚠️ @lowStockCount products have low stock!
+    &lt;/div&gt;
+}
+
+@* Loop over collection *@
+@if (Model.Any())
+{
+    &lt;table class="table"&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Name&lt;/th&gt;
+                &lt;th&gt;Category&lt;/th&gt;
+                &lt;th&gt;Price&lt;/th&gt;
+                &lt;th&gt;Stock&lt;/th&gt;
+                &lt;th&gt;Actions&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            @foreach (var product in Model)
+            {
+                &lt;tr&gt;
+                    &lt;td&gt;@product.Name&lt;/td&gt;
+                    &lt;td&gt;&lt;span class="badge"&gt;@product.Category&lt;/span&gt;&lt;/td&gt;
+                    &lt;td&gt;$@product.Price.ToString("F2")&lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;!-- Nested if inside loop --&gt;
+                        @if (product.Stock < 10)
+                        {
+                            &lt;span class="text-danger"&gt;⚠️ @product.Stock&lt;/span&gt;
+                        }
+                        else
+                        {
+                            &lt;span class="text-success"&gt;✓ @product.Stock&lt;/span&gt;
+                        }
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;a href="@Url.Action("Edit", new { id = product.Id })"&gt;Edit&lt;/a&gt;
+                        &lt;a href="@Url.Action("Delete", new { id = product.Id })" onclick="return confirm('Delete?')"&gt;Delete&lt;/a&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            }
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+}
+else
+{
+    &lt;p&gt;&lt;em&gt;No products found.&lt;/em&gt;&lt;/p&gt;
+}
+
+&lt;!-- Action links --&gt;
+&lt;div class="mt-3"&gt;
+    &lt;a href="@Url.Action("Create")" class="btn btn-primary"&gt;+ New Product&lt;/a&gt;
+&lt;/div&gt;</code></pre>
+              </div>
+              <p><strong>Key Razor features in action:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">html</span>
+                </div>
+                <pre><code class="language-html">&lt;!-- Partial view include (reusable component) --&gt;
+@await Html.PartialAsync("_ProductCard", product)
+
+&lt;!-- Display formatted values --&gt;
+Price: @($"${product.Price:N2}")
+
+&lt;!-- Ternary expressions --&gt;
+Status: @(product.IsActive ? "✓ Active" : "✗ Inactive")
+
+&lt;!-- Accessing ViewBag / ViewData --&gt;
+&lt;h2&gt;@ViewBag.PageTitle&lt;/h2&gt;
+&lt;p&gt;Last modified by: @(ViewData["LastEditor"] ?? "Unknown")&lt;/p&gt;
+
+&lt;!-- Escape HTML (security) --&gt;
+&lt;p&gt;@Html.Raw(product.Description)&lt;/p&gt;  &lt;!-- if you trust the content --&gt;
+&lt;p&gt;@product.Description&lt;/p&gt;             &lt;!-- automatically escaped (safe) --&gt;</code></pre>
+              </div>
+              <p><strong>Interview tip:</strong> Show confidence with Razor syntax — it's the template language of MVC. You should be able to write a loop, a conditional, and call an HTML helper without hesitation. Razor compiles to C#, so anything you can do in C#, you can do in a template.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q54. Explain form POST handling with ModelState.IsValid. How does validation work? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>When a form is submitted via POST, ASP.NET Core automatically binds the form data to your ViewModel, runs validation, and populates <code>ModelState</code>. Your action checks <code>if (ModelState.IsValid)</code> to decide whether to proceed or re-display the form with errors.</p>
+              <p><strong>Validation flow:</strong></p>
+              <div style="background:#1e293b;color:#e2e8f0;padding:20px;border-radius:8px;font-family:monospace;font-size:13px;line-height:1.8;margin:15px 0;">
+1. Form submitted: &lt;form method="post"&gt; → POST /Products/Create
+2. ASP.NET binds form data to ViewModel properties (model binding)
+3. Validation attributes on ViewModel run:
+   - [Required] — field must have a value
+   - [StringLength(100)] — text length 0-100
+   - [Range(1, 1000)] — numeric range
+   - [RegularExpression(...)] — pattern matching
+   - [Remote(...)] — call server-side validation
+4. Custom IValidatableObject.Validate() runs (complex logic)
+5. ModelState populated with errors (if any)
+6. Controller action checks ModelState.IsValid
+   - If TRUE: process the data, save, redirect
+   - If FALSE: re-render the view with error messages
+              </div>
+              <p><strong>Product create action with validation:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ProductsController.cs
+[HttpGet]
+public IActionResult Create()
+{
+    var vm = new ProductCreateViewModel
+    {
+        AvailableCategories = await _service.GetCategoriesAsync()
+    };
+    return View(vm);
+}
+
+[HttpPost]
+[ValidateAntiForgeryToken]  // CSRF protection
+public async Task&lt;IActionResult&gt; Create(ProductCreateViewModel vm)
+{
+    // ModelState automatically populated by binding + validation
+    if (!ModelState.IsValid)
+    {
+        // Re-render the form with errors
+        vm.AvailableCategories = await _service.GetCategoriesAsync();
+        return View(vm);
+    }
+
+    // All validation passed — safe to proceed
+    var product = new Product
+    {
+        Name = vm.Name.Trim(),
+        Price = vm.Price,
+        Category = vm.Category,
+        StockQuantity = vm.StockQuantity ?? 0
+    };
+
+    await _service.CreateProductAsync(product);
+
+    TempData["SuccessMessage"] = "Product created successfully!";
+    return RedirectToAction(nameof(Index));
+}</code></pre>
+              </div>
+              <p><strong>ViewModel with validation attributes:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ViewModels/ProductCreateViewModel.cs
+public class ProductCreateViewModel : IValidatableObject
+{
+    [Required(ErrorMessage = "Product name is required.")]
+    [StringLength(100, MinimumLength = 3,
+        ErrorMessage = "Name must be between 3 and 100 characters.")]
+    public string Name { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "Price is required.")]
+    [Range(0.01, 999999, ErrorMessage = "Price must be between $0.01 and $999,999.")]
+    [DisplayName("Product Price")]
+    public decimal Price { get; set; }
+
+    [Required(ErrorMessage = "Category is required.")]
+    public string Category { get; set; } = string.Empty;
+
+    [Range(0, 10000, ErrorMessage = "Stock must be between 0 and 10,000.")]
+    [DisplayName("Initial Stock")]
+    public int? StockQuantity { get; set; }
+
+    // For display in dropdown
+    [NotMapped]
+    public List&lt;string&gt; AvailableCategories { get; set; } = new();
+
+    // Custom validation logic (runs after attribute validation)
+    public IEnumerable&lt;ValidationResult&gt; Validate(ValidationContext context)
+    {
+        // Example: category must be one of the allowed values
+        if (!AvailableCategories.Contains(Category))
+        {
+            yield return new ValidationResult(
+                "Selected category is not available.",
+                new[] { nameof(Category) });
+        }
+
+        // Example: if price is very low, require a reason
+        if (Price &lt; 10 &amp;&amp; string.IsNullOrEmpty(Name.Contains("clearance", StringComparison.OrdinalIgnoreCase) ? "" : null))
+        {
+            yield return new ValidationResult(
+                "Very low prices should include 'clearance' in the product name.",
+                new[] { nameof(Price) });
+        }
+    }
+}</code></pre>
+              </div>
+              <p><strong>Form with validation display:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">html</span>
+                </div>
+                <pre><code class="language-html">&lt;!-- Views/Products/Create.cshtml --&gt;
+@model ProductCreateViewModel
+
+&lt;h1&gt;Create Product&lt;/h1&gt;
+
+&lt;form method="post" asp-action="Create"&gt;
+    &lt;!-- Display ALL validation errors at top --&gt;
+    @if (!ViewData.ModelState.IsValid)
+    {
+        &lt;div class="alert alert-danger"&gt;
+            &lt;strong&gt;Please fix the following errors:&lt;/strong&gt;
+            @Html.ValidationSummary(false)
+        &lt;/div&gt;
+    }
+
+    &lt;div class="mb-3"&gt;
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+    &lt;/div&gt;
+
+    &lt;div class="mb-3"&gt;
+        @Html.LabelFor(m => m.Price)
+        &lt;div class="input-group"&gt;
+            &lt;span class="input-group-text"&gt;$&lt;/span&gt;
+            @Html.TextBoxFor(m => m.Price, new { @class = "form-control", type = "number", step = "0.01" })
+        &lt;/div&gt;
+        @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" })
+    &lt;/div&gt;
+
+    &lt;div class="mb-3"&gt;
+        @Html.LabelFor(m => m.Category)
+        @Html.DropDownListFor(m => m.Category,
+            new SelectList(Model.AvailableCategories),
+            "-- Select Category --",
+            new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Category)
+    &lt;/div&gt;
+
+    &lt;button type="submit" class="btn btn-primary"&gt;Create Product&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+              </div>
+              <p><strong>Key validation concepts:</strong></p>
+              <ul>
+                <li><strong>Client-side validation:</strong> JavaScript runs validation in the browser before POST (quick feedback). Built-in if you include jQuery Validate.</li>
+                <li><strong>Server-side validation:</strong> Always run server-side — never trust client-side validation alone (security risk).</li>
+                <li><strong>ModelState errors:</strong> <code>ModelState.AddModelError(fieldName, message)</code> lets you add errors in code (e.g., checking if product name already exists).</li>
+                <li><strong>CSRF protection:</strong> Use <code>[ValidateAntiForgeryToken]</code> on POST actions and <code>@Html.AntiForgeryToken()</code> in forms.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q55. What are partial views and child actions? How do you reuse views like _ProductCard.cshtml? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Partial views</strong> are reusable view fragments — small pieces of HTML that you include in multiple places. They follow the naming convention <code>_PartialName.cshtml</code> (leading underscore). A <strong>child action</strong> (now called a "view component") is a controller action that returns a partial view — useful when the partial needs to fetch its own data.</p>
+              <p><strong>Two approaches to reuse views:</strong></p>
+              <ul>
+                <li><strong>Simple partial:</strong> Pass data from the parent action. No data-fetching logic inside the partial.</li>
+                <li><strong>View component:</strong> A self-contained unit with its own logic. The component fetches its own data and renders. No controller action needed.</li>
+              </ul>
+              <p><strong>Simple partial — _ProductCard.cshtml:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">html</span>
+                </div>
+                <pre><code class="language-html">&lt;!-- Views/Shared/_ProductCard.cshtml --&gt;
+@model ProductCardViewModel
+
+&lt;div class="product-card"&gt;
+    &lt;div class="card"&gt;
+        &lt;div class="card-header"&gt;
+            &lt;h5 class="card-title"&gt;@Model.Name&lt;/h5&gt;
+        &lt;/div&gt;
+        &lt;div class="card-body"&gt;
+            &lt;p class="text-muted"&gt;@Model.Category&lt;/p&gt;
+            &lt;p class="card-text"&gt;@Model.Description&lt;/p&gt;
+            &lt;h6&gt;Price: &lt;strong&gt;$@Model.Price.ToString("F2")&lt;/strong&gt;&lt;/h6&gt;
+        &lt;/div&gt;
+        &lt;div class="card-footer"&gt;
+            @if (Model.InStock)
+            {
+                &lt;span class="badge bg-success"&gt;In Stock&lt;/span&gt;
+            }
+            else
+            {
+                &lt;span class="badge bg-danger"&gt;Out of Stock&lt;/span&gt;
+            }
+            &lt;a href="@Url.Action("Details", new { id = Model.Id })" class="ms-2"&gt;View Details&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+              </div>
+              <p><strong>Use the partial in multiple views:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">html</span>
+                </div>
+                <pre><code class="language-html">&lt;!-- Views/Products/Index.cshtml --&gt;
+@model IEnumerable&lt;ProductCardViewModel&gt;
+
+&lt;h1&gt;Products&lt;/h1&gt;
+
+&lt;div class="product-grid"&gt;
+    @foreach (var product in Model)
+    {
+        &lt;!-- Include partial view for each product --&gt;
+        @await Html.PartialAsync("_ProductCard", product)
+    }
+&lt;/div&gt;</code></pre>
+              </div>
+              <p><strong>View Component — self-contained logic:</strong></p>
+              <p>A view component is a C# class that handles its own data-fetching logic. Use it when a partial needs to query the database or call services independently.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// Components/TopProductsViewComponent.cs
+public class TopProductsViewComponent : ViewComponent
+{
+    private readonly IProductService _service;
+
+    public TopProductsViewComponent(IProductService service) => _service = service;
+
+    public async Task&lt;IViewComponentResult&gt; InvokeAsync(int count = 5)
+    {
+        // The component fetches its own data
+        var topProducts = await _service.GetTopProductsAsync(count);
+        return View(topProducts);  // renders Views/Shared/Components/TopProducts/Default.cshtml
+    }
+}</code></pre>
+              </div>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">html</span>
+                </div>
+                <pre><code class="language-html">&lt;!-- Views/Shared/Components/TopProducts/Default.cshtml --&gt;
+@model IEnumerable&lt;Product&gt;
+
+&lt;div class="top-products"&gt;
+    &lt;h3&gt;Top Products&lt;/h3&gt;
+    &lt;ul&gt;
+        @foreach (var product in Model)
+        {
+            &lt;li&gt;@product.Name - $@product.Price&lt;/li&gt;
+        }
+    &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+              </div>
+              <p><strong>Invoke the view component in any view:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">html</span>
+                </div>
+                <pre><code class="language-html">&lt;!-- Views/Home/Index.cshtml or any other view --&gt;
+
+&lt;!-- Invoke view component (it fetches its own data) --&gt;
+@await Component.InvokeAsync("TopProducts", new { count = 10 })
+
+&lt;!-- No need to fetch data in the controller action --&gt;</code></pre>
+              </div>
+              <p><strong>When to use each:</strong></p>
+              <ul>
+                <li><strong>Simple partial @Html.PartialAsync()</strong> — data passed from parent, just formatting/display logic</li>
+                <li><strong>View component</strong> — needs to fetch data independently, used across multiple unrelated views, reusable widget with its own logic</li>
+              </ul>
+              <p><strong>Key difference from child actions (older .NET):</strong> In .NET Framework, child actions were controller actions that rendered partial views. ASP.NET Core introduced View Components as a cleaner, more testable pattern. View Components don't go through the full MVC pipeline — they have their own simplified flow.</p>
+            </div>
+          </details>
+
+        </div><!-- /.qa-list -->
+
+        <!-- Bonus: MVC vs Web API Comparison -->
+        <h2 id="mvc-vs-webapi">Bonus: MVC vs Web API Comparison</h2>
+        <p>Both follow the MVC pattern and both are built on ASP.NET Core. The key difference is in the response and use case.</p>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>ASP.NET MVC</th>
+              <th>ASP.NET Web API</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Response Format</strong></td>
+              <td>HTML (rendered on server)</td>
+              <td>JSON or XML (data format)</td>
+            </tr>
+            <tr>
+              <td><strong>View Layer</strong></td>
+              <td>Razor templates (.cshtml) generate HTML</td>
+              <td>No view — controller returns data directly</td>
+            </tr>
+            <tr>
+              <td><strong>Client</strong></td>
+              <td>Web browser receives complete HTML page</td>
+              <td>JavaScript/SPA/mobile app parses JSON</td>
+            </tr>
+            <tr>
+              <td><strong>Controller Base Class</strong></td>
+              <td>Inherits <code>Controller</code></td>
+              <td>Inherits <code>ControllerBase</code> (no view support)</td>
+            </tr>
+            <tr>
+              <td><strong>HTTP Verbs</strong></td>
+              <td>Mostly POST (forms), some GET</td>
+              <td>All verbs: GET, POST, PUT, DELETE, PATCH, etc.</td>
+            </tr>
+            <tr>
+              <td><strong>Routing</strong></td>
+              <td>Convention-based or attribute-based</td>
+              <td>RESTful attribute routes: /api/products/{id}</td>
+            </tr>
+            <tr>
+              <td><strong>Model Binding</strong></td>
+              <td>Form data → ViewModel</td>
+              <td>JSON body → DTO via [FromBody]</td>
+            </tr>
+            <tr>
+              <td><strong>Authentication</strong></td>
+              <td>Cookie-based (session)</td>
+              <td>Token-based (JWT, OAuth)</td>
+            </tr>
+            <tr>
+              <td><strong>Use Case</strong></td>
+              <td>Traditional web apps, server-side rendering, dynamic HTML pages</td>
+              <td>Microservices, SPA (React/Angular), mobile apps, IoT</td>
+            </tr>
+            <tr>
+              <td><strong>SEO</strong></td>
+              <td>Native — HTML sent to browser</td>
+              <td>Requires extra work — client-side rendering hides content from crawlers</td>
+            </tr>
+            <tr>
+              <td><strong>Example Project</strong></td>
+              <td>Product Catalog admin panel (server-side forms)</td>
+              <td>ProductCatalogAPI (JSON endpoints for mobile/SPA)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-info" style="margin-top:2rem;">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">ASP.NET Core unifies both</p>
+            <p class="callout-body">In modern ASP.NET Core, you can build MVC and Web API in the same project. A single controller can have both view-returning actions (MVC) and JSON-returning actions (API). For example, <code>ProductsController</code> might have <code>Get()</code> returning HTML (MVC) and <code>api/products</code> returning JSON (Web API). The architecture is the same; the output differs.</p>
+          </div>
+        </div>
+
+        <div class="callout callout-success" style="margin-top:2rem;">
+          <span class="callout-icon">🎯</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview tip for MVC questions</p>
+            <p class="callout-body">When asked about MVC, emphasize that you understand the server-side rendering model — controllers orchestrate business logic, services fetch data, models hold that data, and Razor templates render it into HTML. Mention that you're familiar with validation, filters, partial views, and ViewModels. Show that you can distinguish MVC (HTML) from Web API (JSON). If asked why you'd choose one over the other, say: "MVC for a traditional web app with form-based workflows; Web API for a backend that serves multiple clients (web, mobile, IoT)."</p>
+          </div>
+        </div>
+
+        <nav class="page-nav">
+          <a href="interview-sql.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">←</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">SQL</span></div>
+          </a>
+          <a href="interview-react.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">React</span></div>
+            <span class="page-nav-arrow">→</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

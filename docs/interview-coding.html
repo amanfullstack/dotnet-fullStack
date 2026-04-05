@@ -1,0 +1,2504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coding Challenges - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search coding challenges...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-badge">D</div>
+      DevDocs
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html" class="active">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span>
+        <input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+          <li><a href="interview-solid.html" class="sidebar-link"><span class="sidebar-link-icon">📐</span> SOLID Principles</a></li>
+          <li><a href="interview-patterns.html" class="sidebar-link"><span class="sidebar-link-icon">🎨</span> Design Patterns</a></li>
+          <li><a href="interview-coding.html" class="sidebar-link active"><span class="sidebar-link-icon">🧩</span> Coding Challenges</a></li>
+          <li><a href="interview-csharp.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
+          <li><a href="interview-sql.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> SQL</a></li>
+          <li><a href="interview-mvc.html" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> ASP.NET MVC</a></li>
+          <li><a href="interview-react.html" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React</a></li>
+          <li><a href="interview-angular.html" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="interview.html">Interview</a>
+          <span class="sep">/</span>
+          <span class="current">Coding Challenges</span>
+        </nav>
+
+        <div class="page-title-block">
+          <h1 class="page-title">🧩 Coding Challenges &amp; Problems</h1>
+          <p class="page-subtitle">Master essential coding problems with real-world solutions. Learn multiple approaches, time/space complexity analysis, and ace your technical interviews.</p>
+          <div class="page-meta">
+            <span class="badge badge-danger">Advanced</span>
+            <span class="badge badge-accent">Problem Solving</span>
+            <span class="badge badge-primary">25 Problems</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">What You'll Learn</p>
+            <p class="callout-body">This guide covers 25 coding problems across C#, SQL, JavaScript, and Algorithms. Each problem shows naive solutions, optimized approaches, complexity analysis, and real interview insights. Master patterns and techniques that interviewers respect.</p>
+          </div>
+        </div>
+
+        <!-- ========== C# CHALLENGES ========== -->
+        <h2 id="csharp-challenges">C# Coding Challenges</h2>
+        <p>Master fundamental C# algorithms and data structure problems.</p>
+
+        <!-- Problem 1: Compare Two Objects -->
+        <h3 id="csharp-1">🟢 Problem 1: Compare Two Objects (Reference vs Value Types)</h3>
+        <p><strong>Problem:</strong> Write a function to check if two objects are equal. Handle both reference types (classes) and value types (structs). Demonstrate the difference between reference equality and value equality.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Example:
+var product1 = new Product { Id = 1, Name = "Laptop", Price = 999 };
+var product2 = new Product { Id = 1, Name = "Laptop", Price = 999 };
+var product3 = product1;
+
+// Reference comparison (naive):
+product1 == product2;  // false - different objects in memory
+product1 == product3;  // true - same reference
+
+// Value comparison (optimized):
+product1.Equals(product2);  // true - same data
+product1.Equals(product3);  // true - same reference</code></pre>
+        </div>
+
+        <strong>Naive Solution (Reference Equality Only):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public class Product
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+}
+
+// NAIVE: Only compares references
+var p1 = new Product { Id = 1, Name = "Laptop", Price = 999 };
+var p2 = new Product { Id = 1, Name = "Laptop", Price = 999 };
+bool areEqual = p1 == p2;  // false - different objects!</code></pre>
+        </div>
+        <p><em>Time: O(1) | Space: O(1) | Issue: Misses identical objects</em></p>
+
+        <strong>Optimized Solution (Override Equals &amp; GetHashCode):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public class Product
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+
+    // Override Equals for value comparison
+    public override bool Equals(object? obj)
+    {
+        if (obj is not Product product)
+            return false;
+
+        return Id == product.Id
+            && Name == product.Name
+            && Price == product.Price;
+    }
+
+    // Always override GetHashCode when overriding Equals
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, Name, Price);
+    }
+
+    // Optional: Implement IEquatable for type-safe comparison
+    public bool Equals(Product? other)
+    {
+        if (other is null) return false;
+        return Id == other.Id && Name == other.Name && Price == other.Price;
+    }
+}
+
+// Usage:
+var p1 = new Product { Id = 1, Name = "Laptop", Price = 999 };
+var p2 = new Product { Id = 1, Name = "Laptop", Price = 999 };
+bool areEqual = p1.Equals(p2);  // true - same values!</code></pre>
+        </div>
+        <p><em>Time: O(1) | Space: O(1) | Best for: Value-based comparisons</em></p>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>Reference Equality: Checks if two variables point to the same object in memory</li>
+          <li>Value Equality: Checks if two objects have the same data/state</li>
+          <li>GetHashCode: Must be consistent with Equals for correct dictionary/set behavior</li>
+          <li>IEquatable&lt;T&gt;: Type-safe alternative to overriding Equals(object)</li>
+        </ul>
+
+        <strong>Interview Tips:</strong>
+        <ul>
+          <li>"Always override GetHashCode when overriding Equals — they must be consistent"</li>
+          <li>"Reference equality vs value equality is crucial for collections like Dictionary and HashSet"</li>
+          <li>"Use IEquatable&lt;T&gt; for better performance than object.Equals"</li>
+          <li>"Be ready to explain when to use == vs Equals vs IEquatable"</li>
+        </ul>
+
+        <!-- Problem 2: Braces/Parentheses Matching -->
+        <h3 id="csharp-2">🟡 Problem 2: Valid Braces/Parentheses Matching (Stack)</h3>
+        <p><strong>Problem:</strong> Check if braces, parentheses, and brackets are balanced and properly nested in a string.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Examples:
+IsValidBraces("()");           // true
+IsValidBraces("()[]{}");        // true
+IsValidBraces("([{}])");        // true
+IsValidBraces("([)]");          // false - mismatched
+IsValidBraces("{[");            // false - not closed</code></pre>
+        </div>
+
+        <strong>Naive Solution (Character Counting):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public bool IsValidBraces_Naive(string input)
+{
+    // NAIVE: Only counts opening vs closing
+    int count = 0;
+    foreach (char ch in input)
+    {
+        if (ch == '(' || ch == '[' || ch == '{')
+            count++;
+        else if (ch == ')' || ch == ']' || ch == '}')
+            count--;
+    }
+    return count == 0;
+}
+
+// Problem: "([)]" counts as valid (1-1+1-1=0) but it's actually invalid!</code></pre>
+        </div>
+        <p><em>Time: O(n) | Space: O(1) | Issue: Doesn't check nesting order</em></p>
+
+        <strong>Optimized Solution (Stack-Based):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public bool IsValidBraces(string input)
+{
+    // OPTIMIZED: Use stack to verify proper nesting
+    Stack&lt;char&gt; stack = new();
+
+    foreach (char ch in input)
+    {
+        switch (ch)
+        {
+            case '(' or '[' or '{':
+                stack.Push(ch);
+                break;
+            case ')':
+                if (stack.Count == 0 || stack.Pop() != '(')
+                    return false;
+                break;
+            case ']':
+                if (stack.Count == 0 || stack.Pop() != '[')
+                    return false;
+                break;
+            case '}':
+                if (stack.Count == 0 || stack.Pop() != '{')
+                    return false;
+                break;
+        }
+    }
+
+    return stack.Count == 0;
+}
+
+// Test cases:
+Console.WriteLine(IsValidBraces("()[]{}"));      // true
+Console.WriteLine(IsValidBraces("([{}])"));      // true
+Console.WriteLine(IsValidBraces("([)]"));        // false - nesting error</code></pre>
+        </div>
+        <p><em>Time: O(n) | Space: O(n) | Best: Handles nesting correctly</em></p>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>LIFO (Last-In-First-Out): Stack ensures last opened is first closed</li>
+          <li>Pattern Matching: C# 7+ switch expressions simplify bracket checking</li>
+          <li>Nesting Validation: Only a stack guarantees proper nesting order</li>
+        </ul>
+
+        <strong>Interview Tips:</strong>
+        <ul>
+          <li>"This is a classic stack problem — interviewers love it"</li>
+          <li>"Explain why character counting doesn't work for nested structures"</li>
+          <li>"Mention this is used in compilers for syntax validation"</li>
+        </ul>
+
+        <!-- Problem 3: Reverse String -->
+        <h3 id="csharp-3">🟢 Problem 3: Reverse String (Multiple Approaches)</h3>
+        <p><strong>Problem:</strong> Reverse a string in-place and using LINQ. Compare performance and readability.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Examples:
+ReverseString("hello");        // "olleh"
+ReverseString("C#");           // "#C"
+ReverseString("");             // ""</code></pre>
+        </div>
+
+        <strong>Approach 1: In-Place Reversal (Two Pointers):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public string ReverseString_InPlace(string input)
+{
+    // Convert to char array for in-place manipulation
+    char[] chars = input.ToCharArray();
+    int left = 0;
+    int right = chars.Length - 1;
+
+    // Two-pointer approach: swap from outside in
+    while (left &lt; right)
+    {
+        (chars[left], chars[right]) = (chars[right], chars[left]);
+        left++;
+        right--;
+    }
+
+    return new string(chars);
+}
+
+// Test:
+Console.WriteLine(ReverseString_InPlace("hello"));  // "olleh"</code></pre>
+        </div>
+        <p><em>Time: O(n) | Space: O(n) for char array | Best for: Interview credibility</em></p>
+
+        <strong>Approach 2: LINQ (Functional):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public string ReverseString_Linq(string input)
+{
+    // Elegant one-liner
+    return new string(input.Reverse().ToArray());
+}
+
+// Even shorter:
+public string ReverseString_LinqShort(string input)
+    => new string(input.Reverse().ToArray());
+
+// Test:
+Console.WriteLine(ReverseString_Linq("hello"));  // "olleh"</code></pre>
+        </div>
+        <p><em>Time: O(n) | Space: O(n) | Best for: Clean code</em></p>
+
+        <strong>Approach 3: Using StringBuilder (Most Performant):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public string ReverseString_StringBuilder(string input)
+{
+    // StringBuilder is optimized for string manipulation
+    StringBuilder sb = new StringBuilder(input.Length);
+
+    for (int i = input.Length - 1; i &gt;= 0; i--)
+    {
+        sb.Append(input[i]);
+    }
+
+    return sb.ToString();
+}
+
+// Test:
+Console.WriteLine(ReverseString_StringBuilder("hello"));  // "olleh"</code></pre>
+        </div>
+        <p><em>Time: O(n) | Space: O(n) | Best for: Large strings</em></p>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>Two-Pointer Technique: Efficiently reverses without extra space (plus char array overhead)</li>
+          <li>LINQ Reverse: Functional approach, readable but creates enumerators</li>
+          <li>StringBuilder: Optimized for many string concatenations</li>
+        </ul>
+
+        <strong>Interview Tips:</strong>
+        <ul>
+          <li>"Show you know multiple approaches — it demonstrates versatility"</li>
+          <li>"Mention strings are immutable in C# — use StringBuilder for many operations"</li>
+          <li>"Strings are char arrays internally — reverse by swapping ends"</li>
+        </ul>
+
+        <!-- Problem 4: Fibonacci Series -->
+        <h3 id="csharp-4">🟡 Problem 4: Fibonacci Series (Recursive, Iterative, Memoization)</h3>
+        <p><strong>Problem:</strong> Calculate the Nth Fibonacci number. Compare recursive, iterative, and memoized approaches.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Fibonacci sequence: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34...
+// F(0) = 0
+// F(1) = 1
+// F(n) = F(n-1) + F(n-2)
+
+// Examples:
+Fibonacci(5);   // 5
+Fibonacci(10);  // 55</code></pre>
+        </div>
+
+        <strong>Approach 1: Naive Recursion (Very Slow!):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public long Fibonacci_Naive(int n)
+{
+    // ❌ Naive: Recalculates same values repeatedly!
+    if (n &lt;= 1) return n;
+    return Fibonacci_Naive(n - 1) + Fibonacci_Naive(n - 2);
+}
+
+// Problem analysis:
+// F(5) calls F(4) + F(3)
+// F(4) calls F(3) + F(2)  ← F(3) calculated TWICE!
+// F(3) calls F(2) + F(1)  ← F(2) calculated THREE TIMES!
+//
+// For n=40: ~300 million redundant calculations!</code></pre>
+        </div>
+        <p><em>Time: O(2^n) - exponential! | Space: O(n) recursion stack | AVOID for large n</em></p>
+
+        <strong>Approach 2: Iterative (Practical):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public long Fibonacci_Iterative(int n)
+{
+    // ✅ Better: Linear time, no recursion
+    if (n &lt;= 1) return n;
+
+    long prev = 0, curr = 1;
+    for (int i = 2; i &lt;= n; i++)
+    {
+        long next = prev + curr;
+        prev = curr;
+        curr = next;
+    }
+
+    return curr;
+}
+
+// Test:
+Console.WriteLine(Fibonacci_Iterative(5));   // 5
+Console.WriteLine(Fibonacci_Iterative(10));  // 55
+Console.WriteLine(Fibonacci_Iterative(40));  // 102334155 (instant!)</code></pre>
+        </div>
+        <p><em>Time: O(n) linear | Space: O(1) constant | Good for: Most cases</em></p>
+
+        <strong>Approach 3: Memoization (Best of Both Worlds):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">private Dictionary&lt;int, long&gt; _memo = new();
+
+public long Fibonacci_Memoized(int n)
+{
+    // ✅ Optimal: Recursive elegance with O(n) performance
+    if (n &lt;= 1) return n;
+
+    if (_memo.ContainsKey(n))
+        return _memo[n];
+
+    long result = Fibonacci_Memoized(n - 1) + Fibonacci_Memoized(n - 2);
+    _memo[n] = result;
+
+    return result;
+}
+
+// Test:
+Console.WriteLine(Fibonacci_Memoized(5));   // 5
+Console.WriteLine(Fibonacci_Memoized(10));  // 55
+Console.WriteLine(Fibonacci_Memoized(100)); // 354224848179262000 (instant!)</code></pre>
+        </div>
+        <p><em>Time: O(n) linear | Space: O(n) for memo cache | Best: Elegant + efficient</em></p>
+
+        <strong>Performance Comparison:</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Timing F(40):
+var sw = Stopwatch.StartNew();
+long result1 = Fibonacci_Naive(40);           // ~15 seconds ⚠️
+sw.Stop();
+Console.WriteLine($"Naive: {sw.ElapsedMilliseconds}ms");
+
+sw.Restart();
+long result2 = Fibonacci_Iterative(40);       // ~0.1ms ✅
+sw.Stop();
+Console.WriteLine($"Iterative: {sw.ElapsedMilliseconds}ms");
+
+sw.Restart();
+long result3 = Fibonacci_Memoized(40);        // ~0.05ms ✅
+sw.Stop();
+Console.WriteLine($"Memoized: {sw.ElapsedMilliseconds}ms");</code></pre>
+        </div>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>Dynamic Programming: Breaking problems into overlapping subproblems</li>
+          <li>Memoization: Top-down DP — cache results to avoid recalculation</li>
+          <li>Overlapping Subproblems: Same computation happens multiple times in naive recursion</li>
+          <li>Time Complexity Tragedy: O(2^n) is exponential — avoid for production!</li>
+        </ul>
+
+        <strong>Interview Tips:</strong>
+        <ul>
+          <li>"Start with naive recursion to show you understand the problem, then optimize"</li>
+          <li>"Recognize when a problem has overlapping subproblems — that's your DP signal"</li>
+          <li>"Fibonacci is a classic DP introduction — know all three approaches"</li>
+          <li>"In ProductCatalogAPI, we use similar caching strategies for queries"</li>
+        </ul>
+
+        <!-- Problem 5: Prime Number Check -->
+        <h3 id="csharp-5">🟡 Problem 5: Prime Number Check</h3>
+        <p><strong>Problem:</strong> Determine if a number is prime. Optimize from trial division to square root method.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Examples:
+IsPrime(2);   // true
+IsPrime(17);  // true
+IsPrime(20);  // false
+IsPrime(1);   // false (special case)</code></pre>
+        </div>
+
+        <strong>Naive Solution (Trial Division to N):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public bool IsPrime_Naive(int n)
+{
+    // ❌ Naive: Check all divisors up to n
+    if (n &lt; 2) return false;
+
+    for (int i = 2; i &lt; n; i++)
+    {
+        if (n % i == 0)
+            return false;
+    }
+
+    return true;
+}
+
+// Problem: For n=1,000,000, checks 999,998 divisors!</code></pre>
+        </div>
+        <p><em>Time: O(n) | Space: O(1) | Slow for large numbers</em></p>
+
+        <strong>Optimized Solution (Square Root Method):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public bool IsPrime_Optimized(int n)
+{
+    // ✅ Optimized: Only check up to √n
+    if (n &lt; 2) return false;
+    if (n == 2) return true;
+    if (n % 2 == 0) return false;
+
+    // Key insight: If n = a × b, then a ≤ √n or b ≤ √n
+    // So we only need to check divisors up to √n
+    int sqrt = (int)Math.Sqrt(n);
+
+    for (int i = 3; i &lt;= sqrt; i += 2)  // Skip even numbers
+    {
+        if (n % i == 0)
+            return false;
+    }
+
+    return true;
+}
+
+// Test:
+Console.WriteLine(IsPrime_Optimized(2));      // true
+Console.WriteLine(IsPrime_Optimized(17));     // true
+Console.WriteLine(IsPrime_Optimized(1000003)); // true</code></pre>
+        </div>
+        <p><em>Time: O(√n) | Space: O(1) | Better: 99% faster for large numbers</em></p>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>Square Root Optimization: n has divisor ≤ √n if composite</li>
+          <li>Even Number Handling: Skip even divisors (except 2)</li>
+          <li>Prime Definition: Only divisible by 1 and itself</li>
+        </ul>
+
+        <strong>Interview Tips:</strong>
+        <ul>
+          <li>"For n=1,000,000: naive checks 999,998 times, optimized checks only 1000 times!"</li>
+          <li>"Explain the √n insight — it's a common optimization pattern"</li>
+          <li>"Mention the Sieve of Eratosthenes for finding all primes up to n"</li>
+        </ul>
+
+        <!-- Problem 6: Remove Duplicates from Array -->
+        <h3 id="csharp-6">🟢 Problem 6: Remove Duplicates from Array</h3>
+        <p><strong>Problem:</strong> Remove duplicates from an array in-place and return the count of unique elements.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Examples:
+int[] nums = [1, 1, 2];
+RemoveDuplicates(nums);  // returns 2, nums = [1, 2, _]
+
+int[] nums2 = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4];
+RemoveDuplicates(nums2); // returns 5, nums = [0, 1, 2, 3, 4, _, _, _, _, _]</code></pre>
+        </div>
+
+        <strong>Naive Solution (Using HashSet):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public int RemoveDuplicates_Naive(int[] nums)
+{
+    // ❌ Naive: Creates new collection
+    HashSet&lt;int&gt; unique = new HashSet&lt;int&gt;(nums);
+    int k = unique.Count;
+
+    int i = 0;
+    foreach (int num in unique.OrderBy(x => x))
+    {
+        nums[i++] = num;
+    }
+
+    return k;
+}
+
+// Problems:
+// - O(n) space for HashSet
+// - Requires sorting
+// - Not truly in-place</code></pre>
+        </div>
+        <p><em>Time: O(n log n) for sorting | Space: O(n) for HashSet</em></p>
+
+        <strong>Optimized Solution (Two Pointers, Sorted Array):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public int RemoveDuplicates(int[] nums)
+{
+    // ✅ Optimized: Two-pointer, in-place, assumes sorted array
+    if (nums.Length == 0) return 0;
+
+    int k = 1;  // First element is always unique
+
+    // i scans array, k tracks unique insertion point
+    for (int i = 1; i &lt; nums.Length; i++)
+    {
+        if (nums[i] != nums[i - 1])
+        {
+            nums[k] = nums[i];  // Place unique element at k
+            k++;
+        }
+    }
+
+    return k;
+}
+
+// Test:
+int[] nums = [1, 1, 2];
+int k = RemoveDuplicates(nums);  // k = 2, nums = [1, 2, _]
+Console.WriteLine($"Unique count: {k}");
+for (int i = 0; i &lt; k; i++)
+    Console.Write(nums[i] + " ");  // Output: 1 2</code></pre>
+        </div>
+        <p><em>Time: O(n) single pass | Space: O(1) truly in-place | Perfect!</em></p>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>Two-Pointer Technique: One pointer scans, one marks insertion point</li>
+          <li>In-Place Modification: Write directly to input array</li>
+          <li>Assumption: Input must be sorted for this approach</li>
+        </ul>
+
+        <strong>Interview Tips:</strong>
+        <ul>
+          <li>"Always ask: Can I modify the input? Is it sorted?"</li>
+          <li>"Two-pointer is efficient for sorted arrays — use it!"</li>
+          <li>"Similar technique works for 'Remove Element' problems"</li>
+        </ul>
+
+        <!-- Problem 7: String Rotation Check -->
+        <h3 id="csharp-7">🟡 Problem 7: String Rotation Check</h3>
+        <p><strong>Problem:</strong> Check if string s2 is a rotation of string s1.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Examples:
+IsRotation("waterbottle", "erbottlewat");  // true
+IsRotation("hello", "llohe");              // true
+IsRotation("hello", "hallo");              // false</code></pre>
+        </div>
+
+        <strong>Naive Solution (Try All Rotations):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public bool IsRotation_Naive(string s1, string s2)
+{
+    // ❌ Naive: Generate all rotations and compare
+    if (s1.Length != s2.Length)
+        return false;
+
+    for (int i = 0; i &lt; s1.Length; i++)
+    {
+        // Rotate s1 by i positions
+        string rotated = s1.Substring(i) + s1.Substring(0, i);
+        if (rotated == s2)
+            return true;
+    }
+
+    return false;
+}
+
+// Problem: O(n²) due to string concatenation and comparison</code></pre>
+        </div>
+        <p><em>Time: O(n²) string operations | Space: O(n) new strings | Slow</em></p>
+
+        <strong>Optimized Solution (Concatenation Trick):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public bool IsRotation(string s1, string s2)
+{
+    // ✅ Clever: All rotations of s1 are substrings of s1 + s1
+    // Example:
+    // s1 = "waterbottle"
+    // s1 + s1 = "waterbottlewaterbottle"
+    // "erbottlewat" is a substring!
+
+    if (s1.Length != s2.Length)
+        return false;
+
+    string temp = s1 + s1;
+    return temp.Contains(s2);
+}
+
+// Test:
+Console.WriteLine(IsRotation("waterbottle", "erbottlewat"));  // true
+Console.WriteLine(IsRotation("hello", "llohe"));              // true
+Console.WriteLine(IsRotation("hello", "hallo"));              // false</code></pre>
+        </div>
+        <p><em>Time: O(n) with good string search | Space: O(n) for concatenation | Elegant!</em></p>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>Rotation Property: All rotations of s1 exist in s1 + s1</li>
+          <li>Pattern Matching: String concatenation creates all rotation patterns</li>
+          <li>Elegant Solution: Simple once you see the pattern</li>
+        </ul>
+
+        <strong>Interview Tips:</strong>
+        <ul>
+          <li>"This is a clever problem — shows creative problem-solving"</li>
+          <li>"The s1 + s1 concatenation trick is memorable and impressive"</li>
+          <li>"Mention KMP algorithm for O(n) substring search if asked"</li>
+        </ul>
+
+        <!-- Problem 8: Anagram Detection -->
+        <h3 id="csharp-8">🟢 Problem 8: Anagram Detection</h3>
+        <p><strong>Problem:</strong> Check if two strings are anagrams of each other (same characters, different order).</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Examples:
+IsAnagram("listen", "silent");     // true
+IsAnagram("hello", "world");       // false
+IsAnagram("aab", "abb");           // false (different counts)</code></pre>
+        </div>
+
+        <strong>Solution 1: Sorting:</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public bool IsAnagram_Sorting(string s1, string s2)
+{
+    // Simple: Sort both and compare
+    if (s1.Length != s2.Length)
+        return false;
+
+    char[] arr1 = s1.ToCharArray();
+    char[] arr2 = s2.ToCharArray();
+
+    Array.Sort(arr1);
+    Array.Sort(arr2);
+
+    return new string(arr1) == new string(arr2);
+}
+
+// Test:
+Console.WriteLine(IsAnagram_Sorting("listen", "silent"));  // true</code></pre>
+        </div>
+        <p><em>Time: O(n log n) sorting | Space: O(n) for arrays</em></p>
+
+        <strong>Solution 2: Character Count (Optimal):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public bool IsAnagram(string s1, string s2)
+{
+    // ✅ Optimal: Count character frequencies
+    if (s1.Length != s2.Length)
+        return false;
+
+    Dictionary&lt;char, int&gt; charCount = new();
+
+    // Count characters in s1
+    foreach (char ch in s1)
+    {
+        if (charCount.ContainsKey(ch))
+            charCount[ch]++;
+        else
+            charCount[ch] = 1;
+    }
+
+    // Decrement for each character in s2
+    foreach (char ch in s2)
+    {
+        if (!charCount.ContainsKey(ch))
+            return false;
+
+        charCount[ch]--;
+        if (charCount[ch] &lt; 0)
+            return false;
+    }
+
+    return true;
+}
+
+// Test:
+Console.WriteLine(IsAnagram("listen", "silent"));     // true
+Console.WriteLine(IsAnagram("aab", "abb"));           // false</code></pre>
+        </div>
+        <p><em>Time: O(n) single pass | Space: O(1) for 26 letters max | Perfect!</em></p>
+
+        <strong>Solution 3: LINQ (Compact):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public bool IsAnagram_Linq(string s1, string s2)
+{
+    // Compact: LINQ with GroupBy
+    if (s1.Length != s2.Length)
+        return false;
+
+    return s1.OrderBy(x => x).SequenceEqual(s2.OrderBy(x => x));
+}
+
+// Or using GroupBy:
+public bool IsAnagram_LinqGroupBy(string s1, string s2)
+{
+    if (s1.Length != s2.Length)
+        return false;
+
+    var group1 = s1.GroupBy(x => x).Select(g => (g.Key, g.Count())).OrderBy(x => x.Key);
+    var group2 = s2.GroupBy(x => x).Select(g => (g.Key, g.Count())).OrderBy(x => x.Key);
+
+    return group1.SequenceEqual(group2);
+}</code></pre>
+        </div>
+        <p><em>Time: O(n log n) for sorting | Space: O(n) | Readable</em></p>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>Character Frequency: Anagrams have identical character counts</li>
+          <li>Hash Map Optimization: O(n) is better than O(n log n) sorting</li>
+          <li>Early Exit: Return false immediately if character doesn't match</li>
+        </ul>
+
+        <strong>Interview Tips:</strong>
+        <ul>
+          <li>"Character frequency approach is optimal — it's O(n)"</li>
+          <li>"You can optimize space to O(1) if input is only lowercase letters"</li>
+          <li>"Use array[26] instead of Dictionary for letters only"</li>
+        </ul>
+
+        <!-- ========== SQL CHALLENGES ========== -->
+        <h2 id="sql-challenges">SQL Coding Challenges</h2>
+        <p>Master database queries with window functions, CTEs, and advanced SQL patterns.</p>
+
+        <!-- Problem 1: Nth Highest Salary -->
+        <h3 id="sql-1">🟡 Problem 1: Nth Highest Salary (ROW_NUMBER, DENSE_RANK, CTE)</h3>
+        <p><strong>Problem:</strong> Find the Nth highest salary from an Employee table. Show three approaches.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- Sample Data:
+CREATE TABLE Employees (
+    Id INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Salary DECIMAL(10, 2)
+);
+
+INSERT INTO Employees VALUES
+(1, 'Alice', 5000),
+(2, 'Bob', 6000),
+(3, 'Charlie', 5500),
+(4, 'David', 7000),
+(5, 'Eve', 6000);  -- Duplicate salary
+
+-- Task: Find 2nd highest salary
+-- Expected: 6000 (Bob and Eve tied)</code></pre>
+        </div>
+
+        <strong>Approach 1: Using ROW_NUMBER (Strict Ordering):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- ROW_NUMBER: Assigns unique rank, ignores ties
+SELECT TOP 1 Salary
+FROM (
+    SELECT
+        Salary,
+        ROW_NUMBER() OVER (ORDER BY Salary DESC) AS RowNum
+    FROM Employees
+) ranked
+WHERE RowNum = 2;
+
+-- Result: 6000
+-- Note: ROW_NUMBER skips ties (5000, 6000, 7000 all get different ranks)
+-- RowNum=1: 7000 (David)
+-- RowNum=2: 6000 (Bob or Eve, arbitrarily)
+-- RowNum=3: 6000 (Eve or Bob)
+-- RowNum=4: 5500 (Charlie)
+-- RowNum=5: 5000 (Alice)</code></pre>
+        </div>
+
+        <strong>Approach 2: Using DENSE_RANK (Handle Ties):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-csharp">-- DENSE_RANK: Same rank for ties, no gaps
+SELECT TOP 1 Salary
+FROM (
+    SELECT
+        Salary,
+        DENSE_RANK() OVER (ORDER BY Salary DESC) AS DenseRank
+    FROM Employees
+) ranked
+WHERE DenseRank = 2;
+
+-- Result: 6000
+-- DENSE_RANK ranking:
+-- DenseRank=1: 7000 (David)
+-- DenseRank=2: 6000 (Bob, Eve)
+-- DenseRank=3: 5500 (Charlie)
+-- DenseRank=4: 5000 (Alice)
+--
+-- DENSE_RANK is better for finding Nth DISTINCT salary</code></pre>
+        </div>
+
+        <strong>Approach 3: Using CTE (Clear &amp; Maintainable):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- CTE: Common Table Expression (readable)
+WITH RankedSalaries AS (
+    SELECT
+        Salary,
+        DENSE_RANK() OVER (ORDER BY Salary DESC) AS Rank
+    FROM Employees
+)
+SELECT Salary
+FROM RankedSalaries
+WHERE Rank = 2;
+
+-- Advantage: Clear separation of concerns
+-- Can reuse CTE, add WHERE clauses, etc.</code></pre>
+        </div>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>ROW_NUMBER: Unique rank for each row (1, 2, 3, 4, 5)</li>
+          <li>DENSE_RANK: Same rank for ties, continues (1, 2, 2, 3, 4)</li>
+          <li>RANK: Same rank for ties, skips numbers (1, 2, 2, 4, 5)</li>
+          <li>CTE: Temporary result set referenced in main query</li>
+        </ul>
+
+        <strong>Interview Tips:</strong>
+        <ul>
+          <li>"Know the difference between ROW_NUMBER, DENSE_RANK, and RANK"</li>
+          <li>"DENSE_RANK is usually better for 'Nth highest salary' questions"</li>
+          <li>"CTEs make complex queries readable — always use them"</li>
+        </ul>
+
+        <!-- Problem 2: Max Salary Per Department -->
+        <h3 id="sql-2">🟢 Problem 2: Maximum Salary Per Department</h3>
+        <p><strong>Problem:</strong> Find the maximum salary for each department along with employee details.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- Sample Data:
+CREATE TABLE Employees (
+    Id INT PRIMARY KEY,
+    Name VARCHAR(100),
+    DepartmentId INT,
+    Salary DECIMAL(10, 2)
+);
+
+CREATE TABLE Departments (
+    Id INT PRIMARY KEY,
+    Name VARCHAR(100)
+);
+
+-- Task: Find highest-paid employee per department</code></pre>
+        </div>
+
+        <strong>Solution (Window Function):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">SELECT
+    d.Name AS DepartmentName,
+    e.Name AS EmployeeName,
+    e.Salary,
+    MaxSalaryInDept
+FROM (
+    SELECT
+        Id,
+        Name,
+        DepartmentId,
+        Salary,
+        MAX(Salary) OVER (PARTITION BY DepartmentId) AS MaxSalaryInDept,
+        ROW_NUMBER() OVER (PARTITION BY DepartmentId ORDER BY Salary DESC) AS RankInDept
+    FROM Employees
+) e
+JOIN Departments d ON e.DepartmentId = d.Id
+WHERE e.RankInDept = 1;
+
+-- Output:
+-- DepartmentName | EmployeeName | Salary | MaxSalaryInDept
+-- Sales          | David        | 7000   | 7000
+-- IT             | Alice        | 8000   | 8000
+-- HR             | Bob          | 5000   | 5000</code></pre>
+        </div>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>PARTITION BY: Divides rows into groups, like GROUP BY but keeps all rows</li>
+          <li>Window Functions: Calculate across groups without collapsing results</li>
+          <li>ROW_NUMBER() OVER (PARTITION BY...): Get top N per group</li>
+        </ul>
+
+        <!-- Problem 3: Running Total -->
+        <h3 id="sql-3">🟡 Problem 3: Running Total (SUM OVER)</h3>
+        <p><strong>Problem:</strong> Calculate cumulative sum of sales ordered by date.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- Sample Data:
+-- Date       | Sales
+-- 2025-01-01 | 1000
+-- 2025-01-02 | 500
+-- 2025-01-03 | 800
+
+-- Expected Output:
+-- Date       | Sales | RunningTotal
+-- 2025-01-01 | 1000  | 1000
+-- 2025-01-02 | 500   | 1500
+-- 2025-01-03 | 800   | 2300
+
+SELECT
+    SaleDate,
+    Sales,
+    SUM(Sales) OVER (ORDER BY SaleDate) AS RunningTotal
+FROM Sales
+ORDER BY SaleDate;
+
+-- SUM(Sales) OVER (ORDER BY SaleDate):
+-- Calculates sum of all rows from first to current row</code></pre>
+        </div>
+
+        <strong>Advanced: Running Total by Month:</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">SELECT
+    SaleDate,
+    Sales,
+    DATEPART(MONTH, SaleDate) AS Month,
+    SUM(Sales) OVER (
+        PARTITION BY DATEPART(MONTH, SaleDate)
+        ORDER BY SaleDate
+    ) AS MonthlyRunningTotal,
+    SUM(Sales) OVER (ORDER BY SaleDate) AS OverallRunningTotal
+FROM Sales
+ORDER BY SaleDate;</code></pre>
+        </div>
+
+        <!-- Problem 4: Gap Detection in Sequence -->
+        <h3 id="sql-4">🟡 Problem 4: Gap Detection in Sequence</h3>
+        <p><strong>Problem:</strong> Find missing sequence numbers in a table.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- Sample Data: Numbers = 1, 2, 3, 5, 6, 8, 9, 10
+-- Find gaps: 4, 7
+
+WITH NumberSequence AS (
+    SELECT
+        Number,
+        ROW_NUMBER() OVER (ORDER BY Number) AS RowNum
+    FROM Numbers
+)
+SELECT
+    Number + 1 AS MissingStart,
+    LEAD(Number) OVER (ORDER BY Number) - 1 AS MissingEnd
+FROM NumberSequence
+WHERE Number + 1 != LEAD(Number) OVER (ORDER BY Number);
+
+-- Output:
+-- MissingStart | MissingEnd
+-- 4            | 4
+-- 7            | 7</code></pre>
+        </div>
+
+        <!-- Problem 5: Find Duplicates -->
+        <h3 id="sql-5">🟢 Problem 5: Find Duplicate Records</h3>
+        <p><strong>Problem:</strong> Find duplicate email addresses or any repeated values.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- Solution 1: Using GROUP BY and HAVING
+SELECT Email, COUNT(*) AS Count
+FROM Users
+GROUP BY Email
+HAVING COUNT(*) &gt; 1;
+
+-- Solution 2: Using window functions
+SELECT DISTINCT Email
+FROM (
+    SELECT
+        Email,
+        COUNT(*) OVER (PARTITION BY Email) AS EmailCount
+    FROM Users
+) x
+WHERE EmailCount &gt; 1;</code></pre>
+        </div>
+
+        <!-- Problem 6: Window Functions Practice -->
+        <h3 id="sql-6">🟡 Problem 6: RANK vs DENSE_RANK vs ROW_NUMBER</h3>
+        <p><strong>Problem:</strong> Compare three ranking functions with sample data.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- Sample Scores: 100, 90, 90, 80, 70
+
+SELECT
+    Student,
+    Score,
+    ROW_NUMBER() OVER (ORDER BY Score DESC) AS RN,
+    RANK() OVER (ORDER BY Score DESC) AS Rank,
+    DENSE_RANK() OVER (ORDER BY Score DESC) AS DenseRank
+FROM StudentScores;
+
+-- Output:
+-- Student | Score | RN | Rank | DenseRank
+-- Alice   | 100   | 1  | 1    | 1
+-- Bob     | 90    | 2  | 2    | 2
+-- Charlie | 90    | 3  | 2    | 2
+-- David   | 80    | 4  | 4    | 3
+-- Eve     | 70    | 5  | 5    | 4
+
+-- Key Differences:
+-- ROW_NUMBER: Always unique (1, 2, 3, 4, 5)
+-- RANK: Skips after tie (1, 2, 2, 4, 5)
+-- DENSE_RANK: No skip (1, 2, 2, 3, 4)</code></pre>
+        </div>
+
+        <!-- ========== JAVASCRIPT CHALLENGES ========== -->
+        <h2 id="javascript-challenges">JavaScript Coding Challenges</h2>
+        <p>Master essential JavaScript async patterns, closures, and performance.</p>
+
+        <!-- Problem 1: Debounce Implementation -->
+        <h3 id="js-1">🟡 Problem 1: Debounce Function Implementation</h3>
+        <p><strong>Problem:</strong> Implement a debounce function that delays execution of a callback until after N milliseconds of inactivity.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">// Use Case: Search input
+// User types: "h" -> "he" -> "hel" -> "hell" -> "hello"
+// Without debounce: 5 API calls
+// With debounce: 1 API call (after user stops typing)
+
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', debounce(handleSearch, 500));</code></pre>
+        </div>
+
+        <strong>Solution (Complete Implementation):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">// Simple Debounce:
+function debounce(func, delay) {
+    let timeoutId;
+
+    return function(...args) {
+        // Clear previous timeout
+        clearTimeout(timeoutId);
+
+        // Set new timeout
+        timeoutId = setTimeout(() => {
+            func(...args);
+        }, delay);
+    };
+}
+
+// Usage:
+function handleSearch(term) {
+    console.log(`Searching for: ${term}`);
+    // API call here
+}
+
+const debouncedSearch = debounce(handleSearch, 500);
+
+// Simulate typing:
+debouncedSearch('h');      // Cancelled
+debouncedSearch('he');     // Cancelled
+debouncedSearch('hel');    // Cancelled
+debouncedSearch('hello');  // Executed after 500ms</code></pre>
+        </div>
+
+        <strong>Advanced: Debounce with Leading/Trailing Options:</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">// Advanced debounce with options
+function debounceAdvanced(func, delay, options = {}) {
+    let timeoutId;
+    let lastCall = 0;
+
+    return function(...args) {
+        const now = Date.now();
+        const isLeading = options.leading && (now - lastCall >= delay);
+
+        clearTimeout(timeoutId);
+
+        if (isLeading) {
+            func(...args);
+            lastCall = now;
+        }
+
+        timeoutId = setTimeout(() => {
+            if (!options.leading) {
+                func(...args);
+            }
+            lastCall = 0;
+        }, delay);
+    };
+}
+
+// Usage:
+// leading: true - execute immediately on first call
+// trailing: true - execute after delay if called again
+const debouncedClick = debounceAdvanced(handleClick, 300, { leading: true });</code></pre>
+        </div>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>Debounce: Delays function execution, resets on new calls</li>
+          <li>Use Case: Search inputs, window resize, autosave</li>
+          <li>clearTimeout: Cancel scheduled execution</li>
+          <li>Closure: timeoutId persists between calls</li>
+        </ul>
+
+        <strong>Interview Tips:</strong>
+        <ul>
+          <li>"Debounce is different from Throttle — know both"</li>
+          <li>"Debounce waits for inactivity, Throttle limits call frequency"</li>
+          <li>"Use debounce for search, Throttle for scroll events"</li>
+        </ul>
+
+        <!-- Problem 2: Promise Chain vs Async/Await -->
+        <h3 id="js-2">🟡 Problem 2: Promise Chain vs Async/Await (Error Handling)</h3>
+        <p><strong>Problem:</strong> Fetch user data, then posts, then comments. Compare promise chains with async/await.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">// Scenario: Dependent API calls
+// 1. Get user (needs userId = 1)
+// 2. Get posts (needs userId from step 1)
+// 3. Get comments (needs postId from step 2)</code></pre>
+        </div>
+
+        <strong>Approach 1: Promise Chain (Pyramid of Doom):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">// Promise Chain - Readable but gets nested
+function fetchData_PromiseChain() {
+    fetch('/api/user/1')
+        .then(response => response.json())
+        .then(user => {
+            console.log('User:', user);
+            return fetch(`/api/posts?userId=${user.id}`);
+        })
+        .then(response => response.json())
+        .then(posts => {
+            console.log('Posts:', posts);
+            return fetch(`/api/comments?postId=${posts[0].id}`);
+        })
+        .then(response => response.json())
+        .then(comments => {
+            console.log('Comments:', comments);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+// Problems:
+// - Deeply nested
+// - Hard to read
+// - Error handling at end only
+// - "Pyramid of Doom"</code></pre>
+        </div>
+
+        <strong>Approach 2: Async/Await (Clear &amp; Modern):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">// Async/Await - Cleaner and more readable
+async function fetchData_AsyncAwait() {
+    try {
+        const userResponse = await fetch('/api/user/1');
+        const user = await userResponse.json();
+        console.log('User:', user);
+
+        const postsResponse = await fetch(`/api/posts?userId=${user.id}`);
+        const posts = await postsResponse.json();
+        console.log('Posts:', posts);
+
+        const commentsResponse = await fetch(`/api/comments?postId=${posts[0].id}`);
+        const comments = await commentsResponse.json();
+        console.log('Comments:', comments);
+
+        return { user, posts, comments };
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}
+
+// Better:
+// - Reads like synchronous code
+// - Clear error handling with try/catch
+// - Each step visible and logical</code></pre>
+        </div>
+
+        <strong>Approach 3: Parallel Requests (Optimized):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">// Parallel when independent
+async function fetchData_Parallel() {
+    try {
+        // Sequential: User → Posts → Comments
+        const userResponse = await fetch('/api/user/1');
+        const user = await userResponse.json();
+
+        // Parallel: Fetch multiple user posts simultaneously
+        const [postsRes, friendsRes] = await Promise.all([
+            fetch(`/api/posts?userId=${user.id}`),
+            fetch(`/api/friends?userId=${user.id}`)
+        ]);
+
+        const posts = await postsRes.json();
+        const friends = await friendsRes.json();
+
+        console.log('User:', user);
+        console.log('Posts:', posts);
+        console.log('Friends:', friends);
+
+        return { user, posts, friends };
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// Key: Promise.all for independent operations = faster!</code></pre>
+        </div>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>Promises: Represent future value, chainable with .then()</li>
+          <li>Async/Await: Syntactic sugar over promises, reads synchronously</li>
+          <li>Promise.all(): Execute multiple promises in parallel</li>
+          <li>Error Handling: try/catch for async/await, .catch() for chains</li>
+        </ul>
+
+        <strong>Interview Tips:</strong>
+        <ul>
+          <li>"Always prefer async/await for readability"</li>
+          <li>"Know when to use Promise.all vs sequential awaits"</li>
+          <li>"Be ready to explain promise chains for legacy code"</li>
+        </ul>
+
+        <!-- Problem 3: Event Loop Execution Order -->
+        <h3 id="js-3">🔴 Problem 3: Event Loop Execution Order (Callbacks, Promises, setTimeout)</h3>
+        <p><strong>Problem:</strong> Predict the output order. Tests understanding of event loop, call stack, microtasks, and macrotasks.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">console.log('1. Synchronous Start');
+
+setTimeout(() => {
+    console.log('2. setTimeout (macrotask)');
+}, 0);
+
+Promise.resolve()
+    .then(() => {
+        console.log('3. Promise (microtask)');
+        return Promise.resolve();
+    })
+    .then(() => {
+        console.log('4. Promise chain (microtask)');
+    });
+
+console.log('5. Synchronous End');
+
+// What's the output?</code></pre>
+        </div>
+
+        <strong>Solution (With Explanation):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">// Output Order:
+// 1. Synchronous Start
+// 5. Synchronous End
+// 3. Promise (microtask)
+// 4. Promise chain (microtask)
+// 2. setTimeout (macrotask)
+
+// Explanation:
+// 1. Synchronous code runs first (call stack)
+// 2. All microtasks run (promises, queueMicrotask)
+// 3. Then macrotasks run (setTimeout, setInterval)
+
+// Event Loop Priority:
+// STEP 1: Execute synchronous code
+console.log('1. Synchronous Start');
+console.log('5. Synchronous End');
+// Call stack empty, synchronous complete
+
+// STEP 2: Execute ALL microtasks
+// - Promise.then() callbacks
+// - Promise.finally() callbacks
+// - queueMicrotask()
+console.log('3. Promise (microtask)');
+console.log('4. Promise chain (microtask)');
+// Microtask queue empty
+
+// STEP 3: Execute ONE macrotask
+// - setTimeout
+// - setInterval
+// - I/O
+console.log('2. setTimeout (macrotask)');
+// Back to Step 2 (microtasks)?
+// No more microtasks, so end</code></pre>
+        </div>
+
+        <strong>Complex Example:</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">console.log('Start');
+
+setTimeout(() => {
+    console.log('setTimeout 1');
+    Promise.resolve().then(() => console.log('Promise in setTimeout 1'));
+}, 0);
+
+setTimeout(() => {
+    console.log('setTimeout 2');
+}, 0);
+
+Promise.resolve()
+    .then(() => {
+        console.log('Promise 1');
+        setTimeout(() => console.log('setTimeout in Promise 1'), 0);
+    })
+    .then(() => {
+        console.log('Promise 2');
+    });
+
+console.log('End');
+
+// Output:
+// Start
+// End
+// Promise 1
+// Promise 2
+// setTimeout 1
+// Promise in setTimeout 1
+// setTimeout 2
+
+// Explanation:
+// 1. Sync: Start, End
+// 2. Microtasks: Promise 1, Promise 2
+// 3. Macro: setTimeout 1 (which adds microtask)
+// 4. Microtask: Promise in setTimeout 1
+// 5. Macro: setTimeout 2</code></pre>
+        </div>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>Event Loop: JavaScript's execution model</li>
+          <li>Call Stack: Synchronous code execution</li>
+          <li>Microtasks: Promises, queueMicrotask (highest priority)</li>
+          <li>Macrotasks: setTimeout, setInterval, I/O (lower priority)</li>
+          <li>Priority: Sync → All Microtasks → One Macrotask → Repeat</li>
+        </ul>
+
+        <strong>Interview Tips:</strong>
+        <ul>
+          <li>"This is a tough question — most developers get it wrong!"</li>
+          <li>"Understand microtasks run before macrotasks"</li>
+          <li>"Use Chrome DevTools to visualize the event loop"</li>
+        </ul>
+
+        <!-- Problem 4: Deep Clone vs Shallow Clone -->
+        <h3 id="js-4">🟡 Problem 4: Deep Clone vs Shallow Clone</h3>
+        <p><strong>Problem:</strong> Clone an object and array. Show the difference between shallow and deep cloning.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">// Sample object with nested structure
+const user = {
+    id: 1,
+    name: 'Alice',
+    profile: {
+        age: 30,
+        address: {
+            city: 'NYC'
+        }
+    }
+};
+
+// Shallow clone: Only top level is copied
+const shallow = Object.assign({}, user);
+shallow.profile.city = 'LA';
+console.log(user.profile.city);      // 'LA' - AFFECTED!
+
+// Deep clone: Everything is copied
+const deep = JSON.parse(JSON.stringify(user));
+deep.profile.city = 'Boston';
+console.log(user.profile.city);      // 'LA' - NOT affected</code></pre>
+        </div>
+
+        <strong>Approach 1: Shallow Clone (Spread Operator):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">// Shallow Clone: Only copies first level
+const original = { a: 1, b: { c: 2 } };
+
+// Method 1: Spread operator
+const clone1 = { ...original };
+
+// Method 2: Object.assign
+const clone2 = Object.assign({}, original);
+
+// Method 3: Array.slice
+const originalArray = [1, 2, { x: 3 }];
+const clonedArray = originalArray.slice();
+
+// Test:
+clone1.b.c = 999;
+console.log(original.b.c);  // 999 - nested object is shared!</code></pre>
+        </div>
+
+        <strong>Approach 2: Deep Clone (JSON Method):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">// Deep Clone: Completely independent copy
+const original = { a: 1, b: { c: 2 } };
+
+// Method 1: JSON stringify/parse (simplest)
+const clone1 = JSON.parse(JSON.stringify(original));
+
+// Test:
+clone1.b.c = 999;
+console.log(original.b.c);  // 2 - NOT affected!
+
+// Limitations of JSON method:
+// ❌ Loses functions
+// ❌ Loses undefined values
+// ❌ Loses Date objects (converts to strings)
+// ❌ Loses Map, Set, symbols</code></pre>
+        </div>
+
+        <strong>Approach 3: Deep Clone (Recursive Function):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">// Deep Clone: Recursive approach (handles more types)
+function deepClone(obj, seen = new WeakMap()) {
+    // Handle primitives
+    if (obj === null || typeof obj !== 'object') {
+        return obj;
+    }
+
+    // Handle circular references
+    if (seen.has(obj)) {
+        return seen.get(obj);
+    }
+
+    // Handle arrays
+    if (Array.isArray(obj)) {
+        const clonedArray = [];
+        seen.set(obj, clonedArray);
+
+        obj.forEach((item, index) => {
+            clonedArray[index] = deepClone(item, seen);
+        });
+
+        return clonedArray;
+    }
+
+    // Handle objects
+    const clonedObj = {};
+    seen.set(obj, clonedObj);
+
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            clonedObj[key] = deepClone(obj[key], seen);
+        }
+    }
+
+    return clonedObj;
+}
+
+// Test:
+const original = { a: 1, b: { c: 2 }, d: [3, 4, { e: 5 }] };
+const cloned = deepClone(original);
+
+cloned.b.c = 999;
+cloned.d[2].e = 888;
+
+console.log(original.b.c);      // 2
+console.log(original.d[2].e);   // 5</code></pre>
+        </div>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>Shallow Clone: Copies references to nested objects</li>
+          <li>Deep Clone: Recursively copies all nested structures</li>
+          <li>WeakMap: Prevents infinite loops from circular references</li>
+          <li>JSON Method: Simple but loses functions, Date, Map, Set</li>
+        </ul>
+
+        <strong>Interview Tips:</strong>
+        <ul>
+          <li>"Know the difference and when each is appropriate"</li>
+          <li>"JSON method is fastest for simple objects"</li>
+          <li>"Recursive method is needed for complex structures with functions"</li>
+        </ul>
+
+        <!-- Problem 5: Closure Counter Pattern -->
+        <h3 id="js-5">🟢 Problem 5: Closure Counter Pattern</h3>
+        <p><strong>Problem:</strong> Implement a counter function using closures. Demonstrate encapsulation.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">// Use Case: Encapsulated state
+// Create independent counter instances with private state
+
+const counter1 = createCounter();
+const counter2 = createCounter();
+
+counter1.increment();  // 1
+counter1.increment();  // 2
+counter2.increment();  // 1 (independent!)
+
+console.log(counter1.get());  // 2
+console.log(counter2.get());  // 1</code></pre>
+        </div>
+
+        <strong>Solution (Simple Closure):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">// Simple Counter with Closure
+function createCounter() {
+    let count = 0;  // Private variable - not accessible outside
+
+    return {
+        increment() {
+            count++;
+            return count;
+        },
+        decrement() {
+            count--;
+            return count;
+        },
+        get() {
+            return count;
+        },
+        reset() {
+            count = 0;
+            return count;
+        }
+    };
+}
+
+// Usage:
+const counter = createCounter();
+console.log(counter.increment());  // 1
+console.log(counter.increment());  // 2
+console.log(counter.decrement());  // 1
+console.log(counter.get());        // 1
+console.log(counter.reset());      // 0
+
+// Key: count is private! Can't do counter.count = 100</code></pre>
+        </div>
+
+        <strong>Advanced: Counter Factory with Initial Value:</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">javascript</span>
+          </div>
+          <pre><code class="language-javascript">// Advanced: Factory pattern with options
+function createCounter(initialValue = 0, step = 1) {
+    let count = initialValue;
+
+    return {
+        increment(amount = step) {
+            count += amount;
+            return count;
+        },
+        decrement(amount = step) {
+            count -= amount;
+            return count;
+        },
+        get() {
+            return count;
+        },
+        set(value) {
+            count = value;
+            return count;
+        }
+    };
+}
+
+// Usage:
+const counter1 = createCounter(10, 5);  // Start at 10, step by 5
+counter1.increment();     // 15
+counter1.increment(3);    // 18
+
+const counter2 = createCounter(100, 10);
+counter2.decrement();     // 90</code></pre>
+        </div>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>Closure: Inner function remembers outer scope variables</li>
+          <li>Data Privacy: count is not accessible outside the function</li>
+          <li>Encapsulation: Public methods control access to private state</li>
+          <li>Factory Pattern: createCounter creates independent instances</li>
+        </ul>
+
+        <strong>Interview Tips:</strong>
+        <ul>
+          <li>"Closures are fundamental to JavaScript — expect questions"</li>
+          <li>"Show you understand data encapsulation"</li>
+          <li>"Compare with class-based approach for clarity"</li>
+        </ul>
+
+        <!-- ========== ALGORITHM CHALLENGES ========== -->
+        <h2 id="algorithm-challenges">Algorithm Coding Challenges</h2>
+        <p>Master fundamental algorithms and data structure patterns used in ProductCatalogAPI and beyond.</p>
+
+        <!-- Problem 1: Two Sum -->
+        <h3 id="algo-1">🟢 Problem 1: Two Sum (Array)</h3>
+        <p><strong>Problem:</strong> Given an array of integers and a target sum, find two numbers that add up to the target. Return their indices.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Example:
+// nums = [2, 7, 11, 15], target = 9
+// Output: [0, 1] (2 + 7 = 9)</code></pre>
+        </div>
+
+        <strong>Approach 1: Brute Force (Two Nested Loops):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public int[] TwoSum_BruteForce(int[] nums, int target)
+{
+    // ❌ Brute Force: Check every pair
+    for (int i = 0; i &lt; nums.Length; i++)
+    {
+        for (int j = i + 1; j &lt; nums.Length; j++)
+        {
+            if (nums[i] + nums[j] == target)
+                return new[] { i, j };
+        }
+    }
+
+    return Array.Empty&lt;int&gt;();
+}
+
+// Test:
+int[] nums = { 2, 7, 11, 15 };
+var result = TwoSum_BruteForce(nums, 9);
+Console.WriteLine($"[{result[0]}, {result[1]}]");  // [0, 1]</code></pre>
+        </div>
+        <p><em>Time: O(n²) | Space: O(1) | Too slow!</em></p>
+
+        <strong>Approach 2: Hash Map (Optimal):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public int[] TwoSum(int[] nums, int target)
+{
+    // ✅ Optimal: Use dictionary to store seen numbers
+    Dictionary&lt;int, int&gt; seen = new();
+
+    for (int i = 0; i &lt; nums.Length; i++)
+    {
+        int complement = target - nums[i];
+
+        if (seen.ContainsKey(complement))
+            return new[] { seen[complement], i };
+
+        if (!seen.ContainsKey(nums[i]))
+            seen[nums[i]] = i;
+    }
+
+    return Array.Empty&lt;int&gt;();
+}
+
+// Test:
+int[] nums = { 2, 7, 11, 15 };
+var result = TwoSum(nums, 9);
+Console.WriteLine($"[{result[0]}, {result[1]}]");  // [0, 1]
+
+// Trace:
+// i=0: nums[0]=2, complement=7, seen={}, add 2→0
+// i=1: nums[1]=7, complement=2, seen has 2! return [0, 1]</code></pre>
+        </div>
+        <p><em>Time: O(n) | Space: O(n) | Perfect!</em></p>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>Hash Map: Store seen numbers and quickly find complement</li>
+          <li>Complement: target - current = number we're looking for</li>
+          <li>One Pass: Dictionary lookup is O(1)</li>
+        </ul>
+
+        <!-- Problem 2: Longest Substring Without Repeating -->
+        <h3 id="algo-2">🟡 Problem 2: Longest Substring Without Repeating Characters</h3>
+        <p><strong>Problem:</strong> Find the length of the longest substring without repeating characters.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Examples:
+LongestSubstring("abcabcbb");  // 3 ("abc")
+LongestSubstring("bbbbb");     // 1 ("b")
+LongestSubstring("pwwkew");    // 3 ("wke")</code></pre>
+        </div>
+
+        <strong>Solution (Sliding Window):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public int LongestSubstring(string s)
+{
+    // ✅ Sliding Window: Maintain window of unique characters
+    Dictionary&lt;char, int&gt; charIndex = new();
+    int maxLength = 0;
+    int left = 0;
+
+    for (int right = 0; right &lt; s.Length; right++)
+    {
+        char ch = s[right];
+
+        // If character seen and in current window, move left pointer
+        if (charIndex.ContainsKey(ch) && charIndex[ch] >= left)
+        {
+            left = charIndex[ch] + 1;
+        }
+
+        charIndex[ch] = right;
+        maxLength = Math.Max(maxLength, right - left + 1);
+    }
+
+    return maxLength;
+}
+
+// Example trace for "abcabcbb":
+// right=0, ch='a', window="a", max=1
+// right=1, ch='b', window="ab", max=2
+// right=2, ch='c', window="abc", max=3
+// right=3, ch='a', duplicate! left=1, window="bca", max=3
+// right=4, ch='b', duplicate! left=2, window="cab", max=3
+// right=5, ch='c', duplicate! left=3, window="abc", max=3
+// right=6, ch='b', duplicate! left=4, window="cb", max=3
+// Result: 3</code></pre>
+        </div>
+        <p><em>Time: O(n) | Space: O(min(m, n)) where m is charset size | Efficient!</em></p>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>Sliding Window: Two pointers maintain a window of unique characters</li>
+          <li>Duplicate Handling: Move left pointer when duplicate found</li>
+          <li>One Pass: Single iteration through string</li>
+        </ul>
+
+        <!-- Problem 3: Merge Sorted Arrays -->
+        <h3 id="algo-3">🟡 Problem 3: Merge Sorted Arrays</h3>
+        <p><strong>Problem:</strong> Merge two sorted arrays into one sorted array.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Example:
+// nums1 = [1, 3, 5], nums2 = [2, 4, 6]
+// Result = [1, 2, 3, 4, 5, 6]</code></pre>
+        </div>
+
+        <strong>Solution (Two Pointer):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public int[] MergeSortedArrays(int[] nums1, int[] nums2)
+{
+    // ✅ Two Pointer: O(n + m) linear merge
+    int[] result = new int[nums1.Length + nums2.Length];
+    int i = 0, j = 0, k = 0;
+
+    while (i &lt; nums1.Length && j &lt; nums2.Length)
+    {
+        if (nums1[i] &lt;= nums2[j])
+            result[k++] = nums1[i++];
+        else
+            result[k++] = nums2[j++];
+    }
+
+    // Add remaining elements from nums1
+    while (i &lt; nums1.Length)
+        result[k++] = nums1[i++];
+
+    // Add remaining elements from nums2
+    while (j &lt; nums2.Length)
+        result[k++] = nums2[j++];
+
+    return result;
+}
+
+// Test:
+int[] nums1 = { 1, 3, 5 };
+int[] nums2 = { 2, 4, 6 };
+var result = MergeSortedArrays(nums1, nums2);
+// result = [1, 2, 3, 4, 5, 6]</code></pre>
+        </div>
+        <p><em>Time: O(n + m) | Space: O(n + m) for result array | Optimal!</em></p>
+
+        <!-- Problem 4: Binary Search vs Linear Search -->
+        <h3 id="algo-4">🟢 Problem 4: Binary Search vs Linear Search</h3>
+        <p><strong>Problem:</strong> Search for a value in a sorted array. Compare linear and binary approaches.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Example:
+// sorted = [1, 3, 5, 7, 9, 11, 13, 15], target = 7
+// Result: Index 3</code></pre>
+        </div>
+
+        <strong>Approach 1: Linear Search (Slow):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public int LinearSearch(int[] nums, int target)
+{
+    // ❌ Slow: Check each element
+    for (int i = 0; i &lt; nums.Length; i++)
+    {
+        if (nums[i] == target)
+            return i;
+    }
+    return -1;
+}
+
+// For array of 1,000,000: worst case 1,000,000 comparisons</code></pre>
+        </div>
+        <p><em>Time: O(n) | Space: O(1) | Too slow for large arrays</em></p>
+
+        <strong>Approach 2: Binary Search (Fast):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public int BinarySearch(int[] nums, int target)
+{
+    // ✅ Fast: Divide and conquer
+    int left = 0;
+    int right = nums.Length - 1;
+
+    while (left &lt;= right)
+    {
+        int mid = left + (right - left) / 2;
+
+        if (nums[mid] == target)
+            return mid;
+        else if (nums[mid] &lt; target)
+            left = mid + 1;      // Target in right half
+        else
+            right = mid - 1;     // Target in left half
+    }
+
+    return -1;
+}
+
+// Test:
+int[] nums = { 1, 3, 5, 7, 9, 11, 13, 15 };
+Console.WriteLine(BinarySearch(nums, 7));   // 3
+Console.WriteLine(BinarySearch(nums, 14));  // -1
+
+// Performance for 1,000,000 elements:
+// Linear: up to 1,000,000 comparisons
+// Binary: at most ~20 comparisons (log₂(1,000,000) ≈ 20)</code></pre>
+        </div>
+        <p><em>Time: O(log n) | Space: O(1) | 50,000x faster!</em></p>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>Binary Search: Divide search space in half each iteration</li>
+          <li>Logarithmic: log₂(1,000,000) = 20 steps maximum</li>
+          <li>Requires Sorted Input: Must be sorted for binary search</li>
+          <li>Overflow Risk: Use `mid = left + (right - left) / 2` to avoid overflow</li>
+        </ul>
+
+        <!-- Problem 5: Linked List Reversal -->
+        <h3 id="algo-5">🟡 Problem 5: Linked List Reversal (Iterative &amp; Recursive)</h3>
+        <p><strong>Problem:</strong> Reverse a linked list. Show both iterative and recursive approaches.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Define LinkedList Node:
+public class ListNode
+{
+    public int Value { get; set; }
+    public ListNode? Next { get; set; }
+
+    public ListNode(int value)
+    {
+        Value = value;
+        Next = null;
+    }
+}
+
+// Example: 1 → 2 → 3 → 4 → null
+// After reverse: 4 → 3 → 2 → 1 → null</code></pre>
+        </div>
+
+        <strong>Approach 1: Iterative Reversal:</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public ListNode? ReverseLinkedList_Iterative(ListNode? head)
+{
+    // ✅ Iterative: Use previous pointer
+    ListNode? prev = null;
+    ListNode? current = head;
+
+    while (current != null)
+    {
+        // Save next node before we break the link
+        ListNode? nextTemp = current.Next;
+
+        // Reverse the link: current points back to prev
+        current.Next = prev;
+
+        // Move prev and current one step forward
+        prev = current;
+        current = nextTemp;
+    }
+
+    // prev is now pointing to the new head
+    return prev;
+}
+
+// Trace for 1 → 2 → 3 → null:
+// Step 1: null ← 1  2 → 3 → null
+// Step 2: null ← 1 ← 2  3 → null
+// Step 3: null ← 1 ← 2 ← 3
+// Result: 3 is new head</code></pre>
+        </div>
+        <p><em>Time: O(n) | Space: O(1) | Preferred: No extra space</em></p>
+
+        <strong>Approach 2: Recursive Reversal:</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public ListNode? ReverseLinkedList_Recursive(ListNode? head)
+{
+    // ✅ Recursive: Base case and recursive case
+    if (head == null || head.Next == null)
+        return head;  // Base case: end of list
+
+    // Recursively reverse the rest of the list
+    ListNode? newHead = ReverseLinkedList_Recursive(head.Next);
+
+    // head.Next is now pointing to the last node
+    // Make that last node point back to head
+    head.Next!.Next = head;
+
+    // Remove original link
+    head.Next = null;
+
+    return newHead;
+}
+
+// Trace for 1 → 2 → 3 → null:
+// Recurse: 1 calls 2, 2 calls 3, 3 returns 3
+// Unwind: 3 ← 2, 2 ← 1
+// Result: 3 is new head</code></pre>
+        </div>
+        <p><em>Time: O(n) | Space: O(n) for recursion stack | Less preferred</em></p>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>Pointer Reversal: Change next pointer to point backward</li>
+          <li>Iterative: O(1) space, more efficient</li>
+          <li>Recursive: Elegant but uses call stack</li>
+          <li>Save Next: Always save next node before changing link</li>
+        </ul>
+
+        <!-- Problem 6: Tree Traversal -->
+        <h3 id="algo-6">🔴 Problem 6: Tree Traversal (DFS &amp; BFS)</h3>
+        <p><strong>Problem:</strong> Traverse a binary tree using DFS (In-order, Pre-order, Post-order) and BFS.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Define Tree Node:
+public class TreeNode
+{
+    public int Value { get; set; }
+    public TreeNode? Left { get; set; }
+    public TreeNode? Right { get; set; }
+
+    public TreeNode(int value)
+    {
+        Value = value;
+    }
+}
+
+// Example tree:
+//     1
+//    / \
+//   2   3
+//  / \
+// 4   5</code></pre>
+        </div>
+
+        <strong>Approach 1: DFS - In-Order Traversal (Left-Root-Right):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// In-Order: Left → Root → Right (sorted for BST)
+public List&lt;int&gt; InOrder(TreeNode? root)
+{
+    List&lt;int&gt; result = new();
+    InOrderHelper(root, result);
+    return result;
+}
+
+private void InOrderHelper(TreeNode? node, List&lt;int&gt; result)
+{
+    if (node == null) return;
+
+    InOrderHelper(node.Left, result);      // Visit left
+    result.Add(node.Value);                 // Visit root
+    InOrderHelper(node.Right, result);     // Visit right
+}
+
+// Result for example tree: [4, 2, 5, 1, 3]</code></pre>
+        </div>
+
+        <strong>Approach 2: DFS - Pre-Order Traversal (Root-Left-Right):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Pre-Order: Root → Left → Right (useful for copying tree)
+public List&lt;int&gt; PreOrder(TreeNode? root)
+{
+    List&lt;int&gt; result = new();
+    PreOrderHelper(root, result);
+    return result;
+}
+
+private void PreOrderHelper(TreeNode? node, List&lt;int&gt; result)
+{
+    if (node == null) return;
+
+    result.Add(node.Value);                 // Visit root
+    PreOrderHelper(node.Left, result);      // Visit left
+    PreOrderHelper(node.Right, result);     // Visit right
+}
+
+// Result for example tree: [1, 2, 4, 5, 3]</code></pre>
+        </div>
+
+        <strong>Approach 3: DFS - Post-Order Traversal (Left-Right-Root):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Post-Order: Left → Right → Root (useful for deletion)
+public List&lt;int&gt; PostOrder(TreeNode? root)
+{
+    List&lt;int&gt; result = new();
+    PostOrderHelper(root, result);
+    return result;
+}
+
+private void PostOrderHelper(TreeNode? node, List&lt;int&gt; result)
+{
+    if (node == null) return;
+
+    PostOrderHelper(node.Left, result);     // Visit left
+    PostOrderHelper(node.Right, result);    // Visit right
+    result.Add(node.Value);                 // Visit root
+}
+
+// Result for example tree: [4, 5, 2, 3, 1]</code></pre>
+        </div>
+
+        <strong>Approach 4: BFS - Level-Order Traversal (Queue):</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// BFS: Level by level using Queue
+public List&lt;int&gt; BFS(TreeNode? root)
+{
+    List&lt;int&gt; result = new();
+    if (root == null) return result;
+
+    Queue&lt;TreeNode&gt; queue = new();
+    queue.Enqueue(root);
+
+    while (queue.Count &gt; 0)
+    {
+        TreeNode node = queue.Dequeue();
+        result.Add(node.Value);
+
+        if (node.Left != null)
+            queue.Enqueue(node.Left);
+
+        if (node.Right != null)
+            queue.Enqueue(node.Right);
+    }
+
+    return result;
+}
+
+// Result for example tree: [1, 2, 3, 4, 5]
+// Time: O(n) | Space: O(n) in worst case (complete tree)</code></pre>
+        </div>
+
+        <strong>Traversal Comparison Table:</strong>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">text</span>
+          </div>
+          <pre><code class="language-text">Traversal  | Order        | Use Case
+-----------|--------------|----------------------------------------
+In-Order   | L-R-M        | Sorted order for BST, symmetric traversal
+Pre-Order  | M-L-R        | Copy tree, prefix notation
+Post-Order | L-R-M        | Delete tree, postfix notation
+Level-Order| By depth     | Connected components, shortest path
+DFS        | Stack        | Memory efficient for deep trees
+BFS        | Queue        | Shortest path, level-by-level</code></pre>
+        </div>
+
+        <strong>Key Concepts:</strong>
+        <ul>
+          <li>DFS: Use recursion or explicit stack</li>
+          <li>BFS: Use queue for level-by-level traversal</li>
+          <li>Time: All traversals are O(n) — each node visited once</li>
+          <li>Space: O(h) for DFS (height), O(w) for BFS (max width)</li>
+        </ul>
+
+        <strong>Interview Tips:</strong>
+        <ul>
+          <li>"Know all four tree traversals and their use cases"</li>
+          <li>"Recursive DFS is cleaner for interviews"</li>
+          <li>"BFS is essential for finding shortest paths"</li>
+        </ul>
+
+        <!-- PAGE NAVIGATION -->
+        <nav class="page-nav">
+          <a href="interview-react.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">←</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">React</span></div>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

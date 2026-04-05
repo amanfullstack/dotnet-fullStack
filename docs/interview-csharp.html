@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C# & OOP Concepts - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-badge">D</div>
+      DevDocs
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html" class="active">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span>
+        <input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+          <li><a href="webapi-data-access.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Data Access</a></li>
+          <li><a href="csharp.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+          <li><a href="interview-csharp.html" class="sidebar-link active"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
+          <li><a href="interview-solid.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> SOLID Principles</a></li>
+          <li><a href="interview-patterns.html" class="sidebar-link"><span class="sidebar-link-icon">🧩</span> Design Patterns</a></li>
+          <li><a href="interview-sql.html" class="sidebar-link"><span class="sidebar-link-icon">🗃️</span> SQL</a></li>
+          <li><a href="interview-mvc.html" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> ASP.NET MVC</a></li>
+          <li><a href="interview-react.html" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React</a></li>
+          <li><a href="interview-angular.html" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="interview.html">Interview Prep</a>
+          <span class="sep">/</span>
+          <span class="current">C# &amp; OOP Concepts</span>
+        </nav>
+
+        <div class="page-title-block">
+          <h1 class="page-title">💎 C# &amp; OOP Concepts</h1>
+          <p class="page-subtitle">Object-oriented programming principles and C# language features — explained for beginners with real code examples</p>
+          <div class="page-meta">
+            <span class="badge badge-accent">Interview Prep</span>
+            <span class="badge badge-primary">OOP Fundamentals</span>
+            <span class="badge badge-beginner">Beginner</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">What is OOP?</p>
+            <p class="callout-body">Object-Oriented Programming (OOP) is a paradigm for designing software around <strong>objects</strong> — entities that bundle data (state) and methods (behavior) together. OOP is built on four pillars: <strong>Encapsulation</strong> (hiding internal details), <strong>Abstraction</strong> (exposing what matters, hiding complexity), <strong>Inheritance</strong> (sharing code through hierarchies), and <strong>Polymorphism</strong> (using the same interface with different implementations). C# is a fully object-oriented language — every line of code you write lives inside a class. Understanding these concepts deeply is essential for writing clean, maintainable code and acing technical interviews. All examples on this page use the <strong>Product Catalog</strong> scenario you are already building.</p>
+          </div>
+        </div>
+
+        <!-- Quick Reference Table -->
+        <h2 id="oop-concepts-overview">Quick Reference: Core Concepts</h2>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Concept</th>
+              <th>Real-world Analogy</th>
+              <th>C# Keyword/Feature</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Class</strong></td>
+              <td>Blueprint for a car (defines what properties and methods a car has)</td>
+              <td><code>class Product { }</code></td>
+            </tr>
+            <tr>
+              <td><strong>Object/Instance</strong></td>
+              <td>An actual car (specific car with specific color and mileage)</td>
+              <td><code>var product = new Product()</code></td>
+            </tr>
+            <tr>
+              <td><strong>Encapsulation</strong></td>
+              <td>Car has doors you can open; engine is hidden inside (you don't touch it directly)</td>
+              <td><code>public</code>, <code>private</code>, properties with getters/setters</td>
+            </tr>
+            <tr>
+              <td><strong>Abstraction</strong></td>
+              <td>You drive a car without knowing how the transmission works internally</td>
+              <td><code>abstract class</code>, <code>interface</code></td>
+            </tr>
+            <tr>
+              <td><strong>Inheritance</strong></td>
+              <td>An electric car is a car — it inherits all car properties but adds battery management</td>
+              <td><code>class ElectricCar : Car { }</code></td>
+            </tr>
+            <tr>
+              <td><strong>Polymorphism</strong></td>
+              <td>Different cars (sedan, truck) all respond to "accelerate" differently, same button does different things</td>
+              <td><code>virtual</code>, <code>override</code>, <code>abstract</code></td>
+            </tr>
+            <tr>
+              <td><strong>Struct (value type)</strong></td>
+              <td>A simple data bundle you pass around by value (like writing down a phone number)</td>
+              <td><code>struct Point { }</code></td>
+            </tr>
+            <tr>
+              <td><strong>Class (reference type)</strong></td>
+              <td>A complex entity you pass around by reference (like passing a business card to contact later)</td>
+              <td><code>class Product { }</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- ═══════════ Q36 ═══════════ -->
+        <h2 id="csharp-qa">Interview Questions on C# &amp; OOP</h2>
+        <div class="qa-list">
+
+          <details class="qa-item">
+            <summary class="qa-question">Q36. What is the difference between <code>struct</code> and <code>class</code>? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>struct</strong> and <strong>class</strong> look similar but differ fundamentally in how they behave in memory:</p>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Aspect</th>
+                    <th>struct</th>
+                    <th>class</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Type</strong></td>
+                    <td>Value type (stack)</td>
+                    <td>Reference type (heap)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Copy behavior</strong></td>
+                    <td>Copied by value — changes to copy don't affect original</td>
+                    <td>Copied by reference — all references point to same object</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Performance</strong></td>
+                    <td>Faster, less GC pressure (small structs)</td>
+                    <td>Slightly slower, managed by garbage collector</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Inheritance</strong></td>
+                    <td>Cannot inherit from other structs; can implement interfaces</td>
+                    <td>Can inherit from other classes and interfaces</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Null</strong></td>
+                    <td>Cannot be null (unless nullable: <code>Point?</code>)</td>
+                    <td>Can be null</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p><strong>When to use struct:</strong> small, immutable data bundles (coordinates, colors, money amounts). Example: <code>decimal Price</code> is actually a struct — lightweight and fast.</p>
+              <p><strong>When to use class:</strong> almost always for business entities like <code>Product</code>, <code>Customer</code>, or <code>Order</code>. They're complex, mutable, and need inheritance.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ─── STRUCT — value type, stack-allocated ───
+public struct Money
+{
+    public decimal Amount { get; set; }
+    public string Currency { get; set; }
+}
+
+// Structs are copied by value
+var price1 = new Money { Amount = 99.99m, Currency = "USD" };
+var price2 = price1;           // copies the struct (full copy)
+price2.Amount = 50m;           // changing price2 does NOT affect price1
+
+Console.WriteLine(price1.Amount);  // still 99.99 — unaffected
+
+// ─── CLASS — reference type, heap-allocated ───
+public class Product
+{
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+}
+
+// Classes are copied by reference
+var product1 = new Product { Name = "Laptop", Price = 999.99m };
+var product2 = product1;       // copies the reference (same object)
+product2.Price = 50m;          // changing product2 DOES affect product1
+
+Console.WriteLine(product1.Price);  // 50 — BOTH point to the same object</code></pre>
+              </div>
+              <p><strong>Key takeaway:</strong> structs are for small, immutable value bundles (rare in business logic). Classes are for everything else. When in doubt, use <code>class</code>.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q37. What is encapsulation? Show an example with property validation. <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Encapsulation</strong> is bundling data (fields) and methods together, and hiding the internal details behind a public interface. You expose what's necessary (properties) and hide how it's implemented (validation logic, backing fields).</p>
+              <p>A classic example is <code>Product.Price</code>. The class should never allow negative prices. Without encapsulation, you'd have a public field anyone could set to -100. With proper encapsulation, the setter validates.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ❌ BAD — public field with no validation
+public class Product
+{
+    public decimal Price;  // anyone can set this to any value, including negative
+}
+
+var product = new Product();
+product.Price = -100;  // ❌ invalid state — negative price makes no business sense
+
+// ─────────────────────────────────────
+
+// ✅ GOOD — property with validation in the setter
+public class Product
+{
+    private decimal _price;  // private backing field — hidden from outside
+
+    // Public property with validation
+    public decimal Price
+    {
+        get { return _price; }
+        set
+        {
+            if (value &lt; 0)
+                throw new ArgumentException("Price cannot be negative");
+            _price = value;
+        }
+    }
+
+    // Alternative: auto-property with C# 8+ init-only setter
+    public string Name { get; set; }
+}
+
+var product = new Product();
+product.Price = 99.99m;           // ✅ valid
+// product.Price = -100;          // ❌ throws ArgumentException — prevented
+
+// ─────────────────────────────────────
+
+// Modern C# 8+ — property with init-only setter (immutable)
+public class ProductDto
+{
+    public int Id { get; init; }      // can only be set during initialization
+    public string Name { get; init; }
+    public decimal Price { get; init; }
+}
+
+// Can only set during construction
+var dto = new ProductDto { Id = 1, Name = "Laptop", Price = 999.99m };
+// dto.Price = 50;  // ❌ compile error — cannot modify init-only property</code></pre>
+              </div>
+              <p><strong>Benefits of encapsulation:</strong> you can change the internal implementation (add validation, logging, caching) without changing the public interface. Callers only care that the property is accessible — not how it's validated behind the scenes.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q38. What is polymorphism? Explain method overriding with an example. <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Polymorphism</strong> means "many forms" — the same method name behaves differently depending on the object type. It allows you to write code that works with a base type but actually calls specialized versions for each subtype.</p>
+              <p>A real-world example: different product categories calculate discounts differently. Electronics gets 10% off, Clothing gets 20% off, but both use <code>GetDiscount()</code>.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ─── Base class with virtual method ───
+public class DiscountCalculator
+{
+    // virtual = subclasses CAN override this
+    public virtual decimal GetDiscount(decimal price)
+    {
+        return price;  // default: no discount
+    }
+}
+
+// ─── Subclass 1 — Electronics discount ───
+public class ElectronicsDiscount : DiscountCalculator
+{
+    // override = subclass provides its own implementation
+    public override decimal GetDiscount(decimal price)
+    {
+        return price * 0.90m;  // 10% off
+    }
+}
+
+// ─── Subclass 2 — Clothing discount ───
+public class ClothingDiscount : DiscountCalculator
+{
+    public override decimal GetDiscount(decimal price)
+    {
+        return price * 0.80m;  // 20% off
+    }
+}
+
+// ─── Polymorphism in action ───
+DiscountCalculator discount1 = new ElectronicsDiscount();
+DiscountCalculator discount2 = new ClothingDiscount();
+
+decimal price = 100m;
+
+Console.WriteLine(discount1.GetDiscount(price));  // 90 (10% off)
+Console.WriteLine(discount2.GetDiscount(price));  // 80 (20% off)
+
+// ─── The magic: same method, different behaviour ───
+List&lt;DiscountCalculator&gt; calculators = new()
+{
+    new ElectronicsDiscount(),
+    new ClothingDiscount()
+};
+
+foreach (var calc in calculators)
+{
+    // Each calls its own GetDiscount() implementation
+    var discounted = calc.GetDiscount(100m);
+    Console.WriteLine($"Discount: {discounted}");
+}
+// Output: 90, 80</code></pre>
+              </div>
+              <p><strong>Key keywords:</strong></p>
+              <ul>
+                <li><code>virtual</code> on the base method — allows overriding in subclasses</li>
+                <li><code>override</code> on the subclass method — provides a new implementation</li>
+                <li>When you call the method through a base-type reference, the <em>actual runtime type</em> determines which version runs (not the declared type)</li>
+              </ul>
+              <p>This is powerful because you can write one loop that works with <em>any</em> <code>DiscountCalculator</code> subclass without knowing what it is.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q39. When do you use <code>abstract class</code> vs <code>interface</code>? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Both define contracts that subclasses/implementors must follow, but they serve different purposes:</p>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Aspect</th>
+                    <th>abstract class</th>
+                    <th>interface</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Represents</strong></td>
+                    <td>"Is-A" relationship (a subclass IS a kind of the parent)</td>
+                    <td>Capability/contract (a class CAN DO what the interface defines)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>State</strong></td>
+                    <td>Can have fields, constructors, state</td>
+                    <td>Only methods/properties (no state in older C#)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Inheritance</strong></td>
+                    <td>Single inheritance only (one parent class)</td>
+                    <td>Multiple inheritance (implement many interfaces)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Access modifiers</strong></td>
+                    <td>Can have private, protected, public members</td>
+                    <td>Members are implicitly public</td>
+                  </tr>
+                  <tr>
+                    <td><strong>When to use</strong></td>
+                    <td>Shared code between related classes</td>
+                    <td>Define a behavior contract without implementation details</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ─── ABSTRACT CLASS — "is-a" relationship ───
+// Example: all repositories in Product Catalog share a base pattern
+public abstract class BaseRepository&lt;T&gt;
+{
+    protected readonly AppDbContext _context;  // shared state
+
+    public BaseRepository(AppDbContext context) =&gt; _context = context;
+
+    // Shared concrete method — all repos use this
+    public virtual async Task&lt;IEnumerable&lt;T&gt;&gt; GetAllAsync()
+    {
+        return await _context.Set&lt;T&gt;().ToListAsync();
+    }
+
+    // Abstract method — subclass MUST implement
+    public abstract Task&lt;T&gt; GetByIdAsync(int id);
+}
+
+public class ProductRepository : BaseRepository&lt;Product&gt;
+{
+    public ProductRepository(AppDbContext ctx) : base(ctx) { }
+
+    public override async Task&lt;Product&gt; GetByIdAsync(int id) =&gt;
+        await _context.Products.FirstOrDefaultAsync(p =&gt; p.Id == id);
+}
+
+// ─── INTERFACE — "can-do" capability ───
+// Example: multiple unrelated classes that CAN be logged or cached
+public interface IRepository&lt;T&gt;
+{
+    Task&lt;IEnumerable&lt;T&gt;&gt; GetAllAsync();
+    Task&lt;T&gt; GetByIdAsync(int id);
+}
+
+public interface ICacheable
+{
+    string GetCacheKey();
+    TimeSpan CacheDuration { get; }
+}
+
+// A class can implement multiple interfaces (but inherit from only one class)
+public class ProductService : IRepository&lt;Product&gt;, ICacheable
+{
+    public Task&lt;IEnumerable&lt;Product&gt;&gt; GetAllAsync() { /* ... */ }
+    public Task&lt;Product&gt; GetByIdAsync(int id) { /* ... */ }
+    public string GetCacheKey() =&gt; "products:all";
+    public TimeSpan CacheDuration =&gt; TimeSpan.FromMinutes(5);
+}</code></pre>
+              </div>
+              <p><strong>Rule of thumb:</strong></p>
+              <ul>
+                <li>Use <strong>abstract class</strong> when classes are closely related (all repositories, all entities). There's shared implementation and a parent-child relationship.</li>
+                <li>Use <strong>interface</strong> when you're defining a capability that unrelated classes might have (loggable, cacheable, disposable). Multiple classes implement it without being related.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q40. What is the difference between <code>virtual</code>, <code>abstract</code>, and <code>sealed</code>? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>These three keywords control method inheritance and overriding behaviour:</p>
+              <ul>
+                <li><strong><code>virtual</code></strong> — "subclasses MAY override this method if they want to"</li>
+                <li><strong><code>abstract</code></strong> — "subclasses MUST override this method" (only in abstract classes)</li>
+                <li><strong><code>sealed</code></strong> — "subclasses CANNOT override this method"</li>
+              </ul>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ─── VIRTUAL — optional override ───
+public class ProductService
+{
+    // virtual = subclasses CAN override this, but don't have to
+    public virtual void LogProductAdded(Product product)
+    {
+        Console.WriteLine($"Product added: {product.Name}");
+    }
+}
+
+public class DetailedProductService : ProductService
+{
+    // Can override if we want to customize the logging
+    public override void LogProductAdded(Product product)
+    {
+        Console.WriteLine($"[DETAILED] Product ID: {product.Id}, Name: {product.Name}, Price: {product.Price}");
+    }
+}
+
+// ─── ABSTRACT — mandatory override ───
+public abstract class PaymentProcessor
+{
+    // abstract = subclass MUST implement this (no default implementation)
+    public abstract Task&lt;bool&gt; ProcessPaymentAsync(decimal amount);
+
+    // Non-abstract method — all processors share this
+    public void LogPayment(decimal amount)
+    {
+        Console.WriteLine($"Processing: {amount:C}");
+    }
+}
+
+public class CreditCardProcessor : PaymentProcessor
+{
+    // MUST implement this — not optional
+    public override async Task&lt;bool&gt; ProcessPaymentAsync(decimal amount)
+    {
+        // Credit card-specific logic
+        return await ChargeCreditCardAsync(amount);
+    }
+
+    private async Task&lt;bool&gt; ChargeCreditCardAsync(decimal amount) { /* ... */ }
+}
+
+// ─── SEALED — prevents override ───
+public class FinalProductService : ProductService
+{
+    // sealed = subclasses of FinalProductService cannot override this
+    public sealed override void LogProductAdded(Product product)
+    {
+        Console.WriteLine($"[SEALED] {product.Name}");
+    }
+}
+
+public class ExtendedProductService : FinalProductService
+{
+    // ❌ COMPILE ERROR — cannot override a sealed method
+    // public override void LogProductAdded(Product product) { }
+}</code></pre>
+              </div>
+              <p><strong>When to use each:</strong></p>
+              <ul>
+                <li><code>virtual</code> — the most common for base classes. Allows flexibility without requiring override.</li>
+                <li><code>abstract</code> — when the base class has no sensible default and subclass MUST provide the implementation.</li>
+                <li><code>sealed</code> — rare. Use when you've perfected a method and never want anyone overriding it (can lead to inflexibility).</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q41. What is the IDisposable pattern? When and how do you use it? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>IDisposable</strong> is an interface that helps clean up unmanaged resources (database connections, file handles, network sockets). Managed resources (strings, lists) are automatically cleaned up by the garbage collector. Unmanaged resources are not — you must clean them up yourself.</p>
+              <p>The pattern ensures resources are freed even if an exception occurs, using the <code>using</code> statement.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ─── Simple IDisposable implementation ───
+public class ProductExporter : IDisposable
+{
+    private StreamWriter _fileWriter;  // unmanaged resource
+
+    public ProductExporter(string filePath)
+    {
+        _fileWriter = new StreamWriter(filePath);
+    }
+
+    public async Task ExportProductAsync(Product product)
+    {
+        await _fileWriter.WriteLineAsync($"{product.Id},{product.Name},{product.Price}");
+    }
+
+    // IDisposable interface implementation
+    public void Dispose()
+    {
+        // Close and free the file handle
+        _fileWriter?.Close();
+        _fileWriter?.Dispose();
+    }
+}
+
+// ─── Using statement ensures Dispose() is called ───
+using (var exporter = new ProductExporter("products.csv"))
+{
+    var product = new Product { Id = 1, Name = "Laptop", Price = 999m };
+    await exporter.ExportProductAsync(product);
+}  // Dispose() is called automatically here, even if an exception occurred
+
+// ─── Modern C# 8+ — using declaration (cleaner) ───
+using var exporter = new ProductExporter("products.csv");
+var product = new Product { Id = 1, Name = "Laptop", Price = 999m };
+await exporter.ExportProductAsync(product);
+// Dispose() is called automatically at the end of the scope
+
+// ─── Best practice: implement IAsyncDisposable for async cleanup ───
+public class ProductDatabaseConnection : IAsyncDisposable
+{
+    private SqlConnection _connection;
+
+    public async Task OpenAsync(string connectionString)
+    {
+        _connection = new SqlConnection(connectionString);
+        await _connection.OpenAsync();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_connection != null)
+        {
+            await _connection.CloseAsync();
+            _connection.Dispose();
+        }
+    }
+}
+
+// Use with await using
+await using (var db = new ProductDatabaseConnection())
+{
+    await db.OpenAsync("connection-string");
+    // use db
+}  // DisposeAsync() is called automatically</code></pre>
+              </div>
+              <p><strong>Rules for IDisposable:</strong></p>
+              <ul>
+                <li>Implement <code>IDisposable</code> if your class uses unmanaged resources (files, database connections, native handles)</li>
+                <li>Use the <code>using</code> statement or <code>using</code> declaration to ensure <code>Dispose()</code> is called</li>
+                <li>In async code, implement <code>IAsyncDisposable</code> instead, and use <code>await using</code></li>
+                <li>Never rely on finalizers alone — they run unpredictably</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q42. What is LINQ? Explain query syntax vs method syntax. <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>LINQ</strong> (Language-Integrated Query) is a C# feature that lets you query collections (lists, databases, XML) using a SQL-like syntax or fluent method calls. It dramatically reduces the code needed to filter, transform, and aggregate data.</p>
+              <p>LINQ works on any <code>IEnumerable&lt;T&gt;</code> collection. When querying Entity Framework DbSets, LINQ is translated to SQL automatically.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// Sample data
+var products = new List&lt;Product&gt;
+{
+    new() { Id = 1, Name = "Laptop", Category = "Electronics", Price = 999m, Stock = 5 },
+    new() { Id = 2, Name = "Mouse", Category = "Electronics", Price = 25m, Stock = 100 },
+    new() { Id = 3, Name = "Shirt", Category = "Clothing", Price = 50m, Stock = 30 },
+    new() { Id = 4, Name = "Jeans", Category = "Clothing", Price = 80m, Stock = 20 },
+};
+
+// ─── QUERY SYNTAX — SQL-like, reads top-to-bottom ───
+var expensiveElectronics = from p in products
+                           where p.Category == "Electronics" &amp;&amp; p.Price &gt; 100
+                           select new { p.Name, p.Price };
+
+// ─── METHOD SYNTAX — Fluent, chained method calls ───
+var expensiveElectronicsMethod = products
+    .Where(p =&gt; p.Category == "Electronics" &amp;&amp; p.Price &gt; 100)
+    .Select(p =&gt; new { p.Name, p.Price });
+
+// ─── GROUP BY ───
+var categoryCounts = from p in products
+                     group p by p.Category into category
+                     select new { Name = category.Key, Count = category.Count() };
+
+// Method syntax equivalent
+var categoryCountsMethod = products
+    .GroupBy(p =&gt; p.Category)
+    .Select(g =&gt; new { Name = g.Key, Count = g.Count() });
+
+// ─── ORDER BY ───
+var sortedByPrice = from p in products
+                    orderby p.Price descending
+                    select p;
+
+var sortedByPriceMethod = products
+    .OrderByDescending(p =&gt; p.Price);
+
+// ─── JOIN ───
+var customers = new List&lt;Customer&gt;
+{
+    new() { Id = 1, Name = "Alice", FavoriteProductId = 1 },
+    new() { Id = 2, Name = "Bob", FavoriteProductId = 3 }
+};
+
+var customerPreferences = from c in customers
+                          join p in products on c.FavoriteProductId equals p.Id
+                          select new { Customer = c.Name, Product = p.Name };
+
+var customerPreferencesMethod = customers
+    .Join(products, c =&gt; c.FavoriteProductId, p =&gt; p.Id,
+          (c, p) =&gt; new { Customer = c.Name, Product = p.Name });
+
+// ─── Aggregation ───
+var totalValue = products.Sum(p =&gt; p.Price * p.Stock);
+var avgPrice = products.Average(p =&gt; p.Price);
+var maxPrice = products.Max(p =&gt; p.Price);
+
+// ─── EXISTS / ANY / ALL ───
+bool hasExpensive = products.Any(p =&gt; p.Price &gt; 500);           // true
+bool allInStock = products.All(p =&gt; p.Stock &gt; 0);               // true
+var noStock = products.FirstOrDefault(p =&gt; p.Stock == 0);        // null</code></pre>
+              </div>
+              <p><strong>Query vs Method syntax:</strong></p>
+              <ul>
+                <li><strong>Query syntax</strong> reads like SQL, easier for complex queries with joins and grouping.</li>
+                <li><strong>Method syntax</strong> is more explicit, integrates with lambda expressions, slightly more powerful.</li>
+                <li>Both compile to the same IL code — choose based on readability.</li>
+              </ul>
+              <p><strong>With Entity Framework:</strong> LINQ queries are translated to SQL at runtime. <code>products.Where(...).ToList()</code> executes on the database, not in memory.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q43. What is async/await? Why is it important? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>async/await</strong> is a C# feature that lets you write asynchronous code that looks synchronous — easier to read and maintain. Instead of blocking a thread while waiting for I/O (database, network, file), you release the thread and resume later when the result arrives.</p>
+              <p>This is critical for web APIs because a single thread can handle thousands of concurrent requests instead of being blocked on each one.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ❌ BAD — synchronous blocking (old way)
+public class ProductService
+{
+    private readonly AppDbContext _context;
+
+    public List&lt;Product&gt; GetAllProducts()
+    {
+        // Thread is BLOCKED here waiting for database response
+        // During this block, this thread cannot handle other requests
+        var products = _context.Products.ToList();
+        return products;
+    }
+}
+
+// With 1000 concurrent requests and a thread pool of 100 threads:
+// 100 requests are processing, 900 are queued waiting for a free thread
+// Response time is slow because threads are tied up
+
+// ─────────────────────────────────────
+
+// ✅ GOOD — asynchronous non-blocking
+public class ProductService
+{
+    private readonly AppDbContext _context;
+
+    public async Task&lt;List&lt;Product&gt;&gt; GetAllProductsAsync()
+    {
+        // Thread is NOT blocked here — it's released to handle other requests
+        // When database responds, any available thread resumes this method
+        var products = await _context.Products.ToListAsync();
+        return products;
+    }
+}
+
+// With 1000 concurrent requests and a thread pool of 100 threads:
+// All 1000 requests are "processing" at the same time (truly concurrent)
+// Response time is faster because threads aren't blocked waiting
+
+// ─────────────────────────────────────
+
+// Using async/await in a controller
+[ApiController]
+[Route("api/[controller]")]
+public class ProductsController : ControllerBase
+{
+    private readonly IProductService _service;
+
+    [HttpGet]
+    public async Task&lt;ActionResult&lt;IEnumerable&lt;ProductResponse&gt;&gt;&gt; GetAll()
+    {
+        // await waits for the database query without blocking the thread
+        var products = await _service.GetAllProductsAsync();
+        return Ok(products);
+    }
+}
+
+// ─────────────────────────────────────
+
+// Common async patterns
+public class ProductService
+{
+    private readonly AppDbContext _context;
+
+    // Single async operation
+    public async Task&lt;Product&gt; GetByIdAsync(int id) =&gt;
+        await _context.Products.FirstOrDefaultAsync(p =&gt; p.Id == id);
+
+    // Multiple parallel operations
+    public async Task&lt;(List&lt;Product&gt;, int)&gt; GetProductsAndCountAsync()
+    {
+        var getProducts = _context.Products.ToListAsync();
+        var getCount = _context.Products.CountAsync();
+
+        // Wait for both in parallel
+        await Task.WhenAll(getProducts, getCount);
+
+        return (await getProducts, await getCount);
+    }
+
+    // Loop with async operations
+    public async Task ImportProductsAsync(IEnumerable&lt;CreateProductRequest&gt; requests)
+    {
+        foreach (var req in requests)
+        {
+            var product = new Product { Name = req.Name, Price = req.Price };
+            _context.Products.Add(product);
+        }
+
+        // Save all at once
+        await _context.SaveChangesAsync();
+    }
+}</code></pre>
+              </div>
+              <p><strong>Key concepts:</strong></p>
+              <ul>
+                <li><code>async</code> keyword on a method means it can use <code>await</code> inside.</li>
+                <li><code>await</code> pauses execution and releases the thread; execution resumes when the awaited operation completes.</li>
+                <li><code>Task&lt;T&gt;</code> represents an asynchronous operation that returns type <code>T</code>.</li>
+                <li><code>async Task&lt;T&gt;</code> vs <code>async Task</code> — the latter returns no value, just completes.</li>
+              </ul>
+              <p><strong>In ASP.NET Core all the built-in methods are async by default:</strong> <code>ToListAsync()</code>, <code>FirstOrDefaultAsync()</code>, <code>SaveChangesAsync()</code>. Use them! Not using async in a web API is leaving performance on the table.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q44. What is the null-coalescing operator (<code>??</code> and <code>??=</code>)? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>The <strong>null-coalescing operator</strong> (<code>??</code>) provides a default value if the left side is null. It's a cleaner way to handle null values than <code>if (x == null)</code> statements.</p>
+              <p>The <strong>null-coalescing assignment operator</strong> (<code>??=</code>) assigns a value only if the variable is currently null.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ❌ OLD WAY — verbose null checking
+public string GetProductName(Product product)
+{
+    if (product == null)
+    {
+        return "Unknown";
+    }
+    else
+    {
+        return product.Name;
+    }
+}
+
+// ─────────────────────────────────────
+
+// ✅ BETTER — using ?? operator
+public string GetProductName(Product product) =&gt;
+    product?.Name ?? "Unknown";  // if product or Name is null, return "Unknown"
+
+// ─────────────────────────────────────
+
+// Common patterns
+Product product = null;
+string name = product?.Name ?? "Unknown";          // "Unknown"
+
+decimal price = product?.Price ?? 0m;              // 0
+
+// List or collection
+var productCount = products?.Count ?? 0;           // 0 if products is null
+
+// Chaining ?? for multiple fallbacks
+string description = product?.Description
+                     ?? category?.DefaultDescription
+                     ?? "No description available";
+
+// ─────────────────────────────────────
+
+// NULL-COALESCING ASSIGNMENT ??=
+public class ProductCache
+{
+    private string _cachedName;
+
+    public void CacheName(Product product)
+    {
+        // Only assign if _cachedName is null
+        _cachedName ??= product?.Name;  // equivalent to: if (_cachedName == null) _cachedName = product?.Name;
+    }
+}
+
+// Practical example — lazy initialization
+public class ProductService
+{
+    private List&lt;Product&gt; _allProducts;
+
+    public async Task&lt;List&lt;Product&gt;&gt; GetAllAsync()
+    {
+        // Load from database only if not already cached
+        _allProducts ??= await _context.Products.ToListAsync();
+        return _allProducts;
+    }
+}
+
+// ─────────────────────────────────────
+
+// NULLABLE REFERENCE TYPES (C# 8+) — enable stricter null checking
+#nullable enable
+
+public string GetProductPrice(Product? product)  // ? = nullable, can be null
+{
+    // Compiler warning if you access product.Name without null-checking
+    var name = product?.Name ?? "Unknown";  // OK — using null-safe operator
+    // var name = product.Name;  // ❌ Compiler warning — product might be null
+    return $"Product: {name}";
+}</code></pre>
+              </div>
+              <p><strong>Advantages:</strong></p>
+              <ul>
+                <li><strong>Cleaner code</strong> — fewer if/else branches.</li>
+                <li><strong>Safer</strong> — works with nullable reference types for compile-time null-checking.</li>
+                <li><strong>More readable</strong> — intention is clear: use this value or fall back to that.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q45. What is pattern matching? Show C# 7+ examples. <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Pattern matching</strong> is a C# feature (C# 7+) that lets you test values against patterns in cleaner ways than traditional if/else chains. It works with types, constants, properties, lists, and custom patterns.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ❌ OLD WAY — verbose if/else ───
+public string GetDiscountMessage(object product)
+{
+    if (product is Product p)
+    {
+        if (p.Price &gt; 500)
+            return "50% off on expensive items";
+        else if (p.Price &gt; 100)
+            return "20% off on items over $100";
+    }
+    return "No discount";
+}
+
+// ─────────────────────────────────────
+
+// ✅ C# 7 — Type patterns and is expressions ───
+public string GetDiscountMessage(Product product) =&gt;
+    product switch
+    {
+        { Price: &gt; 500 } =&gt; "50% off on expensive items",
+        { Price: &gt; 100 } =&gt; "20% off on items over $100",
+        { Price: &gt; 0 } =&gt; "10% off",
+        _ =&gt; "No discount"  // _ = default case (wildcard)
+    };
+
+// ─────────────────────────────────────
+
+// ✅ C# 8+ — Property patterns (most common) ───
+public decimal ApplyDiscount(Product product) =&gt;
+    product switch
+    {
+        { Category: "Electronics", Price: &gt; 500 } =&gt; product.Price * 0.90m,     // 10% off
+        { Category: "Electronics" } =&gt; product.Price * 0.95m,                   // 5% off
+        { Category: "Clothing", Price: &gt; 100 } =&gt; product.Price * 0.80m,        // 20% off
+        { Category: "Clothing" } =&gt; product.Price * 0.90m,                      // 10% off
+        { Stock: 0 } =&gt; product.Price,                                           // no discount if out of stock
+        _ =&gt; product.Price * 0.95m                                              // default: 5% off
+    };
+
+// ─────────────────────────────────────
+
+// ✅ C# 9 — Relational patterns and logical patterns ───
+public string ValidateProduct(Product product) =&gt;
+    product switch
+    {
+        // Relational patterns
+        { Price: &lt; 0 } =&gt; "Price cannot be negative",
+        { Price: 0 } =&gt; "Price cannot be zero",
+        { Stock: &lt; 0 } =&gt; "Stock cannot be negative",
+
+        // Logical AND pattern (and)
+        { Category: "Electronics", Price: &gt; 1000, Stock: &gt; 0 } =&gt; "Valid expensive product",
+
+        // Logical OR pattern (or)
+        { Category: "Electronics" or "Gadgets" } =&gt; "Valid tech product",
+
+        // Logical NOT pattern (not)
+        { Price: not &gt; 0 } =&gt; "Price must be positive",
+
+        // Null checking
+        { Name: null or "" } =&gt; "Product name is required",
+
+        _ =&gt; "Valid product"
+    };
+
+// ─────────────────────────────────────
+
+// ✅ C# 9 — RECORDS (immutable data classes) ───
+// Records are perfect for pattern matching
+public record ProductDto(int Id, string Name, decimal Price, string Category);
+
+public string GetProductSummary(ProductDto product) =&gt;
+    product switch
+    {
+        (_, _, &gt; 500, "Electronics") =&gt; "Expensive tech",
+        (_, _, &gt; 100, _) =&gt; "Premium product",
+        _ =&gt; "Regular product"
+    };
+
+// Destructuring in patterns
+public void ProcessOrders(IEnumerable&lt;(int Id, decimal Total, string Status)&gt; orders)
+{
+    foreach (var order in orders)
+    {
+        var message = order switch
+        {
+            (_, &gt; 1000, "Completed") =&gt; "High-value completed order",
+            (_, _, "Pending") =&gt; "Order still processing",
+            _ =&gt; "Other order"
+        };
+        Console.WriteLine(message);
+    }
+}
+
+// ─────────────────────────────────────
+
+// List patterns (C# 11+)
+public string AnalyzeScores(int[] scores) =&gt;
+    scores switch
+    {
+        []              =&gt; "No scores",
+        [var single]    =&gt; $"One score: {single}",
+        [var first, .. var rest] =&gt; $"First: {first}, Others: {rest.Length}",
+        [.., var last]  =&gt; $"Last score: {last}",
+    };
+
+// ─────────────────────────────────────
+
+// Custom type patterns with custom types
+public class Order
+{
+    public int Id { get; set; }
+    public decimal Total { get; set; }
+    public bool IsPaid { get; set; }
+}
+
+public string GetOrderStatus(Order order) =&gt;
+    order switch
+    {
+        { Total: &gt; 500, IsPaid: true } =&gt; "High-value paid order",
+        { IsPaid: false } =&gt; "Unpaid order",
+        _ =&gt; "Other order"
+    };</code></pre>
+              </div>
+              <p><strong>Pattern matching syntax:</strong></p>
+              <ul>
+                <li><code>property: value</code> — property equals a specific value</li>
+                <li><code>property: &gt; 100</code> — relational patterns (>, &lt;, >=, <=)</li>
+                <li><code>and</code>, <code>or</code>, <code>not</code> — logical combinations</li>
+                <li><code>_</code> — wildcard (matches anything, used as default case)</li>
+                <li><code>(_, _, value, _)</code> — destructuring tuples/records</li>
+                <li><code>[..]</code> — list patterns (C# 11+)</li>
+              </ul>
+              <p><strong>Why use pattern matching:</strong> It reduces nesting, is more readable than large if/else chains, and catches compile-time errors when adding new cases to an exhaustive switch.</p>
+            </div>
+          </details>
+
+        </div><!-- /.qa-list -->
+
+        <!-- ═══════════ Modern C# Features ═══════════ -->
+        <h2 id="modern-csharp">C# Modern Features (C# 9+)</h2>
+        <p>C# continues to evolve. Here are game-changing features introduced in recent versions:</p>
+
+        <h3>Records — Immutable Data Classes</h3>
+        <p><strong>Records</strong> are perfect for DTOs and immutable data. They provide structural equality, pattern matching, and concise syntax.</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// ✅ RECORD — immutable, structural equality, pattern matching
+public record ProductDto(int Id, string Name, decimal Price);
+
+var product1 = new ProductDto(1, "Laptop", 999.99m);
+var product2 = new ProductDto(1, "Laptop", 999.99m);
+
+Console.WriteLine(product1 == product2);  // true — structural equality (same values)
+// With a class, this would be false (different instances)
+
+// Deconstruction
+var (id, name, price) = product1;
+Console.WriteLine($"{id}: {name} @ {price:C}");
+
+// Inheritance — record can inherit from another record
+public record DiscountedProduct(int Id, string Name, decimal Price, decimal Discount)
+    : ProductDto(Id, Name, Price);</code></pre>
+        </div>
+
+        <h3>Init-Only Properties</h3>
+        <p>Properties that can only be set during object initialization, ensuring immutability after construction.</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public class Product
+{
+    public int Id { get; init; }              // can only set during new
+    public string Name { get; init; }
+    public decimal Price { get; set; }        // regular property — can be set anytime
+}
+
+var product = new Product { Id = 1, Name = "Laptop", Price = 999m };
+// product.Id = 2;        // ❌ error — cannot set init-only property
+product.Price = 899m;     // ✅ ok — regular property can be set</code></pre>
+        </div>
+
+        <h3>Nullable Reference Types</h3>
+        <p>Enable at the top of a file with <code>#nullable enable</code> to get compile-time warnings about null-related bugs.</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">#nullable enable
+
+public class Product
+{
+    public string Name { get; set; } = "";     // non-nullable — must have a value
+    public string? Description { get; set; }   // nullable — can be null
+}
+
+public string GetProductInfo(Product? product)  // parameter can be null
+{
+    // ❌ Compiler warning — product might be null
+    var name = product.Name;
+
+    // ✅ OK — null-safe operator
+    var name = product?.Name ?? "Unknown";
+}</code></pre>
+        </div>
+
+        <h3>Top-Level Statements</h3>
+        <p>Write code directly in a file without wrapping it in a class or Main method (useful for scripts and learning).</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// ✅ This is valid at the top level (no class/Main needed)
+using System;
+
+var products = new List&lt;string&gt; { "Laptop", "Mouse", "Monitor" };
+Console.WriteLine($"Products: {string.Join(", ", products)}");
+
+// The compiler automatically wraps this in Program.Main()</code></pre>
+        </div>
+
+        <h3>File-Scoped Types</h3>
+        <p>Mark a class as visible only within its own file, reducing namespace pollution.</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// This type is ONLY visible in this file, hidden from other files
+file class InternalProductMapper
+{
+    public static ProductDto Map(Product product) =&gt;
+        new(product.Id, product.Name, product.Price);
+}</code></pre>
+        </div>
+
+        <div class="callout callout-success" style="margin-top:3rem;">
+          <span class="callout-icon">🎯</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview tip for C# &amp; OOP questions</p>
+            <p class="callout-body">Interviewers want to see that you understand the <em>why</em> behind concepts, not just the syntax. When asked about encapsulation, don't just say "it hides data" — explain: "Encapsulation lets me validate the Price setter so a product never has a negative price, and if the validation rule changes, I update it in one place." Concrete beats abstract. Use Product Catalog examples. Show you've actually built with these concepts, not just read about them.</p>
+          </div>
+        </div>
+
+        <nav class="page-nav">
+          <a href="interview.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">←</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">Interview Q&amp;A</span></div>
+          </a>
+          <a href="interview-solid.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">SOLID Principles</span></div>
+            <span class="page-nav-arrow">→</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

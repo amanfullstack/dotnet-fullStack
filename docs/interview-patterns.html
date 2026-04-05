@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Patterns - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search design patterns...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-badge">D</div>
+      DevDocs
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html" class="active">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span>
+        <input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+          <li><a href="interview-solid.html" class="sidebar-link"><span class="sidebar-link-icon">📐</span> SOLID Principles</a></li>
+          <li><a href="interview-patterns.html" class="sidebar-link active"><span class="sidebar-link-icon">🎨</span> Design Patterns</a></li>
+          <li><a href="interview-coding.html" class="sidebar-link"><span class="sidebar-link-icon">🧩</span> Coding Challenges</a></li>
+          <li><a href="interview-csharp.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
+          <li><a href="interview-sql.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> SQL</a></li>
+          <li><a href="interview-mvc.html" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> ASP.NET MVC</a></li>
+          <li><a href="interview-react.html" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React</a></li>
+          <li><a href="interview-angular.html" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="interview.html">Interview Prep</a>
+          <span class="sep">/</span>
+          <span class="current">Design Patterns</span>
+        </nav>
+
+        <div class="page-title-block">
+          <h1 class="page-title">🎨 Design Patterns</h1>
+          <p class="page-subtitle">Master 9 essential patterns using ProductCatalogAPI as the consistent real-world scenario. Learn when to use each pattern and why.</p>
+          <div class="page-meta">
+            <span class="badge badge-danger">Advanced</span>
+            <span class="badge badge-accent">Architecture</span>
+            <span class="badge badge-primary">9 Patterns</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">One Scenario, All Patterns</p>
+            <p class="callout-body">Design Patterns are reusable solutions to common programming problems. The Gang of Four (GoF) identified 23 patterns; we focus on the 9 most essential. Throughout this guide, ProductCatalogAPI demonstrates every pattern in action — same scenario, different solutions for different problems.</p>
+          </div>
+        </div>
+
+        <h2 id="quick-reference">Quick Category Overview</h2>
+        <p>Design patterns fall into three categories. Here's how each tackles problems in ProductCatalogAPI:</p>
+        <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+          <thead>
+            <tr style="background-color: var(--surface-2); border-bottom: 2px solid var(--border);">
+              <th style="padding: 12px; text-align: left;">Pattern</th>
+              <th style="padding: 12px; text-align: left;">Category</th>
+              <th style="padding: 12px; text-align: left;">Problem It Solves</th>
+              <th style="padding: 12px; text-align: left;">Our Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px;"><strong>Singleton</strong></td>
+              <td style="padding: 12px;">Creational</td>
+              <td style="padding: 12px;">Objects that must exist only once</td>
+              <td style="padding: 12px;">DB connection, Config, Logger</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px;"><strong>Factory</strong></td>
+              <td style="padding: 12px;">Creational</td>
+              <td style="padding: 12px;">Create objects without exposing how</td>
+              <td style="padding: 12px;">Different ProductRepository types</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px;"><strong>Builder</strong></td>
+              <td style="padding: 12px;">Creational</td>
+              <td style="padding: 12px;">Build complex objects step-by-step</td>
+              <td style="padding: 12px;">Complex filter queries</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px;"><strong>Adapter</strong></td>
+              <td style="padding: 12px;">Structural</td>
+              <td style="padding: 12px;">Use incompatible code together</td>
+              <td style="padding: 12px;">Wrap third-party payment API</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px;"><strong>Decorator</strong></td>
+              <td style="padding: 12px;">Structural</td>
+              <td style="padding: 12px;">Add behavior dynamically</td>
+              <td style="padding: 12px;">Add caching layer to repository</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px;"><strong>Facade</strong></td>
+              <td style="padding: 12px;">Structural</td>
+              <td style="padding: 12px;">Simplify complex subsystem</td>
+              <td style="padding: 12px;">Hide EF Core + ADO.NET behind service</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px;"><strong>Observer</strong></td>
+              <td style="padding: 12px;">Behavioral</td>
+              <td style="padding: 12px;">Notify multiple listeners of change</td>
+              <td style="padding: 12px;">Price changes notify email/cache/audit</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px;"><strong>Strategy</strong></td>
+              <td style="padding: 12px;">Behavioral</td>
+              <td style="padding: 12px;">Switch algorithms at runtime</td>
+              <td style="padding: 12px;">Discount types, payment methods, sorting</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px;"><strong>Command</strong></td>
+              <td style="padding: 12px;">Behavioral</td>
+              <td style="padding: 12px;">Encapsulate request as object</td>
+              <td style="padding: 12px;">Undo/redo product operations, queued jobs</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 id="creational">Creational Patterns</h2>
+        <p>Creational patterns focus on object creation — how to create objects flexibly and efficiently without tight coupling.</p>
+
+        <h3 id="singleton">Singleton Pattern</h3>
+        <p><strong>Definition:</strong> Ensures only ONE instance of a class exists throughout the application lifetime. Used for objects that must be shared globally — database connections, configuration, loggers.</p>
+
+        <p><strong>Real-World Analogy:</strong> There's only ONE CEO of a company. No matter who asks, they get the same person. If you tried creating a "second CEO," it would just return the existing one.</p>
+
+        <h4>Problem (BAD)</h4>
+        <p>When you don't enforce a single instance, resource waste and inconsistency follow:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// BAD: No guarantee of single instance
+// Every time needed, creates a new DatabaseConnection
+// Different parts of app use different "connections" → connection leaks, resource waste
+public class DatabaseConnection
+{
+    public string ConnectionString { get; set; } = "Server=localhost";
+    public void Connect() => Console.WriteLine("Connected");
+}
+
+public class Program
+{
+    static void Main()
+    {
+        var db1 = new DatabaseConnection(); // Instance 1
+        var db2 = new DatabaseConnection(); // Instance 2 — different object!
+        // db1 and db2 are different connections — resource waste!
+    }
+}</code></pre>
+        </div>
+
+        <h4>Solution (GOOD)</h4>
+        <p>Enforce a single instance using Lazy or thread-safe locking:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// GOOD: Singleton ensures exactly ONE instance
+// Thread-safe using Lazy<T> (easiest in C#)
+public class DatabaseConnection
+{
+    private static readonly Lazy<DatabaseConnection> _lazy =
+        new(() => new DatabaseConnection());
+
+    public static DatabaseConnection GetInstance() => _lazy.Value;
+
+    private DatabaseConnection() { } // Private constructor — can't be `new`'d outside
+
+    public string ConnectionString { get; set; } = "Server=localhost";
+    public void Connect() => Console.WriteLine("Connected to " + ConnectionString);
+}
+
+// Usage
+var db1 = DatabaseConnection.GetInstance(); // Instance 1
+var db2 = DatabaseConnection.GetInstance(); // Same instance!
+Console.WriteLine(ReferenceEquals(db1, db2)); // true ✓</code></pre>
+        </div>
+
+        <p><strong>Best in .NET with DI (cleaner):</strong></p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Program.cs — .NET DI makes Singleton pattern trivial
+builder.Services.AddSingleton<DatabaseConnection>();
+
+// Controller — DI gives same instance every time
+public class ProductsController(DatabaseConnection db)
+{
+    public void UpdateProduct(int id)
+    {
+        db.Connect(); // Always the same DatabaseConnection instance!
+    }
+}</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">❓</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview Q: "When would Singleton cause problems?"</p>
+            <p class="callout-body"><strong>Answer:</strong> If the singleton holds mutable state and multiple threads modify it, you get race conditions. Also, singletons make unit testing hard — you can't easily create isolated test instances. .NET DI with AddSingleton avoids these by using the container to manage lifecycle.</p>
+          </div>
+        </div>
+
+        <h3 id="factory">Factory Pattern</h3>
+        <p><strong>Definition:</strong> Creates objects without forcing the caller to know HOW they're created or WHICH concrete class is being instantiated. The caller just asks for an interface — the factory decides the implementation.</p>
+
+        <p><strong>Real-World Analogy:</strong> Going to a car factory and asking for "a sedan" — you don't care if it's built from blue parts or red parts. The factory encapsulates those details and gives you a working sedan.</p>
+
+        <h4>Problem (BAD)</h4>
+        <p>Hard-coded object creation couples code to concrete types:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// BAD: Controller creates explicit concrete types
+// Tightly coupled — if you add PostgresProductRepository, update every caller!
+public class ProductsController
+{
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        // Hard way: caller must know about SqlProductRepository
+        IProductRepository repo = new SqlProductRepository(); // Tight coupling!
+        var products = await repo.GetAllAsync();
+        return Ok(products);
+    }
+}
+
+// Adding a new repo type? Must find and change every place!
+public class CacheService
+{
+    public void CacheProducts()
+    {
+        IProductRepository repo = new SqlProductRepository(); // Change here too!
+        // ...
+    }
+}</code></pre>
+        </div>
+
+        <h4>Solution (GOOD)</h4>
+        <p>Use a factory to encapsulate the decision of which type to create:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// GOOD: Factory encapsulates which type to create
+public interface IProductRepository
+{
+    Task<IEnumerable<Product>> GetAllAsync();
+}
+
+public class SqlProductRepository : IProductRepository
+{
+    public async Task<IEnumerable<Product>> GetAllAsync()
+    {
+        // Real SQL logic
+        return await _context.Products.ToListAsync();
+    }
+}
+
+public class InMemoryProductRepository : IProductRepository
+{
+    private readonly List<Product> _products = new()
+    {
+        new Product { Id = 1, Name = "Laptop", Price = 999 },
+        new Product { Id = 2, Name = "Mouse", Price = 25 }
+    };
+
+    public Task<IEnumerable<Product>> GetAllAsync() =>
+        Task.FromResult(_products.AsEnumerable());
+}
+
+// FACTORY: Single place that decides which repo type to create
+public class ProductRepositoryFactory
+{
+    public static IProductRepository CreateRepository(string environment)
+    {
+        return environment.ToLower() switch
+        {
+            "production" => new SqlProductRepository(),
+            "testing" => new InMemoryProductRepository(),
+            _ => throw new ArgumentException("Unknown environment")
+        };
+    }
+}
+
+// Usage: caller only knows about the interface
+var repo = ProductRepositoryFactory.CreateRepository("production"); // Factory decides!
+var products = await repo.GetAllAsync(); // Doesn't care which type</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">❓</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview Q: "Why use Factory instead of just `new` in the controller?"</p>
+            <p class="callout-body"><strong>Answer:</strong> Factories decouple creation from usage. If you hard-code `new SqlProductRepository()` in 50 places and later need to switch to PostgreSQL, you change 50 files and risk bugs. With a factory (or DI), you change one place. This is called 'Dependency Inversion' — the caller should depend on interfaces, not concrete types.</p>
+          </div>
+        </div>
+
+        <h3 id="builder">Builder Pattern</h3>
+        <p><strong>Definition:</strong> Constructs complex objects step-by-step instead of requiring a giant constructor with many parameters. Each step adds one piece, and you call Build() at the end. Great for objects with many optional fields.</p>
+
+        <p><strong>Real-World Analogy:</strong> Building a pizza. You start with dough, then add sauce, then toppings one by one. At the end, you get the finished pizza. You don't pass 20 parameters to PizzaMaker constructor — you build it step-by-step.</p>
+
+        <h4>Problem (BAD)</h4>
+        <p>Constructor with too many optional parameters — confusing and hard to maintain:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// BAD: Constructor nightmare — which params are required? optional?
+public class ProductFilter
+{
+    public int? MinPrice { get; set; }
+    public int? MaxPrice { get; set; }
+    public string? Category { get; set; }
+    public bool InStockOnly { get; set; }
+    public int Page { get; set; } = 1;
+    public int PageSize { get; set; } = 10;
+}
+
+// Caller has NO IDEA what parameters mean
+var filter = new ProductFilter
+{
+    MinPrice = null,
+    MaxPrice = 500,
+    Category = "Electronics",
+    InStockOnly = false,
+    Page = 1,
+    PageSize = 10
+};
+// What does each field mean? Read the class... (poor UX)</code></pre>
+        </div>
+
+        <h4>Solution (GOOD)</h4>
+        <p>Use the Builder pattern — step-by-step, self-documenting:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// GOOD: Builder pattern — self-documenting
+public class ProductFilterBuilder
+{
+    private ProductFilter _filter = new();
+
+    public ProductFilterBuilder WithMinPrice(int price)
+    {
+        _filter.MinPrice = price;
+        return this; // Return self for chaining
+    }
+
+    public ProductFilterBuilder WithMaxPrice(int price)
+    {
+        _filter.MaxPrice = price;
+        return this;
+    }
+
+    public ProductFilterBuilder WithCategory(string category)
+    {
+        _filter.Category = category;
+        return this;
+    }
+
+    public ProductFilterBuilder InStockOnly()
+    {
+        _filter.InStockOnly = true;
+        return this;
+    }
+
+    public ProductFilterBuilder WithPage(int page, int pageSize = 10)
+    {
+        _filter.Page = page;
+        _filter.PageSize = pageSize;
+        return this;
+    }
+
+    public ProductFilter Build() => _filter; // Return the built object
+}
+
+// Usage — fluent, readable, self-documenting
+var filter = new ProductFilterBuilder()
+    .WithMinPrice(100)
+    .WithMaxPrice(500)
+    .WithCategory("Electronics")
+    .InStockOnly()
+    .WithPage(1, 20)
+    .Build();</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">❓</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview Q: "Is Builder only for objects with many fields?"</p>
+            <p class="callout-body"><strong>Answer:</strong> No, but that's the most common case. Builder shines when: (1) many optional fields, (2) construction has complex logic, (3) you want immutability (build step-by-step, then lock the object). In .NET 8+, record types with property initialization (`new Product { Name = "", Price = 0 }`) often replace builders for simple cases.</p>
+          </div>
+        </div>
+
+        <h2 id="structural">Structural Patterns</h2>
+        <p>Structural patterns focus on object composition — how to combine objects and classes to form larger structures while keeping them flexible and efficient.</p>
+
+        <h3 id="adapter">Adapter Pattern</h3>
+        <p><strong>Definition:</strong> Converts the interface of an object into another interface the client expects. Like an electrical adapter — European and American outlets are incompatible, but an adapter makes them work together.</p>
+
+        <p><strong>Real-World Analogy:</strong> Your laptop charger is 220V. You're in a country with 110V outlets. An adapter converts the voltage so your charger works. Without the adapter, they're incompatible.</p>
+
+        <h4>Problem (BAD)</h4>
+        <p>Third-party APIs have incompatible interfaces — code must handle multiple interface types:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Third-party payment API uses a completely different interface
+public class StripePaymentService
+{
+    public StripeResponse Charge(StripeChargeRequest request) { /* ... */ }
+}
+
+// But your app expects this interface
+public interface IPaymentProcessor
+{
+    void ProcessPayment(PaymentData data);
+}
+
+// Now controller must handle TWO different interfaces — code smell!
+public class CheckoutController
+{
+    private IPaymentProcessor _processor; // Your interface
+    private StripePaymentService _stripe; // Third-party interface
+
+    public async Task<IActionResult> Checkout()
+    {
+        // Must convert between the two manually
+        var stripeRequest = new StripeChargeRequest { /* ... */ };
+        _stripe.Charge(stripeRequest); // Uses Stripe directly
+        // Inconsistent — hard to swap payment providers!
+    }
+}</code></pre>
+        </div>
+
+        <h4>Solution (GOOD)</h4>
+        <p>Use an adapter to convert Stripe to your IPaymentProcessor interface:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// GOOD: Adapter pattern — convert Stripe to IPaymentProcessor
+public class StripePaymentAdapter : IPaymentProcessor
+{
+    private readonly StripePaymentService _stripe;
+    private string? _lastTransactionId;
+
+    public StripePaymentAdapter(StripePaymentService stripe) => _stripe = stripe;
+
+    // Implement the interface, translate to Stripe calls
+    public void ProcessPayment(PaymentData data)
+    {
+        var stripeRequest = new StripeChargeRequest
+        {
+            Amount = (int)(data.Amount * 100), // Stripe uses cents
+            Currency = "USD",
+            Description = data.Description
+        };
+
+        var response = _stripe.Charge(stripeRequest);
+        _lastTransactionId = response.Id;
+    }
+}
+
+// Controller uses ONE interface — adapters hidden
+public class CheckoutController
+{
+    private readonly IPaymentProcessor _paymentProcessor;
+
+    public CheckoutController(IPaymentProcessor paymentProcessor)
+        => _paymentProcessor = paymentProcessor;
+
+    public async Task<IActionResult> Checkout(OrderRequest order)
+    {
+        var data = new PaymentData { Amount = order.Total };
+        _paymentProcessor.ProcessPayment(data);
+        return Ok("Payment processed");
+    }
+}</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">❓</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview Q: "When is Adapter useful in a real project?"</p>
+            <p class="callout-body"><strong>Answer:</strong> Whenever you use third-party libraries (payment gateways, email providers, cloud services), wrap them in adapters. If you later switch providers (Stripe → PayPal), you only touch the adapter. The rest of your codebase uses IPaymentProcessor unchanged.</p>
+          </div>
+        </div>
+
+        <h3 id="decorator">Decorator Pattern</h3>
+        <p><strong>Definition:</strong> Wraps an object to add behavior BEFORE or AFTER delegating to the original. Like a decorator — you take a plain room and add layers (paint, furniture, lights) without changing the room itself.</p>
+
+        <p><strong>Real-World Analogy:</strong> Coffee. Start with black coffee. Add a decorator: "whip cream." Then another: "caramel sauce." Each decorator wraps the previous, building up behavior. The core coffee is unchanged — only wrappers add behavior.</p>
+
+        <h4>Problem (BAD)</h4>
+        <p>Mixing cross-cutting concerns into the core class violates the Open/Closed principle:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// BAD: Original class modified to add caching directly
+// Violates Open/Closed principle — changes core business logic
+public class ProductRepository
+{
+    private readonly DbContext _context;
+    private readonly IMemoryCache _cache; // Added for caching
+
+    public async Task<IEnumerable<Product>> GetAllAsync()
+    {
+        // Mixed concerns: data access + caching logic
+        if (_cache.TryGetValue("products:all", out var cached))
+            return (IEnumerable<Product>)cached;
+
+        var products = await _context.Products.ToListAsync();
+        _cache.Set("products:all", products, TimeSpan.FromMinutes(5));
+        return products;
+    }
+}
+
+// Later: add logging? Add retry? Keep modifying GetAllAsync!
+// Violates SRP — now handles data + cache + logging</code></pre>
+        </div>
+
+        <h4>Solution (GOOD)</h4>
+        <p>Use decorators to wrap the repository without modifying it:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// GOOD: Decorator wraps the repository, adding caching WITHOUT modifying it
+public class CachedProductRepository : IProductRepository
+{
+    private readonly IProductRepository _innerRepo;  // Decorated object
+    private readonly IMemoryCache _cache;
+
+    public CachedProductRepository(IProductRepository innerRepo, IMemoryCache cache)
+    {
+        _innerRepo = innerRepo;
+        _cache = cache;
+    }
+
+    public async Task<IEnumerable<Product>> GetAllAsync()
+    {
+        if (_cache.TryGetValue("products:all", out IEnumerable<Product> cached))
+            return cached; // ✅ HIT
+
+        var products = await _innerRepo.GetAllAsync(); // Delegate
+        _cache.Set("products:all", products, TimeSpan.FromMinutes(5));
+        return products; // ✅ MISS, cached, returned
+    }
+}
+
+// Decorator for Logging — another layer!
+public class LoggedProductRepository : IProductRepository
+{
+    private readonly IProductRepository _innerRepo;
+    private readonly ILogger<LoggedProductRepository> _logger;
+
+    public LoggedProductRepository(IProductRepository innerRepo,
+        ILogger<LoggedProductRepository> logger)
+    {
+        _innerRepo = innerRepo;
+        _logger = logger;
+    }
+
+    public async Task<IEnumerable<Product>> GetAllAsync()
+    {
+        _logger.LogInformation("GetAll called");
+        var result = await _innerRepo.GetAllAsync(); // Delegate
+        _logger.LogInformation("GetAll returned {Count} products", result.Count());
+        return result;
+    }
+}
+
+// Stack decorators — Logged(Cached(SqlRepository))
+// Now GetAll is automatically cached AND logged!</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">❓</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview Q: "How is Decorator different from Inheritance?"</p>
+            <p class="callout-body"><strong>Answer:</strong> Inheritance is static — DecoratedRepository extends Repository at compile-time. Decorator is dynamic — you wrap at runtime. If you need to add 5 behaviors (cache, logging, retry, compression, validation), decorators let you mix-and-match. Inheritance would require 2^5 = 32 subclass combinations. Decorators = cleaner, more flexible.</p>
+          </div>
+        </div>
+
+        <h3 id="facade">Facade Pattern</h3>
+        <p><strong>Definition:</strong> Provides a simple, unified interface to a complex subsystem. The subsystem is complicated inside, but users see only one simple door.</p>
+
+        <p><strong>Real-World Analogy:</strong> Bank teller. Behind the scenes, handling payments involves checking credit, updating ledgers, sending confirmations, updating inventory. You ask the teller one question, they handle all the complexity.</p>
+
+        <h4>Problem (BAD)</h4>
+        <p>Controller must orchestrate complex subsystems directly — mixing concerns:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// BAD: Controller handles too much complexity
+public class ProductsController
+{
+    private readonly ProductDbContext _context;
+    private readonly IMemoryCache _cache;
+    private readonly IEmailService _emailService;
+    private readonly ILogger<ProductsController> _logger;
+
+    [HttpPost]
+    public async Task<IActionResult> CreateProduct(CreateProductRequest req)
+    {
+        // SO MUCH complexity in the controller!
+
+        // Validation
+        if (req.Price <= 0) return BadRequest("Price must be > 0");
+
+        // Check duplicate
+        var exists = await _context.Products.AnyAsync(p => p.Name == req.Name);
+        if (exists) return Conflict("Product already exists");
+
+        // Create
+        var product = new Product { Name = req.Name, Price = req.Price };
+        _context.Products.Add(product);
+        await _context.SaveChangesAsync();
+
+        // Invalidate cache
+        _cache.Remove("products:all");
+
+        // Send notification
+        await _emailService.SendProductCreatedAsync(product);
+
+        // Log
+        _logger.LogInformation("Product created: {Name}", product.Name);
+
+        return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
+    }
+}</code></pre>
+        </div>
+
+        <h4>Solution (GOOD)</h4>
+        <p>Use a Facade to hide complexity behind one simple interface:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// GOOD: Facade hides complexity — one simple service interface
+public interface IProductFacade
+{
+    Task<ProductResponse> CreateProductAsync(CreateProductRequest req);
+    Task<IEnumerable<ProductResponse>> GetAllProductsAsync();
+}
+
+// Facade orchestrates the subsystem internally
+public class ProductFacade : IProductFacade
+{
+    private readonly ProductDbContext _context;
+    private readonly IMemoryCache _cache;
+    private readonly IEmailService _emailService;
+    private readonly ILogger<ProductFacade> _logger;
+
+    public ProductFacade(ProductDbContext context, IMemoryCache cache,
+        IEmailService emailService, ILogger<ProductFacade> logger)
+    {
+        _context = context;
+        _cache = cache;
+        _emailService = emailService;
+        _logger = logger;
+    }
+
+    public async Task<ProductResponse> CreateProductAsync(CreateProductRequest req)
+    {
+        // All complexity hidden behind this one method
+        if (req.Price <= 0) throw new ValidationException("Price must be > 0");
+        if (await _context.Products.AnyAsync(p => p.Name == req.Name))
+            throw new ConflictException("Product already exists");
+
+        var product = new Product { Name = req.Name, Price = req.Price };
+        _context.Products.Add(product);
+        await _context.SaveChangesAsync();
+
+        _cache.Remove("products:all");
+        await _emailService.SendProductCreatedAsync(product);
+        _logger.LogInformation("Product created: {Name}", product.Name);
+
+        return new ProductResponse(product);
+    }
+
+    public async Task<IEnumerable<ProductResponse>> GetAllProductsAsync()
+    {
+        if (_cache.TryGetValue("products:all", out IEnumerable<ProductResponse> cached))
+            return cached!;
+
+        var products = await _context.Products.AsNoTracking().ToListAsync();
+        var responses = products.Select(p => new ProductResponse(p));
+        _cache.Set("products:all", responses, TimeSpan.FromMinutes(5));
+        return responses;
+    }
+}
+
+// Controller becomes CLEAN — just calls the facade
+public class ProductsController
+{
+    private readonly IProductFacade _productFacade;
+
+    [HttpPost]
+    public async Task<IActionResult> CreateProduct(CreateProductRequest req)
+    {
+        var result = await _productFacade.CreateProductAsync(req);
+        return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+    }
+}</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">❓</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview Q: "What's the difference between Facade and Adapter?"</p>
+            <p class="callout-body"><strong>Answer:</strong> Adapter converts incompatible interfaces (Stripe → IPaymentProcessor). Facade simplifies a complex interface (EF + Cache + Email + Logging unified into one ProductService). Adapter is about compatibility; Facade is about simplification.</p>
+          </div>
+        </div>
+
+        <h2 id="behavioral">Behavioral Patterns</h2>
+        <p>Behavioral patterns focus on communication between objects — how objects interact, distribute responsibility, and maintain flexible communication patterns.</p>
+
+        <h3 id="observer">Observer Pattern</h3>
+        <p><strong>Definition:</strong> Defines a one-to-many relationship where many observers listen to one subject. When the subject changes, all observers are notified automatically.</p>
+
+        <p><strong>Real-World Analogy:</strong> Magazine subscribers. Magazine (subject) publishes a new issue, and all subscribers (observers) automatically get notified. Subscribers register with the magazine; they don't poll asking "is there a new issue?"</p>
+
+        <h4>Problem (BAD)</h4>
+        <p>ProductService directly calls every listener — tight coupling:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// BAD: ProductService knows about Email, Cache, Audit services
+// Adding a new listener requires modifying ProductService!
+public class ProductService
+{
+    private readonly ProductDbContext _context;
+    private readonly IEmailService _emailService;
+    private readonly ICacheService _cacheService;
+    private readonly IAuditService _auditService;
+
+    public async Task UpdatePriceAsync(int productId, decimal newPrice)
+    {
+        var product = await _context.Products.FindAsync(productId);
+        product.Price = newPrice;
+        await _context.SaveChangesAsync();
+
+        // Directly calling all listeners — tight coupling!
+        await _emailService.NotifyPriceChangeAsync(product);
+        await _cacheService.InvalidateProductAsync(product.Id);
+        await _auditService.LogPriceChangeAsync(product.Id, newPrice);
+
+        // Adding a new listener (SMS notifications)? Must modify this method!
+    }
+}</code></pre>
+        </div>
+
+        <h4>Solution (GOOD)</h4>
+        <p>Use Observer pattern — ProductService doesn't know about listeners:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// GOOD: Observer pattern — ProductService doesn't know about listeners
+public interface IProductObserver
+{
+    Task OnProductPriceChangedAsync(Product product, decimal oldPrice);
+}
+
+// Each observer implements the interface
+public class EmailNotificationObserver : IProductObserver
+{
+    private readonly IEmailService _emailService;
+    public EmailNotificationObserver(IEmailService emailService) => _emailService = emailService;
+
+    public async Task OnProductPriceChangedAsync(Product product, decimal oldPrice)
+        => await _emailService.NotifyPriceChangeAsync(product);
+}
+
+public class CacheInvalidationObserver : IProductObserver
+{
+    private readonly ICacheService _cacheService;
+    public CacheInvalidationObserver(ICacheService cacheService) => _cacheService = cacheService;
+
+    public async Task OnProductPriceChangedAsync(Product product, decimal oldPrice)
+        => await _cacheService.InvalidateProductAsync(product.Id);
+}
+
+// Subject broadcasts to all observers
+public class ProductService
+{
+    private readonly ProductDbContext _context;
+    private readonly List<IProductObserver> _observers = new();
+
+    public void Subscribe(IProductObserver observer) => _observers.Add(observer);
+
+    public async Task UpdatePriceAsync(int productId, decimal newPrice)
+    {
+        var product = await _context.Products.FindAsync(productId);
+        var oldPrice = product.Price;
+        product.Price = newPrice;
+        await _context.SaveChangesAsync();
+
+        // Notify all subscribers
+        foreach (var observer in _observers)
+            await observer.OnProductPriceChangedAsync(product, oldPrice);
+
+        // Adding SmsObserver? Just Subscribe() it! ProductService unchanged!
+    }
+}
+
+// Program.cs registration
+var emailObserver = new EmailNotificationObserver(emailService);
+var cacheObserver = new CacheInvalidationObserver(cacheService);
+var productService = new ProductService();
+productService.Subscribe(emailObserver);
+productService.Subscribe(cacheObserver);
+// Done! Multiple observers, no coupling</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">❓</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview Q: "How does Observer relate to events in C#?"</p>
+            <p class="callout-body"><strong>Answer:</strong> C# events (EventHandler, Action) are essentially the Observer pattern built-in. `public event EventHandler<PriceChangeArgs> PriceChanged;` is Observer. When you `PriceChanged?.Invoke()`, you're notifying all subscribers. The formal Observer pattern is more explicit — useful for understanding the concept.</p>
+          </div>
+        </div>
+
+        <h3 id="strategy">Strategy Pattern</h3>
+        <p><strong>Definition:</strong> Defines a family of interchangeable algorithms, encapsulates each one, and lets the caller choose which to use at runtime.</p>
+
+        <p><strong>Real-World Analogy:</strong> Burger King. You order a burger, then choose: "Mayo or mustard?" Each sauce is a strategy — same burger, different strategy applied.</p>
+
+        <h4>Problem (BAD)</h4>
+        <p>Business logic has if/else for different algorithms:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// BAD: ProductService has if/else for discount types
+// Adding a new discount type requires modifying the method!
+public class ProductService
+{
+    public decimal CalculateFinalPrice(Product product, string discountType)
+    {
+        decimal discount = discountType switch
+        {
+            "seasonal" => product.Price * 0.10m,
+            "clearance" => product.Price * 0.50m,
+            "member" => product.Price * 0.15m,
+            // Adding "senior"? Modify this switch!
+            _ => 0
+        };
+
+        return product.Price - discount;
+    }
+}</code></pre>
+        </div>
+
+        <h4>Solution (GOOD)</h4>
+        <p>Each discount is its own strategy class:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// GOOD: Strategy pattern — each discount is its own class
+public interface IDiscountStrategy
+{
+    decimal CalculateDiscount(Product product);
+    string Name { get; }
+}
+
+public class SeasonalDiscountStrategy : IDiscountStrategy
+{
+    public string Name => "Seasonal";
+    public decimal CalculateDiscount(Product product) => product.Price * 0.10m;
+}
+
+public class ClearanceDiscountStrategy : IDiscountStrategy
+{
+    public string Name => "Clearance";
+    public decimal CalculateDiscount(Product product) => product.Price * 0.50m;
+}
+
+public class MemberDiscountStrategy : IDiscountStrategy
+{
+    public string Name => "Member";
+    public decimal CalculateDiscount(Product product) => product.Price * 0.15m;
+}
+
+// Service uses any strategy
+public class ProductService
+{
+    public decimal CalculateFinalPrice(Product product, IDiscountStrategy discount)
+    {
+        var discountAmount = discount.CalculateDiscount(product);
+        return product.Price - discountAmount;
+    }
+}
+
+// Usage
+var finalPrice = _productService.CalculateFinalPrice(product, new MemberDiscountStrategy());
+// Adding SeniorDiscountStrategy? Just create the class! ProductService unchanged!</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">❓</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview Q: "Strategy vs if/else — when do you use Strategy?"</p>
+            <p class="callout-body"><strong>Answer:</strong> If/else works for 2-3 options. Strategy shines when: (1) many options (5+), (2) options change frequently, (3) options are complex logic, (4) you want to add new options without modifying existing code. Strategy = Open/Closed Principle in action.</p>
+          </div>
+        </div>
+
+        <h3 id="command">Command Pattern</h3>
+        <p><strong>Definition:</strong> Encapsulates a request as a COMMAND OBJECT, allowing you to queue commands, undo/redo, and execute commands at different times.</p>
+
+        <p><strong>Real-World Analogy:</strong> Restaurant waiter. Customer orders food (command). Waiter writes it down, passes it to chef (queue). Chef processes commands one by one. Waiter can cancel orders (undo) or retry the same order (redo/replay).</p>
+
+        <h4>Problem (BAD)</h4>
+        <p>Business logic mixed into controller — no way to queue, log, undo, or replay:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// BAD: Business logic mixed into controller
+// No way to: undo operation, queue async, log command history, replay
+public class ProductsController
+{
+    [HttpPost]
+    public async Task<IActionResult> CreateProduct(CreateProductRequest req)
+    {
+        var product = new Product { Name = req.Name, Price = req.Price };
+        await _productService.CreateAsync(product);
+        return Ok(product);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateProduct(int id, UpdateProductRequest req)
+    {
+        var product = await _productService.GetByIdAsync(id);
+        product.Price = req.Price;
+        await _productService.UpdateAsync(product);
+        return Ok(product);
+    }
+
+    // No way to: undo operation, queue async, log command history, replay
+}</code></pre>
+        </div>
+
+        <h4>Solution (GOOD)</h4>
+        <p>Encapsulate operations as Command objects:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// GOOD: Command pattern — encapsulate operations as objects
+public interface ICommand
+{
+    Task ExecuteAsync();
+    Task UndoAsync();
+    string Description { get; }
+}
+
+public class CreateProductCommand : ICommand
+{
+    private readonly Product _product;
+    private readonly ProductService _productService;
+
+    public string Description => $"Create product: {_product.Name}";
+
+    public CreateProductCommand(Product product, ProductService productService)
+    {
+        _product = product;
+        _productService = productService;
+    }
+
+    public async Task ExecuteAsync()
+        => await _productService.CreateAsync(_product);
+
+    public async Task UndoAsync()
+        => await _productService.DeleteAsync(_product.Id);
+}
+
+public class UpdateProductCommand : ICommand
+{
+    private readonly int _productId;
+    private readonly decimal _newPrice;
+    private readonly decimal _oldPrice;
+    private readonly ProductService _productService;
+
+    public string Description => $"Update product {_productId} price to {_newPrice}";
+
+    public UpdateProductCommand(int productId, decimal newPrice, decimal oldPrice,
+        ProductService productService)
+    {
+        _productId = productId;
+        _newPrice = newPrice;
+        _oldPrice = oldPrice;
+        _productService = productService;
+    }
+
+    public async Task ExecuteAsync()
+    {
+        var product = await _productService.GetByIdAsync(_productId);
+        product.Price = _newPrice;
+        await _productService.UpdateAsync(product);
+    }
+
+    public async Task UndoAsync()
+    {
+        var product = await _productService.GetByIdAsync(_productId);
+        product.Price = _oldPrice;
+        await _productService.UpdateAsync(product);
+    }
+}
+
+// Command invoker — queues and executes commands
+public class CommandInvoker
+{
+    private readonly Stack<ICommand> _commandHistory = new();
+
+    public async Task ExecuteAsync(ICommand command)
+    {
+        await command.ExecuteAsync();
+        _commandHistory.Push(command); // Remember for undo
+    }
+
+    public async Task UndoAsync()
+    {
+        if (_commandHistory.Count > 0)
+        {
+            var command = _commandHistory.Pop();
+            await command.UndoAsync();
+        }
+    }
+}
+
+// Controller uses commands
+public class ProductsController
+{
+    private readonly CommandInvoker _invoker;
+    private readonly ProductService _productService;
+
+    [HttpPost]
+    public async Task<IActionResult> CreateProduct(CreateProductRequest req)
+    {
+        var product = new Product { Name = req.Name, Price = req.Price };
+        var command = new CreateProductCommand(product, _productService);
+        await _invoker.ExecuteAsync(command);
+        return Ok(product);
+    }
+
+    [HttpPost("undo")]
+    public async Task<IActionResult> UndoLastOperation()
+    {
+        await _invoker.UndoAsync();
+        return Ok("Last operation undone");
+    }
+}</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">❓</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview Q: "When is Command pattern overkill?"</p>
+            <p class="callout-body"><strong>Answer:</strong> If you just need to execute simple operations, Command adds ceremony. But if you need: undo/redo, command history, async queuing, transaction-like rollback, or replay — Command is invaluable. It transforms random method calls into first-class objects you can queue, persist, and reason about.</p>
+          </div>
+        </div>
+
+        <h2 id="which-pattern">Which Pattern When? — Decision Table</h2>
+        <p>Confused about which pattern to use? This table covers all 9 patterns with their problems and real-world ProductCatalogAPI examples:</p>
+
+        <table style="width:100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9em;">
+          <thead>
+            <tr style="background-color: var(--surface-2); border-bottom: 2px solid var(--border);">
+              <th style="padding: 12px; text-align: left;"><strong>Pattern</strong></th>
+              <th style="padding: 12px; text-align: left;"><strong>When You Have This Problem...</strong></th>
+              <th style="padding: 12px; text-align: left;"><strong>Use This Pattern</strong></th>
+              <th style="padding: 12px; text-align: left;"><strong>ProductCatalogAPI Example</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px;"><strong>Singleton</strong></td>
+              <td style="padding: 12px;">Objects being created many times, should exist only once</td>
+              <td style="padding: 12px;">Enforce single instance via Lazy&lt;T&gt;</td>
+              <td style="padding: 12px;">DatabaseConnection, Logger, Config</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px;"><strong>Factory</strong></td>
+              <td style="padding: 12px;">Caller needs object but shouldn't know HOW it's created</td>
+              <td style="padding: 12px;">Create a static method that returns interface, hides implementation</td>
+              <td style="padding: 12px;">ProductRepositoryFactory → SqlRepo, InMemoryRepo, PostgresRepo</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px;"><strong>Builder</strong></td>
+              <td style="padding: 12px;">Object has many optional parameters or complex construction</td>
+              <td style="padding: 12px;">Create a builder class, return this for chaining, Build() at end</td>
+              <td style="padding: 12px;">ProductFilterBuilder → WithMinPrice → WithMaxPrice → Build()</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px;"><strong>Adapter</strong></td>
+              <td style="padding: 12px;">Need to use third-party library with incompatible interface</td>
+              <td style="padding: 12px;">Create adapter class implementing your interface, delegates to third-party</td>
+              <td style="padding: 12px;">StripePaymentAdapter → IPaymentProcessor, adapts StripeAPI</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px;"><strong>Decorator</strong></td>
+              <td style="padding: 12px;">Need to add behavior to object WITHOUT modifying it</td>
+              <td style="padding: 12px;">Create decorator class implementing same interface, wraps original</td>
+              <td style="padding: 12px;">CachedProductRepository wraps SqlProductRepository, adds caching</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px;"><strong>Facade</strong></td>
+              <td style="padding: 12px;">Client sees complex subsystem, needs simplified entry point</td>
+              <td style="padding: 12px;">Create facade class exposing one simple interface, orchestrates subsystem</td>
+              <td style="padding: 12px;">ProductFacade → hides EF + Cache + Email + Logging</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px;"><strong>Observer</strong></td>
+              <td style="padding: 12px;">One object needs to notify many others of state change</td>
+              <td style="padding: 12px;">Create observer interface, subject manages list, calls all on change</td>
+              <td style="padding: 12px;">ProductService notifies EmailObserver, CacheObserver, AuditObserver</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px;"><strong>Strategy</strong></td>
+              <td style="padding: 12px;">Need to switch between algorithms at runtime</td>
+              <td style="padding: 12px;">Create strategy interface, multiple implementations, use any at runtime</td>
+              <td style="padding: 12px;">IDiscountStrategy → SeasonalDiscount, ClearanceDiscount, MemberDiscount</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px;"><strong>Command</strong></td>
+              <td style="padding: 12px;">Need to queue, undo/redo, or persist operations</td>
+              <td style="padding: 12px;">Create command class implementing ICommand, invoke via invoker</td>
+              <td style="padding: 12px;">CreateProductCommand, UpdateProductCommand with undo support</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 id="interview-qa">Common Interview Questions</h2>
+
+        <details style="margin: 20px 0; padding: 15px; background-color: var(--surface-2); border: 1px solid var(--border); border-radius: 8px;">
+          <summary style="cursor: pointer; font-weight: 600; user-select: none;">1. What's the difference between Factory and Abstract Factory patterns?</summary>
+          <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
+            <p><strong>Answer:</strong></p>
+            <p><strong>Factory:</strong> Creates ONE type of object. Example: `ProductRepositoryFactory.CreateRepository(env)` returns an IProductRepository (could be SQL or InMemory).</p>
+            <p><strong>Abstract Factory:</strong> Creates FAMILIES of related objects. Example: UIFactory that creates both Button and TextField for either Windows or Mac themes. Rarely needed in .NET Web API work.</p>
+            <p><strong>In interviews:</strong> Be prepared to explain Factory is "simpler, more common." Abstract Factory is "for object families that vary together."</p>
+          </div>
+        </details>
+
+        <details style="margin: 20px 0; padding: 15px; background-color: var(--surface-2); border: 1px solid var(--border); border-radius: 8px;">
+          <summary style="cursor: pointer; font-weight: 600; user-select: none;">2. Can you give an example of combining multiple patterns together?</summary>
+          <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
+            <p><strong>Answer:</strong> Yes! Real ProductCatalogAPI architecture uses multiple patterns:</p>
+            <p><strong>Factory + Dependency Injection:</strong> Program.cs uses factory logic to create the right IProductRepository based on environment.</p>
+            <p><strong>Decorator + Observer:</strong> CachedProductRepository (Decorator) wraps SqlProductRepository; when prices change, Observer pattern notifies multiple listeners (cache invalidation, email, audit).</p>
+            <p><strong>Facade + Strategy:</strong> ProductService (Facade) hides EF + cache + email. Uses IDiscountStrategy at runtime to apply different discount algorithms.</p>
+            <p><strong>In interviews:</strong> Mention that patterns work together. Real code doesn't use just ONE pattern — they compose.</p>
+          </div>
+        </details>
+
+        <details style="margin: 20px 0; padding: 15px; background-color: var(--surface-2); border: 1px solid var(--border); border-radius: 8px;">
+          <summary style="cursor: pointer; font-weight: 600; user-select: none;">3. What's the difference between Decorator and Proxy patterns?</summary>
+          <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
+            <p><strong>Answer:</strong></p>
+            <p><strong>Decorator:</strong> Adds BEHAVIOR to the object. Example: CachedProductRepository adds caching. You ALWAYS want to add the behavior.</p>
+            <p><strong>Proxy:</strong> Controls ACCESS to the object. Example: SecuredProductRepository only allows requests from admin users. You CONDITIONALLY allow access.</p>
+            <p><strong>Code looks similar:</strong> Both wrap the object. But intent is different — Decorator enhances, Proxy controls.</p>
+            <p><strong>In interviews:</strong> "Decorator adds behavior, Proxy controls access. Same implementation pattern, different purpose."</p>
+          </div>
+        </details>
+
+        <details style="margin: 20px 0; padding: 15px; background-color: var(--surface-2); border: 1px solid var(--border); border-radius: 8px;">
+          <summary style="cursor: pointer; font-weight: 600; user-select: none;">4. Why are design patterns important in interviews?</summary>
+          <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
+            <p><strong>Answer:</strong></p>
+            <p>Patterns show you understand:</p>
+            <ul style="margin: 10px 0; margin-left: 20px;">
+              <li><strong>OOP principles</strong> — Abstraction, composition, loose coupling</li>
+              <li><strong>Clean code</strong> — Maintainable, testable, scalable</li>
+              <li><strong>Problem-solving</strong> — Recognizing common problems and applying proven solutions</li>
+              <li><strong>Communication</strong> — Patterns are a shared vocabulary (senior devs speak in patterns)</li>
+            </ul>
+            <p><strong>In interviews:</strong> Don't memorize definitions. Instead, explain when you'd use a pattern and why it solves a real problem.</p>
+          </div>
+        </details>
+
+        <details style="margin: 20px 0; padding: 15px; background-color: var(--surface-2); border: 1px solid var(--border); border-radius: 8px;">
+          <summary style="cursor: pointer; font-weight: 600; user-select: none;">5. What's the relationship between patterns and SOLID principles?</summary>
+          <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
+            <p><strong>Answer:</strong></p>
+            <p><strong>SOLID Principles:</strong> Guidelines for writing GOOD code (Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion).</p>
+            <p><strong>Design Patterns:</strong> Proven SOLUTIONS that follow SOLID.</p>
+            <p><strong>Relationship:</strong> Patterns are IMPLEMENTATIONS of SOLID. Example:</p>
+            <ul style="margin: 10px 0; margin-left: 20px;">
+              <li><strong>Decorator</strong> follows Open/Closed — "open for extension (decorators), closed for modification (repository)"</li>
+              <li><strong>Observer</strong> follows Open/Closed — add new observers without modifying subject</li>
+              <li><strong>Strategy</strong> follows Dependency Inversion — depend on IDiscountStrategy interface, not concrete discount classes</li>
+            </ul>
+            <p><strong>In interviews:</strong> "SOLID is theory, patterns are practice. I follow SOLID by using appropriate patterns."</p>
+          </div>
+        </details>
+
+        <div style="margin-top: 40px; padding: 20px; background-color: var(--surface-2); border-left: 4px solid var(--accent); border-radius: 4px;">
+          <h3 style="margin-top: 0;">Next Steps</h3>
+          <p>Now that you understand all 9 patterns:</p>
+          <ul style="margin-left: 20px;">
+            <li><strong>Practice:</strong> Implement each pattern in a small project. Build muscle memory.</li>
+            <li><strong>Recognize:</strong> When reading code, identify which patterns are used. Why were they chosen?</li>
+            <li><strong>Combine:</strong> Real systems use multiple patterns. Understand how they work together.</li>
+            <li><strong>Interview:</strong> Explain patterns not by definition, but by example. Show you've used them.</li>
+            <li><strong>Learn more:</strong> Read "Design Patterns: Elements of Reusable Object-Oriented Software" (the original Gang of Four book) for deep understanding.</li>
+          </ul>
+        </div>
+
+      </article>
+    </div>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-content">
+      <p>&copy; 2025 DevDocs. Built with dedication for .NET developers.</p>
+      <p><a href="index.html">Home</a> | <a href="interview.html">Interview Prep</a> | <a href="interview-solid.html">SOLID Principles</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

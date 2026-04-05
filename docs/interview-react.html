@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React Fundamentals - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-badge">D</div>
+      DevDocs
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html" class="active">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span>
+        <input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+          <li><a href="webapi-data-access.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Data Access</a></li>
+          <li><a href="csharp.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+          <li><a href="interview-csharp.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
+          <li><a href="interview-solid.html" class="sidebar-link"><span class="sidebar-link-icon">🏛️</span> SOLID Principles</a></li>
+          <li><a href="interview-patterns.html" class="sidebar-link"><span class="sidebar-link-icon">🎨</span> Design Patterns</a></li>
+          <li><a href="interview-sql.html" class="sidebar-link"><span class="sidebar-link-icon">🗃️</span> SQL</a></li>
+          <li><a href="interview-mvc.html" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> ASP.NET MVC</a></li>
+          <li><a href="interview-react.html" class="sidebar-link active"><span class="sidebar-link-icon">⚛️</span> React</a></li>
+          <li><a href="interview-angular.html" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="interview.html">Interview Prep</a>
+          <span class="sep">/</span>
+          <span class="current">React Fundamentals</span>
+        </nav>
+
+        <!-- ═══════════ PAGE TITLE ═══════════ -->
+        <div class="page-title-block">
+          <h1 class="page-title">⚛️ React Fundamentals</h1>
+          <p class="page-subtitle">Modern JavaScript frontend library — components, hooks, and state management for Product Catalog UI</p>
+          <div class="page-meta">
+            <span class="badge badge-primary">Frontend</span>
+            <span class="badge badge-accent">Interview Prep</span>
+            <span class="badge badge-success">9 Concepts</span>
+          </div>
+        </div>
+
+        <!-- ═══════════ INTRO CALLOUT ═══════════ -->
+        <div class="callout callout-info">
+          <span class="callout-icon">⚛️</span>
+          <div class="callout-content">
+            <p class="callout-title">Why React matters</p>
+            <p class="callout-body">React is <strong>declarative</strong> — you describe what the UI should look like, and React handles the updates. This is fundamentally different from jQuery's imperative "find this element and change it" approach. React is <strong>component-based</strong>, meaning you compose UIs from reusable pieces. One-way data flow (props down, events up) makes debugging straightforward — if state is wrong, you know the source is above the component. React's Virtual DOM efficiently updates only the parts of the real DOM that changed, making even complex UIs fast.</p>
+          </div>
+        </div>
+
+        <!-- ═══════════ QUICK REFERENCE TABLE ═══════════ -->
+        <h2 id="quick-reference">React Concepts Quick Reference</h2>
+        <div class="table-wrap">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Concept</th>
+                <th>Analogy</th>
+                <th>Implementation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Components</strong></td>
+                <td>Reusable building blocks (like LEGO bricks)</td>
+                <td><code>export function ProductList() { return &lt;div&gt;...&lt;/div&gt; }</code></td>
+              </tr>
+              <tr>
+                <td><strong>JSX</strong></td>
+                <td>HTML-like syntax that lives in JavaScript</td>
+                <td><code>&lt;button onClick={handleClick}&gt;Click me&lt;/button&gt;</code></td>
+              </tr>
+              <tr>
+                <td><strong>Props</strong></td>
+                <td>Parameters passed from parent to child (immutable)</td>
+                <td><code>&lt;ProductCard product={product} /&gt;</code></td>
+              </tr>
+              <tr>
+                <td><strong>State</strong></td>
+                <td>Component's internal memory (mutable, triggers re-render)</td>
+                <td><code>const [count, setCount] = useState(0)</code></td>
+              </tr>
+              <tr>
+                <td><strong>Virtual DOM</strong></td>
+                <td>Lightweight copy of real DOM that React uses to calculate changes</td>
+                <td>React compares before/after, applies minimal updates to actual DOM</td>
+              </tr>
+              <tr>
+                <td><strong>Context API</strong></td>
+                <td>Avoids prop drilling; shares state across components without passing through every level</td>
+                <td><code>const ProductContext = createContext(); &lt;ProductContext.Provider value={state}&gt;</code></td>
+              </tr>
+              <tr>
+                <td><strong>Hooks</strong></td>
+                <td>Functions that let you use React features in functional components</td>
+                <td><code>useState, useEffect, useContext, useReducer</code></td>
+              </tr>
+              <tr>
+                <td><strong>Effect Hook</strong></td>
+                <td>Component lifecycle moments (mount, update, unmount)</td>
+                <td><code>useEffect(() =&gt; { /* runs on mount/update */ }, [dependency])</code></td>
+              </tr>
+              <tr>
+                <td><strong>Keys in Lists</strong></td>
+                <td>Unique identifier to preserve component state across re-renders</td>
+                <td><code>.map(product =&gt; &lt;Item key={product.id} ... /&gt;)</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- INTERVIEW Q&A                              -->
+        <!-- ═══════════════════════════════════════════ -->
+        <h2 id="react-interview">Interview Questions on React</h2>
+        <div class="qa-list">
+
+          <!-- Q1: React vs jQuery -->
+          <details class="qa-item">
+            <summary class="qa-question">Q1. What problem does React solve that jQuery does not? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>jQuery's approach (imperative):</strong> find DOM elements and directly manipulate them. <code>$('#products').html(data)</code> works fine for small pages, but as your app grows, it becomes hard to track which parts of the code changed which DOM elements. You end up with spaghetti logic and silent bugs.</p>
+              <p><strong>React's approach (declarative):</strong> describe your UI as a function of state. When state changes, React re-renders the component automatically. You do not manually update the DOM — React does it for you, efficiently.</p>
+              <p><strong>The Virtual DOM advantage:</strong> React maintains a lightweight in-memory representation of the DOM. When state changes, React renders to the Virtual DOM, compares it to the previous version (diffing), and updates only the parts of the real DOM that actually changed. This is far faster than jQuery's "find and replace" approach, especially with complex UIs.</p>
+              <p><strong>Concrete example — Product Catalog UI:</strong> jQuery: manually fetch products, loop through them, build HTML string, find #products element, call <code>.html(htmlString)</code>. If a product updates, you re-fetch all products and re-render the whole list. React: <code>&lt;ProductList products={products} /&gt;</code>. When a product updates, React re-renders only that product's row. The rest of the page stays untouched.</p>
+              <p><strong>Scalability:</strong> jQuery works for 100 lines of DOM manipulation. React scales to 100,000 lines. Large teams can work on different components independently because React enforces clear boundaries (props in, events out).</p>
+            </div>
+          </details>
+
+          <!-- Q2: JSX Syntax -->
+          <details class="qa-item">
+            <summary class="qa-question">Q2. Explain JSX syntax — what is it, and how does it compile? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>JSX stands for <strong>JavaScript XML</strong>. It lets you write HTML-like syntax directly in JavaScript. When you write <code>&lt;button&gt;Click&lt;/button&gt;</code> in a React component, it is not actual HTML — it is JSX that the compiler translates to JavaScript function calls.</p>
+              <p><strong>Before compilation (JSX you write):</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">jsx</span>
+                </div>
+                <pre><code class="language-jsx">function ProductCard() {
+  return (
+    &lt;div className="card"&gt;
+      &lt;h3&gt;Laptop&lt;/h3&gt;
+      &lt;p&gt;Price: $999&lt;/p&gt;
+      &lt;button onClick={() =&gt; alert('Added to cart')}&gt;
+        Add to Cart
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+              </div>
+              <p><strong>After compilation (React.createElement calls):</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">javascript</span>
+                </div>
+                <pre><code class="language-javascript">function ProductCard() {
+  return React.createElement(
+    'div',
+    { className: 'card' },
+    React.createElement('h3', null, 'Laptop'),
+    React.createElement('p', null, 'Price: $999'),
+    React.createElement(
+      'button',
+      { onClick: () =&gt; alert('Added to cart') },
+      'Add to Cart'
+    )
+  );
+}</code></pre>
+              </div>
+              <p><strong>Key JSX rules:</strong></p>
+              <ul>
+                <li><code>className</code> not <code>class</code> (class is a reserved word in JavaScript)</li>
+                <li><code>onClick</code>, <code>onChange</code> use camelCase</li>
+                <li>Embed JavaScript expressions with curly braces: <code>{productPrice}</code></li>
+                <li>Custom components must start with uppercase: <code>&lt;ProductList /&gt;</code> (JSX knows it is a React component, not a DOM element)</li>
+                <li>Self-closing tags are OK: <code>&lt;input type="text" /&gt;</code></li>
+              </ul>
+              <p><strong>Why JSX?</strong> It is more readable than nested <code>React.createElement</code> calls. A component tree with 20 elements becomes a nightmare to read as function calls. JSX is familiar to anyone who knows HTML, making React approachable.</p>
+            </div>
+          </details>
+
+          <!-- Q3: Props vs State -->
+          <details class="qa-item">
+            <summary class="qa-question">Q3. What is the difference between Props and State? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Props</strong> = parameters to a component. Passed down from parent to child, <strong>immutable</strong>. If you need different UI, the parent changes the prop and re-renders the child.</p>
+              <p><strong>State</strong> = component's internal memory. <strong>Mutable</strong> (via setState or setters). When state changes, the component re-renders automatically.</p>
+              <div class="table-wrap">
+                <table class="comparison-table">
+                  <thead><tr><th></th><th>Props</th><th>State</th></tr></thead>
+                  <tbody>
+                    <tr><td><strong>Immutability</strong></td><td>Read-only (child cannot change)</td><td>Mutable (use setState/setters)</td></tr>
+                    <tr><td><strong>Source</strong></td><td>Passed from parent</td><td>Local to component</td></tr>
+                    <tr><td><strong>Triggers re-render?</strong></td><td>Yes, if parent re-renders with new prop</td><td>Yes, always</td></tr>
+                    <tr><td><strong>Use case</strong></td><td>Configure child behavior; pass data down</td><td>Track user input, toggles, timers</td></tr>
+                    <tr><td><strong>Example</strong></td><td><code>&lt;ProductCard product={product} /&gt;</code></td><td><code>const [liked, setLiked] = useState(false)</code></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p><strong>Example — ProductCard component:</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">jsx</span>
+                </div>
+                <pre><code class="language-jsx">// Props (immutable) — the product is passed down
+function ProductCard({ product }) {
+  // State (mutable) — track local UI state
+  const [liked, setLiked] = useState(false);
+
+  return (
+    &lt;div className="card"&gt;
+      &lt;h3&gt;{product.name}&lt;/h3&gt; {/* prop */}
+      &lt;p&gt;${product.price}&lt;/p&gt; {/* prop */}
+      &lt;button onClick={() =&gt; setLiked(!liked)}&gt;
+        {liked ? '❤️ Liked' : '🤍 Like'}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Parent passes props
+function ProductList() {
+  const [products, setProducts] = useState([...]);
+  return (
+    &lt;div&gt;
+      {products.map(product =&gt;
+        &lt;ProductCard key={product.id} product={product} /&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre>
+              </div>
+              <p><strong>Key principle:</strong> state should live in the component that needs to use it, or in a common parent if multiple components need it. Props flow down; events bubble up.</p>
+            </div>
+          </details>
+
+          <!-- Q4: Prop Drilling & Context -->
+          <details class="qa-item">
+            <summary class="qa-question">Q4. What is prop drilling and how does the Context API solve it? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Prop drilling</strong> = passing props through many levels of components that do not need them, just to get data to a deeply nested child. For example, if ProductList needs to pass user theme preference to a ProductCard 5 levels deep, you would thread it through every intermediate component.</p>
+              <p><strong>The problem:</strong> refactoring becomes painful (add a new intermediate component, and you have to update 20 prop signatures), and the code is noisy with unrelated props.</p>
+              <p><strong>Context API solution:</strong> create a Context at the top level, wrap your component tree with a Provider, and deeply nested components can consume the context without intermediate drilling.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">jsx</span>
+                </div>
+                <pre><code class="language-jsx">// Step 1: Create ProductContext
+import { createContext, useState, useContext } from 'react';
+
+const ProductContext = createContext();
+
+// ProductProvider — manages shared state
+export function ProductProvider({ children }) {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  return (
+    &lt;ProductContext.Provider value={{ products, setProducts, loading, setLoading }}&gt;
+      {children}
+    &lt;/ProductContext.Provider&gt;
+  );
+}
+
+// Custom hook for convenience
+export function useProducts() {
+  return useContext(ProductContext);
+}
+
+// ─────────────────────────────────────────────
+// Step 2: Wrap your app with Provider (App.js or main.jsx)
+function App() {
+  return (
+    &lt;ProductProvider&gt;
+      &lt;Navbar /&gt;
+      &lt;ProductListPage /&gt;
+      &lt;Footer /&gt;
+    &lt;/ProductProvider&gt;
+  );
+}
+
+// ─────────────────────────────────────────────
+// Step 3: Any component can consume context — no drilling
+function ProductListPage() {
+  const { products, loading } = useProducts();
+
+  return (
+    &lt;div&gt;
+      {loading ? &lt;Spinner /&gt; : &lt;ProductList /&gt;}
+    &lt;/div&gt;
+  );
+}
+
+function ProductList() {
+  const { products } = useProducts(); // access WITHOUT prop drilling
+
+  return (
+    &lt;div&gt;
+      {products.map(p =&gt; &lt;ProductItem key={p.id} product={p} /&gt;)}
+    &lt;/div&gt;
+  );
+}
+
+function ProductItem({ product }) {
+  // ProductItem receives product as prop (reasonable level),
+  // but if it needed global state, it could call useProducts() directly
+  return &lt;div&gt;{product.name}&lt;/div&gt;;
+}</code></pre>
+              </div>
+              <p><strong>When to use Context:</strong> theme (dark/light), language, authenticated user, global notifications. NOT for data that changes frequently (like every keystroke) — Context causes all consumers to re-render, which can hurt performance.</p>
+            </div>
+          </details>
+
+          <!-- Q5: useState Hook -->
+          <details class="qa-item">
+            <summary class="qa-question">Q5. Explain the useState hook — how does it manage local component state? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>useState</strong> lets functional components store and update local state. Before hooks, you needed class components for state. Now, any functional component can have state.</p>
+              <p><strong>Syntax:</strong> <code>const [state, setState] = useState(initialValue)</code></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">jsx</span>
+                </div>
+                <pre><code class="language-jsx">import { useState } from 'react';
+
+function ProductList() {
+  // Declare state: [current value, function to update it]
+  const [products, setProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  // When user types in search
+  function handleSearch(e) {
+    setSearchTerm(e.target.value); // triggers re-render
+  }
+
+  // Filter products based on search and category
+  const filtered = products.filter(p =&gt;
+    p.name.includes(searchTerm) &&
+    (selectedCategory === 'All' || p.category === selectedCategory)
+  );
+
+  return (
+    &lt;div&gt;
+      &lt;input
+        type="text"
+        placeholder="Search products..."
+        value={searchTerm}
+        onChange={handleSearch}
+      /&gt;
+
+      &lt;select value={selectedCategory} onChange={(e) =&gt; setSelectedCategory(e.target.value)}&gt;
+        &lt;option&gt;All&lt;/option&gt;
+        &lt;option&gt;Electronics&lt;/option&gt;
+        &lt;option&gt;Clothing&lt;/option&gt;
+      &lt;/select&gt;
+
+      &lt;ul&gt;
+        {filtered.map(product =&gt;
+          &lt;li key={product.id}&gt;{product.name} - ${product.price}&lt;/li&gt;
+        )}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+
+// When you call setSearchTerm('laptop'):
+// 1. React updates the state (searchTerm is now 'laptop')
+// 2. React re-renders the entire component
+// 3. filtered is recalculated
+// 4. Virtual DOM is compared to previous render
+// 5. Only changed DOM nodes are updated (the list)</code></pre>
+              </div>
+              <p><strong>Key rules:</strong></p>
+              <ul>
+                <li>Call hooks at the top level of a functional component, not inside loops or conditionals</li>
+                <li>Never call setState directly (e.g., <code>products = []</code>) — always use the setter</li>
+                <li>setState is asynchronous — you cannot rely on the new value immediately after calling it</li>
+                <li>React batches multiple setState calls in an event handler into one re-render for performance</li>
+              </ul>
+            </div>
+          </details>
+
+          <!-- Q6: useEffect Hook -->
+          <details class="qa-item">
+            <summary class="qa-question">Q6. Explain the useEffect hook — what are side effects and how do dependencies work? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>useEffect</strong> lets you perform side effects in functional components. Side effects = anything that reaches outside the component (fetch data, update DOM, subscribe to events, set timers, etc.).</p>
+              <p><strong>Syntax:</strong> <code>useEffect(() =&gt; { /* effect code */ }, [dependencies])</code></p>
+              <p><strong>When it runs:</strong></p>
+              <ul>
+                <li>No dependency array: runs after every render (usually bad — infinite loops)</li>
+                <li><code>[]</code> (empty array): runs once after initial mount (perfect for fetch on load)</li>
+                <li><code>[dependency]</code>: runs when the dependency changes</li>
+              </ul>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">jsx</span>
+                </div>
+                <pre><code class="language-jsx">import { useEffect, useState } from 'react';
+
+function ProductList() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [category, setCategory] = useState('All');
+
+  // Fetch products when component mounts (run once)
+  useEffect(() =&gt; {
+    console.log('Component mounted — fetching products');
+
+    async function fetchProducts() {
+      try {
+        setLoading(true);
+        const url = category === 'All'
+          ? 'http://localhost:5000/api/products'
+          : `http://localhost:5000/api/products/category/${category}`;
+
+        const response = await fetch(url);
+        const data = await response.json();
+        setProducts(data);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProducts();
+  }, [category]); // re-run when category changes
+
+  // Cleanup: unsubscribe from events or cancel timers
+  useEffect(() =&gt; {
+    console.log('Component mounted or updated');
+
+    const handleKeyPress = (e) =&gt; {
+      if (e.key === 'Escape') setProducts([]);
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+
+    // Cleanup function: runs when component unmounts or before re-running effect
+    return () =&gt; {
+      console.log('Cleaning up event listener');
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, []); // empty array = cleanup runs on unmount only
+
+  if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+  if (error) return &lt;div&gt;Error: {error}&lt;/div&gt;;
+
+  return (
+    &lt;div&gt;
+      &lt;select value={category} onChange={(e) =&gt; setCategory(e.target.value)}&gt;
+        &lt;option&gt;All&lt;/option&gt;
+        &lt;option&gt;Electronics&lt;/option&gt;
+        &lt;option&gt;Clothing&lt;/option&gt;
+      &lt;/select&gt;
+      &lt;ul&gt;
+        {products.map(p =&gt; &lt;li key={p.id}&gt;{p.name}&lt;/li&gt;)}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+              </div>
+              <p><strong>Dependency array mistakes:</strong> If you omit dependencies, the effect runs every render (infinite loops if it calls setState). If you pass stale dependencies, the effect uses old values. List every value from the component scope that is used inside the effect.</p>
+            </div>
+          </details>
+
+          <!-- Q7: useContext Hook -->
+          <details class="qa-item">
+            <summary class="qa-question">Q7. How does the useContext hook work and how does it simplify sharing state? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>useContext</strong> subscribes a component to a Context. When Context value changes, all components using that context re-render automatically. It eliminates prop drilling and centralizes state management.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">jsx</span>
+                </div>
+                <pre><code class="language-jsx">import { createContext, useContext, useState } from 'react';
+
+// Step 1: Create ProductContext
+const ProductContext = createContext();
+
+// Step 2: Provider component (manages state)
+export function ProductProvider({ children }) {
+  const [cart, setCart] = useState([]);
+  const [theme, setTheme] = useState('light');
+
+  function addToCart(product) {
+    setCart([...cart, product]);
+  }
+
+  function removeFromCart(productId) {
+    setCart(cart.filter(p =&gt; p.id !== productId));
+  }
+
+  return (
+    &lt;ProductContext.Provider value={{ cart, addToCart, removeFromCart, theme, setTheme }}&gt;
+      {children}
+    &lt;/ProductContext.Provider&gt;
+  );
+}
+
+// Step 3: Custom hook for cleaner code
+export function useProductContext() {
+  const context = useContext(ProductContext);
+  if (!context) throw new Error('useProductContext must be used within ProductProvider');
+  return context;
+}
+
+// ─────────────────────────────────────────────
+// Step 4: Any component can consume context
+function CartBadge() {
+  const { cart } = useProductContext(); // no prop drilling!
+  return &lt;span&gt;Cart ({cart.length})&lt;/span&gt;;
+}
+
+function ProductCard({ product }) {
+  const { addToCart } = useProductContext();
+
+  return (
+    &lt;div className="card"&gt;
+      &lt;h3&gt;{product.name}&lt;/h3&gt;
+      &lt;button onClick={() =&gt; addToCart(product)}&gt;
+        Add to Cart
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+// ─────────────────────────────────────────────
+// Step 5: Wrap your app
+function App() {
+  return (
+    &lt;ProductProvider&gt;
+      &lt;Navbar /&gt; {/* CartBadge inside Navbar sees cart automatically */}
+      &lt;ProductList /&gt; {/* ProductCard can add to cart */}
+    &lt;/ProductProvider&gt;
+  );
+}</code></pre>
+              </div>
+              <p><strong>Performance caveat:</strong> when Context value changes, all components consuming it re-render — even if they only use one part of the context value. For large apps, split context into smaller pieces (UserContext, ThemeContext, CartContext) so changes to one do not trigger unnecessary re-renders of the whole tree.</p>
+            </div>
+          </details>
+
+          <!-- Q8: Conditional Rendering -->
+          <details class="qa-item">
+            <summary class="qa-question">Q8. What are the different patterns for conditional rendering in JSX? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>React supports several ways to conditionally render content:</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">jsx</span>
+                </div>
+                <pre><code class="language-jsx">function ProductPage() {
+  const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState(null);
+
+  // ═══════════════════════════════════════════════
+  // Pattern 1: if/else outside JSX (most readable)
+  // ═══════════════════════════════════════════════
+  if (loading) {
+    return &lt;div&gt;Loading...&lt;/div&gt;;
+  }
+
+  if (!product) {
+    return &lt;div&gt;Product not found&lt;/div&gt;;
+  }
+
+  // ═══════════════════════════════════════════════
+  // Pattern 2: Ternary operator (inline)
+  // ═══════════════════════════════════════════════
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;{product.name}&lt;/h1&gt;
+      {product.inStock ? (
+        &lt;button&gt;Buy Now&lt;/button&gt;
+      ) : (
+        &lt;button disabled&gt;Out of Stock&lt;/button&gt;
+      )}
+
+      {/* ═══════════════════════════════════════════════ */}
+      {/* Pattern 3: Logical AND operator (simple true case) */}
+      {/* ═══════════════════════════════════════════════ */}
+      {product.discount &amp;&amp; (
+        &lt;span className="badge"&gt;{product.discount}% OFF!&lt;/span&gt;
+      )}
+
+      {/* ═══════════════════════════════════════════════ */}
+      {/* Pattern 4: switch/case (multiple branches) */}
+      {/* ═══════════════════════════════════════════════ */}
+      {(() =&gt; {
+        switch (product.category) {
+          case 'Electronics':
+            return &lt;div&gt;📱 Tech specs: {product.specs}&lt;/div&gt;;
+          case 'Clothing':
+            return &lt;div&gt;👕 Size: {product.size}&lt;/div&gt;;
+          case 'Books':
+            return &lt;div&gt;📖 Author: {product.author}&lt;/div&gt;;
+          default:
+            return &lt;div&gt;Category unknown&lt;/div&gt;;
+        }
+      })()}
+
+      {/* ═══════════════════════════════════════════════ */}
+      {/* Pattern 5: Early returns in a helper function */}
+      {/* ═══════════════════════════════════════════════ */}
+      {renderRating(product.rating)}
+    &lt;/div&gt;
+  );
+}
+
+// Helper function with early returns (very readable)
+function renderRating(rating) {
+  if (!rating) return null;
+  if (rating &lt; 3) return &lt;span&gt;⭐ Poor&lt;/span&gt;;
+  if (rating &lt; 4) return &lt;span&gt;⭐⭐⭐ Good&lt;/span&gt;;
+  return &lt;span&gt;⭐⭐⭐⭐⭐ Excellent&lt;/span&gt;;
+}</code></pre>
+              </div>
+              <p><strong>Best practices:</strong></p>
+              <ul>
+                <li>Use if/else outside JSX for major branches (loading, error, not found)</li>
+                <li>Use ternary for simple true/false choices</li>
+                <li>Use &amp;&amp; for rendering when a single condition is true</li>
+                <li>Avoid deep nesting (multiple ternaries) — extract to a helper function</li>
+                <li>Never use &amp;&amp; with falsy non-boolean values; <code>0 &amp;&amp; content</code> renders 0</li>
+              </ul>
+            </div>
+          </details>
+
+          <!-- Q9: Keys in Lists -->
+          <details class="qa-item">
+            <summary class="qa-question">Q9. Why do lists need keys and what happens without them? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Keys</strong> help React identify which items have changed, been added, or removed. Without keys, React uses the array index as the key, which is problematic when the list is filtered, sorted, or has items inserted/removed.</p>
+              <p><strong>Problem without keys (or with index keys):</strong></p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">jsx</span>
+                </div>
+                <pre><code class="language-jsx">// BAD: No key or key={index}
+function ProductList() {
+  const [products, setProducts] = useState([
+    { id: 1, name: 'Laptop', liked: false },
+    { id: 2, name: 'Phone', liked: false },
+    { id: 3, name: 'Tablet', liked: false },
+  ]);
+
+  return (
+    &lt;ul&gt;
+      {products.map((product, index) =&gt; (
+        &lt;ProductItem
+          key={index} {/* ❌ BAD */}
+          product={product}
+        /&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+
+// Scenario: User likes product 1, then filters by name "Laptop"
+// Without proper keys:
+// 1. [{ id: 1, liked: true }, { id: 2, liked: false }, { id: 3, liked: false }]
+// 2. Filter leaves: [{ id: 1, liked: true }]
+// 3. React uses index key: the first &lt;ProductItem key={0} /&gt; is still there
+// 4. BUT the component state inside ProductItem (internal liked toggle) persists
+// 5. User sees the wrong product as liked!
+
+// ═════════════════════════════════════════════════════
+// GOOD: Use unique, stable ID
+function ProductList() {
+  const [products, setProducts] = useState([
+    { id: 1, name: 'Laptop' },
+    { id: 2, name: 'Phone' },
+    { id: 3, name: 'Tablet' },
+  ]);
+
+  return (
+    &lt;ul&gt;
+      {products.map(product =&gt; (
+        &lt;ProductItem
+          key={product.id} {/* ✅ GOOD */}
+          product={product}
+        /&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}</code></pre>
+              </div>
+              <p><strong>With correct keys:</strong> React knows "this component represents product with id 1" regardless of where it appears in the list. If you filter, delete, or reorder items, React correctly maintains component state for each item.</p>
+              <p><strong>Key characteristics:</strong></p>
+              <ul>
+                <li><strong>Unique within the list</strong> — no duplicates (the product ID, UUID, etc.)</li>
+                <li><strong>Stable</strong> — does not change between renders (not index, not random numbers)</li>
+                <li><strong>Not object.key() result</strong> — that changes on every render</li>
+              </ul>
+              <p><strong>When to use index:</strong> only if the list is static, non-filterable, and will never have insertions/deletions. In practice, always use a unique ID from your data.</p>
+            </div>
+          </details>
+
+        </div><!-- /.qa-list -->
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- BONUS: REACT HOOKS REFERENCE                -->
+        <!-- ═══════════════════════════════════════════ -->
+        <h2 id="hooks-reference">React Hooks Reference Quick Table</h2>
+        <div class="table-wrap">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Hook</th>
+                <th>Purpose</th>
+                <th>Signature</th>
+                <th>Common Use</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>useState</strong></td>
+                <td>Manage local component state</td>
+                <td><code>const [state, setState] = useState(initial)</code></td>
+                <td>Form inputs, toggles, counters</td>
+              </tr>
+              <tr>
+                <td><strong>useEffect</strong></td>
+                <td>Side effects (fetch, timers, subscriptions)</td>
+                <td><code>useEffect(() => {}, [deps])</code></td>
+                <td>Fetch data on mount, subscribe to events</td>
+              </tr>
+              <tr>
+                <td><strong>useContext</strong></td>
+                <td>Access Context value without drilling</td>
+                <td><code>const value = useContext(SomeContext)</code></td>
+                <td>Global state, theme, user auth</td>
+              </tr>
+              <tr>
+                <td><strong>useReducer</strong></td>
+                <td>Complex state logic (alternative to useState)</td>
+                <td><code>const [state, dispatch] = useReducer(reducer, init)</code></td>
+                <td>Multiple related state updates, undo/redo</td>
+              </tr>
+              <tr>
+                <td><strong>useCallback</strong></td>
+                <td>Memoize a function (prevent re-creation)</td>
+                <td><code>const callback = useCallback(fn, [deps])</code></td>
+                <td>Pass callbacks to optimized child components</td>
+              </tr>
+              <tr>
+                <td><strong>useMemo</strong></td>
+                <td>Memoize a computed value (expensive calculations)</td>
+                <td><code>const value = useMemo(() => expensiveFn(), [deps])</code></td>
+                <td>Filter/sort large lists, complex calculations</td>
+              </tr>
+              <tr>
+                <td><strong>useRef</strong></td>
+                <td>Access DOM directly or store mutable value</td>
+                <td><code>const ref = useRef(initial)</code></td>
+                <td>Focus input, access video player, store previous state</td>
+              </tr>
+              <tr>
+                <td><strong>useLayoutEffect</strong></td>
+                <td>Effect that runs BEFORE paint (rarely needed)</td>
+                <td><code>useLayoutEffect(() => {}, [deps])</code></td>
+                <td>Measure DOM size before rendering, avoid flashing</td>
+              </tr>
+              <tr>
+                <td><strong>useId</strong></td>
+                <td>Generate unique IDs (form labels, ARIA)</td>
+                <td><code>const id = useId()</code></td>
+                <td><code>&lt;label htmlFor={id}&gt;</code> matching</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">✅</span>
+          <div class="callout-content">
+            <p class="callout-title">Custom Hooks Pattern</p>
+            <p class="callout-body">You can create your own hooks by extracting state logic into reusable functions. Example: <code>function useFetch(url) { const [data, setData] = useState(null); useEffect(() => { fetch(url).then(r => r.json()).then(setData); }, [url]); return data; }</code>. Custom hooks start with <code>use</code> and can call other hooks. This makes code reusable across components.</p>
+          </div>
+        </div>
+
+        <!-- ═══════════ PAGE NAV ═══════════ -->
+        <nav class="page-nav">
+          <a href="interview-mvc.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">←</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">ASP.NET MVC</span></div>
+          </a>
+          <a href="interview-angular.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">Angular</span></div>
+            <span class="page-nav-arrow">→</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 DevDocs. For learning & interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

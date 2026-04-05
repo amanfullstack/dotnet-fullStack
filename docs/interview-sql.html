@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL & Databases - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-badge">D</div>
+      DevDocs
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html" class="active">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span>
+        <input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+          <li><a href="webapi-data-access.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Data Access</a></li>
+          <li><a href="csharp.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+          <li><a href="interview-csharp.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
+          <li><a href="interview-solid.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> SOLID Principles</a></li>
+          <li><a href="interview-patterns.html" class="sidebar-link"><span class="sidebar-link-icon">🧩</span> Design Patterns</a></li>
+          <li><a href="interview-sql.html" class="sidebar-link active"><span class="sidebar-link-icon">🗃️</span> SQL</a></li>
+          <li><a href="interview-mvc.html" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> ASP.NET MVC</a></li>
+          <li><a href="interview-react.html" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React</a></li>
+          <li><a href="interview-angular.html" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="interview.html">Interview Prep</a>
+          <span class="sep">/</span>
+          <span class="current">SQL & Databases</span>
+        </nav>
+
+        <div class="page-title-block">
+          <h1 class="page-title">🗄️ SQL & Databases</h1>
+          <p class="page-subtitle">Database design, query optimization, and SQL fundamentals — essential for backend developers</p>
+          <div class="page-meta">
+            <span class="badge badge-accent">Interview Prep</span>
+            <span class="badge badge-primary">Database Design</span>
+            <span class="badge badge-intermediate">Intermediate</span>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-content">
+            <p class="callout-title">SQL is NOT optional — even with EF Core</p>
+            <p class="callout-body">Many junior developers think "I use Entity Framework Core, so I don't need to know SQL." This is a critical mistake. EF Core is an abstraction — but when your queries run slowly, EF Core generates the SQL behind the scenes, and <strong>you must understand that SQL to fix the problem.</strong> Knowing SQL is how you spot N+1 queries, inefficient JOINs, and missing indexes. Every production backend developer must be comfortable reading and writing SQL directly. This page assumes you already know SQL basics (SELECT, WHERE, INSERT) and dives into the concepts you'll be asked about in interviews.</p>
+          </div>
+        </div>
+
+        <!-- Quick Reference Table -->
+        <h2 id="sql-overview">Quick Reference</h2>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>SQL Concept</th>
+              <th>Purpose</th>
+              <th>When to Use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>INNER JOIN</strong></td>
+              <td>Return only rows with matches in both tables</td>
+              <td>When you need related data from multiple tables (e.g., Product + Category)</td>
+            </tr>
+            <tr>
+              <td><strong>LEFT JOIN</strong></td>
+              <td>All rows from left table + matching rows from right table</td>
+              <td>When you want all left-side data even if no match (e.g., all Products, even discontinued ones)</td>
+            </tr>
+            <tr>
+              <td><strong>Normalization</strong></td>
+              <td>Remove data redundancy, reduce update anomalies</td>
+              <td>Design time — before creating tables</td>
+            </tr>
+            <tr>
+              <td><strong>Index</strong></td>
+              <td>Speed up SELECT queries and WHERE filters</td>
+              <td>On columns frequently used in WHERE, ORDER BY, JOIN conditions</td>
+            </tr>
+            <tr>
+              <td><strong>Transaction</strong></td>
+              <td>Group statements so all succeed or all fail (ACID)</td>
+              <td>When multiple operations must be atomic (e.g., money transfer)</td>
+            </tr>
+            <tr>
+              <td><strong>View</strong></td>
+              <td>Reusable SELECT query stored in the database</td>
+              <td>When you run the same complex SELECT repeatedly</td>
+            </tr>
+            <tr>
+              <td><strong>GROUP BY</strong></td>
+              <td>Aggregate data — combine rows with the same value</td>
+              <td>When you need totals, counts, averages by category</td>
+            </tr>
+            <tr>
+              <td><strong>Stored Procedure</strong></td>
+              <td>Pre-compiled SQL logic stored in the database</td>
+              <td>For complex multi-step operations or when you need database-side business logic</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- ═══════════ Q42 — JOINs ═══════════ -->
+        <h2 id="q42-joins">Q42. INNER JOIN vs LEFT JOIN vs RIGHT JOIN</h2>
+        <p><strong>Explain the difference between INNER JOIN, LEFT JOIN, and RIGHT JOIN with examples.</strong></p>
+
+        <p>JOINs are how you combine data from multiple tables. The key difference is <em>which rows are included</em> when a match doesn't exist.</p>
+
+        <h3>Visual Comparison</h3>
+        <p>Imagine two tables:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- Products table
+ProductId | Name        | CategoryId
+1         | Laptop      | 1
+2         | Phone       | 2
+3         | Monitor     | NULL (category missing)
+4         | Keyboard    | 1
+
+-- Categories table
+CategoryId | CategoryName
+1          | Electronics
+2          | Mobile
+3          | Furniture (no products)</code></pre>
+        </div>
+
+        <h3>INNER JOIN — Only matching rows</h3>
+        <p>Returns rows where a match exists in <em>both</em> tables. Products without a category and categories with no products are excluded.</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">SELECT p.ProductId, p.Name, c.CategoryName
+FROM Products p
+INNER JOIN Categories c ON p.CategoryId = c.CategoryId;
+
+-- Result: 3 rows (Laptop, Phone, Keyboard — but NOT Monitor because CategoryId is NULL)</code></pre>
+        </div>
+
+        <h3>LEFT JOIN — All from left table, matching from right</h3>
+        <p>Returns <em>all</em> rows from the left table (Products) plus matching rows from the right table (Categories). If no match, the right-side columns are NULL.</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">SELECT p.ProductId, p.Name, c.CategoryName
+FROM Products p
+LEFT JOIN Categories c ON p.CategoryId = c.CategoryId;
+
+-- Result: 4 rows
+-- ProductId | Name      | CategoryName
+-- 1          | Laptop    | Electronics
+-- 2          | Phone     | Mobile
+-- 3          | Monitor   | NULL (no matching category)
+-- 4          | Keyboard  | Electronics</code></pre>
+        </div>
+
+        <h3>RIGHT JOIN — All from right table, matching from left</h3>
+        <p>Opposite of LEFT JOIN. Returns <em>all</em> rows from the right table plus matching rows from the left table.</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">SELECT p.ProductId, p.Name, c.CategoryName
+FROM Products p
+RIGHT JOIN Categories c ON p.CategoryId = c.CategoryId;
+
+-- Result: 4 rows
+-- ProductId | Name      | CategoryName
+-- 1          | Laptop    | Electronics
+-- 4          | Keyboard  | Electronics
+-- 2          | Phone     | Mobile
+-- NULL       | NULL      | Furniture (category with no products)</code></pre>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">Best practice: prefer LEFT JOIN</p>
+            <p class="callout-body">SQL developers typically use LEFT JOIN more often than RIGHT JOIN. A RIGHT JOIN can always be rewritten as a LEFT JOIN by swapping table order. LEFT JOIN is more intuitive: "give me all the main things, and attach details if they exist."</p>
+          </div>
+        </div>
+
+        <!-- ═══════════ Q43 — Normalization ═══════════ -->
+        <h2 id="q43-normalization">Q43. Normalization — 1NF, 2NF, 3NF</h2>
+        <p><strong>What is database normalization? Explain 1NF, 2NF, and 3NF with violations and fixes.</strong></p>
+
+        <p>Normalization is the process of organizing a database to reduce redundancy and dependency anomalies. There are levels, numbered 1NF through 5NF. We focus on the first three.</p>
+
+        <h3>1NF — First Normal Form: Atomic Values</h3>
+        <p><strong>Rule:</strong> Every column must contain only atomic (indivisible) values. No arrays, lists, or repeating groups.</p>
+        <p><strong>Violation:</strong></p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- ❌ VIOLATES 1NF — Tags column contains multiple values
+CREATE TABLE Products (
+    ProductId INT,
+    Name VARCHAR(100),
+    Tags VARCHAR(MAX)  -- might contain "electronics, gadget, popular"
+);
+
+-- ✅ FIXED — Create a separate Tags table
+CREATE TABLE Products (
+    ProductId INT PRIMARY KEY,
+    Name VARCHAR(100)
+);
+
+CREATE TABLE ProductTags (
+    ProductId INT,
+    TagName VARCHAR(50),
+    FOREIGN KEY (ProductId) REFERENCES Products(ProductId)
+);</code></pre>
+        </div>
+
+        <h3>2NF — Second Normal Form: No Partial Dependencies</h3>
+        <p><strong>Rule:</strong> First, achieve 1NF. Then, every non-key column must depend on the <em>entire</em> primary key, not just part of it.</p>
+        <p><strong>Violation (composite key example):</strong></p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- ❌ VIOLATES 2NF — Primary key is (OrderId, ProductId)
+-- But ProductPrice depends only on ProductId, not the full key
+CREATE TABLE OrderDetails (
+    OrderId INT,
+    ProductId INT,
+    Quantity INT,
+    ProductPrice DECIMAL,  -- This depends ONLY on ProductId, not (OrderId, ProductId)
+    PRIMARY KEY (OrderId, ProductId)
+);
+
+-- ✅ FIXED — Move product-dependent data to Products table
+CREATE TABLE Products (
+    ProductId INT PRIMARY KEY,
+    ProductPrice DECIMAL
+);
+
+CREATE TABLE OrderDetails (
+    OrderId INT,
+    ProductId INT,
+    Quantity INT,
+    PRIMARY KEY (OrderId, ProductId),
+    FOREIGN KEY (ProductId) REFERENCES Products(ProductId)
+);</code></pre>
+        </div>
+
+        <h3>3NF — Third Normal Form: No Transitive Dependencies</h3>
+        <p><strong>Rule:</strong> First, achieve 2NF. Then, non-key columns must not depend on other non-key columns.</p>
+        <p><strong>Violation:</strong></p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- ❌ VIOLATES 3NF — CategoryName depends on CategoryId, which is a non-key column
+CREATE TABLE Products (
+    ProductId INT PRIMARY KEY,
+    Name VARCHAR(100),
+    CategoryId INT,
+    CategoryName VARCHAR(100)  -- Transitive dependency: depends on CategoryId, not ProductId directly
+);
+
+-- ✅ FIXED — Move category data to its own table
+CREATE TABLE Categories (
+    CategoryId INT PRIMARY KEY,
+    CategoryName VARCHAR(100)
+);
+
+CREATE TABLE Products (
+    ProductId INT PRIMARY KEY,
+    Name VARCHAR(100),
+    CategoryId INT,
+    FOREIGN KEY (CategoryId) REFERENCES Categories(CategoryId)
+);</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">✅</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview tip: Why normalization matters</p>
+            <p class="callout-body">Normalization prevents update anomalies. If you have CategoryName duplicated in every Products row, you must update it everywhere when the category changes — risk of inconsistency. By storing it once in the Categories table, you change it once and the change is consistent everywhere.</p>
+          </div>
+        </div>
+
+        <!-- ═══════════ Q44 — Stored Procedures ═══════════ -->
+        <h2 id="q44-stored-procedures">Q44. Stored Procedures — Pros, Cons, and When to Use</h2>
+        <p><strong>What is a stored procedure? When would you use one instead of just writing queries in your application code?</strong></p>
+
+        <p>A stored procedure is a reusable block of SQL logic compiled and stored in the database. You call it from your application like a function.</p>
+
+        <h3>Example Stored Procedure</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- Stored procedure: get all products in a category and apply a discount
+CREATE PROCEDURE GetCategoryProductsWithDiscount
+    @CategoryId INT,
+    @DiscountPercent DECIMAL
+AS
+BEGIN
+    SELECT
+        ProductId,
+        Name,
+        Price,
+        Price * (1 - @DiscountPercent / 100) AS DiscountedPrice
+    FROM Products
+    WHERE CategoryId = @CategoryId;
+END;
+
+-- Call it from C# or SQL:
+EXEC GetCategoryProductsWithDiscount @CategoryId = 1, @DiscountPercent = 10;</code></pre>
+        </div>
+
+        <h3>Pros of Stored Procedures</h3>
+        <ul>
+          <li><strong>Performance:</strong> Pre-compiled and cached by the database — faster for complex operations</li>
+          <li><strong>Centralized logic:</strong> Database logic lives in one place, not scattered across your application</li>
+          <li><strong>Security:</strong> Can grant users permission to execute the procedure without exposing underlying table structure</li>
+          <li><strong>Reduced network traffic:</strong> If the procedure does a lot of work, you send one request instead of many</li>
+        </ul>
+
+        <h3>Cons of Stored Procedures</h3>
+        <ul>
+          <li><strong>Harder to test:</strong> You need a database and stored procedure management tools (not easy in unit tests)</li>
+          <li><strong>Version control:</strong> Hard to version-control SQL procedures the same way you version-control code</li>
+          <li><strong>Language mismatch:</strong> Procedure logic is in T-SQL or PL/SQL, not your application language — splits the team's knowledge</li>
+          <li><strong>Debugging:</strong> Debugging a procedure requires SQL debuggers, not your IDE</li>
+          <li><strong>Deployment:</strong> Deploying a procedure change requires coordinating with DBAs</li>
+        </ul>
+
+        <h3>When to Use</h3>
+        <ul>
+          <li><strong>Complex, multi-step operations</strong> that hit the database many times and benefit from batching</li>
+          <li><strong>Heavy aggregations or reporting queries</strong> that run slowly in the application</li>
+          <li><strong>Compliance or audit requirements</strong> where you must log database changes at the database level</li>
+          <li><strong>Legacy systems</strong> already heavy on stored procedures (rewrite incrementally)</li>
+        </ul>
+
+        <h3>Modern Reality: ORM (EF Core) vs Stored Procedures</h3>
+        <p>Most modern backend developers use ORMs like Entity Framework Core. EF can call stored procedures, but the trend is toward <strong>application-level logic</strong> because it's easier to test, deploy, and maintain. Stored procedures are used when you <em>really</em> need the database-side performance or when you're dealing with complex multi-step transactions that can't wait for application-level logic.</p>
+
+        <!-- ═══════════ Q45 — Indexes ═══════════ -->
+        <h2 id="q45-indexes">Q45. Database Indexes — Structure, When to Add, Performance Tradeoffs</h2>
+        <p><strong>What is a database index? How do B-tree indexes work? When should you add an index, and what are the tradeoffs?</strong></p>
+
+        <h3>What is an Index?</h3>
+        <p>An index is a data structure that speeds up SELECT queries and WHERE filters. Without an index, SQL must scan every row (table scan). With an index, SQL can jump directly to matching rows.</p>
+
+        <h3>B-Tree Structure</h3>
+        <p>Most databases use B-tree indexes (balanced tree). The tree is ordered so that:</p>
+        <ul>
+          <li>Left subtree has smaller values, right subtree has larger values</li>
+          <li>Tree stays balanced — no branch is much deeper than others</li>
+          <li>This ensures O(log n) lookup time even on huge tables</li>
+        </ul>
+        <p><strong>Example:</strong> If you have an index on ProductId, the database builds a tree that lets it find ProductId = 42 in ~4-5 disk reads instead of scanning 1 million rows.</p>
+
+        <h3>When to Add an Index</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- ✅ Index on foreign keys (always used in JOINs)
+CREATE INDEX IX_Products_CategoryId ON Products(CategoryId);
+
+-- ✅ Index on columns used in WHERE frequently
+CREATE INDEX IX_Products_Name ON Products(Name);
+
+-- ✅ Composite index if you filter by two columns together
+CREATE INDEX IX_Products_CategoryPrice ON Products(CategoryId, Price);
+-- This speeds up: WHERE CategoryId = 1 AND Price > 100
+
+-- ❌ Avoid indexes on columns with low cardinality (few distinct values)
+-- Example: a "Gender" column with only 2-3 values — scanning is faster than index lookup
+
+-- ❌ Too many indexes slow down INSERT/UPDATE/DELETE because the index must be maintained</code></pre>
+        </div>
+
+        <h3>Performance Tradeoffs</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Without Index</th>
+              <th>With Index</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>SELECT (WHERE)</strong></td>
+              <td>Slow — scan all rows</td>
+              <td>Fast — O(log n) lookup</td>
+            </tr>
+            <tr>
+              <td><strong>INSERT</strong></td>
+              <td>Fast — just add row</td>
+              <td>Slower — must update index</td>
+            </tr>
+            <tr>
+              <td><strong>UPDATE</strong></td>
+              <td>Slow — scan to find row</td>
+              <td>Medium — index finds row, then update index</td>
+            </tr>
+            <tr>
+              <td><strong>DELETE</strong></td>
+              <td>Slow — scan to find row</td>
+              <td>Medium — index finds row, then delete index entry</td>
+            </tr>
+            <tr>
+              <td><strong>Disk space</strong></td>
+              <td>Minimal</td>
+              <td>Extra disk for index structure</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">Golden rule: Index for reads, not for writes</p>
+            <p class="callout-body">In a typical web application, reads vastly outnumber writes (often 10:1 or higher). So you add indexes to speed up the frequent reads, accepting the overhead on the rare writes. But if you have a write-heavy system, every index is a cost.</p>
+          </div>
+        </div>
+
+        <!-- ═══════════ Q46 — DISTINCT, GROUP BY, Aggregates ═══════════ -->
+        <h2 id="q46-aggregates">Q46. DISTINCT vs GROUP BY vs Aggregate Functions</h2>
+        <p><strong>What is the difference between DISTINCT, GROUP BY, COUNT, SUM, AVG, and MAX?</strong></p>
+
+        <h3>DISTINCT — Remove duplicate rows</h3>
+        <p>Returns unique rows. Useful for finding out "how many different categories exist?"</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- Get all unique category names (duplicates removed)
+SELECT DISTINCT CategoryName
+FROM Products;
+
+-- Result: If you have 100 products but only 5 categories, you get 5 rows</code></pre>
+        </div>
+
+        <h3>GROUP BY — Aggregate rows by a value</h3>
+        <p>Combines multiple rows that have the same value into a single row. Always used with an aggregate function.</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- Count products per category
+SELECT CategoryId, COUNT(*) AS ProductCount
+FROM Products
+GROUP BY CategoryId;
+
+-- Result:
+-- CategoryId | ProductCount
+-- 1          | 25 (Electronics)
+-- 2          | 10 (Mobile)
+-- 3          | 5  (Furniture)</code></pre>
+        </div>
+
+        <h3>Aggregate Functions — Combine values</h3>
+        <p>Functions that work on a set of rows and return a single value.</p>
+
+        <h4>COUNT(*) — Count rows</h4>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">SELECT COUNT(*) FROM Products;  -- Result: 100 (total rows)
+SELECT COUNT(CategoryId) FROM Products;  -- Result: 95 (ignores NULL)</code></pre>
+        </div>
+
+        <h4>SUM — Add up values</h4>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">SELECT SUM(Price) FROM Products;  -- Total cost of all inventory</code></pre>
+        </div>
+
+        <h4>AVG — Calculate average</h4>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">SELECT AVG(Price) FROM Products;  -- Average product price</code></pre>
+        </div>
+
+        <h4>MAX / MIN — Find highest or lowest</h4>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">SELECT MAX(Price), MIN(Price) FROM Products;
+-- Result: 9999.99 (max), 9.99 (min)</code></pre>
+        </div>
+
+        <h3>Complex Example: GROUP BY with Aggregates</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- For each category, get count, total price, average price
+SELECT
+    c.CategoryName,
+    COUNT(*) AS ProductCount,
+    SUM(p.Price) AS TotalInventoryValue,
+    AVG(p.Price) AS AvgPrice
+FROM Products p
+JOIN Categories c ON p.CategoryId = c.CategoryId
+GROUP BY c.CategoryId, c.CategoryName
+ORDER BY TotalInventoryValue DESC;</code></pre>
+        </div>
+
+        <h3>DISTINCT vs GROUP BY</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>DISTINCT</th>
+              <th>GROUP BY</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Purpose</strong></td>
+              <td>Remove duplicates from result</td>
+              <td>Aggregate data and combine rows</td>
+            </tr>
+            <tr>
+              <td><strong>With aggregates</strong></td>
+              <td>Cannot use — doesn't make sense</td>
+              <td>Always used with aggregates like COUNT, SUM</td>
+            </tr>
+            <tr>
+              <td><strong>Example</strong></td>
+              <td>SELECT DISTINCT CategoryId FROM Products</td>
+              <td>SELECT CategoryId, COUNT(*) FROM Products GROUP BY CategoryId</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- ═══════════ Q47 — Transactions & ACID ═══════════ -->
+        <h2 id="q47-transactions">Q47. Transactions — What are they? ACID Properties</h2>
+        <p><strong>What is a database transaction? Explain ACID: Atomicity, Consistency, Isolation, Durability.</strong></p>
+
+        <p>A transaction is a group of SQL statements that either all succeed or all fail together. It's the database's guarantee that your data stays correct even if things go wrong (power outage, network failure, etc.).</p>
+
+        <h3>Basic Transaction</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">BEGIN TRANSACTION;
+
+UPDATE Accounts SET Balance = Balance - 100 WHERE AccountId = 1;
+UPDATE Accounts SET Balance = Balance + 100 WHERE AccountId = 2;
+
+-- If all statements succeed, commit:
+COMMIT;
+
+-- If ANY statement fails, rollback (undo all changes):
+ROLLBACK;</code></pre>
+        </div>
+
+        <h3>ACID Properties</h3>
+
+        <h4>A — Atomicity (All or Nothing)</h4>
+        <p>A transaction is atomic — either all statements execute or none do. In the money transfer example above: you cannot take $100 from account 1 and then crash before adding it to account 2. Either both happen or neither does.</p>
+
+        <h4>C — Consistency (Data Validity)</h4>
+        <p>After a transaction, the database is in a valid state. All constraints are satisfied. If a transfer violates a business rule (e.g., balance can't go negative), the transaction fails and rolls back.</p>
+
+        <h4>I — Isolation (No Interference)</h4>
+        <p>Two transactions don't interfere with each other. If Transaction A is transferring money and Transaction B is reading the balance, B doesn't see partial/inconsistent data from A.</p>
+        <p><strong>Isolation levels (increasing strictness):</strong></p>
+        <ul>
+          <li><strong>READ UNCOMMITTED:</strong> Can see uncommitted data from other transactions (dirty read)</li>
+          <li><strong>READ COMMITTED:</strong> Only sees committed data (default in most databases)</li>
+          <li><strong>REPEATABLE READ:</strong> Prevents dirty reads and non-repeatable reads</li>
+          <li><strong>SERIALIZABLE:</strong> Transactions run as if they were serial (strictest, slowest)</li>
+        </ul>
+
+        <h4>D — Durability (Permanent)</h4>
+        <p>Once a transaction is committed, it's permanent. Even if the server crashes, the data survives. The database writes to disk before confirming the commit.</p>
+
+        <h3>Transactions in EF Core</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">using var transaction = await _db.Database.BeginTransactionAsync();
+
+try
+{
+    var product = await _db.Products.FindAsync(productId);
+    product.Stock -= 100;
+
+    var order = new Order { ProductId = productId, Quantity = 100 };
+    _db.Orders.Add(order);
+
+    await _db.SaveChangesAsync();
+    await transaction.CommitAsync();  // All-or-nothing
+}
+catch
+{
+    await transaction.RollbackAsync();  // Undo both operations
+    throw;
+}</code></pre>
+        </div>
+
+        <!-- ═══════════ Q48 — Set Operations ═══════════ -->
+        <h2 id="q48-set-operations">Q48. UNION, UNION ALL, INTERSECT, EXCEPT — Set Operations</h2>
+        <p><strong>Explain set operations: UNION, UNION ALL, INTERSECT, EXCEPT with examples.</strong></p>
+
+        <p>Set operations combine results from two or more SELECT queries.</p>
+
+        <h3>UNION — Combine and remove duplicates</h3>
+        <p>Returns all rows from both queries, with duplicates removed.</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- Get all products and categories (combined list, no duplicates)
+SELECT Name AS Item FROM Products
+UNION
+SELECT CategoryName AS Item FROM Categories;
+
+-- Result might be:
+-- Item
+-- Laptop
+-- Phone
+-- Monitor
+-- Electronics
+-- Mobile
+-- Furniture</code></pre>
+        </div>
+
+        <h3>UNION ALL — Combine and keep duplicates</h3>
+        <p>Faster than UNION because it doesn't remove duplicates. Use this if you know there are no duplicates or you want to keep them.</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">SELECT ProductId, Name FROM Products
+UNION ALL
+SELECT ProductId, Name FROM ArchivedProducts;
+
+-- Result includes all products even if some ProductIds are in both tables</code></pre>
+        </div>
+
+        <h3>INTERSECT — Rows in both queries</h3>
+        <p>Returns only rows that appear in both queries (the overlap).</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- Find product names that appear in BOTH Products and PopularItems
+SELECT Name FROM Products
+INTERSECT
+SELECT Name FROM PopularItems;
+
+-- Result: Only names that are in BOTH tables</code></pre>
+        </div>
+
+        <h3>EXCEPT — Rows in first query but not second</h3>
+        <p>Returns rows from the first query that do NOT appear in the second query.</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- Find products that are NOT in any orders (never been sold)
+SELECT ProductId FROM Products
+EXCEPT
+SELECT DISTINCT ProductId FROM Orders;
+
+-- Result: ProductIds in Products but not in Orders</code></pre>
+        </div>
+
+        <!-- ═══════════ Q49 — Views ═══════════ -->
+        <h2 id="q49-views">Q49. Views — What are they? When to use?</h2>
+        <p><strong>What is a database view? When would you create one instead of just writing the query in your application?</strong></p>
+
+        <p>A view is a reusable SELECT query stored in the database. It acts like a virtual table — you query it like a table, but the data is computed on-the-fly from the underlying tables.</p>
+
+        <h3>Creating a View</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- Create a view that joins Products and Categories
+CREATE VIEW vw_ProductDetails AS
+SELECT
+    p.ProductId,
+    p.Name AS ProductName,
+    p.Price,
+    c.CategoryName,
+    p.Stock
+FROM Products p
+LEFT JOIN Categories c ON p.CategoryId = c.CategoryId
+WHERE p.IsActive = 1;
+
+-- Now use it like a table:
+SELECT * FROM vw_ProductDetails;
+SELECT * FROM vw_ProductDetails WHERE Price > 100;</code></pre>
+        </div>
+
+        <h3>Pros of Views</h3>
+        <ul>
+          <li><strong>Reusability:</strong> Write the complex JOIN once, use it everywhere</li>
+          <li><strong>Simplicity:</strong> Hides complexity — consumers see a simple table-like interface</li>
+          <li><strong>Security:</strong> You can expose a view to users without exposing the underlying tables</li>
+          <li><strong>Centralized logic:</strong> If the JOIN changes, you change it in one place</li>
+        </ul>
+
+        <h3>Cons of Views</h3>
+        <ul>
+          <li><strong>Performance:</strong> Every query against the view re-executes the underlying query (not materialized by default)</li>
+          <li><strong>Update complexity:</strong> Updating through a view is tricky or impossible if it involves JOINs</li>
+          <li><strong>Hidden cost:</strong> Developers might not realize a "simple table" actually runs a complex JOIN</li>
+        </ul>
+
+        <h3>When to Create a View</h3>
+        <ul>
+          <li>The same complex query is used in multiple places in your application</li>
+          <li>You want to simplify and document a commonly-needed result</li>
+          <li>You need to hide table structure from certain users for security</li>
+          <li>You have a reporting query that's run frequently and is resource-intensive</li>
+        </ul>
+
+        <h3>Materialized Views (Advanced)</h3>
+        <p>Some databases (like SQL Server) support materialized views — the view result is pre-computed and stored on disk, making queries instant but requiring manual refreshes. Use this for reporting views that are expensive to compute but don't need real-time data.</p>
+
+        <!-- ═══════════ Q50 — Query Optimization ═══════════ -->
+        <h2 id="q50-optimization">Q50. Query Optimization — Indexes, EXPLAIN PLAN, N+1 Problem</h2>
+        <p><strong>How do you optimize slow queries? Explain EXPLAIN PLAN and the N+1 problem.</strong></p>
+
+        <h3>Finding Slow Queries: EXPLAIN PLAN</h3>
+        <p>EXPLAIN shows how the database will (or did) execute your query, including which indexes were used and how many rows were scanned.</p>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- View the execution plan BEFORE running the query
+EXPLAIN SELECT * FROM Products WHERE CategoryId = 1;
+
+-- Output might show:
+-- ┌─ Nested Loop (cost=0.29..8.35 rows=5)
+-- │  ├─ Index Scan on idx_Products_CategoryId (rows=5)
+-- │  └─ Filter: CategoryId = 1
+-- └─ Total cost: 8.35</code></pre>
+        </div>
+
+        <p><strong>Key metrics to look for:</strong></p>
+        <ul>
+          <li><strong>Cost:</strong> Lower is better. High cost means the query takes a long time.</li>
+          <li><strong>Rows:</strong> How many rows the database expects (or found). Huge row counts often mean missing indexes or a bad JOIN.</li>
+          <li><strong>Index Scan vs Table Scan:</strong> "Index Scan" is good (uses an index). "Table Scan" is bad (reads every row).</li>
+          <li><strong>Nested Loop vs Hash Join:</strong> "Nested Loop" is fast for small sets, "Hash Join" is better for large joins.</li>
+        </ul>
+
+        <h3>The N+1 Query Problem</h3>
+        <p>You run 1 query to get a list of items, then run N more queries inside a loop — one for each item. Classic mistake with ORMs.</p>
+
+        <h4>BAD Example: N+1 Queries</h4>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// ❌ N+1 PROBLEM
+// 1 query: get all products
+var products = _db.Products.ToList();  // Query 1
+
+// Then N queries: for each product, get its category
+foreach (var product in products)
+{
+    var category = _db.Categories.FirstOrDefault(c => c.CategoryId == product.CategoryId);
+    // Query 2, 3, 4, ... N+1
+    Console.WriteLine($"{product.Name} — {category?.CategoryName}");
+}
+
+// Total: 1 + N queries. If you have 1000 products, that's 1001 database round-trips!</code></pre>
+        </div>
+
+        <h4>GOOD Example: Use Include() to eager-load</h4>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// ✅ GOOD — Only 1 query via JOIN + Include
+var products = _db.Products
+    .Include(p => p.Category)  // Eager-load the category
+    .ToList();
+
+// No loop queries — all data is already in memory
+foreach (var product in products)
+{
+    Console.WriteLine($"{product.Name} — {product.Category?.CategoryName}");
+}
+
+// Total: 1 query. Same data, but 1000x faster!</code></pre>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-content">
+            <p class="callout-title">N+1 queries are a performance killer</p>
+            <p class="callout-body">In interviews, when asked "How would you optimize this code?", look for loops that query the database. That's almost always N+1. The fix: use eager loading (Include), JOIN in your query, or batch multiple items together in a single WHERE IN clause.</p>
+          </div>
+        </div>
+
+        <!-- ═══════════ SQL Best Practices ═══════════ -->
+        <h2 id="sql-best-practices">SQL Best Practices</h2>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">The fundamentals that will save your career</p>
+            <p class="callout-body">These practices are not optional — they're how production systems stay fast and reliable. Every one of these mistakes has crashed a real system.</p>
+          </div>
+        </div>
+
+        <h3>1. Always use indexes on Foreign Keys and frequently queried columns</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- ✅ GOOD — indexes on columns used in WHERE and JOIN
+CREATE INDEX IX_Products_CategoryId ON Products(CategoryId);  -- FK
+CREATE INDEX IX_Products_Price ON Products(Price);            -- frequently filtered
+
+-- ❌ BAD — no indexes, queries scan all rows
+SELECT * FROM Products WHERE CategoryId = 5;  -- Linear scan!</code></pre>
+        </div>
+
+        <h3>2. Avoid SELECT * — specify columns needed</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- ❌ BAD — transfers unnecessary data
+SELECT * FROM Products;  -- includes Description (10MB), LargeBlob (100MB), etc.
+
+-- ✅ GOOD — only what you need
+SELECT ProductId, Name, Price FROM Products;  -- lean and fast</code></pre>
+        </div>
+
+        <h3>3. Use JOINs instead of multiple queries</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- ❌ BAD — two round-trips
+SELECT * FROM Products WHERE CategoryId = 1;
+SELECT * FROM Categories WHERE CategoryId = 1;
+
+-- ✅ GOOD — one JOIN, one round-trip
+SELECT p.*, c.CategoryName
+FROM Products p
+JOIN Categories c ON p.CategoryId = c.CategoryId
+WHERE p.CategoryId = 1;</code></pre>
+        </div>
+
+        <h3>4. Use composite indexes for multi-column filters</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- ❌ BAD — two separate indexes or table scan
+CREATE INDEX IX_CategoryId ON Products(CategoryId);
+CREATE INDEX IX_Price ON Products(Price);
+
+-- ✅ GOOD — one composite index for common WHERE patterns
+CREATE INDEX IX_Products_CategoryPrice ON Products(CategoryId, Price);
+
+-- This speeds up:
+SELECT * FROM Products WHERE CategoryId = 1 AND Price > 100;</code></pre>
+        </div>
+
+        <h3>5. Profile queries with EXPLAIN output</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">sql</span>
+          </div>
+          <pre><code class="language-sql">-- Always check your query plan BEFORE it goes to production
+EXPLAIN
+SELECT p.ProductId, p.Name, c.CategoryName, COUNT(o.OrderId) AS OrderCount
+FROM Products p
+LEFT JOIN Categories c ON p.CategoryId = c.CategoryId
+LEFT JOIN Orders o ON p.ProductId = o.ProductId
+GROUP BY p.ProductId, p.Name, c.CategoryName;
+
+-- Look for:
+--   - Table Scans (bad) vs Index Scans (good)
+--   - High cost numbers (anything > 1000 usually means you need an index)
+--   - Row estimates that are way off (hint: update statistics)</code></pre>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">✅</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview tip: SQL optimization mindset</p>
+            <p class="callout-body">When an interviewer asks "How would you speed up this query?", the answer almost always involves: (1) adding indexes on WHERE/JOIN columns, (2) removing SELECT *, (3) checking for N+1 problems, or (4) using EXPLAIN to spot table scans. These three ideas cover 90% of real performance problems. Practice spotting them in code and you'll ace database questions.</p>
+          </div>
+        </div>
+
+        <nav class="page-nav">
+          <a href="interview.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">←</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">Interview Q&amp;A</span></div>
+          </a>
+          <a href="interview-mvc.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">ASP.NET MVC</span></div>
+            <span class="page-nav-arrow">→</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

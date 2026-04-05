@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOLID Principles - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search SOLID principles...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-badge">D</div>
+      DevDocs
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html" class="active">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span>
+        <input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+          <li><a href="interview-solid.html" class="sidebar-link active"><span class="sidebar-link-icon">📐</span> SOLID Principles</a></li>
+          <li><a href="interview-patterns.html" class="sidebar-link"><span class="sidebar-link-icon">🎨</span> Design Patterns</a></li>
+          <li><a href="interview-coding.html" class="sidebar-link"><span class="sidebar-link-icon">🧩</span> Coding Challenges</a></li>
+          <li><a href="interview-csharp.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
+          <li><a href="interview-sql.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> SQL</a></li>
+          <li><a href="interview-mvc.html" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> ASP.NET MVC</a></li>
+          <li><a href="interview-react.html" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React</a></li>
+          <li><a href="interview-angular.html" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="interview.html">Interview</a>
+          <span class="sep">/</span>
+          <span class="current">SOLID Principles</span>
+        </nav>
+
+        <div class="page-title-block">
+          <h1 class="page-title">📐 SOLID Design Principles</h1>
+          <p class="page-subtitle">Master the 5 SOLID principles with real-world code examples from ProductCatalogAPI. Build maintainable, scalable, and professional code.</p>
+          <div class="page-meta">
+            <span class="badge badge-danger">Advanced</span>
+            <span class="badge badge-accent">Architecture</span>
+            <span class="badge badge-primary">5 Principles</span>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">What is SOLID?</p>
+            <p class="callout-body">SOLID is an acronym for 5 design principles that help create clean, maintainable, and extensible code. Violating SOLID leads to rigid code that breaks easily. Following SOLID makes code flexible, testable, and professional — exactly what senior developers do.</p>
+          </div>
+        </div>
+
+        <!-- S: SINGLE RESPONSIBILITY -->
+        <h2 id="srp">S — Single Responsibility Principle (SRP)</h2>
+        <p><strong>Definition:</strong> A class should have one, and only one, reason to change. Each class should have a single responsibility.</p>
+
+        <h3>❌ Problem: Violating SRP</h3>
+        <p>When a class handles multiple responsibilities, it becomes difficult to test, maintain, and modify:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// BAD: ProductManager violates SRP — does validation, persistence, AND notifications
+public class ProductManager
+{
+    private readonly string _connString;
+
+    public void AddProduct(Product product)
+    {
+        // 1. VALIDATION — one responsibility
+        if (string.IsNullOrWhiteSpace(product.Name))
+            throw new ArgumentException("Product name is required");
+        if (product.Price <= 0)
+            throw new ArgumentException("Price must be positive");
+
+        // 2. PERSISTENCE — another responsibility
+        using (var conn = new SqlConnection(_connString))
+        {
+            var cmd = new SqlCommand("INSERT INTO Products (Name, Price) VALUES (@Name, @Price)", conn);
+            cmd.Parameters.AddWithValue("@Name", product.Name);
+            cmd.Parameters.AddWithValue("@Price", product.Price);
+            conn.Open();
+            cmd.ExecuteNonQuery();
+        }
+
+        // 3. NOTIFICATION — yet another responsibility
+        var client = new SmtpClient("smtp.gmail.com");
+        client.Send("admin@company.com", "admin@company.com", "New Product Added", product.Name);
+    }
+}
+
+// Problems:
+// - Testing requires real DB connection + real email server
+// - Changing email template requires modifying ProductManager
+// - Class has 3 reasons to change (validation logic, DB schema, email format)</code></pre>
+        </div>
+
+        <h3>✅ Solution: Separate into Focused Classes</h3>
+        <p>Split the monolithic class into three focused classes, each with ONE reason to change:</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">// Responsibility 1: VALIDATION
+public interface IProductValidator
+{
+    void Validate(Product product);
+}
+
+public class ProductValidator : IProductValidator
+{
+    public void Validate(Product product)
+    {
+        if (string.IsNullOrWhiteSpace(product.Name))
+            throw new ArgumentException("Product name is required");
+        if (product.Price <= 0)
+            throw new ArgumentException("Price must be positive");
+    }
+}
+
+// Responsibility 2: PERSISTENCE
+public interface IProductRepository
+{
+    Task SaveAsync(Product product);
+}
+
+public class SqlProductRepository : IProductRepository
+{
+    private readonly string _connectionString;
+
+    public SqlProductRepository(IConfiguration config)
+    {
+        _connectionString = config.GetConnectionString("DefaultConnection")!;
+    }
+
+    public async Task SaveAsync(Product product)
+    {
+        using var conn = new SqlConnection(_connectionString);
+        var cmd = new SqlCommand("INSERT INTO Products (Name, Price) VALUES (@Name, @Price)", conn);
+        cmd.Parameters.AddWithValue("@Name", product.Name);
+        cmd.Parameters.AddWithValue("@Price", product.Price);
+        await conn.OpenAsync();
+        await cmd.ExecuteNonQueryAsync();
+    }
+}
+
+// Responsibility 3: NOTIFICATION
+public interface IEmailService
+{
+    Task SendAsync(string to, string subject, string body);
+}
+
+public class EmailService : IEmailService
+{
+    public async Task SendAsync(string to, string subject, string body)
+    {
+        using var client = new SmtpClient("smtp.gmail.com");
+        var mail = new MailMessage("admin@company.com", to) { Subject = subject, Body = body };
+        await client.SendMailAsync(mail);
+    }
+}
+
+// ORCHESTRATOR: ProductService - remains simple, coordinates responsibilities
+public class ProductService
+{
+    private readonly IProductValidator _validator;
+    private readonly IProductRepository _repository;
+    private readonly IEmailService _emailService;
+
+    public ProductService(IProductValidator validator, IProductRepository repository, IEmailService emailService)
+    {
+        _validator = validator;
+        _repository = repository;
+        _emailService = emailService;
+    }
+
+    public async Task AddProductAsync(Product product, string notificationEmail)
+    {
+        _validator.Validate(product);
+        await _repository.SaveAsync(product);
+        await _emailService.SendAsync(notificationEmail, "New Product Added", $"Product {product.Name} added successfully");
+    }
+}
+
+// BENEFITS:
+// ✓ Each class has ONE reason to change
+// ✓ ProductValidator can be tested without DB or Email
+// ✓ SqlProductRepository can be swapped for EfProductRepository
+// ✓ EmailService can be swapped for SendgridEmailService
+// ✓ ProductService logic is clear and orchestrates the workflow
+// ✓ High cohesion, loose coupling</code></pre>
+        </div>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- INTERVIEW QUESTIONS ON SOLID              -->
+        <!-- ═══════════════════════════════════════════ -->
+        <h2 id="solid-interview">Interview Questions on SOLID</h2>
+        <div class="qa-list">
+          <details class="qa-item">
+            <summary class="qa-question">Q1. Explain Single Responsibility Principle with a real example from ProductCatalogAPI. <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Answer:</strong> SRP states that a class should have only one reason to change. In ProductCatalogAPI, ProductService should ONLY contain business logic for managing products. Database access (SqlProductRepository), validation (ProductValidator), and email notifications (EmailService) should be separate classes.</p>
+              <p><strong>Why it matters:</strong> If you need to change how emails are sent, you modify EmailService — not ProductService. Each class is independently testable and reusable. If ProductService does validation, persistence, AND notification, it has three reasons to change and becomes unmaintainable.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q2. How does Open/Closed Principle help when adding new payment methods? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Answer:</strong> OCP says code should be OPEN for extension but CLOSED for modification. If we have a giant PaymentProcessor with if/else for each payment type, adding Bitcoin requires modifying existing code — violating OCP.</p>
+              <p><strong>Solution:</strong> Use Strategy pattern. Create an IPaymentStrategy interface. Each payment type (CreditCard, PayPal, Bitcoin) implements it. PaymentProcessor registers strategies. Adding Bitcoin = create BitcoinPayment class implementing IPaymentStrategy — no modification to existing code.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q3. Give an example of violating Liskov Substitution Principle. <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Classic example:</strong> Bird base class with Fly() method. Sparrow extends Bird and implements Fly(). But Ostrich extends Bird — it can't fly! If we call bird.Fly() on an Ostrich, it throws NotSupportedException. This violates LSP because Ostrich is not safely substitutable for Bird.</p>
+              <p><strong>Fix:</strong> Don't put Ostrich in a Bird hierarchy that requires flying. Use interface segregation: IFlyingBird interface that Sparrow implements but Ostrich doesn't.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q4. Why is Interface Segregation important for maintainability? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Answer:</strong> ISP says clients shouldn't be forced to depend on methods they don't use. If IMachine has Print(), Scan(), Fax(), a SimplePrinter must implement all three — even though it can only print. If someone calls Scan(), it throws NotImplementedException.</p>
+              <p><strong>Solution:</strong> Segregate into focused interfaces: IPrinter, IScanner, IFaxMachine. SimplePrinter only implements IPrinter. MultifunctionPrinter implements all three. Now client code is type-safe — if you have IPrinter, you KNOW Print() works.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q5. How does Dependency Inversion enable unit testing? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Problem:</strong> If ProductService instantiates FileLogger directly (new FileLogger()), unit tests create actual files on disk. Test is slow, fragile, and depends on file system.</p>
+              <p><strong>Solution (DIP):</strong> Inject ILogger interface via constructor. Test passes a mock ILogger that does nothing. No files created. Test runs instantly and is isolated.</p>
+              <p><strong>Code:</strong> <code>public ProductService(ILogger logger) { _logger = logger; }</code> Test: <code>var mockLogger = new Mock&lt;ILogger&gt;(); var service = new ProductService(mockLogger.Object);</code></p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q6. How do SOLID principles work together? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>SOLID principles are interconnected:</p>
+              <ul>
+                <li><strong>SRP + DIP:</strong> When you split ProductManager into focused classes (SRP), you naturally end up injecting their interfaces (DIP)</li>
+                <li><strong>OCP + LSP:</strong> OCP uses Strategy pattern — all strategies implement IPaymentStrategy. LSP ensures every strategy honors the contract</li>
+                <li><strong>ISP + SRP:</strong> Segregating interfaces (IPrinter, IScanner) keeps classes focused on single responsibility</li>
+                <li><strong>DIP + OCP:</strong> Depending on abstractions lets you swap implementations without modifying code — new payment type doesn't require changing PaymentProcessor</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+
+        <!-- PAGE NAVIGATION -->
+        <nav class="page-nav">
+          <a href="interview-csharp.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">←</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">C# &amp; OOP</span></div>
+          </a>
+          <a href="interview-patterns.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">Design Patterns</span></div>
+            <span class="page-nav-arrow">→</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

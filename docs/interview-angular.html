@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angular Fundamentals - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <div class="logo-badge">D</div>
+      DevDocs
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html" class="active">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span>
+        <input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+          <li><a href="webapi-data-access.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Data Access</a></li>
+          <li><a href="csharp.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Collections</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+          <li><a href="interview-csharp.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
+          <li><a href="interview-solid.html" class="sidebar-link"><span class="sidebar-link-icon">🏛️</span> SOLID Principles</a></li>
+          <li><a href="interview-patterns.html" class="sidebar-link"><span class="sidebar-link-icon">🎨</span> Design Patterns</a></li>
+          <li><a href="interview-sql.html" class="sidebar-link"><span class="sidebar-link-icon">🗃️</span> SQL</a></li>
+          <li><a href="interview-mvc.html" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> ASP.NET MVC</a></li>
+          <li><a href="interview-react.html" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React</a></li>
+          <li><a href="interview-angular.html" class="sidebar-link active"><span class="sidebar-link-icon">🔺</span> Angular</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="sep">/</span>
+          <a href="interview.html">Interview Prep</a>
+          <span class="sep">/</span>
+          <span class="current">Angular Fundamentals</span>
+        </nav>
+
+        <!-- ═══════════ PAGE TITLE ═══════════ -->
+        <div class="page-title-block">
+          <h1 class="page-title">🔺 Angular Fundamentals</h1>
+          <p class="page-subtitle">Full-featured TypeScript framework — components, services, DI, and RxJS for Product Catalog frontend</p>
+          <div class="page-meta">
+            <span class="badge badge-danger">Advanced</span>
+            <span class="badge badge-accent">Interview Prep</span>
+            <span class="badge badge-primary">9 Core Concepts</span>
+          </div>
+        </div>
+
+        <!-- ═══════════ INTRO CALLOUT ═══════════ -->
+        <div class="callout callout-info">
+          <span class="callout-icon">🔺</span>
+          <div class="callout-content">
+            <p class="callout-title">What is Angular?</p>
+            <p class="callout-body">Angular is an <strong>opinionated, full-featured framework</strong> for building enterprise-scale web applications. Unlike React (a library), Angular forces best practices: Dependency Injection, TypeScript strict typing, modules, decorators, and RxJS for async data. The learning curve is steeper than React, but Angular scales to massive codebases with hundreds of developers. Every Angular app follows the same architecture — there is no "Angular way" and "another way." This rigidity is a feature, not a bug. If you are building Product Catalog as an SPA (Single Page App), Angular handles routing, forms, HTTP, state, testing — everything is built-in.</p>
+          </div>
+        </div>
+
+        <!-- ═══════════ QUICK REFERENCE TABLE ═══════════ -->
+        <h2 id="quick-reference">Quick Reference: Angular Elements</h2>
+        <div class="table-wrap">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Angular Element</th>
+                <th>Role</th>
+                <th>TypeScript Pattern</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Component</strong></td>
+                <td>UI + logic for a screen or reusable widget</td>
+                <td><code>@Component</code> class with <code>template</code>, <code>styles</code>, selector</td>
+              </tr>
+              <tr>
+                <td><strong>Service</strong></td>
+                <td>Shared business logic, HTTP calls, data</td>
+                <td><code>@Injectable</code> class with methods; injected via constructor</td>
+              </tr>
+              <tr>
+                <td><strong>Module (NgModule)</strong></td>
+                <td>Container for components, services, directives</td>
+                <td><code>@NgModule</code> with declarations, imports, providers, exports</td>
+              </tr>
+              <tr>
+                <td><strong>Directive</strong></td>
+                <td>Extends HTML behavior; structural (*ngIf) or attribute ([ngClass])</td>
+                <td><code>@Directive</code> with selector, modifies DOM or element</td>
+              </tr>
+              <tr>
+                <td><strong>RxJS Observable</strong></td>
+                <td>Stream of async events (HTTP, timers, user input)</td>
+                <td><code>Observable&lt;T&gt;</code>; subscribe or use <code>async</code> pipe</td>
+              </tr>
+              <tr>
+                <td><strong>Dependency Injection (DI)</strong></td>
+                <td>Framework injects dependencies into components/services</td>
+                <td>constructor(private svc: ProductService) — DI provides svc</td>
+              </tr>
+              <tr>
+                <td><strong>Router</strong></td>
+                <td>Client-side navigation, component lazy-loading</td>
+                <td><code>Routes</code> array, <code>router.navigate()</code>, ActivatedRoute</td>
+              </tr>
+              <tr>
+                <td><strong>Form</strong></td>
+                <td>Handle user input with validation and binding</td>
+                <td>Template-driven (2-way <code>[(ngModel)]</code>) or Reactive (FormBuilder)</td>
+              </tr>
+              <tr>
+                <td><strong>Lifecycle Hook</strong></td>
+                <td>Run code at specific component lifecycle stages</td>
+                <td><code>ngOnInit</code>, <code>ngOnChanges</code>, <code>ngOnDestroy</code>, etc.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- SECTION 2: INTERVIEW Q&A                    -->
+        <!-- ═══════════════════════════════════════════ -->
+        <h2 id="angular-interview">Angular Fundamentals Interview Questions</h2>
+        <div class="qa-list">
+
+          <!-- Q1 -->
+          <details class="qa-item">
+            <summary class="qa-question">Q1. What is Angular? How does it compare to React? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Angular is an opinionated, full-featured framework</strong> for building enterprise Single Page Applications (SPAs). It includes routing, forms, HTTP client, testing tools, and state management out of the box. Angular is written in TypeScript and enforces strict typing.</p>
+              <p><strong>React is a library</strong> focused only on the view layer (components). You must bring your own router, HTTP client, form library, and state management. This flexibility appeals to developers who like control; however, you must evaluate and integrate third-party libraries for every feature.</p>
+              <table class="comparison-table">
+                <thead><tr><th>Aspect</th><th>Angular</th><th>React</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Type</strong></td><td>Full framework</td><td>View library</td></tr>
+                  <tr><td><strong>Language</strong></td><td>TypeScript (mandatory)</td><td>JavaScript or TypeScript (optional)</td></tr>
+                  <tr><td><strong>Opinions</strong></td><td>Highly opinionated; one way to do things</td><td>Unopinionated; many ways</td></tr>
+                  <tr><td><strong>Learning curve</strong></td><td>Steep (decorators, DI, RxJS)</td><td>Gentle (JSX, props, hooks)</td></tr>
+                  <tr><td><strong>Routing</strong></td><td>RouterModule (built-in)</td><td>React Router (third-party)</td></tr>
+                  <tr><td><strong>State</strong></td><td>Services + RxJS Observables</td><td>Redux, Zustand, Context (pick one)</td></tr>
+                  <tr><td><strong>Forms</strong></td><td>ReactiveFormsModule or template-driven</td><td>Formik, React Hook Form (third-party)</td></tr>
+                  <tr><td><strong>Bundle size</strong></td><td>~1.2 MB gzipped (full framework)</td><td>~42 KB gzipped (core only)</td></tr>
+                  <tr><td><strong>Use case</strong></td><td>Large enterprise apps, 100+ devs</td><td>Startups, fast iterations, flexibility</td></tr>
+                </tbody>
+              </table>
+              <p><strong>Which for Product Catalog?</strong> If the frontend is complex (many pages, forms, real-time data, large team), Angular scales well. If you want quick iteration and small team, React is lighter and more flexible.</p>
+            </div>
+          </details>
+
+          <!-- Q2 -->
+          <details class="qa-item">
+            <summary class="qa-question">Q2. What are Angular components, services, and modules? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Angular's N-tier architecture separates concerns into three core building blocks:</p>
+              <p><strong>Components</strong> are <strong>UI + logic</strong>. A component has a template (HTML), styles (CSS), and class (TypeScript). Example: <code>ProductListComponent</code> displays a table of products and handles click events.</p>
+              <p><strong>Services</strong> are <strong>shared business logic</strong>. They do NOT have UI. Services handle HTTP calls, data transformations, caching, API communication. All components that need products inject <code>ProductService</code> and call its methods.</p>
+              <p><strong>Modules (NgModule)</strong> are <strong>containers</strong> that group related components, services, and directives. The root module is <code>AppModule</code>. Large apps have many feature modules (ProductModule, CartModule, OrderModule) to organize code and enable lazy-loading.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">typescript — Component, Service, Module structure</span>
+                </div>
+                <pre><code class="language-typescript">// product.service.ts — PURE SERVICE, NO UI
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+export interface Product {
+  id: number;
+  name: string;
+  price: decimal;
+  category: string;
+  stock: number;
+}
+
+@Injectable({
+  providedIn: 'root' // globally available
+})
+export class ProductService {
+  private apiUrl = 'http://localhost:5000/api/products';
+
+  constructor(private http: HttpClient) { }
+
+  // Observable = async stream. Caller subscribes.
+  getAll(): Observable&lt;Product[]&gt; {
+    return this.http.get&lt;Product[]&gt;(`${this.apiUrl}`);
+  }
+
+  getById(id: number): Observable&lt;Product&gt; {
+    return this.http.get&lt;Product&gt;(`${this.apiUrl}/${id}`);
+  }
+
+  create(product: Product): Observable&lt;Product&gt; {
+    return this.http.post&lt;Product&gt;(`${this.apiUrl}`, product);
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+
+// product-list.component.ts — COMPONENT WITH UI + LOGIC
+import { Component, OnInit } from '@angular/core';
+import { ProductService, Product } from './product.service';
+
+@Component({
+  selector: 'app-product-list',
+  template: `
+    &lt;div class="products"&gt;
+      &lt;h1&gt;Products&lt;/h1&gt;
+      &lt;table&gt;
+        &lt;tr *ngFor="let product of products"&gt;
+          &lt;td&gt;{{product.name}}&lt;/td&gt;
+          &lt;td&gt;{{product.price | currency}}&lt;/td&gt;
+          &lt;td&gt;&lt;button (click)="selectProduct(product)"&gt;View&lt;/button&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+  `,
+  styles: [`
+    .products { padding: 20px; }
+    table { width: 100%; border-collapse: collapse; }
+    td { padding: 10px; border-bottom: 1px solid #ccc; }
+  `]
+})
+export class ProductListComponent implements OnInit {
+  products: Product[] = [];
+
+  // DI injects ProductService into constructor
+  constructor(private productService: ProductService) { }
+
+  ngOnInit(): void {
+    // Load products when component initializes
+    this.productService.getAll().subscribe(
+      (data) => this.products = data,
+      (error) => console.error('Error loading products', error)
+    );
+  }
+
+  selectProduct(product: Product): void {
+    console.log('Selected:', product);
+    // Navigate to detail view, etc.
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+
+// product.module.ts — ORGANIZES COMPONENTS & SERVICES
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { ProductListComponent } from './product-list.component';
+import { ProductService } from './product.service';
+
+@NgModule({
+  declarations: [ProductListComponent],     // components/directives in this module
+  imports: [CommonModule, HttpClientModule], // other modules used here
+  providers: [ProductService],               // services available to this module
+  exports: [ProductListComponent]            // what this module exposes
+})
+export class ProductModule { }</code></pre>
+              </div>
+              <p><strong>Key insight:</strong> One service, multiple components. ProductListComponent and ProductDetailComponent both inject ProductService. The service handles HTTP and caching; components handle UI only.</p>
+            </div>
+          </details>
+
+          <!-- Q3 -->
+          <details class="qa-item">
+            <summary class="qa-question">Q3. What is Dependency Injection in Angular? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Dependency Injection (DI)</strong> is a design pattern where an object requests its dependencies from an external container instead of creating them itself. Angular's DI framework automatically wires up services and injects them into components and services.</p>
+              <p><strong>How it works:</strong></p>
+              <ol>
+                <li>Mark a class as injectable with <code>@Injectable()</code> decorator.</li>
+                <li>In a component, declare the dependency in the constructor with a type annotation.</li>
+                <li>Angular DI container creates one instance (or reuses one based on scope) and passes it to the constructor.</li>
+                <li>The component accesses the service via a private property.</li>
+              </ol>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">typescript — Dependency Injection example</span>
+                </div>
+                <pre><code class="language-typescript">// CacheService — a dependency
+@Injectable({ providedIn: 'root' })
+export class CacheService {
+  private cache = new Map&lt;string, any&gt;();
+
+  set(key: string, value: any): void {
+    this.cache.set(key, value);
+  }
+
+  get(key: string): any | undefined {
+    return this.cache.get(key);
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+
+// ProductService — DEPENDS ON CacheService
+@Injectable({ providedIn: 'root' })
+export class ProductService {
+  constructor(
+    private http: HttpClient,
+    private cache: CacheService  // ← DI injects CacheService
+  ) { }
+
+  getAll(): Observable&lt;Product[]&gt; {
+    // Check cache first
+    const cached = this.cache.get('products:all');
+    if (cached) return of(cached); // of() wraps sync value in Observable
+
+    // Cache miss — fetch from API
+    return this.http.get&lt;Product[]&gt;('/api/products').pipe(
+      tap((products) =&gt; this.cache.set('products:all', products))
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+
+// ProductListComponent — DEPENDS ON ProductService
+@Component({
+  selector: 'app-product-list',
+  template: `&lt;div&gt;Products: {{products.length}}&lt;/div&gt;`
+})
+export class ProductListComponent implements OnInit {
+  products: Product[] = [];
+
+  constructor(
+    private productService: ProductService  // ← DI injects ProductService
+  ) { }
+
+  ngOnInit(): void {
+    // ProductService itself has CacheService injected — component doesn't care
+    this.productService.getAll().subscribe(
+      (data) =&gt; this.products = data
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+
+// app.module.ts — register services with DI container
+@NgModule({
+  declarations: [ProductListComponent],
+  imports: [CommonModule, HttpClientModule],
+  providers: [
+    ProductService,  // register ProductService
+    CacheService     // register CacheService
+  ]
+})
+export class AppModule { }</code></pre>
+              </div>
+              <p><strong>Benefits:</strong> Loose coupling (components do not know concrete implementations); testability (inject mock services in tests); flexibility (swap implementations by changing one line in the module).</p>
+              <p><strong>DI Scopes:</strong> <code>providedIn: 'root'</code> = singleton (one instance app-wide); <code>providedIn: SomeModule</code> = one per module; no provider = new instance each injection.</p>
+            </div>
+          </details>
+
+          <!-- Q4 -->
+          <details class="qa-item">
+            <summary class="qa-question">Q4. What is data binding in Angular? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Data binding</strong> connects the component class (TypeScript) to the template (HTML). There are four types:</p>
+              <p><strong>1. Interpolation {{ }}</strong> — one-way: display component property in HTML.</p>
+              <p><strong>2. Property binding [prop]</strong> — one-way: set an HTML element property from component.</p>
+              <p><strong>3. Event binding (click)</strong> — one-way: respond to user events (click, input, change).</p>
+              <p><strong>4. Two-way binding [(ngModel)]</strong> — both directions: changes in HTML update component, and vice versa.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">typescript — Data binding in ProductListComponent</span>
+                </div>
+                <pre><code class="language-typescript">// product-list.component.ts
+@Component({
+  selector: 'app-product-list',
+  template: `
+    &lt;div class="filter"&gt;
+      &lt;!-- Two-way binding: input updates searchText, searchText updates input --&gt;
+      &lt;input [(ngModel)]="searchText" placeholder="Search products..."&gt;
+      &lt;button (click)="onSearch()"&gt;Search&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;table&gt;
+      &lt;tr *ngFor="let product of filteredProducts"&gt;
+        &lt;!-- Interpolation: display component data --&gt;
+        &lt;td&gt;{{product.name}}&lt;/td&gt;
+        &lt;td&gt;{{product.price | currency}}&lt;/td&gt;
+
+        &lt;!-- Property binding: set button disabled state from component --&gt;
+        &lt;td&gt;&lt;button [disabled]="product.stock === 0" (click)="addToCart(product)"&gt;
+          {{product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}}
+        &lt;/button&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  `
+})
+export class ProductListComponent {
+  allProducts: Product[] = [];
+  filteredProducts: Product[] = [];
+  searchText: string = '';  // ← bound to [(ngModel)]
+
+  constructor(private productService: ProductService) { }
+
+  ngOnInit(): void {
+    this.productService.getAll().subscribe(
+      (data) =&gt; {
+        this.allProducts = data;
+        this.filteredProducts = data;
+      }
+    );
+  }
+
+  // Event handler — (click)="onSearch()" calls this
+  onSearch(): void {
+    this.filteredProducts = this.allProducts.filter(
+      (p) =&gt; p.name.toLowerCase().includes(this.searchText.toLowerCase())
+    );
+  }
+
+  // Event handler — (click)="addToCart(product)" calls this
+  addToCart(product: Product): void {
+    console.log('Added to cart:', product.name);
+    // Update component state, call service, etc.
+  }
+}
+</code></pre>
+              </div>
+              <p><strong>Data flow:</strong> Component → Template (property binding, interpolation); Template → Component (event binding, two-way binding). Angular watches for changes and updates the DOM automatically (change detection).</p>
+            </div>
+          </details>
+
+          <!-- Q5 -->
+          <details class="qa-item">
+            <summary class="qa-question">Q5. What are Observables and RxJS? How do you handle async data? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Observable</strong> is a lazy stream of values over time. An HTTP request returns an Observable. An Observable does NOTHING until someone subscribes to it. When subscribed, it emits values (success, error, or completion).</p>
+              <p><strong>RxJS (Reactive Extensions for JavaScript)</strong> provides Observables and operators (map, filter, switchMap, etc.) to transform data streams in a declarative way.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">typescript — Observables and RxJS operators</span>
+                </div>
+                <pre><code class="language-typescript">// product.service.ts — returns Observables
+import { Observable, of, throwError } from 'rxjs';
+import { map, filter, switchMap, catchError, tap } from 'rxjs/operators';
+
+@Injectable({ providedIn: 'root' })
+export class ProductService {
+  constructor(private http: HttpClient) { }
+
+  // getAll returns an Observable — it does nothing until subscribed
+  getAll(): Observable&lt;Product[]&gt; {
+    return this.http.get&lt;Product[]&gt;('/api/products');
+  }
+
+  // Chaining operators: transform the stream before consumer receives it
+  getExpensiveProducts(): Observable&lt;Product[]&gt; {
+    return this.getAll().pipe(
+      // tap: side effect (e.g., logging) without changing the data
+      tap((products) =&gt; console.log(`Fetched ${products.length} products`)),
+
+      // map: transform each item
+      map((products) =&gt;
+        products.map((p) =&gt; ({
+          ...p,
+          discountedPrice: p.price * 0.9  // 10% off
+        }))
+      ),
+
+      // filter: keep only items matching a condition
+      filter((p) =&gt; p.price &gt; 100),
+
+      // catchError: handle errors gracefully
+      catchError((error) =&gt; {
+        console.error('Error fetching products:', error);
+        return throwError(() =&gt; new Error('Failed to load products'));
+      })
+    );
+  }
+
+  getByCategory(category: string): Observable&lt;Product[]&gt; {
+    return this.http.get&lt;Product[]&gt;(`/api/products/category/${category}`);
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+
+// product-list.component.ts — subscribe to Observables
+export class ProductListComponent implements OnInit {
+  products: Product[] = [];
+  loading: boolean = false;
+  error: string | null = null;
+
+  constructor(private productService: ProductService) { }
+
+  ngOnInit(): void {
+    this.loading = true;
+
+    // SUBSCRIBE: Observable starts executing when subscribed
+    this.productService.getExpensiveProducts().subscribe({
+      next: (data) =&gt; {
+        this.products = data;        // on success, update component
+        this.loading = false;
+      },
+      error: (err) =&gt; {
+        this.error = err.message;    // on error, set error state
+        this.loading = false;
+      },
+      complete: () =&gt; {
+        console.log('Data stream complete'); // optional
+      }
+    });
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+
+// TEMPLATE — async pipe automatically subscribes/unsubscribes
+@Component({
+  template: `
+    &lt;div *ngIf="loading"&gt;Loading...&lt;/div&gt;
+    &lt;div *ngIf="error"&gt;Error: {{error}}&lt;/div&gt;
+    &lt;div *ngIf="!loading &amp;&amp; !error"&gt;
+      &lt;tr *ngFor="let p of products"&gt;
+        &lt;td&gt;{{p.name}}&lt;/td&gt;
+        &lt;td&gt;{{p.price}}&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/div&gt;
+  `
+})
+export class ProductListComponent { ... }
+
+// ─────────────────────────────────────────────────────────
+
+// OR use async pipe in template — even cleaner
+@Component({
+  template: `
+    &lt;!-- async pipe automatically subscribes/unsubscribes --&gt;
+    &lt;div *ngIf="(products$ | async) as products"&gt;
+      &lt;tr *ngFor="let p of products"&gt;
+        &lt;td&gt;{{p.name}}&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/div&gt;
+  `
+})
+export class ProductListComponent {
+  products$: Observable&lt;Product[]&gt;;  // Observable, not array
+
+  constructor(private productService: ProductService) {
+    this.products$ = this.productService.getAll();
+  }
+}
+</code></pre>
+              </div>
+              <p><strong>Key differences:</strong> Observables are lazy (do nothing until subscribed); Promises are eager (execute immediately). Observables can emit multiple values; Promises emit one. Observables are cancellable; Promises are not.</p>
+              <p><strong>Best practice:</strong> Use the <code>async</code> pipe in templates whenever possible — it automatically handles subscription/unsubscription and avoids memory leaks.</p>
+            </div>
+          </details>
+
+          <!-- Q6 -->
+          <details class="qa-item">
+            <summary class="qa-question">Q6. What are Directives? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Directives</strong> are classes that add behavior to HTML elements or components. There are two types:</p>
+              <p><strong>Structural directives</strong> change the DOM structure — they add/remove elements. Syntax: <code>*directive</code> (asterisk prefix). Examples: <code>*ngIf</code>, <code>*ngFor</code>, <code>*ngSwitch</code>.</p>
+              <p><strong>Attribute directives</strong> change appearance or behavior of an element. Syntax: <code>[directive]</code> (bracket notation). Examples: <code>[ngClass]</code>, <code>[ngStyle]</code>, <code>[routerLink]</code>.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">html — Structural and Attribute Directives</span>
+                </div>
+                <pre><code class="language-html">&lt;!-- ──────────── STRUCTURAL DIRECTIVES ──────────── --&gt;
+
+&lt;!-- *ngIf: conditionally render --&gt;
+&lt;div *ngIf="products.length &gt; 0"&gt;
+  &lt;p&gt;{{products.length}} products available&lt;/p&gt;
+&lt;/div&gt;
+&lt;div *ngIf="products.length === 0"&gt;
+  &lt;p&gt;No products found&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;!-- *ngFor: loop over array --&gt;
+&lt;table&gt;
+  &lt;tr *ngFor="let product of products; let i = index; let last = last"&gt;
+    &lt;td&gt;{{i + 1}}&lt;/td&gt;
+    &lt;td&gt;{{product.name}}&lt;/td&gt;
+    &lt;td&gt;{{product.price | currency}}&lt;/td&gt;
+    &lt;!-- last is true for last item --&gt;
+    &lt;td *ngIf="last"&gt;(End of list)&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;!-- *ngSwitch: multi-way conditional --&gt;
+&lt;div [ngSwitch]="product.category"&gt;
+  &lt;div *ngSwitchCase="'Electronics'"&gt;
+    &lt;p&gt;Electronics: warranty included&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div *ngSwitchCase="'Clothing'"&gt;
+    &lt;p&gt;Clothing: free returns&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div *ngSwitchDefault&gt;
+    &lt;p&gt;Other category&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ──────────── ATTRIBUTE DIRECTIVES ──────────── --&gt;
+
+&lt;!-- [ngClass]: conditionally apply CSS classes --&gt;
+&lt;div [ngClass]="{
+  'in-stock': product.stock &gt; 0,
+  'out-of-stock': product.stock === 0,
+  'expensive': product.price &gt; 500
+}"&gt;
+  {{product.name}}
+&lt;/div&gt;
+
+&lt;!-- [ngStyle]: conditionally apply inline styles --&gt;
+&lt;div [ngStyle]="{
+  'color': product.stock &gt; 0 ? 'green' : 'red',
+  'font-weight': product.price &gt; 1000 ? 'bold' : 'normal'
+}"&gt;
+  Price: {{product.price}}
+&lt;/div&gt;
+
+&lt;!-- [routerLink]: navigation without page reload --&gt;
+&lt;a [routerLink]="['/product', product.id]"&gt;
+  View Details
+&lt;/a&gt;
+
+&lt;!-- Custom directive example: [appHighlight] --&gt;
+&lt;p [appHighlight]="'yellow'"&gt;This text has yellow background&lt;/p&gt;
+</code></pre>
+              </div>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">typescript — Custom Attribute Directive</span>
+                </div>
+                <pre><code class="language-typescript">// highlight.directive.ts
+import { Directive, ElementRef, Input, OnInit } from '@angular/core';
+
+@Directive({
+  selector: '[appHighlight]'  // usage: &lt;p appHighlight="yellow"&gt;
+})
+export class HighlightDirective implements OnInit {
+  @Input() appHighlight: string = 'yellow';  // color passed in
+
+  constructor(private el: ElementRef) { }
+
+  ngOnInit(): void {
+    this.el.nativeElement.style.backgroundColor = this.appHighlight;
+  }
+}
+</code></pre>
+              </div>
+              <p><strong>Common mistake:</strong> You cannot combine multiple structural directives on the same element. Use <code>ng-container</code> to avoid this:</p>
+              <code>&lt;ng-container *ngIf="condition"&gt; &lt;div *ngFor="let item of items"&gt;...&lt;/div&gt; &lt;/ng-container&gt;</code>
+            </div>
+          </details>
+
+          <!-- Q7 -->
+          <details class="qa-item">
+            <summary class="qa-question">Q7. How do services handle data sharing between components? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Services are the primary way components communicate without tight coupling. A shared service holds state and logic; multiple components inject it and access/modify that shared state. The service can also provide Observables for reactive data sharing.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">typescript — Service as shared state holder</span>
+                </div>
+                <pre><code class="language-typescript">// cart.service.ts — shared service for cart state
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+
+export interface CartItem {
+  product: Product;
+  quantity: number;
+}
+
+@Injectable({ providedIn: 'root' })
+export class CartService {
+  // BehaviorSubject = Observable that also holds current value
+  private cartItems$ = new BehaviorSubject&lt;CartItem[]&gt;([]);
+
+  // Expose Observable to components
+  cartItems: Observable&lt;CartItem[]&gt; = this.cartItems$.asObservable();
+
+  // Expose count as Observable
+  cartCount$: Observable&lt;number&gt; = this.cartItems$.pipe(
+    map((items) =&gt; items.reduce((sum, item) =&gt; sum + item.quantity, 0))
+  );
+
+  constructor() { }
+
+  addToCart(product: Product, quantity: number = 1): void {
+    const current = this.cartItems$.value;  // get current value
+    const existing = current.find((item) =&gt; item.product.id === product.id);
+
+    if (existing) {
+      existing.quantity += quantity;  // increase quantity
+    } else {
+      current.push({ product, quantity });  // add new item
+    }
+
+    this.cartItems$.next([...current]);  // emit new value to all subscribers
+  }
+
+  removeFromCart(productId: number): void {
+    const current = this.cartItems$.value;
+    const filtered = current.filter((item) =&gt; item.product.id !== productId);
+    this.cartItems$.next(filtered);
+  }
+
+  clearCart(): void {
+    this.cartItems$.next([]);
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+
+// product-list.component.ts — displays products, adds to cart
+@Component({
+  selector: 'app-product-list',
+  template: `
+    &lt;div *ngFor="let product of products"&gt;
+      &lt;h3&gt;{{product.name}}&lt;/h3&gt;
+      &lt;p&gt;{{product.price | currency}}&lt;/p&gt;
+      &lt;button (click)="onAddToCart(product)"&gt;Add to Cart&lt;/button&gt;
+    &lt;/div&gt;
+  `
+})
+export class ProductListComponent implements OnInit {
+  products: Product[] = [];
+
+  constructor(
+    private productService: ProductService,
+    private cartService: CartService  // inject shared service
+  ) { }
+
+  ngOnInit(): void {
+    this.productService.getAll().subscribe(
+      (data) =&gt; this.products = data
+    );
+  }
+
+  onAddToCart(product: Product): void {
+    this.cartService.addToCart(product, 1);  // cart state updated in service
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+
+// cart.component.ts — displays cart contents
+@Component({
+  selector: 'app-cart',
+  template: `
+    &lt;div class="cart"&gt;
+      &lt;h2&gt;Cart ({{(cartCount$ | async) || 0}} items)&lt;/h2&gt;
+      &lt;div *ngFor="let item of (cartItems$ | async) || []"&gt;
+        &lt;span&gt;{{item.product.name}} x {{item.quantity}}&lt;/span&gt;
+        &lt;button (click)="remove(item.product.id)"&gt;Remove&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;button (click)="clear()"&gt;Clear Cart&lt;/button&gt;
+    &lt;/div&gt;
+  `
+})
+export class CartComponent {
+  cartItems$: Observable&lt;CartItem[]&gt;;
+  cartCount$: Observable&lt;number&gt;;
+
+  constructor(private cartService: CartService) {
+    this.cartItems$ = this.cartService.cartItems;
+    this.cartCount$ = this.cartService.cartCount$;
+  }
+
+  remove(productId: number): void {
+    this.cartService.removeFromCart(productId);
+  }
+
+  clear(): void {
+    this.cartService.clearCart();
+  }
+}
+</code></pre>
+              </div>
+              <p><strong>BehaviorSubject</strong> is a special Observable that emits its current value immediately to new subscribers and remembers the last emitted value. Perfect for shared state. Regular Observable emits only on new subscriptions.</p>
+            </div>
+          </details>
+
+          <!-- Q8 -->
+          <details class="qa-item">
+            <summary class="qa-question">Q8. How does routing work in Angular? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Angular Router</strong> enables client-side navigation — changing the URL and displaying different components without a page reload (SPA behavior). Routes map URL paths to components. Navigation updates the URL and renders the matched component in <code>&lt;router-outlet&gt;</code>.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">typescript — Routing configuration for Product Catalog</span>
+                </div>
+                <pre><code class="language-typescript">// app-routing.module.ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ProductListComponent } from './products/product-list.component';
+import { ProductDetailComponent } from './products/product-detail.component';
+import { CartComponent } from './cart/cart.component';
+import { CheckoutComponent } from './checkout/checkout.component';
+
+// Define routes
+const routes: Routes = [
+  { path: '', redirectTo: '/products', pathMatch: 'full' },  // home redirects to /products
+  { path: 'products', component: ProductListComponent },
+  { path: 'product/:id', component: ProductDetailComponent },  // :id is a route parameter
+  { path: 'cart', component: CartComponent },
+  { path: 'checkout', component: CheckoutComponent },
+  { path: '**', redirectTo: '/products' }  // catch-all for 404
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+// ─────────────────────────────────────────────────────────
+
+// app.component.ts — root component
+@Component({
+  selector: 'app-root',
+  template: `
+    &lt;nav&gt;
+      &lt;a routerLink="/products" routerLinkActive="active"&gt;Products&lt;/a&gt;
+      &lt;a routerLink="/cart" routerLinkActive="active"&gt;Cart&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;!-- Router-outlet: displays matched component based on current URL --&gt;
+    &lt;router-outlet&gt;&lt;/router-outlet&gt;
+  `
+})
+export class AppComponent { }
+
+// ─────────────────────────────────────────────────────────
+
+// product-detail.component.ts — access route parameters
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  selector: 'app-product-detail',
+  template: `
+    &lt;div *ngIf="product"&gt;
+      &lt;h1&gt;{{product.name}}&lt;/h1&gt;
+      &lt;p&gt;{{product.description}}&lt;/p&gt;
+      &lt;p&gt;Price: {{product.price | currency}}&lt;/p&gt;
+      &lt;button (click)="onAddToCart()"&gt;Add to Cart&lt;/button&gt;
+      &lt;button (click)="goBack()"&gt;Back to Products&lt;/button&gt;
+    &lt;/div&gt;
+  `
+})
+export class ProductDetailComponent implements OnInit {
+  product: Product | null = null;
+
+  constructor(
+    private route: ActivatedRoute,
+    private productService: ProductService,
+    private router: Router
+  ) { }
+
+  ngOnInit(): void {
+    // Access route parameter :id
+    this.route.paramMap.subscribe((params) =&gt; {
+      const id = +params.get('id')!;  // + converts string to number
+      this.productService.getById(id).subscribe(
+        (data) =&gt; this.product = data,
+        (error) =&gt; console.error('Product not found')
+      );
+    });
+  }
+
+  onAddToCart(): void {
+    if (this.product) {
+      // ... add to cart logic
+      alert(`Added ${this.product.name} to cart`);
+    }
+  }
+
+  goBack(): void {
+    this.router.navigate(['/products']);  // programmatic navigation
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+
+// Lazy loading — load feature module only when route accessed
+const routes: Routes = [
+  { path: 'products', component: ProductListComponent },
+  {
+    path: 'admin',
+    loadChildren: () =&gt; import('./admin/admin.module').then(m =&gt; m.AdminModule)
+    // AdminModule is downloaded ONLY when user navigates to /admin
+  }
+];
+</code></pre>
+              </div>
+              <p><strong>Key concepts:</strong> <code>routerLink</code> directive for navigation in templates; <code>ActivatedRoute</code> to access route params; <code>Router.navigate()</code> for programmatic navigation; lazy-loading for code splitting.</p>
+            </div>
+          </details>
+
+          <!-- Q9 -->
+          <details class="qa-item">
+            <summary class="qa-question">Q9. What are Reactive Forms vs Template-driven Forms? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Template-driven forms</strong> keep form state in the template using <code>[(ngModel)]</code>. Simple, good for small forms. Validation is declared in the template.</p>
+              <p><strong>Reactive forms</strong> keep form state in the component class using <code>FormBuilder</code> and <code>FormGroup</code>. Powerful, testable, good for complex forms. Validation is logic-based.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">typescript — Template-driven form (simple)</span>
+                </div>
+                <pre><code class="language-typescript">// product-create.component.ts — TEMPLATE-DRIVEN
+@Component({
+  selector: 'app-product-create',
+  template: `
+    &lt;form (ngSubmit)="onSubmit()"&gt;
+      &lt;label&gt;
+        Name:
+        &lt;input [(ngModel)]="product.name" name="name" required&gt;
+      &lt;/label&gt;
+
+      &lt;label&gt;
+        Price:
+        &lt;input [(ngModel)]="product.price" name="price" type="number" min="0"&gt;
+      &lt;/label&gt;
+
+      &lt;label&gt;
+        Category:
+        &lt;select [(ngModel)]="product.category" name="category"&gt;
+          &lt;option value=""&gt;Select category&lt;/option&gt;
+          &lt;option value="Electronics"&gt;Electronics&lt;/option&gt;
+          &lt;option value="Clothing"&gt;Clothing&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/label&gt;
+
+      &lt;button type="submit"&gt;Create Product&lt;/button&gt;
+    &lt;/form&gt;
+  `
+})
+export class ProductCreateComponent {
+  product = { name: '', price: 0, category: '' };
+
+  constructor(private productService: ProductService) { }
+
+  onSubmit(): void {
+    this.productService.create(this.product).subscribe(
+      (result) =&gt; console.log('Created:', result)
+    );
+  }
+}
+</code></pre>
+              </div>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">typescript — Reactive form (powerful)</span>
+                </div>
+                <pre><code class="language-typescript">// product-create.component.ts — REACTIVE
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-product-create',
+  template: `
+    &lt;form [formGroup]="form" (ngSubmit)="onSubmit()"&gt;
+      &lt;div&gt;
+        &lt;label&gt;Name:&lt;/label&gt;
+        &lt;input formControlName="name"&gt;
+        &lt;span *ngIf="form.get('name')?.hasError('required')"&gt;
+          Name is required
+        &lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label&gt;Price:&lt;/label&gt;
+        &lt;input type="number" formControlName="price"&gt;
+        &lt;span *ngIf="form.get('price')?.hasError('min')"&gt;
+          Price must be &gt;= 0
+        &lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label&gt;Category:&lt;/label&gt;
+        &lt;select formControlName="category"&gt;
+          &lt;option value=""&gt;Select category&lt;/option&gt;
+          &lt;option value="Electronics"&gt;Electronics&lt;/option&gt;
+          &lt;option value="Clothing"&gt;Clothing&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Form is valid only if all controls pass validation --&gt;
+      &lt;button [disabled]="form.invalid"&gt;Create Product&lt;/button&gt;
+    &lt;/form&gt;
+  `
+})
+export class ProductCreateComponent implements OnInit {
+  form: FormGroup;
+
+  constructor(
+    private fb: FormBuilder,
+    private productService: ProductService
+  ) {
+    // FormBuilder creates FormGroup with controls and validators
+    this.form = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      price: [0, [Validators.required, Validators.min(0)]],
+      category: ['', Validators.required]
+    });
+  }
+
+  ngOnInit(): void {
+    // Watch for form changes
+    this.form.valueChanges.subscribe((value) =&gt; {
+      console.log('Form changed:', value);
+    });
+  }
+
+  onSubmit(): void {
+    if (this.form.invalid) return;
+
+    this.productService.create(this.form.value).subscribe(
+      (result) =&gt; {
+        console.log('Created:', result);
+        this.form.reset();  // clear form after submit
+      }
+    );
+  }
+}
+</code></pre>
+              </div>
+              <table class="comparison-table">
+                <thead><tr><th>Aspect</th><th>Template-driven</th><th>Reactive</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>State location</strong></td><td>Template (HTML)</td><td>Component (TypeScript)</td></tr>
+                  <tr><td><strong>Complexity</strong></td><td>Simple, few controls</td><td>Complex, many controls</td></tr>
+                  <tr><td><strong>Testability</strong></td><td>Harder (tied to template)</td><td>Easy (logic in component)</td></tr>
+                  <tr><td><strong>Validation</strong></td><td>Declarative attributes</td><td>Programmable Validators</td></tr>
+                  <tr><td><strong>Dynamic controls</strong></td><td>Difficult</td><td>FormArray makes it easy</td></tr>
+                </tbody>
+              </table>
+              <p><strong>Recommendation:</strong> Use Reactive Forms for production apps — they are testable, powerful, and scale with complexity.</p>
+            </div>
+          </details>
+
+        </div><!-- /.qa-list -->
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- BONUS SECTION: LIFECYCLE HOOKS             -->
+        <!-- ═══════════════════════════════════════════ -->
+        <h2 id="lifecycle-hooks">Angular Lifecycle Hooks</h2>
+        <p>Angular calls lifecycle hook methods at specific moments in a component's lifecycle — from creation, through updates, to destruction. Each hook is an opportunity to run code at the right time.</p>
+
+        <div class="table-wrap">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Hook</th>
+                <th>When Called</th>
+                <th>Use Case</th>
+                <th>Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>ngOnInit</strong></td>
+                <td>After component class created, after first @Input bindings initialized</td>
+                <td>Load initial data, subscribe to services, set up component state</td>
+                <td><code>this.productService.getAll().subscribe(...)</code></td>
+              </tr>
+              <tr>
+                <td><strong>ngOnChanges</strong></td>
+                <td>Before ngOnInit, and when @Input property value changes</td>
+                <td>React to input property changes (parent passes new data)</td>
+                <td>When <code>@Input() productId</code> changes, reload product details</td>
+              </tr>
+              <tr>
+                <td><strong>ngDoCheck</strong></td>
+                <td>During every change detection cycle (frequent!)</td>
+                <td>Custom change detection logic (rarely needed)</td>
+                <td>Detect changes Angular's default detection misses</td>
+              </tr>
+              <tr>
+                <td><strong>ngAfterViewInit</strong></td>
+                <td>After component view and child views initialized (@ViewChild available)</td>
+                <td>Access DOM elements, initialize third-party libraries (jQuery plugins, charts)</td>
+                <td><code>this.chart.initialize(this.chartElement.nativeElement)</code></td>
+              </tr>
+              <tr>
+                <td><strong>ngOnDestroy</strong></td>
+                <td>Just before component is destroyed and removed from DOM</td>
+                <td>Cleanup: unsubscribe from Observables, clear timers, release resources</td>
+                <td><code>this.subscription.unsubscribe()</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">typescript — Lifecycle hooks in ProductDetailComponent</span>
+          </div>
+          <pre><code class="language-typescript">import {
+  Component,
+  OnInit,
+  OnChanges,
+  OnDestroy,
+  AfterViewInit,
+  Input,
+  ViewChild,
+  SimpleChanges,
+  ElementRef
+} from '@angular/core';
+import { Subscription } from 'rxjs';
+
+@Component({
+  selector: 'app-product-detail',
+  template: `
+    &lt;div&gt;
+      &lt;h1&gt;{{product?.name}}&lt;/h1&gt;
+      &lt;p&gt;Price: {{product?.price}}&lt;/p&gt;
+      &lt;div #chartContainer&gt;&lt;/div&gt;  &lt;!-- @ViewChild access this --&gt;
+    &lt;/div&gt;
+  `
+})
+export class ProductDetailComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+  @Input() productId: number = 0;
+  product: Product | null = null;
+  @ViewChild('chartContainer') chartContainer!: ElementRef;
+  private subscription: Subscription | null = null;
+
+  constructor(private productService: ProductService) {
+    console.log('1. CONSTRUCTOR — component instance created (NO ACCESS to @Input yet)');
+  }
+
+  // ──────────────────────────────────────────────────────
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('2. ngOnChanges — @Input properties changed');
+    console.log('   Changes:', changes);
+
+    if (changes['productId']) {
+      console.log(`   productId changed from ${changes['productId'].previousValue} to ${changes['productId'].currentValue}`);
+      // Reload product when productId @Input changes
+      if (!changes['productId'].firstChange) {
+        this.loadProduct();
+      }
+    }
+  }
+
+  // ──────────────────────────────────────────────────────
+
+  ngOnInit(): void {
+    console.log('3. ngOnInit — @Input bindings ready, load initial data');
+    console.log(`   productId = ${this.productId}`);
+
+    // Load product on component init
+    this.loadProduct();
+
+    // Subscribe to route changes (if using router)
+    // this.route.paramMap.subscribe(...);
+  }
+
+  // ──────────────────────────────────────────────────────
+
+  ngAfterViewInit(): void {
+    console.log('4. ngAfterViewInit — view rendered, @ViewChild available');
+
+    // @ViewChild is NOW available
+    if (this.chartContainer) {
+      console.log('   Chart container element:', this.chartContainer.nativeElement);
+      // Initialize third-party chart library
+      // const chart = new ChartLibrary(this.chartContainer.nativeElement);
+    }
+  }
+
+  // ──────────────────────────────────────────────────────
+
+  ngOnDestroy(): void {
+    console.log('5. ngOnDestroy — component about to be destroyed, cleanup');
+
+    // Unsubscribe from Observables to prevent memory leaks
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      console.log('   Unsubscribed from product service');
+    }
+
+    // Clear timers, event listeners, etc.
+  }
+
+  // ──────────────────────────────────────────────────────
+
+  private loadProduct(): void {
+    console.log(`   Loading product ${this.productId}...`);
+
+    // Unsubscribe previous subscription if exists
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    // Subscribe to product service
+    this.subscription = this.productService.getById(this.productId).subscribe(
+      (data) =&gt; {
+        this.product = data;
+        console.log('   Product loaded:', data);
+      },
+      (error) =&gt; {
+        console.error('   Error loading product:', error);
+        this.product = null;
+      }
+    );
+  }
+}
+
+// ──────────────────────────────────────────────────────
+// LIFECYCLE SEQUENCE in browser console:
+// 1. CONSTRUCTOR — component instance created (NO ACCESS to @Input yet)
+// 2. ngOnChanges — @Input properties changed
+//    productId changed from 0 to 5
+// 3. ngOnInit — @Input bindings ready, load initial data
+//    productId = 5
+//    Loading product 5...
+//    Product loaded: { id: 5, name: 'Laptop', price: 999 }
+// 4. ngAfterViewInit — view rendered, @ViewChild available
+//    Chart container element: &lt;div&gt;...&lt;/div&gt;
+//
+// (user navigates away or component removed)
+//
+// 5. ngOnDestroy — component about to be destroyed, cleanup
+//    Unsubscribed from product service
+</code></pre>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-content">
+            <p class="callout-title">Memory leak trap: forgetting to unsubscribe</p>
+            <p class="callout-body">In ngOnDestroy, always unsubscribe from long-lived Observables. If you don't, the subscription stays active even after the component is destroyed, leaking memory. Use the <code>async</code> pipe in templates (it auto-unsubscribes) or implement <code>OnDestroy</code> and call <code>.unsubscribe()</code>.</p>
+          </div>
+        </div>
+
+        <!-- ═══════════ PAGE NAV ═══════════ -->
+        <nav class="page-nav">
+          <a href="interview-react.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">←</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">React</span></div>
+          </a>
+          <a href="interview.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">All Questions</span></div>
+            <span class="page-nav-arrow">→</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 DevDocs. For learning & interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
