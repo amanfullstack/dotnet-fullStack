@@ -1859,6 +1859,11 @@ details[open] .qa-chevron {
     white-space: nowrap;
   }
 
+  /* Push theme toggle to the RIGHT — fixes it disappearing behind the hamburger */
+  .header-actions {
+    margin-left: auto;
+  }
+
   /* Move hamburger to the LEFT side of the header (in line with header height) */
   .menu-btn {
     position: fixed;
