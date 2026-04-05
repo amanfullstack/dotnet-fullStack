@@ -1122,6 +1122,300 @@ public string GetOrderStatus(Order order) =&gt;
             </div>
           </details>
 
+          <details class="qa-item">
+            <summary class="qa-question">Q46. What is the difference between <code>List&lt;T&gt;</code> and <code>IEnumerable&lt;T&gt;</code>? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>List&lt;T&gt;</strong> is a concrete collection class. <strong>IEnumerable&lt;T&gt;</strong> is an interface that describes "something you can iterate over".</p>
+              <table class="data-table">
+                <thead>
+                  <tr><th>Aspect</th><th>List&lt;T&gt;</th><th>IEnumerable&lt;T&gt;</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Type</strong></td>
+                    <td>Concrete class</td>
+                    <td>Interface/abstraction</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Memory</strong></td>
+                    <td>All items loaded in memory</td>
+                    <td>Can be lazy (yields items one at a time)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Indexing</strong></td>
+                    <td>Supports <code>[i]</code> fast access</td>
+                    <td>No indexer (must iterate from start)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Modification</strong></td>
+                    <td>Can Add(), Remove(), Count</td>
+                    <td>Read-only (depends on implementation)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>LINQ</strong></td>
+                    <td>LINQ executes immediately</td>
+                    <td>LINQ defers (lazy evaluation)</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ❌ BAD — returns List, forces caller to use concrete type
+public List&lt;Product&gt; GetProducts() { return _products.ToList(); }
+
+// ✅ GOOD — returns IEnumerable, flexible, lazy
+public IEnumerable&lt;Product&gt; GetProducts() { return _products; }
+
+// LINQ difference: List vs IEnumerable
+var list = new List&lt;int&gt; { 1, 2, 3 }.Where(x =&gt; x &gt; 1);  // executes now
+IEnumerable&lt;int&gt; lazy = _numbers.Where(x =&gt; x &gt; 1);       // executes on iteration
+
+foreach (var num in lazy)  // WHERE query runs HERE
+{
+    Console.WriteLine(num);
+}</code></pre>
+              </div>
+              <p><strong>Best practice:</strong> Return IEnumerable&lt;T&gt; or IQueryable&lt;T&gt; from methods. Let callers decide if they need a List. This enables lazy evaluation and performance optimization.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q47. What is the difference between <code>class</code> and <code>record</code> in C# 9+? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Records</strong> (C# 9+) are a new type primarily for immutable data. They provide automatic structural equality, deconstruction, and concise syntax compared to classes.</p>
+              <table class="data-table">
+                <thead>
+                  <tr><th>Feature</th><th>class</th><th>record</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Equality</strong></td>
+                    <td>Reference equality (default)</td>
+                    <td>Structural equality (by default)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>ToString()</strong></td>
+                    <td>ClassName (default)</td>
+                    <td>Shows all properties</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Immutability</strong></td>
+                    <td>Mutable (by design)</td>
+                    <td>Immutable (by design)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Deconstruction</strong></td>
+                    <td>Manual implementation</td>
+                    <td>Automatic</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Use case</strong></td>
+                    <td>Complex entities, state management</td>
+                    <td>DTOs, lightweight data transfer</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ❌ CLASS — verbose, manual equality
+public class PersonClass
+{
+    public string Name { get; init; }
+    public int Age { get; init; }
+    public override bool Equals(object? obj) { /* boilerplate */ }
+    public override int GetHashCode() { /* boilerplate */ }
+}
+
+// ✅ RECORD — concise, automatic equality
+public record PersonRecord(string Name, int Age);
+
+var p1 = new PersonRecord("Alice", 30);
+var p2 = new PersonRecord("Alice", 30);
+Console.WriteLine(p1 == p2);  // true (structural equality)
+
+// Automatic deconstruction
+var (name, age) = p1;
+Console.WriteLine($"{name}, {age}");  // Alice, 30
+
+// Inheritance
+public record EmployeeRecord(string Name, int Age, string Department)
+    : PersonRecord(Name, Age);</code></pre>
+              </div>
+              <p><strong>When to use records:</strong> DTOs, API responses, immutable data transfer objects. When to use classes: domain entities with complex behavior, mutable state.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q48. What is the difference between <code>==</code> and <code>Equals()</code> for string comparison? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Both <code>==</code> and <code>Equals()</code> compare string content (not reference). However, they have subtle differences in behavior and performance.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">string a = "Product";
+string b = "Product";
+string c = new string('P', 1) + "roduct";  // constructed dynamically
+
+// Both work for strings, but different for other types
+Console.WriteLine(a == b);           // true
+Console.WriteLine(a.Equals(b));      // true
+Console.WriteLine((object)a == (object)b);  // true (string interning)
+
+// WHY? For strings, == operator is overloaded to call Equals()
+// For other reference types, == checks reference identity
+
+// Example with custom class
+public class Product
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+}
+
+var p1 = new Product { Id = 1, Name = "Laptop" };
+var p2 = new Product { Id = 1, Name = "Laptop" };
+
+Console.WriteLine(p1 == p2);      // false (different objects)
+Console.WriteLine(p1.Equals(p2)); // false (no override)
+
+// Override for structural equality
+public class ProductFixed
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+
+    public override bool Equals(object? obj) =&gt;
+        obj is ProductFixed other && Id == other.Id && Name == other.Name;
+
+    public override int GetHashCode() =&gt; HashCode.Combine(Id, Name);
+}
+
+var pf1 = new ProductFixed { Id = 1, Name = "Laptop" };
+var pf2 = new ProductFixed { Id = 1, Name = "Laptop" };
+Console.WriteLine(pf1.Equals(pf2)); // true</code></pre>
+              </div>
+              <p><strong>Best practice:</strong> For strings, either works — use <code>==</code> for brevity. For custom types, override <code>Equals()</code> and <code>GetHashCode()</code> if you need structural equality. Better yet, use <code>record</code> types which do this automatically.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q49. What is reflection in C#? When would you use it? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Reflection</strong> is the ability to inspect and manipulate types, properties, methods, and fields at runtime. You can discover what a type contains without knowing it at compile time.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">public class Product
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+}
+
+// Reflection: discovering type information at runtime
+var type = typeof(Product);
+Console.WriteLine($"Type: {type.Name}");
+
+// Get all properties
+var properties = type.GetProperties();
+foreach (var prop in properties)
+{
+    Console.WriteLine($"  {prop.Name}: {prop.PropertyType.Name}");
+}
+// Output:
+//   Id: Int32
+//   Name: String
+//   Price: Decimal
+
+// Create instance using reflection
+var instance = Activator.CreateInstance(type);
+var idProp = type.GetProperty("Id");
+idProp?.SetValue(instance, 1);
+
+// Invoke method using reflection
+var method = type.GetMethod("ToString");
+var result = method?.Invoke(instance, null);
+Console.WriteLine($"Result: {result}");</code></pre>
+              </div>
+              <p><strong>Common uses of reflection:</strong></p>
+              <ul>
+                <li>Dependency Injection containers (discovering types that implement an interface)</li>
+                <li>ORM frameworks like Entity Framework (discovering properties for database mapping)</li>
+                <li>Serialization libraries (JSON, XML converters)</li>
+                <li>Unit testing frameworks (discovering test methods)</li>
+                <li>Validation frameworks (discovering validation attributes)</li>
+              </ul>
+              <p><strong>⚠️ Warning:</strong> Reflection is slow. Use it sparingly, typically once during application startup (not in loops). Cache reflection results when possible.</p>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary class="qa-question">Q50. What is a delegate? How does it relate to <code>event</code>? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Delegate</strong> is a type-safe function pointer — a type that represents "a method with a specific signature". <strong>Event</strong> is a wrapper around a delegate that controls who can subscribe/unsubscribe.</p>
+              <div class="code-block">
+                <div class="code-block-header">
+                  <div class="code-dots"><span></span><span></span><span></span></div>
+                  <span class="code-lang">csharp</span>
+                </div>
+                <pre><code class="language-csharp">// ─── DELEGATE: define a function signature ───
+public delegate void ProductEventHandler(Product product);
+
+// ─── CLASS that raises an event ───
+public class ProductService
+{
+    // EVENT: controlled access to delegate
+    public event ProductEventHandler? OnProductAdded;
+
+    public void AddProduct(Product product)
+    {
+        // ... add product to database ...
+
+        // Raise the event (only possible within this class)
+        OnProductAdded?.Invoke(product);
+    }
+}
+
+// ─── SUBSCRIBERS to the event ───
+var service = new ProductService();
+
+// Subscribe: += to register handler
+service.OnProductAdded += (product) =&gt;
+{
+    Console.WriteLine($"Product added: {product.Name}");
+};
+
+// Another subscriber
+service.OnProductAdded += (product) =&gt;
+{
+    Console.WriteLine($"Logging: {DateTime.Now} - {product.Name}");
+};
+
+// When AddProduct is called, both handlers run
+service.AddProduct(new Product { Name = "Laptop", Price = 999m });
+
+// Output:
+// Product added: Laptop
+// Logging: [timestamp] - Laptop</code></pre>
+              </div>
+              <p><strong>Delegate vs Event:</strong></p>
+              <ul>
+                <li><strong>Delegate:</strong> Just a type (function signature). Anyone can invoke it.</li>
+                <li><strong>Event:</strong> Wrapper that restricts access. Only the class that owns it can invoke it. External code can only subscribe (+=) or unsubscribe (-=).</li>
+              </ul>
+              <p><strong>Modern alternative:</strong> Use <code>Action&lt;T&gt;</code> and <code>Func&lt;T, TResult&gt;</code> instead of custom delegates.</p>
+            </div>
+          </details>
+
         </div><!-- /.qa-list -->
 
         <!-- ═══════════ Modern C# Features ═══════════ -->
