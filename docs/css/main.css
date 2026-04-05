@@ -175,6 +175,15 @@ code {
   word-break: break-word;
 }
 
+/* Code inside question summaries — no padding/background to avoid gaps */
+.qa-question code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--primary);
+  font-size: inherit;
+}
+
 /* ----------------------------------------------------------------
    4. CODE BLOCKS
    ---------------------------------------------------------------- */
