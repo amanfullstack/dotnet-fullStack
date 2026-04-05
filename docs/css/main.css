@@ -1166,12 +1166,13 @@ table.data-table tr:hover td { background: var(--surface-2); }
 /* ----------------------------------------------------------------
    16. Q&A ACCORDION
    ---------------------------------------------------------------- */
-.qa-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+.qa-list { display: flex; flex-direction: column; gap: 0; }
 .qa-item {
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
   overflow: hidden;
   transition: all var(--t-fast);
+  margin-bottom: var(--sp-4);
 }
 .qa-item:hover { border-color: var(--primary); }
 
@@ -1222,9 +1223,11 @@ details[open] .qa-chevron {
 }
 .qa-answer p { margin-bottom: var(--sp-3); color: var(--text-2); font-size: var(--text-sm); }
 .qa-answer p:last-child { margin-bottom: 0; }
-.qa-answer ul { margin-left: var(--sp-5); }
-.qa-answer li { color: var(--text-2); font-size: var(--text-sm); }
-.qa-answer pre { margin: var(--sp-3) 0; }
+.qa-answer table { margin: var(--sp-4) 0; }
+.qa-answer ul { margin: var(--sp-3) 0 var(--sp-3) var(--sp-5); }
+.qa-answer li { color: var(--text-2); font-size: var(--text-sm); margin-bottom: var(--sp-2); }
+.qa-answer li:last-child { margin-bottom: 0; }
+.qa-answer pre { margin: var(--sp-4) 0; }
 
 /* ----------------------------------------------------------------
    17. LEARNING PATHS
