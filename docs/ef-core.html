@@ -147,7 +147,7 @@
         </div>
 
         <!-- ===================== CODE-FIRST ===================== -->
-        <h2 id="code-first">Code-First Approach (Recommended)</h2>
+        <h2 id="code-first">Code-First Approach (Recommended)<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>In the code-first workflow, you write C# classes first and EF Core generates the database schema from them. This keeps your schema version-controlled alongside your code.</p>
 
         <ol class="step-list">
@@ -295,7 +295,7 @@ dotnet ef migrations list</code></pre>
         </div>
 
         <!-- ===================== CRUD ===================== -->
-        <h2 id="crud">CRUD Operations</h2>
+        <h2 id="crud">CRUD Operations<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>EF Core wraps your SQL in async LINQ methods. Always use the <code>Async</code> variants (<code>ToListAsync</code>, <code>FindAsync</code>, <code>SaveChangesAsync</code>) in ASP.NET Core to avoid thread starvation.</p>
 
         <h3>Create</h3>
@@ -438,7 +438,7 @@ public async Task&lt;bool&gt; HardDeleteAsync(int id)
         </div>
 
         <!-- ===================== CHANGE TRACKING ===================== -->
-        <h2 id="change-tracking">Change Tracking</h2>
+        <h2 id="change-tracking">Change Tracking<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>EF Core automatically tracks the state of every entity it loads. When you call <code>SaveChangesAsync()</code>, it generates the exact SQL needed to sync those changes to the database.</p>
 
         <table class="comparison-table">
@@ -532,7 +532,7 @@ Console.WriteLine(entry.State); // EntityState.Unchanged / Modified / Added / De
         </table>
 
         <!-- ===================== SOFT DELETE ===================== -->
-        <h2 id="soft-delete">Soft Delete Pattern</h2>
+        <h2 id="soft-delete">Soft Delete Pattern<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>Instead of removing rows, set an <code>IsActive</code> flag to <code>false</code>. A global query filter in <code>OnModelCreating</code> ensures soft-deleted records are automatically excluded from every query without any extra <code>Where()</code> clauses in your service code.</p>
 
         <div class="code-block">
@@ -567,7 +567,7 @@ Console.WriteLine(entry.State); // EntityState.Unchanged / Modified / Added / De
         </div>
 
         <!-- ===================== RELATIONSHIPS ===================== -->
-        <h2 id="relationships">Relationships</h2>
+        <h2 id="relationships">Relationships<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Models" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>EF Core understands navigation properties and uses them to build JOINs. Define the relationship in your model classes; EF Core infers the foreign key by convention or you can configure it explicitly.</p>
 
         <h3>One-to-Many: Category &rarr; Products</h3>
@@ -654,7 +654,7 @@ var categories = await _context.Categories
         </table>
 
         <!-- ===================== MIGRATIONS ===================== -->
-        <h2 id="migrations">Migrations</h2>
+        <h2 id="migrations">Migrations<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Migrations" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>Migrations are versioned, incremental schema change files. Each migration has an <code>Up()</code> method (apply) and a <code>Down()</code> method (revert). EF Core tracks which migrations have been applied in a <code>__EFMigrationsHistory</code> table.</p>
 
         <ul class="kv-list">
@@ -736,7 +736,7 @@ var categories = await _context.Categories
         </div>
 
         <!-- ===================== PERFORMANCE ===================== -->
-        <h2 id="performance">Performance Tips</h2>
+        <h2 id="performance">Performance Tips<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>EF Core is fast by default, but a few common patterns cause unnecessary overhead. The following table contrasts mistakes with the recommended approaches.</p>
 
         <table class="comparison-table">

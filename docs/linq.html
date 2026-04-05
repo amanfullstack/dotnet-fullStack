@@ -147,7 +147,7 @@
         </div>
 
         <!-- ===================================================== -->
-        <h2 id="method-vs-query">Method Syntax vs Query Syntax</h2>
+        <h2 id="method-vs-query">Method Syntax vs Query Syntax <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services/ProductService.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <p>Both syntaxes are equivalent — they produce the same compiled output. Method syntax is the dominant style in modern C# codebases and is the one you will see in EF Core repositories. Query syntax is sometimes more readable for complex multi-join scenarios.</p>
 
@@ -194,7 +194,7 @@ var queryResult =
         </div>
 
         <!-- ===================================================== -->
-        <h2 id="filtering">Filtering with Where</h2>
+        <h2 id="filtering">Filtering with Where <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services/ProductService.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <p><span class="hl">Where</span> is the core filtering operator. It accepts a predicate (a lambda returning <span class="hl">bool</span>) and returns every element for which the predicate is true. Multiple <span class="hl">Where</span> calls can be chained — they are combined with AND logic and, when used with EF Core, merged into a single SQL <span class="hl">WHERE</span> clause.</p>
 
@@ -247,7 +247,7 @@ var filtered = await query.ToListAsync();</code></pre>
         </div>
 
         <!-- ===================================================== -->
-        <h2 id="projection">Select — Projection</h2>
+        <h2 id="projection">Select — Projection <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services/ProductService.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <p><span class="hl">Select</span> transforms each element into a new shape. It is the LINQ equivalent of SQL's <span class="hl">SELECT</span> column list. Use it to pick specific properties, compute new values, or map entities to DTOs. When used with EF Core, projection limits the columns in the generated SQL — a significant performance win.</p>
 
@@ -300,7 +300,7 @@ var orderItems = orders.SelectMany(
         </div>
 
         <!-- ===================================================== -->
-        <h2 id="sorting">OrderBy / ThenBy — Sorting</h2>
+        <h2 id="sorting">OrderBy / ThenBy — Sorting <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services/ProductService.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <p>LINQ provides four primary sorting operators: <span class="hl">OrderBy</span>, <span class="hl">OrderByDescending</span>, <span class="hl">ThenBy</span>, and <span class="hl">ThenByDescending</span>. With EF Core these translate directly to SQL <span class="hl">ORDER BY</span> clauses.</p>
 
@@ -352,7 +352,7 @@ var good = products.Where(p => p.Price &gt; 100).OrderBy(p => p.Price);</code></
         </div>
 
         <!-- ===================================================== -->
-        <h2 id="grouping">GroupBy and Aggregation</h2>
+        <h2 id="grouping">GroupBy and Aggregation <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services/ProductService.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <p><span class="hl">GroupBy</span> partitions elements into groups based on a key selector. Each group is an <span class="hl">IGrouping&lt;TKey, TElement&gt;</span> — it has a <span class="hl">Key</span> property and is itself an <span class="hl">IEnumerable&lt;TElement&gt;</span> of the grouped items. Aggregation methods (<span class="hl">Count</span>, <span class="hl">Sum</span>, <span class="hl">Average</span>, <span class="hl">Min</span>, <span class="hl">Max</span>) are usually applied after grouping.</p>
 
@@ -420,7 +420,7 @@ Product mostCostly  = products.MaxBy(p => p.Price)!;       // Laptop (C# 10+)</c
         </div>
 
         <!-- ===================================================== -->
-        <h2 id="joins">Join Operations</h2>
+        <h2 id="joins">Join Operations <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services/ProductService.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <p>LINQ provides explicit join operators, but in EF Core you rarely need them because navigation properties let you traverse relationships naturally. Understanding when to use each approach is important for both interview discussions and performance optimisation.</p>
 
@@ -508,7 +508,7 @@ var withCategory = await _context.Products
         </div>
 
         <!-- ===================================================== -->
-        <h2 id="deferred-execution">Deferred vs Immediate Execution</h2>
+        <h2 id="deferred-execution">Deferred vs Immediate Execution <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services/ProductService.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <p>This is one of the most important LINQ concepts for performance — and a top interview question. LINQ queries are <strong>lazy by default</strong>: the query is defined but not executed until you actually iterate over the results.</p>
 
@@ -596,7 +596,7 @@ List&lt;Product&gt; page = await q            // ← SQL round-trip 2
         </div>
 
         <!-- ===================================================== -->
-        <h2 id="common-methods">Essential LINQ Methods Reference</h2>
+        <h2 id="common-methods">Essential LINQ Methods Reference <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services/ProductService.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <ul class="kv-list">
           <li>
@@ -662,7 +662,7 @@ List&lt;Product&gt; page = await q            // ← SQL round-trip 2
         </ul>
 
         <!-- ===================================================== -->
-        <h2 id="performance">Performance Tips</h2>
+        <h2 id="performance">Performance Tips <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services/ProductService.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <p>LINQ is expressive but can silently hide expensive operations. These guidelines will keep your LINQ code fast in both in-memory and database-backed scenarios.</p>
 

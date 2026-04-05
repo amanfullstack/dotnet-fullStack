@@ -144,8 +144,33 @@
         <p>Master fundamental C# algorithms and data structure problems.</p>
 
         <!-- Problem 1: Compare Two Objects -->
-        <h3 id="csharp-1">🟢 Problem 1: Compare Two Objects (Reference vs Value Types)</h3>
-        <p><strong>Problem:</strong> Write a function to check if two objects are equal. Handle both reference types (classes) and value types (structs). Demonstrate the difference between reference equality and value equality.</p>
+        <div class="problem-container" id="csharp-1">
+          <h3 id="csharp-1">🟢 Problem 1: Compare Two Objects (Reference vs Value Types)</h3>
+          <p><strong>Problem:</strong> Write a function to check if two objects are equal. Handle both reference types (classes) and value types (structs). Demonstrate the difference between reference equality and value equality.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">C# (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="public class Product { public int Id { get; set; } public string Name { get; set; } public decimal Price { get; set; } public override bool Equals(object obj) { if (obj is not Product p) return false; return Id == p.Id && Name == p.Name && Price == p.Price; } }"></div>
+            <div id="editor-csharp-1" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -245,10 +270,37 @@ bool areEqual = p1.Equals(p2);  // true - same values!</code></pre>
           <li>"Use IEquatable&lt;T&gt; for better performance than object.Equals"</li>
           <li>"Be ready to explain when to use == vs Equals vs IEquatable"</li>
         </ul>
+          </details>
+        </div>
 
         <!-- Problem 2: Braces/Parentheses Matching -->
-        <h3 id="csharp-2">🟡 Problem 2: Valid Braces/Parentheses Matching (Stack)</h3>
-        <p><strong>Problem:</strong> Check if braces, parentheses, and brackets are balanced and properly nested in a string.</p>
+        <div class="problem-container" id="csharp-2">
+          <h3 id="csharp-2">🟡 Problem 2: Valid Braces/Parentheses Matching (Stack)</h3>
+          <p><strong>Problem:</strong> Check if braces, parentheses, and brackets are balanced and properly nested in a string.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">C# (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="public bool IsValidBraces(string s) { Stack<char> stack = new(); foreach(char c in s) { if(c=='('||c=='['||c=='{') stack.Push(c); else { if(stack.Count==0) return false; char top = stack.Pop(); if((c==')'&&top!='(')||(c==']'&&top!='[')||(c=='}'&&top!='{')) return false; } } return stack.Count == 0; }"></div>
+            <div id="editor-csharp-2" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -344,9 +396,37 @@ Console.WriteLine(IsValidBraces("([)]"));        // false - nesting error</code>
           <li>"Mention this is used in compilers for syntax validation"</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- Problem 3: Reverse String -->
-        <h3 id="csharp-3">🟢 Problem 3: Reverse String (Multiple Approaches)</h3>
-        <p><strong>Problem:</strong> Reverse a string in-place and using LINQ. Compare performance and readability.</p>
+        <div class="problem-container" id="csharp-3">
+          <h3 id="csharp-3">🟢 Problem 3: Reverse String (Multiple Approaches)</h3>
+          <p><strong>Problem:</strong> Reverse a string in-place and using LINQ. Compare performance and readability.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">C# (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="public string ReverseString(string s) { char[] arr = s.ToCharArray(); Array.Reverse(arr); return new string(arr); }"></div>
+            <div id="editor-csharp-3" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -447,9 +527,37 @@ Console.WriteLine(ReverseString_StringBuilder("hello"));  // "olleh"</code></pre
           <li>"Strings are char arrays internally — reverse by swapping ends"</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- Problem 4: Fibonacci Series -->
-        <h3 id="csharp-4">🟡 Problem 4: Fibonacci Series (Recursive, Iterative, Memoization)</h3>
-        <p><strong>Problem:</strong> Calculate the Nth Fibonacci number. Compare recursive, iterative, and memoized approaches.</p>
+        <div class="problem-container" id="csharp-4">
+          <h3 id="csharp-4">🟡 Problem 4: Fibonacci Series (Recursive, Iterative, Memoization)</h3>
+          <p><strong>Problem:</strong> Calculate the Nth Fibonacci number. Compare recursive, iterative, and memoized approaches.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">C# (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="public long Fibonacci(int n) { if (n <= 1) return n; long prev = 0, curr = 1; for (int i = 2; i <= n; i++) { long next = prev + curr; prev = curr; curr = next; } return curr; }"></div>
+            <div id="editor-csharp-4" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -585,9 +693,37 @@ Console.WriteLine($"Memoized: {sw.ElapsedMilliseconds}ms");</code></pre>
           <li>"In ProductCatalogAPI, we use similar caching strategies for queries"</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- Problem 5: Prime Number Check -->
-        <h3 id="csharp-5">🟡 Problem 5: Prime Number Check</h3>
-        <p><strong>Problem:</strong> Determine if a number is prime. Optimize from trial division to square root method.</p>
+        <div class="problem-container" id="csharp-5">
+          <h3 id="csharp-5">🟡 Problem 5: Prime Number Check</h3>
+          <p><strong>Problem:</strong> Determine if a number is prime. Optimize from trial division to square root method.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">C# (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="public bool IsPrime(int n) { if (n < 2) return false; if (n == 2) return true; if (n % 2 == 0) return false; int sqrt = (int)Math.Sqrt(n); for (int i = 3; i <= sqrt; i += 2) { if (n % i == 0) return false; } return true; }"></div>
+            <div id="editor-csharp-5" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -672,9 +808,37 @@ Console.WriteLine(IsPrime_Optimized(1000003)); // true</code></pre>
           <li>"Mention the Sieve of Eratosthenes for finding all primes up to n"</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- Problem 6: Remove Duplicates from Array -->
-        <h3 id="csharp-6">🟢 Problem 6: Remove Duplicates from Array</h3>
-        <p><strong>Problem:</strong> Remove duplicates from an array in-place and return the count of unique elements.</p>
+        <div class="problem-container" id="csharp-6">
+          <h3 id="csharp-6">🟢 Problem 6: Remove Duplicates from Array</h3>
+          <p><strong>Problem:</strong> Remove duplicates from an array in-place and return the count of unique elements.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">C# (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="public int RemoveDuplicates(int[] nums) { if (nums.Length == 0) return 0; int k = 1; for (int i = 1; i < nums.Length; i++) { if (nums[i] != nums[i - 1]) { nums[k] = nums[i]; k++; } } return k; }"></div>
+            <div id="editor-csharp-6" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -766,9 +930,37 @@ for (int i = 0; i &lt; k; i++)
           <li>"Similar technique works for 'Remove Element' problems"</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- Problem 7: String Rotation Check -->
-        <h3 id="csharp-7">🟡 Problem 7: String Rotation Check</h3>
-        <p><strong>Problem:</strong> Check if string s2 is a rotation of string s1.</p>
+        <div class="problem-container" id="csharp-7">
+          <h3 id="csharp-7">🟡 Problem 7: String Rotation Check</h3>
+          <p><strong>Problem:</strong> Check if string s2 is a rotation of string s1.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">C# (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="public bool IsRotation(string s1, string s2) { if (s1.Length != s2.Length) return false; string temp = s1 + s1; return temp.Contains(s2); }"></div>
+            <div id="editor-csharp-7" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -850,9 +1042,37 @@ Console.WriteLine(IsRotation("hello", "hallo"));              // false</code></p
           <li>"Mention KMP algorithm for O(n) substring search if asked"</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- Problem 8: Anagram Detection -->
-        <h3 id="csharp-8">🟢 Problem 8: Anagram Detection</h3>
-        <p><strong>Problem:</strong> Check if two strings are anagrams of each other (same characters, different order).</p>
+        <div class="problem-container" id="csharp-8">
+          <h3 id="csharp-8">🟢 Problem 8: Anagram Detection</h3>
+          <p><strong>Problem:</strong> Check if two strings are anagrams of each other (same characters, different order).</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">C# (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="public bool IsAnagram(string s1, string s2) { if (s1.Length != s2.Length) return false; Dictionary<char, int> charCount = new(); foreach (char ch in s1) { if (charCount.ContainsKey(ch)) charCount[ch]++; else charCount[ch] = 1; } foreach (char ch in s2) { if (!charCount.ContainsKey(ch)) return false; charCount[ch]--; if (charCount[ch] < 0) return false; } return true; }"></div>
+            <div id="editor-csharp-8" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -977,13 +1197,42 @@ public bool IsAnagram_LinqGroupBy(string s1, string s2)
           <li>"Use array[26] instead of Dictionary for letters only"</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- ========== SQL CHALLENGES ========== -->
         <h2 id="sql-challenges">SQL Coding Challenges</h2>
         <p>Master database queries with window functions, CTEs, and advanced SQL patterns.</p>
 
         <!-- Problem 1: Nth Highest Salary -->
-        <h3 id="sql-1">🟡 Problem 1: Nth Highest Salary (ROW_NUMBER, DENSE_RANK, CTE)</h3>
-        <p><strong>Problem:</strong> Find the Nth highest salary from an Employee table. Show three approaches.</p>
+        <div class="problem-container" id="sql-1">
+          <h3 id="sql-1">🟡 Problem 1: Nth Highest Salary (ROW_NUMBER, DENSE_RANK, CTE)</h3>
+          <p><strong>Problem:</strong> Find the Nth highest salary from an Employee table. Show three approaches.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">SQL (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="-- Find 2nd highest salary
+SELECT Salary FROM Employees ORDER BY Salary DESC LIMIT 1 OFFSET 1;"></div>
+            <div id="editor-sql-1" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -1095,9 +1344,38 @@ WHERE Rank = 2;
           <li>"CTEs make complex queries readable — always use them"</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- Problem 2: Max Salary Per Department -->
-        <h3 id="sql-2">🟢 Problem 2: Maximum Salary Per Department</h3>
-        <p><strong>Problem:</strong> Find the maximum salary for each department along with employee details.</p>
+        <div class="problem-container" id="sql-2">
+          <h3 id="sql-2">🟢 Problem 2: Maximum Salary Per Department</h3>
+          <p><strong>Problem:</strong> Find the maximum salary for each department along with employee details.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">SQL (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="-- Max salary per department
+SELECT DepartmentId, MAX(Salary) AS MaxSalary FROM Employees GROUP BY DepartmentId;"></div>
+            <div id="editor-sql-2" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -1158,9 +1436,38 @@ WHERE e.RankInDept = 1;
           <li>ROW_NUMBER() OVER (PARTITION BY...): Get top N per group</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- Problem 3: Running Total -->
-        <h3 id="sql-3">🟡 Problem 3: Running Total (SUM OVER)</h3>
-        <p><strong>Problem:</strong> Calculate cumulative sum of sales ordered by date.</p>
+        <div class="problem-container" id="sql-3">
+          <h3 id="sql-3">🟡 Problem 3: Running Total (SUM OVER)</h3>
+          <p><strong>Problem:</strong> Calculate cumulative sum of sales ordered by date.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">SQL (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="-- Running total of sales
+SELECT SaleDate, Sales, SUM(Sales) OVER (ORDER BY SaleDate) AS RunningTotal FROM Sales;"></div>
+            <div id="editor-sql-3" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -1209,9 +1516,38 @@ FROM Sales
 ORDER BY SaleDate;</code></pre>
         </div>
 
+          </details>
+        </div>
+
         <!-- Problem 4: Gap Detection in Sequence -->
-        <h3 id="sql-4">🟡 Problem 4: Gap Detection in Sequence</h3>
-        <p><strong>Problem:</strong> Find missing sequence numbers in a table.</p>
+        <div class="problem-container" id="sql-4">
+          <h3 id="sql-4">🟡 Problem 4: Gap Detection in Sequence</h3>
+          <p><strong>Problem:</strong> Find missing sequence numbers in a table.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">SQL (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="-- Find gaps in sequence
+SELECT Number FROM Numbers ORDER BY Number;"></div>
+            <div id="editor-sql-4" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -1239,9 +1575,38 @@ WHERE Number + 1 != LEAD(Number) OVER (ORDER BY Number);
 -- 7            | 7</code></pre>
         </div>
 
+          </details>
+        </div>
+
         <!-- Problem 5: Find Duplicates -->
-        <h3 id="sql-5">🟢 Problem 5: Find Duplicate Records</h3>
-        <p><strong>Problem:</strong> Find duplicate email addresses or any repeated values.</p>
+        <div class="problem-container" id="sql-5">
+          <h3 id="sql-5">🟢 Problem 5: Find Duplicate Records</h3>
+          <p><strong>Problem:</strong> Find duplicate email addresses or any repeated values.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">SQL (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="-- Find duplicate emails
+SELECT Email, COUNT(*) AS Count FROM Users GROUP BY Email HAVING COUNT(*) > 1;"></div>
+            <div id="editor-sql-5" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -1265,9 +1630,38 @@ FROM (
 WHERE EmailCount &gt; 1;</code></pre>
         </div>
 
+          </details>
+        </div>
+
         <!-- Problem 6: Window Functions Practice -->
-        <h3 id="sql-6">🟡 Problem 6: RANK vs DENSE_RANK vs ROW_NUMBER</h3>
-        <p><strong>Problem:</strong> Compare three ranking functions with sample data.</p>
+        <div class="problem-container" id="sql-6">
+          <h3 id="sql-6">🟡 Problem 6: RANK vs DENSE_RANK vs ROW_NUMBER</h3>
+          <p><strong>Problem:</strong> Compare three ranking functions with sample data.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">SQL (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="-- Compare ROW_NUMBER vs RANK vs DENSE_RANK
+SELECT Student, Score FROM StudentScores ORDER BY Score DESC;"></div>
+            <div id="editor-sql-6" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -1298,13 +1692,41 @@ FROM StudentScores;
 -- DENSE_RANK: No skip (1, 2, 2, 3, 4)</code></pre>
         </div>
 
+          </details>
+        </div>
+
         <!-- ========== JAVASCRIPT CHALLENGES ========== -->
         <h2 id="javascript-challenges">JavaScript Coding Challenges</h2>
         <p>Master essential JavaScript async patterns, closures, and performance.</p>
 
         <!-- Problem 1: Debounce Implementation -->
-        <h3 id="js-1">🟡 Problem 1: Debounce Function Implementation</h3>
-        <p><strong>Problem:</strong> Implement a debounce function that delays execution of a callback until after N milliseconds of inactivity.</p>
+        <div class="problem-container" id="js-1">
+          <h3 id="js-1">🟡 Problem 1: Debounce Function Implementation</h3>
+          <p><strong>Problem:</strong> Implement a debounce function that delays execution of a callback until after N milliseconds of inactivity.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">JavaScript (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="function debounce(func, delay) { let timeoutId; return function(...args) { clearTimeout(timeoutId); timeoutId = setTimeout(() => { func(...args); }, delay); }; } function handleSearch(term) { console.log(`✓ Searching for: ${term}`); } const debouncedSearch = debounce(handleSearch, 500); debouncedSearch('javascript'); debouncedSearch('debounce'); debouncedSearch('function'); setTimeout(() => console.log('✓ Debounce executed!'), 600);"></div>
+            <div id="editor-js-1" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -1408,9 +1830,37 @@ const debouncedClick = debounceAdvanced(handleClick, 300, { leading: true });</c
           <li>"Use debounce for search, Throttle for scroll events"</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- Problem 2: Promise Chain vs Async/Await -->
-        <h3 id="js-2">🟡 Problem 2: Promise Chain vs Async/Await (Error Handling)</h3>
-        <p><strong>Problem:</strong> Fetch user data, then posts, then comments. Compare promise chains with async/await.</p>
+        <div class="problem-container" id="js-2">
+          <h3 id="js-2">🟡 Problem 2: Promise Chain vs Async/Await (Error Handling)</h3>
+          <p><strong>Problem:</strong> Fetch user data, then posts, then comments. Compare promise chains with async/await.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">JavaScript (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="// Promise chain approach console.log('Promise approach:'); Promise.resolve(1).then(x => { console.log('Promise 1:', x); return x + 1; }).then(x => { console.log('Promise 2:', x); return x * 2; }).then(x => { console.log('Final result:', x); });"></div>
+            <div id="editor-js-2" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -1542,9 +1992,37 @@ async function fetchData_Parallel() {
           <li>"Be ready to explain promise chains for legacy code"</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- Problem 3: Event Loop Execution Order -->
-        <h3 id="js-3">🔴 Problem 3: Event Loop Execution Order (Callbacks, Promises, setTimeout)</h3>
-        <p><strong>Problem:</strong> Predict the output order. Tests understanding of event loop, call stack, microtasks, and macrotasks.</p>
+        <div class="problem-container" id="js-3">
+          <h3 id="js-3">🔴 Problem 3: Event Loop Execution Order (Callbacks, Promises, setTimeout)</h3>
+          <p><strong>Problem:</strong> Predict the output order. Tests understanding of event loop, call stack, microtasks, and macrotasks.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">JavaScript (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="console.log('1. Synchronous START'); Promise.resolve().then(() => console.log('3. Promise 1 (microtask)')).then(() => console.log('4. Promise 2 (microtask)')); console.log('2. Synchronous END'); setTimeout(() => console.log('5. setTimeout (macrotask)'), 0); console.log('✓ Event loop order shown above');"></div>
+            <div id="editor-js-3" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -1673,9 +2151,37 @@ console.log('End');
           <li>"Use Chrome DevTools to visualize the event loop"</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- Problem 4: Deep Clone vs Shallow Clone -->
-        <h3 id="js-4">🟡 Problem 4: Deep Clone vs Shallow Clone</h3>
-        <p><strong>Problem:</strong> Clone an object and array. Show the difference between shallow and deep cloning.</p>
+        <div class="problem-container" id="js-4">
+          <h3 id="js-4">🟡 Problem 4: Deep Clone vs Shallow Clone</h3>
+          <p><strong>Problem:</strong> Clone an object and array. Show the difference between shallow and deep cloning.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">JavaScript (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="function deepClone(obj, seen = new WeakMap()) { if (obj === null || typeof obj !== 'object') return obj; if (seen.has(obj)) return seen.get(obj); if (Array.isArray(obj)) { const clonedArray = []; seen.set(obj, clonedArray); obj.forEach((item, index) => { clonedArray[index] = deepClone(item, seen); }); return clonedArray; } const clonedObj = {}; seen.set(obj, clonedObj); for (const key in obj) { if (obj.hasOwnProperty(key)) { clonedObj[key] = deepClone(obj[key], seen); } } return clonedObj; } const original = { name: 'John', address: { city: 'NYC', zip: 10001 } }; const cloned = deepClone(original); cloned.address.city = 'LA'; console.log('Original city:', original.address.city); console.log('Cloned city:', cloned.address.city); console.log('✓ Deep clone independent!');"></div>
+            <div id="editor-js-4" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -1821,9 +2327,37 @@ console.log(original.d[2].e);   // 5</code></pre>
           <li>"Recursive method is needed for complex structures with functions"</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- Problem 5: Closure Counter Pattern -->
-        <h3 id="js-5">🟢 Problem 5: Closure Counter Pattern</h3>
-        <p><strong>Problem:</strong> Implement a counter function using closures. Demonstrate encapsulation.</p>
+        <div class="problem-container" id="js-5">
+          <h3 id="js-5">🟢 Problem 5: Closure Counter Pattern</h3>
+          <p><strong>Problem:</strong> Implement a counter function using closures. Demonstrate encapsulation.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">JavaScript (Playground)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="function createCounter(initialValue = 0, step = 1) { let count = initialValue; return { increment(amount = step) { count += amount; return count; }, decrement(amount = step) { count -= amount; return count; }, get() { return count; }, set(value) { count = value; return count; } }; } const counter = createCounter(0, 1); console.log('Start:', counter.get()); console.log('After inc:', counter.increment()); console.log('After inc:', counter.increment()); console.log('After dec:', counter.decrement()); console.log('✓ Closure maintained state!');"></div>
+            <div id="editor-js-5" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -1937,13 +2471,41 @@ counter2.decrement();     // 90</code></pre>
           <li>"Compare with class-based approach for clarity"</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- ========== ALGORITHM CHALLENGES ========== -->
         <h2 id="algorithm-challenges">Algorithm Coding Challenges</h2>
         <p>Master fundamental algorithms and data structure patterns used in ProductCatalogAPI and beyond.</p>
 
         <!-- Problem 1: Two Sum -->
-        <h3 id="algo-1">🟢 Problem 1: Two Sum (Array)</h3>
-        <p><strong>Problem:</strong> Given an array of integers and a target sum, find two numbers that add up to the target. Return their indices.</p>
+        <div class="problem-container" id="algo-1">
+          <h3 id="algo-1">🟢 Problem 1: Two Sum (Array)</h3>
+          <p><strong>Problem:</strong> Given an array of integers and a target sum, find two numbers that add up to the target. Return their indices.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">Algorithm (JavaScript)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="function twoSum(nums, target) { const seen = {}; for (let i = 0; i < nums.length; i++) { const complement = target - nums[i]; if (complement in seen) { return [seen[complement], i]; } seen[nums[i]] = i; } return []; } const nums = [2, 7, 11, 15]; console.log(twoSum(nums, 9));"></div>
+            <div id="editor-algo-1" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -2026,9 +2588,37 @@ Console.WriteLine($"[{result[0]}, {result[1]}]");  // [0, 1]
           <li>One Pass: Dictionary lookup is O(1)</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- Problem 2: Longest Substring Without Repeating -->
-        <h3 id="algo-2">🟡 Problem 2: Longest Substring Without Repeating Characters</h3>
-        <p><strong>Problem:</strong> Find the length of the longest substring without repeating characters.</p>
+        <div class="problem-container" id="algo-2">
+          <h3 id="algo-2">🟡 Problem 2: Longest Substring Without Repeating Characters</h3>
+          <p><strong>Problem:</strong> Find the length of the longest substring without repeating characters.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">Algorithm (JavaScript)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="function lengthOfLongestSubstring(s) { const charIndex = {}; let maxLength = 0; let left = 0; for (let right = 0; right < s.length; right++) { if (charIndex[s[right]] >= left) { left = charIndex[s[right]] + 1; } charIndex[s[right]] = right; maxLength = Math.max(maxLength, right - left + 1); } return maxLength; } const testCases = ['abcabcbb', 'bbbbb', 'pwwkew']; testCases.forEach(s => console.log(`'${s}' -> ${lengthOfLongestSubstring(s)}`)); console.log('✓ All tests passed!');"></div>
+            <div id="editor-algo-2" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -2090,9 +2680,37 @@ LongestSubstring("pwwkew");    // 3 ("wke")</code></pre>
           <li>One Pass: Single iteration through string</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- Problem 3: Merge Sorted Arrays -->
-        <h3 id="algo-3">🟡 Problem 3: Merge Sorted Arrays</h3>
-        <p><strong>Problem:</strong> Merge two sorted arrays into one sorted array.</p>
+        <div class="problem-container" id="algo-3">
+          <h3 id="algo-3">🟡 Problem 3: Merge Sorted Arrays</h3>
+          <p><strong>Problem:</strong> Merge two sorted arrays into one sorted array.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">Algorithm (JavaScript)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="function merge(nums1, nums2) { const result = []; let i = 0, j = 0; while (i < nums1.length && j < nums2.length) { if (nums1[i] <= nums2[j]) result.push(nums1[i++]); else result.push(nums2[j++]); } while (i < nums1.length) result.push(nums1[i++]); while (j < nums2.length) result.push(nums2[j++]); return result; } const arr1 = [1, 3, 5]; const arr2 = [2, 4, 6]; const merged = merge(arr1, arr2); console.log('Merged:', merged); console.log('✓ Merge completed!');"></div>
+            <div id="editor-algo-3" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -2141,11 +2759,75 @@ int[] nums2 = { 2, 4, 6 };
 var result = MergeSortedArrays(nums1, nums2);
 // result = [1, 2, 3, 4, 5, 6]</code></pre>
         </div>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <span class="code-lang">csharp</span>
+          </div>
+          <pre><code class="language-csharp">public int[] MergeSortedArrays(int[] nums1, int[] nums2)
+{
+    // ✅ Two Pointer: O(n + m) linear merge
+    int[] result = new int[nums1.Length + nums2.Length];
+    int i = 0, j = 0, k = 0;
+
+    while (i &lt; nums1.Length && j &lt; nums2.Length)
+    {
+        if (nums1[i] &lt;= nums2[j])
+            result[k++] = nums1[i++];
+        else
+            result[k++] = nums2[j++];
+    }
+
+    // Add remaining elements from nums1
+    while (i &lt; nums1.Length)
+        result[k++] = nums1[i++];
+
+    // Add remaining elements from nums2
+    while (j &lt; nums2.Length)
+        result[k++] = nums2[j++];
+
+    return result;
+}
+
+// Test:
+int[] nums1 = { 1, 3, 5 };
+int[] nums2 = { 2, 4, 6 };
+var result = MergeSortedArrays(nums1, nums2);
+// result = [1, 2, 3, 4, 5, 6]</code></pre>
+        </div>
         <p><em>Time: O(n + m) | Space: O(n + m) for result array | Optimal!</em></p>
 
+          </details>
+        </div>
+
         <!-- Problem 4: Binary Search vs Linear Search -->
-        <h3 id="algo-4">🟢 Problem 4: Binary Search vs Linear Search</h3>
-        <p><strong>Problem:</strong> Search for a value in a sorted array. Compare linear and binary approaches.</p>
+        <div class="problem-container" id="algo-4">
+          <h3 id="algo-4">🟢 Problem 4: Binary Search vs Linear Search</h3>
+          <p><strong>Problem:</strong> Search for a value in a sorted array. Compare linear and binary approaches.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">Algorithm (JavaScript)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="function binarySearch(nums, target) { let left = 0, right = nums.length - 1; while (left <= right) { const mid = left + Math.floor((right - left) / 2); if (nums[mid] === target) return mid; else if (nums[mid] < target) left = mid + 1; else right = mid - 1; } return -1; } const arr = [1, 3, 5, 7, 9, 11]; console.log('Search 7:', binarySearch(arr, 7)); console.log('Search 6:', binarySearch(arr, 6)); console.log('✓ Binary search works!');"></div>
+            <div id="editor-algo-4" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -2224,9 +2906,37 @@ Console.WriteLine(BinarySearch(nums, 14));  // -1
           <li>Overflow Risk: Use `mid = left + (right - left) / 2` to avoid overflow</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- Problem 5: Linked List Reversal -->
-        <h3 id="algo-5">🟡 Problem 5: Linked List Reversal (Iterative &amp; Recursive)</h3>
-        <p><strong>Problem:</strong> Reverse a linked list. Show both iterative and recursive approaches.</p>
+        <div class="problem-container" id="algo-5">
+          <h3 id="algo-5">🟡 Problem 5: Linked List Reversal (Iterative &amp; Recursive)</h3>
+          <p><strong>Problem:</strong> Reverse a linked list. Show both iterative and recursive approaches.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">Algorithm (JavaScript)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="class Node { constructor(val) { this.val = val; this.next = null; } } function reverseLinkedList(head) { let prev = null; let current = head; while (current) { const nextTemp = current.next; current.next = prev; prev = current; current = nextTemp; } return prev; } const head = new Node(1); head.next = new Node(2); head.next.next = new Node(3); const reversed = reverseLinkedList(head); let curr = reversed; const result = []; while (curr) { result.push(curr.val); curr = curr.next; } console.log('Reversed:', result); console.log('✓ Linked list reversed!');"></div>
+            <div id="editor-algo-5" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -2327,9 +3037,37 @@ public class ListNode
           <li>Save Next: Always save next node before changing link</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- Problem 6: Tree Traversal -->
-        <h3 id="algo-6">🔴 Problem 6: Tree Traversal (DFS &amp; BFS)</h3>
-        <p><strong>Problem:</strong> Traverse a binary tree using DFS (In-order, Pre-order, Post-order) and BFS.</p>
+        <div class="problem-container" id="algo-6">
+          <h3 id="algo-6">🔴 Problem 6: Tree Traversal (DFS &amp; BFS)</h3>
+          <p><strong>Problem:</strong> Traverse a binary tree using DFS (In-order, Pre-order, Post-order) and BFS.</p>
+
+          <!-- CODE EDITOR -->
+          <div class="code-editor-wrapper">
+            <div class="editor-header">
+              <span class="editor-lang-badge">Algorithm (JavaScript)</span>
+              <button class="run-code-btn">▶ Run</button>
+              <button class="copy-code-btn">📋 Copy</button>
+            </div>
+            <div style="display:none;" data-starter-code="class TreeNode { constructor(value) { this.value = value; this.left = null; this.right = null; } } function inOrder(root, result = []) { if (!root) return result; inOrder(root.left, result); result.push(root.value); inOrder(root.right, result); return result; } const root = new TreeNode(4); root.left = new TreeNode(2); root.right = new TreeNode(6); root.left.left = new TreeNode(1); root.left.right = new TreeNode(3); const traversal = inOrder(root); console.log('In-order:', traversal); console.log('✓ Tree traversal complete!');"></div>
+            <div id="editor-algo-6" class="monaco-editor" style="height: 400px;"></div>
+          </div>
+
+          <!-- OUTPUT CONSOLE -->
+          <div class="output-console" style="display:none;">
+            <div class="console-header">
+              <span>Output</span>
+              <button class="clear-output-btn">Clear</button>
+            </div>
+            <div class="console-content"></div>
+          </div>
+
+          <!-- SOLUTIONS & REFERENCE -->
+          <details>
+            <summary>📚 Solutions & Reference</summary>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -2500,6 +3238,9 @@ BFS        | Queue        | Shortest path, level-by-level</code></pre>
           <li>"BFS is essential for finding shortest paths"</li>
         </ul>
 
+          </details>
+        </div>
+
         <!-- PAGE NAVIGATION -->
         <nav class="page-nav">
           <a href="interview-react.html" class="page-nav-item prev">
@@ -2531,5 +3272,26 @@ BFS        | Queue        | Shortest path, level-by-level</code></pre>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script src="js/app.js"></script>
+<!-- Code Execution Scripts for Interactive Challenges -->
+<script src="js/executor.js"></script>
+<script src="js/code-runner.js"></script>
+
+<!-- Initialize Monaco Editors -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('🎯 DOMContentLoaded triggered');
+
+    // Use existing instance or create new one
+    const runner = window.monacoRunner || new MonacoRunner();
+
+    if (runner.isInitializing || Object.keys(runner.editors).length > 0) {
+      console.log('⚠ Initialization already in progress or complete, skipping');
+      return;
+    }
+
+    console.log('✅ Starting editor initialization...');
+    runner.initializeEditors();
+  });
+</script>
 </body>
 </html>

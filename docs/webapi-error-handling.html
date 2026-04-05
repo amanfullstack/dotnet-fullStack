@@ -127,7 +127,7 @@
         </div>
 
         <!-- ===== PROBLEM DETAILS ===== -->
-        <h2 id="problem-details">ProblemDetails Standard (RFC 7807)</h2>
+        <h2 id="problem-details">ProblemDetails Standard (RFC 7807)<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Middleware" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>ASP.NET Core uses the <code>ProblemDetails</code> format for error responses. It's an industry standard your clients can reliably parse.</p>
 
         <div class="code-block">
@@ -157,7 +157,7 @@
         </div>
 
         <!-- ===== GLOBAL HANDLER ===== -->
-        <h2 id="global-exception-handler">Global Exception Handler</h2>
+        <h2 id="global-exception-handler">Global Exception Handler<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Middleware" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>Register a global handler that catches unhandled exceptions anywhere in the pipeline and returns a safe error response.</p>
 
         <div class="code-block">
@@ -228,7 +228,7 @@ app.UseExceptionHandler();</code></pre>
         </div>
 
         <!-- ===== CUSTOM EXCEPTIONS ===== -->
-        <h2 id="custom-exceptions">Custom Exception Classes</h2>
+        <h2 id="custom-exceptions">Custom Exception Classes<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Exceptions" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>Define custom exceptions for domain-specific errors. The global handler maps them to appropriate status codes.</p>
 
         <div class="code-block">
@@ -266,7 +266,7 @@ public async Task&lt;Product&gt; GetByIdAsync(int id)
         </div>
 
         <!-- ===== TRY-CATCH IN SERVICE ===== -->
-        <h2 id="service-error-handling">Error Handling in Services</h2>
+        <h2 id="service-error-handling">Error Handling in Services<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>With a global handler, controllers don't need try-catch. Services can still catch specific exceptions when they need to perform cleanup or retry logic.</p>
 
         <div class="code-block">

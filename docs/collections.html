@@ -142,7 +142,7 @@
         </div>
 
         <!-- ===================================================== -->
-        <h2 id="list">List&lt;T&gt; — Dynamic Array</h2>
+        <h2 id="list">List&lt;T&gt; — Dynamic Array <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Models/" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <p><span class="hl">List&lt;T&gt;</span> is the most-used collection in .NET. It wraps an array internally and grows automatically as elements are added. It preserves insertion order and allows duplicate values. When in doubt about which collection to use, <span class="hl">List&lt;T&gt;</span> is the safe default.</p>
 
@@ -225,7 +225,7 @@ products.Clear();                             // remove all elements</code></pre
         </div>
 
         <!-- ===================================================== -->
-        <h2 id="dictionary">Dictionary&lt;TKey, TValue&gt; — Key-Value Store</h2>
+        <h2 id="dictionary">Dictionary&lt;TKey, TValue&gt; — Key-Value Store <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services/" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <p><span class="hl">Dictionary&lt;TKey, TValue&gt;</span> stores key-value pairs backed by a hash table. It provides O(1) average-case lookup, insertion, and deletion. Keys must be unique; values may repeat. This is the go-to collection whenever you need fast lookup by a known key — ID to object, string to configuration value, etc.</p>
 
@@ -344,7 +344,7 @@ foreach (string word in words)
         </table>
 
         <!-- ===================================================== -->
-        <h2 id="hashset">HashSet&lt;T&gt; — Unique Elements</h2>
+        <h2 id="hashset">HashSet&lt;T&gt; — Unique Elements <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services/" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <p><span class="hl">HashSet&lt;T&gt;</span> stores only unique elements, silently ignoring duplicates. Like <span class="hl">Dictionary</span>, it is backed by a hash table and provides O(1) average-case <span class="hl">Add</span>, <span class="hl">Remove</span>, and <span class="hl">Contains</span>. Its superpower is mathematical set operations: union, intersection, and difference.</p>
 
@@ -411,7 +411,7 @@ if (allowedRoles.Contains(userRole))   // O(1) — not O(n) like a list
         </div>
 
         <!-- ===================================================== -->
-        <h2 id="queue-stack">Queue and Stack</h2>
+        <h2 id="queue-stack">Queue and Stack <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services/" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <h3>Queue&lt;T&gt; — First In, First Out (FIFO)</h3>
 
@@ -514,7 +514,7 @@ Console.WriteLine(IsBalanced("({[}])"));  // false</code></pre>
         </div>
 
         <!-- ===================================================== -->
-        <h2 id="ienumerable-vs-iqueryable">IEnumerable vs IQueryable</h2>
+        <h2 id="ienumerable-vs-iqueryable">IEnumerable vs IQueryable <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services/" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <p>This is one of the most important distinctions in .NET data access — and one of the most common interview questions. Getting it wrong with EF Core can cause catastrophic performance problems at scale.</p>
 
@@ -633,7 +633,7 @@ var grouped = loaded.GroupBy(p => p.CategoryId); // in-memory grouping</code></p
         </div>
 
         <!-- ===================================================== -->
-        <h2 id="concurrent-collections">Thread-Safe Collections</h2>
+        <h2 id="concurrent-collections">Thread-Safe Collections <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services/" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <p>The standard <span class="hl">List&lt;T&gt;</span>, <span class="hl">Dictionary</span>, and other collections are <strong>not thread-safe</strong>. Concurrent reads and writes without synchronisation lead to data corruption and race conditions. The <span class="hl">System.Collections.Concurrent</span> namespace provides alternatives designed for multi-threaded scenarios.</p>
 
@@ -704,7 +704,7 @@ Console.WriteLine($"Sum: {results.Sum()}");</code></pre>
         </div>
 
         <!-- ===================================================== -->
-        <h2 id="when-to-use">Quick Reference: When to Use What</h2>
+        <h2 id="when-to-use">Quick Reference: When to Use What <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services/" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <table class="comparison-table">
           <thead>

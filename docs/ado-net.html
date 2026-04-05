@@ -142,7 +142,7 @@
         </div>
 
         <!-- ===================== KEY CLASSES ===================== -->
-        <h2 id="key-classes">Core ADO.NET Classes</h2>
+        <h2 id="key-classes">Core ADO.NET Classes<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>ADO.NET is built around a small set of classes in the <code>System.Data.SqlClient</code> (or <code>Microsoft.Data.SqlClient</code>) namespace. Understanding what each class does is the foundation for everything else.</p>
 
         <ul class="kv-list">
@@ -173,7 +173,7 @@
         </ul>
 
         <!-- ===================== CLOSED CONNECTION ===================== -->
-        <h2 id="closed-connection">Closed Connection Pattern (Web APIs)</h2>
+        <h2 id="closed-connection">Closed Connection Pattern (Web APIs)<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>In Web APIs, you open a connection, execute your query, read all results, then immediately close. The <code>using</code> statement guarantees the connection is returned to the pool even if an exception occurs.</p>
 
         <h3>GetAll with SqlDataReader</h3>
@@ -269,7 +269,7 @@
         </div>
 
         <!-- ===================== CRUD ===================== -->
-        <h2 id="crud">CRUD with ADO.NET</h2>
+        <h2 id="crud">CRUD with ADO.NET<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>Each operation uses a different <code>SqlCommand</code> execution method: <code>ExecuteReaderAsync</code> for SELECT, <code>ExecuteScalarAsync</code> for INSERT (to retrieve the new ID), and <code>ExecuteNonQueryAsync</code> for UPDATE and DELETE.</p>
 
         <h3>INSERT — Create a New Product</h3>
@@ -415,7 +415,7 @@
         </div>
 
         <!-- ===================== PARAMETERIZED QUERIES ===================== -->
-        <h2 id="parameterized-queries">Parameterized Queries — SQL Injection Prevention</h2>
+        <h2 id="parameterized-queries">Parameterized Queries — SQL Injection Prevention<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>SQL injection is one of the most common and dangerous web vulnerabilities. An attacker manipulates a query by injecting SQL syntax through user input. Parameterized queries completely prevent this because the value is never interpreted as SQL.</p>
 
         <h3>The Wrong Way (String Concatenation)</h3>
@@ -473,7 +473,7 @@ using var reader = await command.ExecuteReaderAsync();  // Safe!</code></pre>
         </div>
 
         <!-- ===================== TRANSACTIONS ===================== -->
-        <h2 id="transactions">Transactions</h2>
+        <h2 id="transactions">Transactions<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>A transaction groups multiple SQL statements into a single atomic unit. Either all statements succeed and commit to the database, or any failure causes all statements to roll back — leaving the database exactly as it was before.</p>
 
         <div class="callout callout-info">
@@ -538,7 +538,7 @@ public async Task&lt;bool&gt; TransferStockAsync(int fromProductId, int toProduc
         </div>
 
         <!-- ===================== CONNECTION POOLING ===================== -->
-        <h2 id="connection-pooling">Connection Pooling</h2>
+        <h2 id="connection-pooling">Connection Pooling<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/appsettings.json" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>Opening a database connection is expensive (TCP handshake, authentication, session setup). .NET automatically pools connections so they can be reused. When you call <code>connection.Open()</code>, you are borrowing a connection from the pool, not creating a new one. When you <code>Dispose()</code> the connection, it returns to the pool.</p>
 
         <div class="code-block">
@@ -606,7 +606,7 @@ await connection.OpenAsync();
         </ul>
 
         <!-- ===================== EF VS ADO ===================== -->
-        <h2 id="ef-vs-ado">EF Core vs ADO.NET — When to Use What</h2>
+        <h2 id="ef-vs-ado">EF Core vs ADO.NET — When to Use What<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>EF Core and ADO.NET are complementary tools. Most production applications use both: EF Core for the majority of CRUD operations and ADO.NET for the queries that need raw SQL performance or cannot be expressed cleanly in LINQ.</p>
 
         <table class="comparison-table">

@@ -127,7 +127,7 @@
         </div>
 
         <!-- ===== PROJECT STRUCTURE ===== -->
-        <h2 id="project-structure">Project Structure</h2>
+        <h2 id="project-structure">Project Structure <a href="https://github.com/godisone/dotnet-fullStack/tree/main/ProductCatalogAPI-WebAPI-EFCore" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>A well-organized Web API project follows a layered folder structure. Each folder has a single responsibility.</p>
 
         <div class="code-block">
@@ -162,7 +162,7 @@
         </div>
 
         <!-- ===== N-TIER ARCHITECTURE ===== -->
-        <h2 id="n-tier">N-Tier Architecture — 3 Data Access Approaches</h2>
+        <h2 id="n-tier">N-Tier Architecture — 3 Data Access Approaches <a href="https://github.com/godisone/dotnet-fullStack/tree/main/ProductCatalogAPI-WebAPI-EFCore" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>The API implements the <strong>same 7 endpoints three ways</strong> — EF Core (ORM), ADO.NET (raw SQL), and GraphQL (query language) — so you can compare all approaches side by side.</p>
 
         <div class="kv-list">
@@ -188,7 +188,7 @@ POST /graphql  { products { id name price } }
         </div>
 
         <!-- ===== PROGRAM.CS ===== -->
-        <h2 id="program-cs">Program.cs — Real Bootstrap Code</h2>
+        <h2 id="program-cs">Program.cs — Real Bootstrap Code <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Program.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>This is the actual <code>Program.cs</code> from the project. It registers EF Core, ADO.NET, GraphQL (HotChocolate), and three custom middleware components.</p>
 
         <div class="code-block">
@@ -253,7 +253,7 @@ app.Run();</code></pre>
         </div>
 
         <!-- ===== DBCONTEXT ===== -->
-        <h2 id="dbcontext">DbContext Configuration</h2>
+        <h2 id="dbcontext">DbContext Configuration <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>The DbContext is the bridge between your C# code and the database. It holds <code>DbSet&lt;T&gt;</code> properties for each entity and configuration in <code>OnModelCreating</code>.</p>
 
         <div class="code-block">
@@ -317,7 +317,7 @@ app.Run();</code></pre>
         </div>
 
         <!-- ===== ADO.NET ===== -->
-        <h2 id="ado-net">ADO.NET — Raw SQL Service</h2>
+        <h2 id="ado-net">ADO.NET — Raw SQL Service <a href="https://github.com/godisone/dotnet-fullStack/tree/main/ProductCatalogAPI-WebAPI-EFCore/Services" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p><code>ProductAdoService</code> performs the same operations as <code>ProductService</code> (EF Core) but uses <code>SqlConnection</code> and <code>SqlCommand</code> directly. Route prefix: <code>/api/ado/products</code></p>
 
         <div class="code-block">
@@ -426,7 +426,7 @@ app.Run();</code></pre>
         </div>
 
         <!-- ===== GRAPHQL ===== -->
-        <h2 id="graphql">GraphQL — HotChocolate</h2>
+        <h2 id="graphql">GraphQL — HotChocolate <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Program.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>GraphQL is served at <code>/graphql</code> by <strong>HotChocolate</strong>. The client sends a POST with a query string specifying exactly which fields it needs — no over-fetching.</p>
 
         <div class="code-block">

@@ -229,6 +229,12 @@ code {
   color: var(--primary);
   animation: github-icon-bounce 2s ease-in-out infinite;
   transition: all var(--t-fast);
+  filter: brightness(0) saturate(100%) invert(20%) sepia(93%) saturate(1300%) hue-rotate(204deg) brightness(102%) contrast(101%);
+}
+
+/* Dark mode GitHub icon */
+[data-theme="dark"] .github-link::before {
+  filter: brightness(0) saturate(100%) invert(100%);
 }
 
 .github-link:hover::after {
@@ -2147,3 +2153,422 @@ details[open] .qa-chevron {
 /* Pause on hover */
 .hero-section:hover .o-ring,
 .hero-section:hover .o-pin { animation-play-state: paused; }
+
+/* ================================================================
+   CODE EDITOR & EXECUTOR STYLES
+   ================================================================ */
+
+/* Problem Container */
+.problem-container {
+  margin: var(--sp-6) 0;
+  scroll-margin-top: var(--header-height);
+}
+
+.problem-container h3 {
+  margin-bottom: var(--sp-4);
+  font-size: var(--text-xl);
+  color: var(--text-1);
+}
+
+/* Code Editor Wrapper */
+.code-editor-wrapper {
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--surface);
+  margin: var(--sp-4) 0;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Editor Header & Buttons */
+.editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  gap: var(--sp-3);
+}
+
+.editor-lang-badge {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-2);
+  background: var(--surface-3);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+}
+
+.run-code-btn,
+.copy-code-btn {
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--primary);
+  color: white;
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+
+.run-code-btn:hover {
+  background: var(--primary-dark);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-1px);
+}
+
+.run-code-btn:disabled {
+  background: var(--text-4);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.copy-code-btn {
+  background: var(--surface-3);
+  color: var(--text-1);
+  border-color: var(--border-strong);
+}
+
+.copy-code-btn:hover {
+  background: var(--surface-4);
+}
+
+/* Monaco Editor Container */
+.monaco-editor {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--surface);
+}
+
+/* Output Console */
+.output-console {
+  margin: var(--sp-4) 0;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-2);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.console-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--surface-3);
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.clear-output-btn {
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--text-xs);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+
+.clear-output-btn:hover {
+  background: var(--danger);
+  color: white;
+  border-color: var(--danger);
+}
+
+.console-content {
+  padding: var(--sp-4);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  max-height: 400px;
+  overflow-y: auto;
+  color: var(--text-1);
+  background: var(--surface);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.console-line {
+  margin: var(--sp-2) 0;
+  padding: var(--sp-2) 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+pre.console-line {
+  margin: var(--sp-2) 0;
+  padding: var(--sp-2);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  background: transparent;
+  border: none;
+  font-size: 0.85rem;
+}
+
+pre.console-line.success {
+  color: var(--success);
+}
+
+pre.console-line.error {
+  color: var(--danger);
+  padding: var(--sp-3);
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid var(--danger);
+}
+
+.console-line.success {
+  color: var(--success);
+}
+
+.console-line.error {
+  color: var(--danger);
+  padding: var(--sp-3);
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid var(--danger);
+  margin: var(--sp-2) 0;
+}
+
+.console-line.info {
+  color: var(--text-3);
+}
+
+.console-line.loading {
+  color: var(--text-3);
+  font-style: italic;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.console-meta {
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--text-3);
+  text-align: right;
+}
+
+/* Loading State */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* API Key Banner */
+#api-key-banner {
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .editor-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-2);
+    padding: var(--sp-2) var(--sp-3);
+  }
+
+  .editor-lang-badge {
+    font-size: 0.7rem;
+    padding: var(--sp-1) var(--sp-2);
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Icon buttons for mobile */
+  .run-code-btn,
+  .copy-code-btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    border-radius: 6px;
+    flex-shrink: 0;
+    color: white;
+  }
+
+  /* Hide button text, show only emoji */
+  .run-code-btn {
+    font-size: 0;
+  }
+
+  .run-code-btn::after {
+    content: '▶';
+    font-size: 1.1rem;
+  }
+
+  .copy-code-btn {
+    font-size: 0;
+    background: var(--surface-3);
+  }
+
+  .copy-code-btn::after {
+    content: '📋';
+    font-size: 1.1rem;
+  }
+
+  .console-content {
+    max-height: 200px;
+    font-size: 0.8rem;
+  }
+
+  .code-editor-wrapper {
+    margin: var(--sp-3) 0;
+  }
+
+  /* Reduce editor height on mobile */
+  #editor-csharp-1,
+  #editor-csharp-2,
+  #editor-csharp-3,
+  #editor-csharp-4,
+  #editor-csharp-5,
+  #editor-csharp-6,
+  #editor-csharp-7,
+  #editor-csharp-8,
+  #editor-sql-1,
+  #editor-sql-2,
+  #editor-sql-3,
+  #editor-sql-4,
+  #editor-sql-5,
+  #editor-sql-6,
+  #editor-js-1,
+  #editor-js-2,
+  #editor-js-3,
+  #editor-js-4,
+  #editor-js-5,
+  #editor-algo-1,
+  #editor-algo-2,
+  #editor-algo-3,
+  #editor-algo-4,
+  #editor-algo-5,
+  #editor-algo-6 {
+    height: 280px !important;
+  }
+
+  /* Problem container responsive */
+  .problem-container {
+    padding: var(--sp-3) var(--sp-2);
+  }
+
+  /* Responsive typography */
+  .problem-container h3 {
+    font-size: 1.1rem;
+  }
+
+  .problem-container p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .editor-header {
+    padding: var(--sp-1) var(--sp-2);
+    gap: var(--sp-1);
+  }
+
+  .editor-lang-badge {
+    font-size: 0.65rem;
+    padding: var(--sp-1);
+  }
+
+  .run-code-btn,
+  .copy-code-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .run-code-btn::after {
+    font-size: 0.9rem;
+  }
+
+  .copy-code-btn::after {
+    font-size: 0.9rem;
+  }
+
+  .problem-container {
+    padding: var(--sp-2) var(--sp-1);
+  }
+
+  .problem-container h3 {
+    font-size: 1rem;
+  }
+
+  #editor-csharp-1,
+  #editor-csharp-2,
+  #editor-csharp-3,
+  #editor-csharp-4,
+  #editor-csharp-5,
+  #editor-csharp-6,
+  #editor-csharp-7,
+  #editor-csharp-8,
+  #editor-sql-1,
+  #editor-sql-2,
+  #editor-sql-3,
+  #editor-sql-4,
+  #editor-sql-5,
+  #editor-sql-6,
+  #editor-js-1,
+  #editor-js-2,
+  #editor-js-3,
+  #editor-js-4,
+  #editor-js-5,
+  #editor-algo-1,
+  #editor-algo-2,
+  #editor-algo-3,
+  #editor-algo-4,
+  #editor-algo-5,
+  #editor-algo-6 {
+    height: 250px !important;
+  }
+
+  .console-content {
+    max-height: 150px;
+    font-size: 0.75rem;
+  }
+
+  /* Mobile code block improvements */
+  .code-block {
+    font-size: 0.75rem;
+    margin: var(--sp-2) 0;
+  }
+
+  pre {
+    font-size: 0.75rem;
+  }
+
+  /* Hide solution details on mobile - can tap to expand */
+  details > summary {
+    font-size: 0.9rem;
+  }
+
+  /* Responsive tables */
+  table {
+    font-size: 0.75rem;
+  }
+}

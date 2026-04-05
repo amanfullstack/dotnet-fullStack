@@ -127,7 +127,7 @@
         </div>
 
         <!-- ===== PIPELINE ORDER ===== -->
-        <h2 id="pipeline-order">Pipeline Order (Matters!)</h2>
+        <h2 id="pipeline-order">Pipeline Order (Matters!)<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Program.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>The order middleware is registered in <code>Program.cs</code> determines the order it executes. This is critical — wrong order causes bugs.</p>
 
         <div class="code-block">
@@ -172,7 +172,7 @@ app.MapControllers();</code></pre>
         </div>
 
         <!-- ===== CUSTOM MIDDLEWARE ===== -->
-        <h2 id="custom-middleware">Writing Custom Middleware</h2>
+        <h2 id="custom-middleware">Writing Custom Middleware<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Middleware" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>Two approaches: inline with <code>app.Use()</code> or a dedicated class.</p>
 
         <h3>Inline Middleware</h3>
@@ -251,7 +251,7 @@ app.Map("/health", healthApp =>
         </div>
 
         <!-- ===== IMiddleware ===== -->
-        <h2 id="imiddleware">IMiddleware Interface</h2>
+        <h2 id="imiddleware">IMiddleware Interface<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Middleware" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p><code>IMiddleware</code> is a factory-activated alternative. The class is resolved from DI (supports scoped services), unlike the convention-based approach.</p>
 
         <div class="code-block">

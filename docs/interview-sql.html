@@ -143,7 +143,7 @@
         </div>
 
         <!-- Quick Reference Table -->
-        <h2 id="sql-overview">Quick Reference</h2>
+        <h2 id="sql-overview">Quick Reference <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <table class="data-table">
           <thead>
             <tr>
@@ -197,7 +197,7 @@
         </table>
 
         <!-- ═══════════ Q42 — JOINs ═══════════ -->
-        <h2 id="q42-joins">Q42. INNER JOIN vs LEFT JOIN vs RIGHT JOIN</h2>
+        <h2 id="q42-joins">Q42. INNER JOIN vs LEFT JOIN vs RIGHT JOIN <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p><strong>Explain the difference between INNER JOIN, LEFT JOIN, and RIGHT JOIN with examples.</strong></p>
 
         <p>JOINs are how you combine data from multiple tables. The key difference is <em>which rows are included</em> when a match doesn't exist.</p>
@@ -284,7 +284,7 @@ RIGHT JOIN Categories c ON p.CategoryId = c.CategoryId;
         </div>
 
         <!-- ═══════════ Q43 — Normalization ═══════════ -->
-        <h2 id="q43-normalization">Q43. Normalization — 1NF, 2NF, 3NF</h2>
+        <h2 id="q43-normalization">Q43. Normalization — 1NF, 2NF, 3NF <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p><strong>What is database normalization? Explain 1NF, 2NF, and 3NF with violations and fixes.</strong></p>
 
         <p>Normalization is the process of organizing a database to reduce redundancy and dependency anomalies. There are levels, numbered 1NF through 5NF. We focus on the first three.</p>
@@ -389,7 +389,7 @@ CREATE TABLE Products (
         </div>
 
         <!-- ═══════════ Q44 — Stored Procedures ═══════════ -->
-        <h2 id="q44-stored-procedures">Q44. Stored Procedures — Pros, Cons, and When to Use</h2>
+        <h2 id="q44-stored-procedures">Q44. Stored Procedures — Pros, Cons, and When to Use <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p><strong>What is a stored procedure? When would you use one instead of just writing queries in your application code?</strong></p>
 
         <p>A stored procedure is a reusable block of SQL logic compiled and stored in the database. You call it from your application like a function.</p>
@@ -448,7 +448,7 @@ EXEC GetCategoryProductsWithDiscount @CategoryId = 1, @DiscountPercent = 10;</co
         <p>Most modern backend developers use ORMs like Entity Framework Core. EF can call stored procedures, but the trend is toward <strong>application-level logic</strong> because it's easier to test, deploy, and maintain. Stored procedures are used when you <em>really</em> need the database-side performance or when you're dealing with complex multi-step transactions that can't wait for application-level logic.</p>
 
         <!-- ═══════════ Q45 — Indexes ═══════════ -->
-        <h2 id="q45-indexes">Q45. Database Indexes — Structure, When to Add, Performance Tradeoffs</h2>
+        <h2 id="q45-indexes">Q45. Database Indexes — Structure, When to Add, Performance Tradeoffs <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p><strong>What is a database index? How do B-tree indexes work? When should you add an index, and what are the tradeoffs?</strong></p>
 
         <h3>What is an Index?</h3>
@@ -532,7 +532,7 @@ CREATE INDEX IX_Products_CategoryPrice ON Products(CategoryId, Price);
         </div>
 
         <!-- ═══════════ Q46 — DISTINCT, GROUP BY, Aggregates ═══════════ -->
-        <h2 id="q46-aggregates">Q46. DISTINCT vs GROUP BY vs Aggregate Functions</h2>
+        <h2 id="q46-aggregates">Q46. DISTINCT vs GROUP BY vs Aggregate Functions <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p><strong>What is the difference between DISTINCT, GROUP BY, COUNT, SUM, AVG, and MAX?</strong></p>
 
         <h3>DISTINCT — Remove duplicate rows</h3>
@@ -656,7 +656,7 @@ ORDER BY TotalInventoryValue DESC;</code></pre>
         </table>
 
         <!-- ═══════════ Q47 — Transactions & ACID ═══════════ -->
-        <h2 id="q47-transactions">Q47. Transactions — What are they? ACID Properties</h2>
+        <h2 id="q47-transactions">Q47. Transactions — What are they? ACID Properties <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p><strong>What is a database transaction? Explain ACID: Atomicity, Consistency, Isolation, Durability.</strong></p>
 
         <p>A transaction is a group of SQL statements that either all succeed or all fail together. It's the database's guarantee that your data stays correct even if things go wrong (power outage, network failure, etc.).</p>
@@ -727,7 +727,7 @@ catch
         </div>
 
         <!-- ═══════════ Q48 — Set Operations ═══════════ -->
-        <h2 id="q48-set-operations">Q48. UNION, UNION ALL, INTERSECT, EXCEPT — Set Operations</h2>
+        <h2 id="q48-set-operations">Q48. UNION, UNION ALL, INTERSECT, EXCEPT — Set Operations <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p><strong>Explain set operations: UNION, UNION ALL, INTERSECT, EXCEPT with examples.</strong></p>
 
         <p>Set operations combine results from two or more SELECT queries.</p>
@@ -799,7 +799,7 @@ SELECT DISTINCT ProductId FROM Orders;
         </div>
 
         <!-- ═══════════ Q49 — Views ═══════════ -->
-        <h2 id="q49-views">Q49. Views — What are they? When to use?</h2>
+        <h2 id="q49-views">Q49. Views — What are they? When to use? <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p><strong>What is a database view? When would you create one instead of just writing the query in your application?</strong></p>
 
         <p>A view is a reusable SELECT query stored in the database. It acts like a virtual table — you query it like a table, but the data is computed on-the-fly from the underlying tables.</p>
@@ -854,7 +854,7 @@ SELECT * FROM vw_ProductDetails WHERE Price > 100;</code></pre>
         <p>Some databases (like SQL Server) support materialized views — the view result is pre-computed and stored on disk, making queries instant but requiring manual refreshes. Use this for reporting views that are expensive to compute but don't need real-time data.</p>
 
         <!-- ═══════════ Q50 — Query Optimization ═══════════ -->
-        <h2 id="q50-optimization">Q50. Query Optimization — Indexes, EXPLAIN PLAN, N+1 Problem</h2>
+        <h2 id="q50-optimization">Q50. Query Optimization — Indexes, EXPLAIN PLAN, N+1 Problem <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p><strong>How do you optimize slow queries? Explain EXPLAIN PLAN and the N+1 problem.</strong></p>
 
         <h3>Finding Slow Queries: EXPLAIN PLAN</h3>
@@ -936,7 +936,7 @@ foreach (var product in products)
         </div>
 
         <!-- ═══════════ SQL Best Practices ═══════════ -->
-        <h2 id="sql-best-practices">SQL Best Practices</h2>
+        <h2 id="sql-best-practices">SQL Best Practices <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
 
         <div class="callout callout-info">
           <span class="callout-icon">💡</span>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Compiler - DevDocs</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    .compiler-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--sp-6);
+    }
+
+    .compiler-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--sp-6);
+      flex-wrap: wrap;
+      gap: var(--sp-4);
+    }
+
+    .compiler-header h1 {
+      margin: 0;
+      font-size: var(--text-3xl);
+    }
+
+    .language-selector {
+      display: flex;
+      gap: var(--sp-2);
+      align-items: center;
+    }
+
+    .language-selector label {
+      font-weight: 600;
+      color: var(--text-2);
+    }
+
+    .language-selector select {
+      padding: var(--sp-2) var(--sp-3);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      background: var(--surface);
+      color: var(--text-1);
+      font-size: var(--text-sm);
+      font-family: var(--font-mono);
+      cursor: pointer;
+      min-width: 150px;
+    }
+
+    .compiler-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-6);
+      margin-bottom: var(--sp-6);
+    }
+
+    .compiler-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+    }
+
+    .section-title {
+      font-size: var(--text-lg);
+      font-weight: 600;
+      color: var(--text-1);
+    }
+
+    .code-editor-wrapper {
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .editor-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--sp-3) var(--sp-4);
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      gap: var(--sp-3);
+    }
+
+    .run-btn {
+      padding: var(--sp-2) var(--sp-4);
+      background: var(--primary);
+      color: white;
+      border: 1px solid var(--primary);
+      border-radius: var(--r-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--t-fast);
+    }
+
+    .run-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .run-btn:disabled {
+      background: var(--text-4);
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .output-console {
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      background: var(--surface-2);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .console-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--sp-3) var(--sp-4);
+      background: var(--surface-3);
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+    }
+
+    .console-content {
+      padding: var(--sp-4);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      max-height: 400px;
+      overflow-y: auto;
+      color: var(--text-1);
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .console-line {
+      margin: var(--sp-2) 0;
+    }
+
+    .console-line.success {
+      color: var(--success);
+    }
+
+    .console-line.error {
+      color: var(--danger);
+      padding: var(--sp-2);
+      background: rgba(239, 68, 68, 0.1);
+      border-left: 3px solid var(--danger);
+      margin: var(--sp-2) 0;
+    }
+
+    .console-line.info {
+      color: var(--text-3);
+    }
+
+    .console-meta {
+      margin-top: var(--sp-3);
+      padding-top: var(--sp-3);
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--text-3);
+      text-align: right;
+    }
+
+    .sample-tables {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-4);
+      margin-bottom: var(--sp-4);
+    }
+
+    .sample-tables h3 {
+      margin: 0 0 var(--sp-3) 0;
+      font-size: var(--text-lg);
+      color: var(--text-1);
+    }
+
+    .tables-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-2);
+    }
+
+    .table-info {
+      font-size: 0.9rem;
+      color: var(--text-2);
+      background: var(--surface);
+      padding: var(--sp-2) var(--sp-3);
+      border-radius: var(--r-md);
+      border-left: 3px solid var(--primary);
+    }
+
+    .table-info strong {
+      color: var(--primary);
+    }
+
+    @media (max-width: 1024px) {
+      .compiler-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .compiler-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .language-selector {
+        width: 100%;
+      }
+
+      .language-selector select {
+        flex: 1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .compiler-container {
+        padding: var(--sp-4);
+      }
+
+      .compiler-header h1 {
+        font-size: var(--text-2xl);
+      }
+
+      .console-content {
+        max-height: 300px;
+        font-size: 0.8rem;
+      }
+
+      .editor-header {
+        padding: var(--sp-2) var(--sp-3);
+      }
+
+      .run-btn {
+        padding: var(--sp-2) var(--sp-3);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .compiler-container {
+        padding: var(--sp-2);
+      }
+
+      .compiler-header h1 {
+        font-size: var(--text-xl);
+      }
+
+      .compiler-layout {
+        gap: var(--sp-3);
+      }
+
+      .console-content {
+        max-height: 200px;
+        font-size: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="dark-mode" data-theme="light">
+  <div class="site-container">
+    <main class="site-main">
+      <div class="compiler-container">
+        <div class="compiler-header">
+          <h1>🚀 Interactive Compiler</h1>
+          <div class="language-selector">
+            <label for="lang-select">Language:</label>
+            <select id="lang-select">
+              <option value="javascript">JavaScript</option>
+              <option value="sql">SQL</option>
+              <option value="csharp">C#</option>
+              <option value="python">Python</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="compiler-layout">
+          <!-- Left: Code Editor -->
+          <div class="compiler-section">
+            <h2 class="section-title">Code Editor</h2>
+
+            <!-- SQL Sample Tables Info -->
+            <div id="sql-info" class="sample-tables" style="display: none;">
+              <h3>📊 Sample Tables</h3>
+              <div class="tables-list">
+                <div class="table-info"><strong>Employees:</strong> Id, Name, Salary, DepartmentId</div>
+                <div class="table-info"><strong>Departments:</strong> Id, Name</div>
+                <div class="table-info"><strong>Sales:</strong> SaleDate, Sales</div>
+                <div class="table-info"><strong>Numbers:</strong> Number</div>
+                <div class="table-info"><strong>Users:</strong> Id, Email</div>
+                <div class="table-info"><strong>StudentScores:</strong> Student, Score</div>
+              </div>
+            </div>
+
+            <div class="code-editor-wrapper">
+              <div class="editor-header">
+                <span class="editor-lang-badge" id="lang-badge">JavaScript</span>
+                <button class="run-btn" id="run-btn">▶ Run</button>
+              </div>
+              <div id="monaco-editor" style="height: 400px;"></div>
+            </div>
+          </div>
+
+          <!-- Right: Console Output -->
+          <div class="compiler-section">
+            <h2 class="section-title">Output</h2>
+            <div class="output-console">
+              <div class="console-header">
+                <span>Console Output</span>
+                <button id="clear-btn" style="background: none; border: none; color: var(--text-2); cursor: pointer; font-size: var(--text-lg);">🗑️ Clear</button>
+              </div>
+              <div class="console-content" id="console-content">
+                <div class="console-line info">Output will appear here when you run your code...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/executor.js"></script>
+<script src="js/code-runner.js"></script>
+
+<script>
+// Sample code for each language
+const sampleCode = {
+  javascript: `// JavaScript Example: Array Operations
+const numbers = [1, 2, 3, 4, 5];
+const squared = numbers.map(n => n * n);
+
+console.log('Original:', numbers);
+console.log('Squared:', squared);
+
+// Find even numbers
+const evens = numbers.filter(n => n % 2 === 0);
+console.log('Even numbers:', evens);
+
+// Sum all numbers
+const sum = numbers.reduce((acc, n) => acc + n, 0);
+console.log('Sum:', sum);`,
+
+  sql: `-- SQL Example: Query Sample Data
+SELECT * FROM Employees LIMIT 5;
+
+-- Get employees by department
+SELECT
+  d.Name AS Department,
+  e.Name AS Employee,
+  e.Salary
+FROM Employees e
+JOIN Departments d ON e.DepartmentId = d.Id
+ORDER BY e.Salary DESC;`,
+
+  csharp: `using System;
+using System.Linq;
+using System.Collections.Generic;
+
+// C# Example: LINQ Operations
+var numbers = new List<int> { 1, 2, 3, 4, 5 };
+var squared = numbers.Select(n => n * n).ToList();
+
+Console.WriteLine("Original: " + string.Join(", ", numbers));
+Console.WriteLine("Squared: " + string.Join(", ", squared));
+
+// Find even numbers
+var evens = numbers.Where(n => n % 2 == 0).ToList();
+Console.WriteLine("Even numbers: " + string.Join(", ", evens));
+
+// Sum all numbers
+var sum = numbers.Sum();
+Console.WriteLine("Sum: " + sum);`,
+
+  python: `# Python Example: List Operations
+numbers = [1, 2, 3, 4, 5]
+squared = [n**2 for n in numbers]
+
+print("Original:", numbers)
+print("Squared:", squared)
+
+# Find even numbers
+evens = [n for n in numbers if n % 2 == 0]
+print("Even numbers:", evens)
+
+# Sum all numbers
+total = sum(numbers)
+print("Sum:", total)`
+};
+
+// Language badges
+const langBadges = {
+  javascript: 'JavaScript',
+  sql: 'SQL',
+  csharp: 'C#',
+  python: 'Python'
+};
+
+let monacoEditor = null;
+let executor = new CodeExecutor();
+
+// Initialize Monaco Editor
+async function initMonaco() {
+  // Load Monaco
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.50.0/min/vs/loader.min.js';
+  document.head.appendChild(script);
+
+  script.onload = () => {
+    require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.50.0/min/vs' } });
+    require(['vs/editor/editor.main'], () => {
+      const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+      monacoEditor = monaco.editor.create(document.getElementById('monaco-editor'), {
+        value: sampleCode.javascript,
+        language: 'javascript',
+        theme: isDarkMode ? 'vs-dark' : 'vs',
+        fontSize: 14,
+        fontFamily: '"Fira Code", "Cascadia Code", monospace',
+        minimap: { enabled: false },
+        scrollBeyondLastLine: false,
+        automaticLayout: true,
+        wordWrap: 'on',
+        tabSize: 2
+      });
+    });
+  };
+}
+
+// Update editor when language changes
+document.getElementById('lang-select').addEventListener('change', (e) => {
+  const lang = e.target.value;
+  const badge = document.getElementById('lang-badge');
+  badge.textContent = langBadges[lang];
+
+  // Show/hide SQL table info
+  document.getElementById('sql-info').style.display = lang === 'sql' ? 'block' : 'none';
+
+  // Update editor language and code
+  if (monacoEditor) {
+    const editorModel = monacoEditor.getModel();
+    monaco.editor.setModelLanguage(editorModel, lang === 'csharp' ? 'csharp' : lang === 'sql' ? 'sql' : lang === 'python' ? 'python' : 'javascript');
+    monacoEditor.setValue(sampleCode[lang]);
+  }
+});
+
+// Run code
+document.getElementById('run-btn').addEventListener('click', async () => {
+  const lang = document.getElementById('lang-select').value;
+  const code = monacoEditor.getValue();
+  const runBtn = document.getElementById('run-btn');
+  const consoleContent = document.getElementById('console-content');
+
+  runBtn.disabled = true;
+  runBtn.textContent = '⏳ Running...';
+  consoleContent.innerHTML = '<div class="console-line info">Executing code...</div>';
+
+  try {
+    const result = await executor.execute(code, lang, '', '');
+
+    if (result.success && result.output) {
+      consoleContent.innerHTML = `<pre class="console-line success">${escapeHtml(result.output)}</pre>`;
+    } else if (result.error) {
+      consoleContent.innerHTML = `<pre class="console-line error">${escapeHtml(result.error)}</pre>`;
+    } else {
+      consoleContent.innerHTML = '<div class="console-line info">Execution completed (no output)</div>';
+    }
+
+    if (result.duration) {
+      consoleContent.innerHTML += `<div class="console-meta">⏱️ ${result.duration}ms</div>`;
+    }
+  } catch (err) {
+    consoleContent.innerHTML = `<pre class="console-line error">Error: ${escapeHtml(err.message)}</pre>`;
+  } finally {
+    runBtn.disabled = false;
+    runBtn.textContent = '▶ Run';
+  }
+});
+
+// Clear console
+document.getElementById('clear-btn').addEventListener('click', () => {
+  document.getElementById('console-content').innerHTML = '<div class="console-line info">Output cleared...</div>';
+});
+
+// Escape HTML
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Initialize
+initMonaco();
+</script>
+</body>
+</html>
