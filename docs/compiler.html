@@ -310,6 +310,63 @@
   </div>
   <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
+  <!-- Page Wrapper -->
+  <div class="page-wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-inner">
+        <!-- Home -->
+        <div class="sidebar-section">
+          <ul class="sidebar-links">
+            <li>
+              <a href="index.html" class="sidebar-link">
+                <span class="sidebar-link-icon">🏠</span> Home
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Projects -->
+        <div class="sidebar-section">
+          <h3 class="sidebar-category">📦 Projects</h3>
+          <ul class="sidebar-links">
+            <li>
+              <a href="webapi.html" class="sidebar-link">
+                <span class="sidebar-link-icon">🌐</span> Web API
+                <span class="badge badge-done">✅</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="sidebar-link">
+                <span class="sidebar-link-icon">🖥️</span> MVC
+                <span class="badge badge-soon">Soon</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="sidebar-link">
+                <span class="sidebar-link-icon">🔺</span> Angular
+                <span class="badge badge-soon">Soon</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="sidebar-link">
+                <span class="sidebar-link-icon">⚛️</span> React
+                <span class="badge badge-soon">Soon</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Tools -->
+        <div class="sidebar-section">
+          <h3 class="sidebar-category">🛠️ Tools</h3>
+          <ul class="sidebar-links">
+            <li><a href="compiler.html" class="sidebar-link active"><span class="sidebar-link-icon">🚀</span> Interactive Compiler</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
   <div class="site-container">
     <main class="site-main">
       <div class="compiler-container">
@@ -370,6 +427,8 @@
       </div>
     </main>
   </div>
+  </div>
+
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -568,6 +627,31 @@ function escapeHtml(text) {
 
 // Initialize
 initMonaco();
+
+// Listen for theme changes and update Monaco editor
+const originalSetAttribute = Element.prototype.setAttribute;
+Element.prototype.setAttribute = function(name, value) {
+  originalSetAttribute.call(this, name, value);
+  if (name === 'data-theme' && monacoEditor) {
+    const isDarkMode = value === 'dark';
+    monaco.editor.setTheme(isDarkMode ? 'vs-dark' : 'vs');
+  }
+};
+
+// Also watch for theme button clicks
+document.addEventListener('DOMContentLoaded', () => {
+  const themeBtn = document.getElementById('themeBtn');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      setTimeout(() => {
+        if (monacoEditor) {
+          const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+          monaco.editor.setTheme(isDarkMode ? 'vs-dark' : 'vs');
+        }
+      }, 50);
+    });
+  }
+});
 </script>
 </body>
 </html>
