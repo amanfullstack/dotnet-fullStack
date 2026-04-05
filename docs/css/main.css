@@ -172,6 +172,7 @@ code {
   padding: 0.15em 0.45em;
   border-radius: var(--r-sm);
   border: 1px solid var(--border);
+  word-break: break-word;
 }
 
 /* ----------------------------------------------------------------
@@ -243,10 +244,13 @@ pre {
   color: #cdd6f4;
   margin: 0;
   padding: var(--sp-6);
-  overflow-x: auto;
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
+  font-size: 0.8rem;
   line-height: 1.7;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 pre code {
@@ -256,6 +260,9 @@ pre code {
   border: none;
   border-radius: 0;
   font-size: inherit;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 /* Standalone pre (no .code-block wrapper) */
@@ -553,6 +560,7 @@ pre code {
   flex: 1;
   margin-left: var(--sidebar-width);
   min-width: 0;
+  overflow-x: hidden;
   transition: margin-left var(--t-slow);
 }
 
@@ -560,6 +568,7 @@ pre code {
   max-width: var(--content-max);
   margin: 0 auto;
   padding: var(--sp-12) var(--sp-8) var(--sp-16);
+  overflow-x: hidden;
 }
 
 /* Wide content (for hub pages / grids) */
@@ -956,6 +965,12 @@ pre code {
 /* ----------------------------------------------------------------
    15. ARTICLE / DOCUMENTATION CONTENT
    ---------------------------------------------------------------- */
+.article {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 .article h2 {
   font-size: var(--text-2xl);
   font-weight: 800;
@@ -1030,6 +1045,31 @@ pre code {
 .comparison-table .check { color: var(--success); font-weight: 700; }
 .comparison-table .cross { color: var(--danger); }
 
+/* Generic data table (used for endpoint tables etc.) */
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+table.data-table th {
+  background: var(--surface-3);
+  padding: var(--sp-3) var(--sp-4);
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-1);
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+}
+table.data-table td {
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-2);
+  vertical-align: middle;
+}
+table.data-table tr:last-child td { border-bottom: none; }
+table.data-table tr:hover td { background: var(--surface-2); }
+.table-wrap table { margin: 0; border-radius: 0; }
+
 /* Step list */
 .step-list { list-style: none; margin: 0; padding: 0; }
 .step-list li {
@@ -1054,16 +1094,32 @@ pre code {
 }
 
 /* Key-value / definition list */
-.kv-list { list-style: none; margin: 0; padding: 0; }
-.kv-list li {
+.kv-list { list-style: none; margin: var(--sp-4) 0; padding: 0; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
+.kv-list li,
+.kv-list .kv-row {
   display: flex;
-  gap: var(--sp-3);
-  padding: var(--sp-3) 0;
+  align-items: baseline;
+  gap: var(--sp-4);
+  padding: var(--sp-3) var(--sp-5);
   border-bottom: 1px solid var(--border);
   font-size: var(--text-sm);
+  background: var(--surface-1);
 }
-.kv-key { font-weight: 700; color: var(--text-1); min-width: 140px; flex-shrink: 0; }
-.kv-val { color: var(--text-2); }
+.kv-list li:last-child,
+.kv-list .kv-row:last-child { border-bottom: none; }
+.kv-list li:nth-child(even),
+.kv-list .kv-row:nth-child(even) { background: var(--surface-2); }
+.kv-key { font-weight: 700; color: var(--text-1); min-width: 130px; flex-shrink: 0; }
+.kv-val { color: var(--text-2); word-break: break-word; }
+.kv-val code { font-size: 12px; word-break: break-all; }
+
+/* Table scroll wrapper */
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--r-lg);
+  margin: var(--sp-4) 0;
+}
 
 /* Breadcrumb */
 .breadcrumb {
@@ -1566,9 +1622,26 @@ details[open] .qa-chevron {
 @media (max-width: 480px) {
   .hero-cta { flex-direction: column; align-items: stretch; }
   .hero-cta .btn { justify-content: center; }
-  .comparison-table { font-size: var(--text-xs); }
   .path-card { padding: var(--sp-5); }
   .project-card { padding: var(--sp-5); }
+
+  /* Prevent horizontal scroll from tables */
+  .comparison-table,
+  table.data-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: var(--text-xs);
+  }
+
+  /* Stack kv rows vertically on tiny screens */
+  .kv-list .kv-row,
+  .kv-list li {
+    flex-direction: column;
+    gap: var(--sp-1);
+    padding: var(--sp-3) var(--sp-4);
+  }
+  .kv-key { min-width: unset; }
 }
 
 /* ----------------------------------------------------------------
