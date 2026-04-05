@@ -1577,6 +1577,7 @@ details[open] .qa-chevron {
 
 /* Section wrappers */
 .hero-section {
+  position: relative;
   padding: var(--sp-16) 0 var(--sp-12);
   text-align: center;
 }
@@ -1891,3 +1892,110 @@ details[open] .qa-chevron {
     padding-top: var(--sp-6);
   }
 }
+
+/* ================================================================
+   SECTION 28 — HERO ORBIT ANIMATION
+   ================================================================ */
+
+/* ── Keyframes ── */
+@keyframes obt-cw  { to { transform: rotate(360deg);  } }
+@keyframes obt-ccw { to { transform: rotate(-360deg); } }
+@keyframes pin-cw  { to { transform: translateX(-50%) rotate(-360deg); } }
+@keyframes pin-ccw { to { transform: translateX(-50%) rotate(360deg);  } }
+@keyframes pulse-orb {
+  0%, 100% { box-shadow: 0 0 24px rgba(14,165,233,.5), 0 0 60px rgba(139,92,246,.35); }
+  50%       { box-shadow: 0 0 48px rgba(14,165,233,.8), 0 0 100px rgba(139,92,246,.55); }
+}
+
+/* ── Wrapper — in-flow block between CTA and stats ── */
+.tech-orbit {
+  position: relative;
+  width:    100%;
+  height:   280px;
+  margin:   var(--sp-4) 0;
+  pointer-events: none;
+}
+
+/* ── Center orb ── */
+.orbit-center {
+  position: absolute;
+  top:  50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width:  52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 10px;
+  color: #fff;
+  animation: pulse-orb 3s ease-in-out infinite;
+  z-index: 2;
+}
+
+/* ── Dashed orbit tracks ── */
+.o-track {
+  position: absolute;
+  top:  50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px dashed rgba(148,163,184,.25);
+}
+.o-track.r1 { width: 110px; height: 110px; margin-top:  -55px; margin-left:  -55px; }
+.o-track.r2 { width: 180px; height: 180px; margin-top:  -90px; margin-left:  -90px; }
+.o-track.r3 { width: 262px; height: 262px; margin-top: -131px; margin-left: -131px; }
+
+/* ── Rotating ring ── */
+.o-ring {
+  position: absolute;
+  top:  50%;
+  left: 50%;
+  border-radius: 50%;
+}
+.o-ring.r1 { width: 110px; height: 110px; margin-top:  -55px; margin-left:  -55px; --dur: 8s;  }
+.o-ring.r2 { width: 180px; height: 180px; margin-top:  -90px; margin-left:  -90px; --dur: 15s; }
+.o-ring.r3 { width: 262px; height: 262px; margin-top: -131px; margin-left: -131px; --dur: 24s; }
+
+.ring-cw  { animation: obt-cw  var(--dur) linear infinite; }
+.ring-ccw { animation: obt-ccw var(--dur) linear infinite; }
+
+/* ── Badge pin — 12 o'clock, counter-rotates to stay upright ── */
+.o-pin {
+  position: absolute;
+  top:  -19px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.badge-cw  { animation: pin-cw  var(--dur) linear infinite; }
+.badge-ccw { animation: pin-ccw var(--dur) linear infinite; }
+
+/* ── Badge — icon container ── */
+.o-badge {
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  width:           38px;
+  height:          38px;
+  border-radius:   50%;
+  background:      var(--surface-2);
+  border:          1.5px solid var(--border);
+  box-shadow:      0 2px 14px rgba(0,0,0,.2);
+}
+.o-badge i {
+  font-size: 20px;
+  line-height: 1;
+}
+/* Text fallback for techs without devicons (LINQ λ, Middleware MW) */
+.o-text-badge {
+  font-size:      11px;
+  font-weight:    900;
+  letter-spacing: -.3px;
+  color:          var(--primary);
+}
+
+/* Pause on hover */
+.hero-section:hover .o-ring,
+.hero-section:hover .o-pin { animation-play-state: paused; }

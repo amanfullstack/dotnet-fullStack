@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -151,6 +152,7 @@
 
       <!-- ═══════════════════════════════════════════════ HERO -->
       <section class="hero-section">
+
         <div class="hero-eyebrow">
           <span class="eyebrow-badge">🚀 Open Source Learning Platform</span>
         </div>
@@ -163,6 +165,28 @@
           <a href="webapi.html" class="btn btn-primary">Start Learning →</a>
           <button class="btn btn-secondary" data-search-open onclick="openSearch()">🔍 Search Topics</button>
         </div>
+
+        <!-- Planetary orbit animation -->
+        <div class="tech-orbit" aria-hidden="true">
+          <div class="orbit-center">.NET</div>
+          <div class="o-track r1"></div>
+          <div class="o-track r2"></div>
+          <div class="o-track r3"></div>
+          <!-- Ring 1 CW 8s: C#, ASP.NET Core -->
+          <div class="o-ring r1 ring-cw" style="animation-delay:0s"><div class="o-pin badge-cw" style="animation-delay:0s"><span class="o-badge"><i class="devicon-csharp-plain colored"></i></span></div></div>
+          <div class="o-ring r1 ring-cw" style="animation-delay:-4s"><div class="o-pin badge-cw" style="animation-delay:-4s"><span class="o-badge"><i class="devicon-dotnetcore-plain colored"></i></span></div></div>
+          <!-- Ring 2 CW 15s: SQL Server, Redis, GraphQL -->
+          <div class="o-ring r2 ring-cw" style="animation-delay:0s"><div class="o-pin badge-cw" style="animation-delay:0s"><span class="o-badge"><i class="devicon-microsoftsqlserver-plain colored"></i></span></div></div>
+          <div class="o-ring r2 ring-cw" style="animation-delay:-5s"><div class="o-pin badge-cw" style="animation-delay:-5s"><span class="o-badge"><i class="devicon-redis-plain colored"></i></span></div></div>
+          <div class="o-ring r2 ring-cw" style="animation-delay:-10s"><div class="o-pin badge-cw" style="animation-delay:-10s"><span class="o-badge"><i class="devicon-graphql-plain colored"></i></span></div></div>
+          <!-- Ring 3 CCW 24s: Swagger, EF Core, LINQ, REST, Middleware -->
+          <div class="o-ring r3 ring-ccw" style="animation-delay:0s"><div class="o-pin badge-ccw" style="animation-delay:0s"><span class="o-badge"><i class="devicon-swagger-plain colored"></i></span></div></div>
+          <div class="o-ring r3 ring-ccw" style="animation-delay:-4.8s"><div class="o-pin badge-ccw" style="animation-delay:-4.8s"><span class="o-badge"><i class="devicon-dot-net-plain colored"></i></span></div></div>
+          <div class="o-ring r3 ring-ccw" style="animation-delay:-9.6s"><div class="o-pin badge-ccw" style="animation-delay:-9.6s"><span class="o-badge o-text-badge">λ</span></div></div>
+          <div class="o-ring r3 ring-ccw" style="animation-delay:-14.4s"><div class="o-pin badge-ccw" style="animation-delay:-14.4s"><span class="o-badge"><i class="devicon-postman-plain colored"></i></span></div></div>
+          <div class="o-ring r3 ring-ccw" style="animation-delay:-19.2s"><div class="o-pin badge-ccw" style="animation-delay:-19.2s"><span class="o-badge o-text-badge">MW</span></div></div>
+        </div>
+
         <div class="hero-stats">
           <div class="stat-item">
             <span class="stat-number">15+</span>
