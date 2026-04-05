@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -83,6 +83,8 @@
           <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
           <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
           <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+          <li><a href="webapi-data-access.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Data Access</a></li>
+          <li><a href="csharp.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
         </ul>
       </div>
       <div class="sidebar-section">
@@ -98,6 +100,13 @@
         <h3 class="sidebar-category">🎓 Interview Prep</h3>
         <ul class="sidebar-links">
           <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+          <li><a href="interview-solid.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> SOLID Principles</a></li>
+          <li><a href="interview-patterns.html" class="sidebar-link"><span class="sidebar-link-icon">🎨</span> Design Patterns</a></li>
+          <li><a href="interview-csharp.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
+          <li><a href="interview-sql.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> SQL</a></li>
+          <li><a href="interview-mvc.html" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> ASP.NET MVC</a></li>
+          <li><a href="interview-react.html" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React</a></li>
+          <li><a href="interview-angular.html" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular</a></li>
         </ul>
       </div>
     </div>
@@ -146,8 +155,9 @@
           <div class="kv-row"><span class="kv-key">Database</span><span class="kv-val">SQL Server LocalDB via EF Core 8</span></div>
           <div class="kv-row"><span class="kv-key">Architecture</span><span class="kv-val">N-Tier: Controllers → Services → DbContext</span></div>
           <div class="kv-row"><span class="kv-key">Endpoints</span><span class="kv-val">7 REST endpoints (GET, POST, PUT, DELETE, PATCH)</span></div>
+          <div class="kv-row"><span class="kv-key">Data Access</span><span class="kv-val">EF Core 8 · ADO.NET · GraphQL (HotChocolate)</span></div>
           <div class="kv-row"><span class="kv-key">Caching</span><span class="kv-val">In-Memory + HTTP Response Caching</span></div>
-          <div class="kv-row"><span class="kv-key">Run command</span><span class="kv-val">cd ProductCatalogAPI-WebAPI-EFCore &amp;&amp; dotnet run</span></div>
+          <div class="kv-row"><span class="kv-key">Run command</span><span class="kv-val"><code>cd ProductCatalogAPI-WebAPI-EFCore &amp;&amp; dotnet run</code></span></div>
         </div>
 
         <!-- ============ TOPICS ============ -->
@@ -244,6 +254,28 @@
             </div>
           </a>
 
+          <a href="webapi-data-access.html" class="project-card" style="--brand-color:#06b6d4;text-decoration:none;color:inherit;">
+            <div class="project-card-top">
+              <div class="project-icon">🗄️</div>
+              <div class="project-title">Data Access</div>
+              <div class="project-desc">EF Core 8 with LINQ, ADO.NET with raw SQL, migrations, soft delete, and when to use each approach.</div>
+            </div>
+            <div class="project-card-footer">
+              <div class="stack-badges"><span class="stack-badge">EF Core</span><span class="stack-badge">ADO.NET</span><span class="stack-badge">Migrations</span></div>
+            </div>
+          </a>
+
+          <a href="csharp.html" class="project-card" style="--brand-color:#a855f7;text-decoration:none;color:inherit;">
+            <div class="project-card-top">
+              <div class="project-icon">💎</div>
+              <div class="project-title">C# &amp; OOP</div>
+              <div class="project-desc">Classes, interfaces, inheritance, polymorphism, records, async/await, generics, and SOLID principles.</div>
+            </div>
+            <div class="project-card-footer">
+              <div class="stack-badges"><span class="stack-badge">OOP</span><span class="stack-badge">Interfaces</span><span class="stack-badge">SOLID</span></div>
+            </div>
+          </a>
+
         </div>
 
         <!-- ============ QUICK START ============ -->
@@ -291,6 +323,7 @@
         <h2 id="endpoints">API Endpoints</h2>
         <p>The ProductCatalogAPI exposes 7 REST endpoints:</p>
 
+        <div class="table-wrap">
         <table class="data-table">
           <thead>
             <tr>
@@ -310,6 +343,7 @@
             <tr><td><span class="badge" style="background:#ef4444;color:#fff;">DELETE</span></td><td><code>/api/products/{id}</code></td><td>Soft delete (IsActive=false)</td><td>204 / 404</td></tr>
           </tbody>
         </table>
+        </div>
 
         <!-- ============ ARCHITECTURE ============ -->
         <h2 id="architecture">Architecture at a Glance</h2>

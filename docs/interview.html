@@ -93,6 +93,14 @@
         <h3 class="sidebar-category">🎓 Interview Prep</h3>
         <ul class="sidebar-links">
           <li><a href="interview.html" class="sidebar-link active"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+          <li><a href="interview-solid.html" class="sidebar-link"><span class="sidebar-link-icon">📐</span> SOLID Principles</a></li>
+          <li><a href="interview-patterns.html" class="sidebar-link"><span class="sidebar-link-icon">🎨</span> Design Patterns</a></li>
+          <li><a href="interview-coding.html" class="sidebar-link"><span class="sidebar-link-icon">🧩</span> Coding Challenges</a></li>
+          <li><a href="interview-csharp.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
+          <li><a href="interview-sql.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> SQL</a></li>
+          <li><a href="interview-mvc.html" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> ASP.NET MVC</a></li>
+          <li><a href="interview-react.html" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React</a></li>
+          <li><a href="interview-angular.html" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular</a></li>
         </ul>
       </div>
     </div>
@@ -113,11 +121,11 @@
 
         <div class="page-title-block">
           <h1 class="page-title">💡 Interview Q&amp;A</h1>
-          <p class="page-subtitle">50+ .NET backend interview questions with detailed answers — covering Web API, EF Core, ADO.NET, LINQ, Collections, Middleware, and Caching.</p>
+          <p class="page-subtitle">100+ .NET, JavaScript, SQL, React, Angular, and DevOps interview questions — covering Web API, EF Core, MVC, LINQ, caching, security, and more.</p>
           <div class="page-meta">
             <span class="badge badge-danger">Advanced</span>
             <span class="badge badge-accent">Interview Prep</span>
-            <span class="badge badge-primary">50+ Questions</span>
+            <span class="badge badge-primary">100+ Questions</span>
           </div>
         </div>
 
@@ -781,6 +789,770 @@ public ProductService(IOptions&lt;CacheSettings&gt; options) {
           </details>
 
         </div><!-- /.qa-list async -->
+
+        <!-- ═══════════ C# & OOP ═══════════ -->
+        <h2 id="csharp-oop-questions">C# &amp; OOP</h2>
+        <div class="qa-list">
+          <details class="qa-item">
+            <summary class="qa-question">Q36. What are the 4 pillars of OOP? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>Encapsulation:</strong> bundle data and methods together, hide internal details, expose only necessary interface.</li>
+                <li><strong>Inheritance:</strong> derive classes from base classes to reuse code and establish hierarchies.</li>
+                <li><strong>Polymorphism:</strong> same method name, different implementations based on object type (overriding) or parameters (overloading).</li>
+                <li><strong>Abstraction:</strong> simplify complexity by defining essential features and hiding implementation details. Use abstract classes/interfaces.</li>
+              </ul>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q37. What is encapsulation? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Encapsulation hides internal details and prevents invalid states. Expose only what's necessary via public properties with validation.</p>
+              <div class="code-block">
+                <div class="code-block-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">csharp</span></div>
+                <pre><code class="language-csharp">// GOOD: property with validation
+public class Product {
+    private decimal _price;
+    public decimal Price {
+        get =&gt; _price;
+        set =&gt; _price = value &lt; 0 ? throw new ArgumentException("Cannot be negative") : value;
+    }
+}</code></pre>
+              </div>
+              <p>Benefits: prevents invalid states, allows logic changes later without breaking API.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q38. What is inheritance? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Inheritance allows a class (child) to inherit properties and methods from another class (parent), promoting code reuse and establishing hierarchies. C# supports single inheritance but multiple interface implementation.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q39. What is polymorphism? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Polymorphism = "many forms" = same method name, different behavior. Compile-time (overloading): same name, different parameters. Runtime (overriding): child class overrides parent's virtual method.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q40. What is abstraction? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Abstraction simplifies complexity by hiding implementation and exposing only essential features. Use abstract classes and interfaces. Example: IPaymentProcessor defines Process(amount). CreditCardProcessor and PayPalProcessor implement it. Calling code doesn't know HOW, only WHAT.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q41. What is a constructor? Types? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>Default:</strong> no parameters. Provided automatically by C# if not defined.</li>
+                <li><strong>Parameterized:</strong> accepts arguments to initialize fields.</li>
+                <li><strong>Copy:</strong> accepts another instance to clone it.</li>
+                <li><strong>Static:</strong> runs once when class loads (static fields initialization).</li>
+              </ul>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q42. Destructor vs Finalize? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Both clean up resources. <strong>Destructor (~):</strong> syntax sugar for Finalize. Called by garbage collector (unpredictable timing). <strong>Best practice:</strong> use IDisposable.Dispose() instead for immediate cleanup. Destructors/Finalize are fallback for unmanaged resources if Dispose isn't called.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q43. What are generics? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Generics enable type-safe code reuse. Define methods/classes that work with any type. Example: Repository&lt;T&gt; works with any entity. Benefits: type-safe at compile-time, no boxing/unboxing, IntelliSense support.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q44. What are constraints in generics? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><code>where T : class</code> — reference type only</li>
+                <li><code>where T : struct</code> — value type only</li>
+                <li><code>where T : IComparable</code> — must implement interface</li>
+                <li><code>where T : new()</code> — must have parameterless constructor</li>
+              </ul>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q45. What is <code>ref</code> vs <code>out</code>? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>ref:</strong> pass by reference. Method can read AND modify original variable. Must be initialized before call.</li>
+                <li><strong>out:</strong> pass by reference for OUTPUT. Method must assign before returning. Doesn't need to be initialized before call.</li>
+              </ul>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q46. What is <code>is</code> vs <code>as</code> operators? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>is:</strong> returns bool. Check if object is of type. Safe, no exceptions.</li>
+                <li><strong>as:</strong> returns object (or null). Cast safely. Returns null if cast fails.</li>
+              </ul>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q47. What are extension methods? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Add new methods to existing classes without inheritance. First parameter uses <code>this</code> keyword. Heavily used in LINQ. Must be in static class. Limited to adding methods, not state/properties.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q48. What is POCO? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>POCO = Plain Old CLR Object. Simple class with no dependencies, no special base class. Just properties. Entity models are POCOs. DTOs are POCOs. Benefits: testable, serializable, reusable across layers.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q49. What are attributes? Examples? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Attributes provide metadata to code. Framework reads them at runtime. [Required] for validation, [Authorize] for security, [Table] for EF Core configuration.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q50. What is a delegate? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Delegate is a type-safe function pointer. Represents a method signature. Enables passing methods as parameters (callbacks, events). Events use delegates. Func&lt;T, TResult&gt; and Action&lt;T&gt; are built-in delegates.</p>
+            </div>
+          </details>
+        </div><!-- /.qa-list csharp-oop -->
+
+        <!-- ═══════════ ASP.NET MVC ═══════════ -->
+        <h2 id="aspnet-mvc-questions">ASP.NET MVC</h2>
+        <div class="qa-list">
+          <details class="qa-item">
+            <summary class="qa-question">Q51. What is ASP.NET MVC? How does it differ from ASP.NET Core? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>ASP.NET MVC:</strong> older framework (.NET Framework 4.7+). Monolithic, server-renders HTML, runs only on Windows. <strong>ASP.NET Core:</strong> modern rewrite. Cross-platform (Windows/Linux/macOS), lightweight, can render HTML (MVC) OR return JSON (Web API) from same code. The future.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q52. Explain MVC execution flow: Request → Model → Controller → View → Response <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>1) Browser sends request to /products/details/5 2) Routing maps URL to ProductsController.Details(id=5) 3) Controller queries ProductService (hits Model/DB) 4) Controller returns View("Details", product) with product data 5) View engine (Razor) renders HTML using product data 6) HTML returned to browser. Difference from Web API: Web API stops at step 3 and returns JSON.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q53. What is routing? Attribute vs Convention? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Convention-based:</strong> {controller}/{action}/{id}. Defined in RouteConfig. Implicit, automatic. <strong>Attribute-based:</strong> [Route("api/[controller]")] on controller/action. Explicit, flexible. Modern apps prefer attribute routing.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q54. What are MVC Filters? Types? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ol>
+                <li><strong>Authorization:</strong> check permissions before controller runs. [Authorize], [AllowAnonymous].</li>
+                <li><strong>Resource:</strong> run after authorization, can short-circuit.</li>
+                <li><strong>Action:</strong> OnActionExecuting (before action) and OnActionExecuted (after). Can modify model.</li>
+                <li><strong>Result:</strong> OnResultExecuting (before view renders) and OnResultExecuted (after). Modify view data.</li>
+                <li><strong>Exception:</strong> catch unhandled exceptions. Convert to error pages.</li>
+              </ol>
+              <p>Order: Authorization → Resource → Action → Result → View</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q55. What is ViewBag, ViewData, and TempData? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>ViewBag:</strong> dynamic object. Pass data from controller to view. Lost after response.</li>
+                <li><strong>ViewData:</strong> dictionary. Same purpose as ViewBag, slightly stricter.</li>
+                <li><strong>TempData:</strong> persists one request-response cycle. Survives redirect. Use for validation messages after POST→redirect.</li>
+              </ul>
+              <p><strong>Best practice:</strong> Prefer strongly-typed ViewModels over ViewBag/ViewData.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q56. What are layout pages and sections? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Layout pages (_Layout.cshtml) define master template shared by multiple views. Sections (@section) allow child views to define content for named areas in the layout. Example: @section Scripts in child view injects JavaScript into parent layout's @RenderSection("Scripts").</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q57. What are partial views? When do you use them? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Partial views are reusable view fragments. Similar to components in React. Use @Html.PartialAsync() to include. Benefits: DRY principle, reuse across multiple pages, easier testing, cleaner code organization.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q58. How does model validation work in MVC? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Data annotations on model properties ([Required], [StringLength], [Range]) define validation rules. During model binding, ASP.NET Core validates the model. Access validation results via ModelState.IsValid. Display validation messages in views with @Html.ValidationSummary() and @Html.ValidationMessageFor().</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q59. What is Razor syntax (@)? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Razor is view engine syntax mixing HTML and C#. @ prefix indicates C# code. Examples: @Model.Name, @for (var i = 0; i < 10; i++) { }, @if (condition) { }. Use @@ to escape @ literal in output.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q60. What is bundling and minification? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Bundling:</strong> combine multiple CSS/JS files into one. Reduces HTTP requests. <strong>Minification:</strong> remove unnecessary characters (spaces, comments) from files. Reduces file size. Modern apps use webpack/esbuild instead.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q61. What is TempData and how does it differ from ViewBag? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>TempData persists across a redirect (unlike ViewBag which is lost after response). Useful for POST-Redirect-GET pattern: POST processes form → sets TempData → redirects to GET → GET displays success message from TempData. Implemented using session or cookie.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q62. Authentication vs Authorization in MVC? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Authentication:</strong> WHO are you? Verify identity. <strong>Authorization:</strong> WHAT can you do? Check permissions. Use [Authorize] for whole action, [AllowAnonymous] for specific. User.IsInRole("Admin") checks role-based authorization.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q63. What are action results? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Action results represent controller action response. View() renders view, RedirectToAction() redirects, Json() returns JSON, Content() returns custom content, StatusCode() returns HTTP status.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q64. What is model binding? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Model binding automatically maps HTTP request data to action method parameters. From route, query string, form data, headers. Use [Bind] attribute to include/exclude properties. Use [BindRequired] to require a property.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q65. What is HTML encoding? Why important? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>HTML encoding converts special characters (< > & ") to HTML entities (&lt; &gt; &amp; &quot;). Prevents XSS attacks. @Model.UserInput automatically HTML-encodes. @Html.Raw() disables encoding (use carefully with trusted input only).</p>
+            </div>
+          </details>
+        </div><!-- /.qa-list aspnet-mvc -->
+
+        <!-- ═══════════ SQL & DATABASES ═══════════ -->
+        <h2 id="sql-questions">SQL Server</h2>
+        <div class="qa-list">
+          <details class="qa-item">
+            <summary class="qa-question">Q66. What is SQL? DDL vs DML? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>SQL:</strong> language for querying and manipulating databases. <strong>DDL (Data Definition):</strong> CREATE, ALTER, DROP — structure. <strong>DML (Data Manipulation):</strong> SELECT, INSERT, UPDATE, DELETE — data.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q67. What are types of JOINs? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><code>INNER JOIN</code> — only rows matching in BOTH tables.</li>
+                <li><code>LEFT JOIN</code> — all rows from left table + matching from right.</li>
+                <li><code>RIGHT JOIN</code> — all rows from right table + matching from left.</li>
+                <li><code>FULL OUTER JOIN</code> — all rows from both tables.</li>
+              </ul>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q68. How do you find 2nd highest salary? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Using window functions: SELECT DISTINCT Salary FROM Employees ORDER BY Salary DESC OFFSET 1 ROW FETCH NEXT 1 ROW ONLY; Or using subquery: SELECT MAX(Salary) FROM Employees WHERE Salary &lt; (SELECT MAX(Salary) FROM Employees);</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q69. What is GROUP BY vs HAVING? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>GROUP BY:</strong> groups rows by column(s). <strong>HAVING:</strong> filters groups (like WHERE for GROUP BY). Example: SELECT Department, COUNT(*) FROM Employees GROUP BY Department HAVING COUNT(*) > 5;</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q70. What are subqueries? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Query within a query. SELECT * FROM Products WHERE Price > (SELECT AVG(Price) FROM Products); Can return single value, row, or table. Slower than JOINs. Use sparingly.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q71. What are window functions? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Functions that operate on a set of rows within a "window." Examples: ROW_NUMBER(), RANK(), DENSE_RANK(), LAG(), LEAD(). Useful for analytics, rankings, cumulative totals without GROUP BY.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q72. ROW_NUMBER vs RANK vs DENSE_RANK? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>ROW_NUMBER():</strong> unique sequential number (1,2,3,4).</li>
+                <li><strong>RANK():</strong> with gaps on ties (1,2,2,4).</li>
+                <li><strong>DENSE_RANK():</strong> no gaps on ties (1,2,2,3).</li>
+              </ul>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q73. What are transactions? ACID? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Transactions ensure data integrity. <strong>Atomicity:</strong> all or nothing. <strong>Consistency:</strong> valid state before/after. <strong>Isolation:</strong> concurrent transactions don't interfere. <strong>Durability:</strong> committed data persists. BEGIN TRANSACTION, COMMIT, ROLLBACK.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q74. What are indexes? Clustered vs Non-Clustered? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>Clustered:</strong> sorts table physically. One per table. Primary key uses clustered index.</li>
+                <li><strong>Non-Clustered:</strong> separate index structure pointing to data. Multiple per table.</li>
+              </ul>
+              <p>CREATE INDEX idx_category ON Products(CategoryId);</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q75. What is normalization? 1NF, 2NF, 3NF? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>1NF:</strong> atomic values only. No repeating groups.</li>
+                <li><strong>2NF:</strong> non-key columns depend on entire primary key.</li>
+                <li><strong>3NF:</strong> non-key columns depend ONLY on primary key, not other non-key columns.</li>
+              </ul>
+              <p>Most real-world databases aim for 3NF.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q76. DELETE vs TRUNCATE? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>DELETE:</strong> removes rows one by one. Slow. Can have WHERE clause. Triggers fire. Can rollback.</li>
+                <li><strong>TRUNCATE:</strong> removes all rows at once. Fast. No WHERE. Resets identity. Minimal logging.</li>
+              </ul>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q77. What is a stored procedure? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Pre-compiled SQL code saved on server. Called by name with parameters. Benefits: pre-compiled (fast), encapsulation, reuse. Cons: database-specific, hard to version control, harder to test. Use for complex reporting and bulk operations.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q78. Stored Procedure vs Function? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>Procedure:</strong> doesn't return value (optional OUTPUT parameters). Performs actions. EXECUTE proc.</li>
+                <li><strong>Function:</strong> MUST return value. SELECT dbo.Func(@param).</li>
+              </ul>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q79. What is DISTINCT? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Removes duplicates from result set. SELECT DISTINCT CategoryId FROM Products; Returns unique category IDs only. Use sparingly on large datasets — can be slow.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q80. What is a database view? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Virtual table based on SQL query result. Doesn't store data. Useful for: simplified complex queries, security (expose only needed columns), abstraction. CREATE VIEW v_ActiveProducts AS SELECT * FROM Products WHERE IsActive = 1;</p>
+            </div>
+          </details>
+        </div><!-- /.qa-list sql -->
+
+        <!-- ═══════════ REACT & REDUX ═══════════ -->
+        <h2 id="react-redux-questions">React &amp; Redux</h2>
+        <div class="qa-list">
+          <details class="qa-item">
+            <summary class="qa-question">Q81. What is React? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>JavaScript library for building user interfaces with components. Declarative (describe what UI SHOULD look like), component-based, one-way data flow. Virtual DOM efficiently updates only what changed. Scales to complex UIs.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q82. What is JSX? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>JavaScript mixed with HTML-like syntax. Compiles to React.createElement() calls. Allows writing UI declaratively. Variables in {} are evaluated. Example: &lt;h2&gt;{product.name}&lt;/h2&gt;</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q83. What is Virtual DOM? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>In-memory representation of real DOM. When state changes, React creates new virtual tree, diffs it against old tree, updates only changed nodes in real DOM. Much faster than directly updating DOM.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q84. Components: Functional vs Class? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>Functional:</strong> JavaScript functions returning JSX. Modern approach. Use hooks for state/lifecycle.</li>
+                <li><strong>Class:</strong> ES6 classes extending React.Component. Older approach. Use this.state and lifecycle methods.</li>
+              </ul>
+              <p>Hooks replaced class components. Functional + hooks is now the standard.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q85. Props vs State? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>Props:</strong> read-only data passed from parent to child. Cannot modify. Like function parameters.</li>
+                <li><strong>State:</strong> mutable data owned by component. Changing state triggers re-render. useState hook manages it.</li>
+              </ul>
+              <p>Props are immutable (parent has control). State is local (component manages it).</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q86. What is useState hook? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Returns [state, setState]. const [count, setCount] = useState(0); Changes state, triggers re-render. Initial value can be function for expensive computations.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q87. What is useEffect hook? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Run side effects (fetch data, subscribe, timers). useEffect(() => { ... }, []); Empty dependency array runs once on mount. Runs after render. Return function for cleanup (unsubscribe).</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q88. What is useContext hook? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Access context values without prop drilling. const value = useContext(MyContext); Avoids passing props through many intermediate components.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q89. What is useRef hook? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Returns mutable object persisting across renders. ref.current accesses value. Used for: DOM access, storing values without triggering re-render, focusing input.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q90. What are React lifecycle methods? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Mounting: constructor, componentDidMount. Updating: componentDidUpdate. Unmounting: componentWillUnmount. Modern: use useEffect instead (replaces all lifecycle methods).</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q91. What is componentDidMount? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Runs after component mounts. Equivalent to useEffect with empty dependency array. Use for: API calls, DOM setup, timers. Runs only once.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q92. What is useMemo hook? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Memoizes expensive computations. const memoized = useMemo(() => expensiveCalculation(), [deps]); Only recalculates when dependencies change. Performance optimization.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q93. What is useCallback hook? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Memoizes function. const memoized = useCallback(() => { ... }, [deps]); Returns same function reference if dependencies unchanged. Pass stable callbacks to child components.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q94. What is React.memo? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Prevents re-render if props unchanged. const MyComponent = React.memo(Component); Performance optimization. Use sparingly — profiling before optimizing.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q95. Prop drilling and how to avoid? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Prop drilling = passing props through many intermediate components. Solutions: Context API (useContext), Redux state management, component composition.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q96. What is Redux? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>State management library. Centralized store for application state. Predictable, debuggable. Actions dispatch, reducers update state, selectors access state. Overkill for small apps.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q97. Redux flow? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>1) Component dispatches action 2) Reducer processes action and updates state 3) Store notifies subscribers 4) Component re-renders with new state. Actions are plain objects {type, payload}. Reducers are pure functions.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q98. Actions, reducers, dispatch? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Action:</strong> plain object {type, payload}. <strong>Reducer:</strong> pure function (state, action) => newState. <strong>Dispatch:</strong> send action to store. dispatch(addProduct(product));</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q99. What is React Router? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Client-side routing library. BrowserRouter wraps app. Routes define paths, Route component renders based on match. Link/NavLink for navigation. Enable SPA routing without page refresh.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q100. React performance optimization? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Code splitting (lazy loading), memoization (useMemo, useCallback, React.memo), virtualization for long lists, profiling with React DevTools, reducing re-renders.</p>
+            </div>
+          </details>
+        </div><!-- /.qa-list react-redux -->
+
+        <!-- ═══════════ ANGULAR ═══════════ -->
+        <h2 id="angular-questions">Angular</h2>
+        <div class="qa-list">
+          <details class="qa-item">
+            <summary class="qa-question">Q101. What is Angular? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Full framework for building web apps. TypeScript-based, opinionated, includes routing, HTTP, forms, testing. Two-way data binding. Includes all you need — no picking libraries.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q102. Angular vs React? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>React:</strong> library, minimal, flexible, one-way data flow. <strong>Angular:</strong> full framework, opinionated, includes everything, two-way binding. Choose React for flexibility, Angular for structure.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q103. How to inject service in Angular? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>@Injectable() decorator on service. Constructor parameter in component. Angular DI container provides it. constructor(private productService: ProductService) { }</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q104. What is dependency injection? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Container creates and injects services into components automatically. Benefits: loose coupling, testability (inject mocks), reusability. Services are singletons by default.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q105. What are Observables? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Event streams emitting values over time. Lazy (don't execute until subscribed). HTTP methods return Observables. Subscribe to get values. Use operators (map, filter) to transform.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q106. RxJS operators? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>map:</strong> transform each value</li>
+                <li><strong>filter:</strong> keep values matching condition</li>
+                <li><strong>switchMap:</strong> flatten nested Observables</li>
+                <li><strong>debounceTime:</strong> wait before emitting</li>
+                <li><strong>takeUntil:</strong> unsubscribe when notifier emits</li>
+              </ul>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q107. What are custom directives? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Reusable DOM manipulators. @Directive decorator. Access DOM via ElementRef, Renderer2. Example: appHighlight directive. Use in templates: &lt;p appHighlight&gt;</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q108. What is @Input/@Output? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>@Input:</strong> receives data from parent. Pass via property binding &lt;app-child [product]="product"&gt;</li>
+                <li><strong>@Output:</strong> emits events to parent. EventEmitter. (onDelete)="delete($event)"</li>
+              </ul>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q109. What is two-way binding? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>[(ngModel)] combines property binding and event binding. Change input = update component state = update display. Used in forms. Syntax sugar for [ngModel] and (ngModelChange).</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q110. Component lifecycle in Angular? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>OnInit (initialize), OnChanges (input change), OnDestroy (cleanup). ngOnInit for initialization. ngOnDestroy for unsubscribe, cleanup. Implement OnInit interface.</p>
+            </div>
+          </details>
+        </div><!-- /.qa-list angular -->
+
+        <!-- ═══════════ JAVASCRIPT & EVENT LOOP ═══════════ -->
+        <h2 id="javascript-questions">JavaScript &amp; Event Loop</h2>
+        <div class="qa-list">
+          <details class="qa-item">
+            <summary class="qa-question">Q111. What is JavaScript? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Dynamic, interpreted language. Originally for browsers, now everywhere (Node.js). Dynamically typed, prototypical inheritance, functional programming support.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q112. What is the event loop? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Mechanism running JavaScript in browser. Call stack executes synchronous code. Async callbacks go to web APIs, then to callback queue when ready. Event loop moves callback to call stack when stack empty. Single-threaded but non-blocking.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q113. What are Promises? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Object representing eventual completion/failure of async operation. States: pending, fulfilled, rejected. then() chains success, catch() handles error. Prevents callback hell.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q114. What is async/await? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Syntactic sugar over Promises. async function returns Promise. await pauses execution until Promise resolves. Looks synchronous, is actually async. Much cleaner than Promises.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q115. What is callback hell? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Nested callbacks becoming hard to read. Solved by: Promises (then chains), async/await. Write clean, readable async code.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q116. setTimeout and microtask queue? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>setTimeout goes to macrotask queue. Promise.then() goes to microtask queue. Microtasks run before next macrotask. Microtask queue always empty before checking macrotask queue.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q117. Object comparison? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Objects compared by reference, not value. {} === {} is false. Same reference === true. For value comparison, compare properties or use JSON.stringify().</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q118. What are closures? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Function with access to outer function's variables. Inner function "closes over" outer variables. Useful for data privacy, callbacks. var counter = (function() { let count = 0; return () => ++count; })()</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q119. What is 'this' binding? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>this refers to calling context. Regular function: window/undefined. Arrow function: parent's this. Method: object. Use .call(), .apply(), .bind() to control.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q120. What is hoisting? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Declarations moved to top of scope. var hoisted (undefined initially). let/const hoisted (temporal dead zone). Functions fully hoisted. Define before using to avoid bugs.</p>
+            </div>
+          </details>
+        </div><!-- /.qa-list javascript -->
+
+        <!-- ═══════════ SECURITY & AUTHENTICATION ═══════════ -->
+        <h2 id="security-auth-questions">Security &amp; Authentication</h2>
+        <div class="qa-list">
+          <details class="qa-item">
+            <summary class="qa-question">Q121. Authentication vs Authorization? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>Authentication:</strong> WHO are you? Verify identity with credentials. <strong>Authorization:</strong> WHAT can you do? Check permissions. Flow: Login → authenticate → JWT token → every request includes token → verify token → check permissions → execute.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q122. What is JWT? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>JSON Web Token. Stateless token with header (algorithm), payload (claims like user ID), signature (server-signed). Three parts separated by dots.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q123. How JWT works? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>1) User logs in 2) Server creates JWT with user ID, role, exp time 3) Returns JWT to client 4) Client includes JWT in every request header 5) Server verifies signature and expiry 6) Grant/deny access.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q124. JWT vs Session? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>JWT:</strong> stateless, scalable, no server storage needed.</li>
+                <li><strong>Session:</strong> stateful, server stores session data, cookie-based.</li>
+              </ul>
+              <p>JWT better for distributed systems, APIs, microservices.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q125. What is CORS? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Cross-Origin Resource Sharing. Browser blocks requests to different domains (security). Whitelisted origins can call API. Implemented via response headers: Access-Control-Allow-Origin.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q126. What is CSRF? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Cross-Site Request Forgery. Attacker tricks you into making unwanted requests on authenticated site. Prevention: CSRF tokens. Server generates unique token, includes in forms, verifies on submission. Attacker can't know token.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q127. SQL Injection prevention? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Use parameterized queries ALWAYS. Never concatenate SQL with user input. Input: '; DROP TABLE Products; --  → Safe with parameters, dangerous without. OWASP top web vulnerability.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q128. XSS prevention? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>HTML encode user input. &lt;script&gt; becomes &lt;script&gt;. React/Angular automatically encode. Use @Html.Encode() in .NET. @Html.Raw() only with trusted input.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q129. HTTPS vs HTTP? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <ul>
+                <li><strong>HTTP:</strong> unencrypted, vulnerable to man-in-middle.</li>
+                <li><strong>HTTPS:</strong> encrypted (TLS), certificate-based, secure.</li>
+              </ul>
+              <p>Always use HTTPS in production, especially for sensitive data.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q130. Password hashing? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Never store plain passwords. Hash with salt (bcrypt, PBKDF2, Argon2). Hash is one-way. On login, hash input and compare. Prevent rainbow table attacks.</p>
+            </div>
+          </details>
+        </div><!-- /.qa-list security-auth -->
+
+        <!-- ═══════════ AZURE & DEVOPS ═══════════ -->
+        <h2 id="azure-devops-questions">Azure &amp; DevOps</h2>
+        <div class="qa-list">
+          <details class="qa-item">
+            <summary class="qa-question">Q131. What is Azure? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Microsoft's cloud platform. Services: compute (VMs, App Services), databases (SQL, Cosmos), messaging (Service Bus), analytics (Power BI). IaaS, PaaS, SaaS options.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q132. What are Azure Functions? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Serverless functions. Pay per execution, not infrastructure. Triggered by events (HTTP, timer, queue). Fast scaling. Use for background jobs, webhooks, microservices.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q133. What are Azure App Services? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>PaaS for hosting web apps, APIs, mobile backends. Built-in scaling, monitoring, deployment. Linux or Windows. No server management. Ideal for Web API, ASP.NET Core apps.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q134. What are deployment slots? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Separate deployment environments (staging, production). Deploy to staging first, test, then swap to production. Zero downtime deployments. Quick rollback if issues.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q135. What is CI/CD pipeline? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p><strong>CI (Continuous Integration):</strong> code pushed → automatic build/test. <strong>CD (Continuous Deployment):</strong> passing tests → auto deploy to production. Automate: build, test, deploy.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q136. What are GitHub Actions? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>CI/CD automation in GitHub. Workflows defined in YAML. Trigger on push/PR. Run tests, build, deploy. No external tools needed. Integrated with GitHub.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q137. What are Azure Logic Apps? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Serverless workflow orchestration. Connect services without code. Drag-drop workflow builder. Integrations with 200+ services. Scheduled workflows, event-driven.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q138. What is Terraform? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Infrastructure as Code tool. Define infrastructure in HCL. Version control infrastructure. Reproducible, automated deployments. Works with Azure, AWS, GCP.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q139. What is Infrastructure as Code? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Define infrastructure using code (Terraform, ARM templates). Version controlled. Reproducible, automated. Fast provisioning, disaster recovery, scalability.</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q140. What is Azure Kubernetes Service (AKS)? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <p>Managed Kubernetes cluster. Container orchestration. Auto-scaling, self-healing, rolling updates. DevOps-friendly. Use for microservices, containerized applications at scale.</p>
+            </div>
+          </details>
+        </div><!-- /.qa-list azure-devops -->
 
         <div class="callout callout-success" style="margin-top:3rem;">
           <span class="callout-icon">🎯</span>
