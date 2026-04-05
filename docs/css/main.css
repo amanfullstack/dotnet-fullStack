@@ -177,11 +177,12 @@ code {
 
 /* Code inside question summaries — no padding/background to avoid gaps */
 .qa-question code {
-  background: none;
-  border: none;
-  padding: 0;
-  color: var(--primary);
-  font-size: inherit;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  color: var(--primary) !important;
+  font-size: inherit !important;
 }
 
 /* ----------------------------------------------------------------
