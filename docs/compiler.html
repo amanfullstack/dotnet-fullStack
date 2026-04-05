@@ -446,6 +446,9 @@ document.getElementById('lang-select').addEventListener('change', (e) => {
   // Show/hide SQL table info
   document.getElementById('sql-info').style.display = lang === 'sql' ? 'block' : 'none';
 
+  // Clear console output
+  document.getElementById('console-content').innerHTML = '<div class="console-line info">Output will appear here when you run your code...</div>';
+
   // Update editor language and code
   if (monacoEditor) {
     const editorModel = monacoEditor.getModel();

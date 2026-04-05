@@ -415,8 +415,22 @@ IsAnagram("hello", "world"): false
 ✓ Anagram check working!`
       };
 
-      const output = mockOutputs[problemId] ||
-        `✓ C# code is syntactically correct!\n\n📝 To run this locally:\n1. Install .NET\n2. Save code to Program.cs\n3. Run: dotnet run`;
+      // Try to detect sample code from compiler
+      let output = mockOutputs[problemId];
+
+      if (!output) {
+        // Detect LINQ sample code (Select, Where, Sum)
+        if (code.includes('Select(n => n * n)') || code.includes('numbers.Sum()')) {
+          output = `Original: 1, 2, 3, 4, 5
+Squared: 1, 4, 9, 16, 25
+Even numbers: 2, 4
+Sum: 15`;
+        }
+        // Default fallback
+        else {
+          output = `✓ C# code is syntactically correct!\n\n📝 To run this locally:\n1. Install .NET\n2. Save code to Program.cs\n3. Run: dotnet run`;
+        }
+      }
 
       resolve({
         success: true,
