@@ -183,6 +183,54 @@ code {
   font-size: inherit;
 }
 
+/* GitHub Code Link — Icon with hover tooltip */
+.github-link {
+  display: inline-block;
+  margin-left: 8px;
+  position: relative;
+  cursor: pointer;
+}
+
+.github-link::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text-1);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: var(--font-sans);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-fast);
+  z-index: 1000;
+}
+
+.github-link::before {
+  content: '🔗';
+  display: inline-block;
+  font-size: 16px;
+  transition: transform var(--t-fast);
+}
+
+.github-link:hover::after {
+  opacity: 1;
+}
+
+.github-link:hover::before {
+  transform: scale(1.2);
+}
+
+.github-link {
+  color: var(--primary);
+  text-decoration: none;
+  border-radius: 4px;
+}
+
 /* ----------------------------------------------------------------
    4. CODE BLOCKS
    ---------------------------------------------------------------- */

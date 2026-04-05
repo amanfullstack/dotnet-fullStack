@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Access: EF Core & ADO.NET - DevDocs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+<div id="searchModal" class="search-modal">
+  <div class="search-modal-box animate-fade">
+    <div class="search-modal-input-wrap">
+      <span class="search-modal-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+      <button id="searchClose" class="search-close-btn">ESC</button>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo"><div class="logo-badge">D</div>DevDocs</a>
+    <nav class="header-nav">
+      <a href="index.html">Home</a>
+      <a href="webapi.html" class="active">Web API</a>
+      <a href="ef-core.html">EF Core</a>
+      <a href="linq.html">LINQ</a>
+      <a href="interview.html">Interview</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar" data-search-open onclick="openSearch()">
+        <span>🔍</span><input type="text" placeholder="Search..." readonly>
+        <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+      </div>
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="page-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">📦 Projects</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge badge-done">✅</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge badge-soon">Soon</span></a></li>
+          <li><a href="#" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge badge-soon">Soon</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🔵 Web API Topics</h3>
+        <ul class="sidebar-links">
+          <li><a href="webapi-architecture.html" class="sidebar-link"><span class="sidebar-link-icon">🏗️</span> Architecture</a></li>
+          <li><a href="webapi-controllers.html" class="sidebar-link"><span class="sidebar-link-icon">🎮</span> Controllers &amp; REST</a></li>
+          <li><a href="webapi-models.html" class="sidebar-link"><span class="sidebar-link-icon">📦</span> Models &amp; DTOs</a></li>
+          <li><a href="webapi-di.html" class="sidebar-link"><span class="sidebar-link-icon">💉</span> Dependency Injection</a></li>
+          <li><a href="webapi-middleware.html" class="sidebar-link"><span class="sidebar-link-icon">⚙️</span> Middleware</a></li>
+          <li><a href="webapi-caching.html" class="sidebar-link"><span class="sidebar-link-icon">⚡</span> Caching Strategies</a></li>
+          <li><a href="webapi-error-handling.html" class="sidebar-link"><span class="sidebar-link-icon">🚨</span> Error Handling</a></li>
+          <li><a href="webapi-graphql.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> GraphQL</a></li>
+          <li><a href="webapi-data-access.html" class="sidebar-link active"><span class="sidebar-link-icon">🗄️</span> Data Access</a></li>
+          <li><a href="csharp.html" class="sidebar-link"><span class="sidebar-link-icon">💎</span> C# &amp; OOP</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span class="sidebar-link-icon">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span class="sidebar-link-icon">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span class="sidebar-link-icon">🔗</span> LINQ &amp; Filtering</a></li>
+        </ul>
+      </div>
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+          <li><a href="interview-solid.html" class="sidebar-link"><span class="sidebar-link-icon">🧱</span> SOLID Principles</a></li>
+          <li><a href="interview-patterns.html" class="sidebar-link"><span class="sidebar-link-icon">🎨</span> Design Patterns</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="content-wrapper">
+      <nav class="toc-sidebar" id="tocSidebar">
+        <div class="toc-title">On This Page</div>
+        <ul class="toc-list" id="tocList"></ul>
+      </nav>
+      <article class="article">
+
+        <nav class="breadcrumb">
+          <a href="index.html">Home</a><span class="sep">/</span>
+          <a href="webapi.html">Web API</a><span class="sep">/</span>
+          <span class="current">Data Access</span>
+        </nav>
+
+        <div class="page-title-block">
+          <h1 class="page-title">🗄️ Data Access: EF Core &amp; ADO.NET</h1>
+          <p class="page-subtitle">How ProductCatalogAPI reads and writes data — EF Core with LINQ, raw ADO.NET with SqlCommand, and when to use each.</p>
+          <div class="page-meta">
+            <span class="badge badge-intermediate">Intermediate</span>
+            <span class="badge badge-primary">Data Access</span>
+          </div>
+        </div>
+
+        <!-- ============ COMPARISON ============ -->
+        <h2 id="comparison">EF Core vs ADO.NET vs GraphQL</h2>
+        <p>The ProductCatalogAPI uses three data access strategies. Each has its place:</p>
+
+        <div class="table-wrap">
+        <table class="comparison-table">
+          <thead><tr><th>Feature</th><th>EF Core 8</th><th>ADO.NET</th><th>GraphQL</th></tr></thead>
+          <tbody>
+            <tr><td>Abstraction level</td><td>High — ORM</td><td>Low — raw SQL</td><td>Query language over API</td></tr>
+            <tr><td>Code style</td><td>LINQ, strongly typed</td><td>SQL strings + readers</td><td>Schema + resolvers</td></tr>
+            <tr><td>Performance</td><td>Good (cached queries)</td><td>Best (direct ADO)</td><td>Flexible over-fetching fix</td></tr>
+            <tr><td>Migrations</td><td>✅ Built-in</td><td>❌ Manual SQL scripts</td><td>N/A (uses EF/ADO under hood)</td></tr>
+            <tr><td>Best for</td><td>CRUD, most operations</td><td>Bulk ops, stored procs, perf-critical</td><td>Complex queries from clients</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <!-- ============ EF CORE ============ -->
+        <h2 id="ef-core">EF Core 8 in ProductCatalogAPI <a href="https://github.com/godisone/dotnet-fullStack/tree/main/ProductCatalogAPI-WebAPI-EFCore/Data" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-content">
+            <p class="callout-title">What is EF Core?</p>
+            <p class="callout-body">Entity Framework Core is an Object-Relational Mapper (ORM). It lets you work with database rows as C# objects and write database queries using LINQ instead of raw SQL. EF Core then translates LINQ to SQL behind the scenes.</p>
+          </div>
+        </div>
+
+        <h3 id="ef-dbcontext">DbContext Setup</h3>
+        <p>The <code>DbContext</code> is your gateway to the database. It holds <code>DbSet&lt;T&gt;</code> properties — one per table.</p>
+
+        <div class="code-block">
+          <div class="code-block-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">C# — ProductDbContext.cs</span></div>
+          <pre><code class="language-csharp">public class ProductDbContext : DbContext
+{
+    // ← Each DbSet maps to a database table
+    public DbSet&lt;Product&gt; Products { get; set; }
+
+    public ProductDbContext(DbContextOptions&lt;ProductDbContext&gt; options)
+        : base(options) { }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // Global query filter — automatically excludes soft-deleted rows
+        // Any query on Products will add WHERE IsActive = 1 automatically
+        modelBuilder.Entity&lt;Product&gt;()
+            .HasQueryFilter(p =&gt; p.IsActive);
+
+        // Composite index for faster category filtering
+        modelBuilder.Entity&lt;Product&gt;()
+            .HasIndex(p =&gt; p.Category);
+
+        // Precise decimal storage (money-safe)
+        modelBuilder.Entity&lt;Product&gt;()
+            .Property(p =&gt; p.Price)
+            .HasColumnType("decimal(18,2)");
+    }
+}</code></pre>
+        </div>
+
+        <h3 id="ef-registration">Registering DbContext in Program.cs</h3>
+        <div class="code-block">
+          <div class="code-block-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">C# — Program.cs</span></div>
+          <pre><code class="language-csharp">// Register EF Core with SQL Server
+builder.Services.AddDbContext&lt;ProductDbContext&gt;(options =&gt;
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    )
+);
+
+// Auto-create database on startup (dev only — use migrations in prod)
+using var scope = app.Services.CreateScope();
+var db = scope.ServiceProvider.GetRequiredService&lt;ProductDbContext&gt;();
+db.Database.EnsureCreated();</code></pre>
+        </div>
+
+        <h3 id="ef-crud">CRUD with LINQ</h3>
+        <p>EF Core translates LINQ method chains directly to SQL. The translation happens at runtime when you call <code>ToListAsync()</code> or <code>FirstOrDefaultAsync()</code>.</p>
+
+        <div class="code-block">
+          <div class="code-block-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">C# — ProductService.cs (EF Core CRUD)</span></div>
+          <pre><code class="language-csharp">// READ ALL — translates to: SELECT * FROM Products WHERE IsActive = 1
+var products = await _context.Products
+    .AsNoTracking()           // faster reads — no change tracking needed
+    .OrderBy(p =&gt; p.Name)
+    .ToListAsync();
+
+// READ ONE — SELECT TOP 1 * FROM Products WHERE Id = @id AND IsActive = 1
+var product = await _context.Products
+    .FirstOrDefaultAsync(p =&gt; p.Id == id);
+
+if (product is null)
+    throw new NotFoundException($"Product {id} not found");
+
+// READ by CATEGORY — WHERE Category = @category AND IsActive = 1
+var filtered = await _context.Products
+    .Where(p =&gt; p.Category == category)
+    .AsNoTracking()
+    .ToListAsync();
+
+// CREATE
+var product = new Product
+{
+    Name = request.Name,
+    Price = request.Price,
+    Category = request.Category,
+    Stock = request.Stock,
+    IsActive = true,
+    CreatedAt = DateTime.UtcNow
+};
+_context.Products.Add(product);
+await _context.SaveChangesAsync();   // ← INSERT INTO Products ...
+
+// UPDATE — EF Core tracks the entity and generates UPDATE on SaveChanges
+product.Name = request.Name;
+product.Price = request.Price;
+product.UpdatedAt = DateTime.UtcNow;
+await _context.SaveChangesAsync();   // ← UPDATE Products SET ... WHERE Id = @id
+
+// SOFT DELETE — set IsActive = false instead of DELETE
+product.IsActive = false;
+product.UpdatedAt = DateTime.UtcNow;
+await _context.SaveChangesAsync();   // ← UPDATE Products SET IsActive=0 WHERE Id = @id</code></pre>
+        </div>
+
+        <h3 id="ef-migrations">Migrations</h3>
+        <p>Migrations are version-controlled snapshots of your database schema. Run them from the terminal:</p>
+
+        <div class="code-block">
+          <div class="code-block-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Terminal — EF Core CLI</span></div>
+          <pre><code class="language-bash"># Create a new migration after model changes
+dotnet ef migrations add InitialCreate
+
+# Apply pending migrations to database
+dotnet ef database update
+
+# Revert to a previous migration
+dotnet ef database update PreviousMigrationName
+
+# View migration history
+dotnet ef migrations list
+
+# Remove last migration (before applying to DB)
+dotnet ef migrations remove</code></pre>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-content">
+            <p class="callout-title">EnsureCreated vs Migrations</p>
+            <p class="callout-body"><code>EnsureCreated()</code> creates the schema from scratch — it skips migrations entirely. Use it only in development/prototyping. In production always use <code>dotnet ef database update</code> to apply migrations incrementally without data loss.</p>
+          </div>
+        </div>
+
+        <!-- ============ ADO.NET ============ -->
+        <h2 id="adonet">ADO.NET in ProductCatalogAPI</h2>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-content">
+            <p class="callout-title">What is ADO.NET?</p>
+            <p class="callout-body">ADO.NET is the low-level .NET data access technology. You write SQL strings directly and use <code>SqlConnection</code>, <code>SqlCommand</code>, and <code>SqlDataReader</code> to execute them. No ORM magic — full control, maximum performance.</p>
+          </div>
+        </div>
+
+        <h3 id="ado-connection">SqlConnection &amp; SqlCommand</h3>
+        <div class="code-block">
+          <div class="code-block-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">C# — ADO.NET Setup</span></div>
+          <pre><code class="language-csharp">// Inject connection string via IConfiguration
+public class ProductAdoService
+{
+    private readonly string _connStr;
+
+    public ProductAdoService(IConfiguration config)
+    {
+        _connStr = config.GetConnectionString("DefaultConnection")!;
+    }
+}</code></pre>
+        </div>
+
+        <h3 id="ado-read">Reading Data with SqlDataReader</h3>
+        <div class="code-block">
+          <div class="code-block-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">C# — SELECT with SqlDataReader</span></div>
+          <pre><code class="language-csharp">public async Task&lt;List&lt;Product&gt;&gt; GetAllAsync()
+{
+    var products = new List&lt;Product&gt;();
+
+    // 'using' ensures connection is closed/disposed even if exception is thrown
+    await using var conn = new SqlConnection(_connStr);
+    await conn.OpenAsync();
+
+    const string sql = "SELECT Id, Name, Price, Category, Stock FROM Products WHERE IsActive = 1";
+
+    await using var cmd = new SqlCommand(sql, conn);
+    await using var reader = await cmd.ExecuteReaderAsync();
+
+    while (await reader.ReadAsync())
+    {
+        products.Add(new Product
+        {
+            Id       = reader.GetInt32(0),
+            Name     = reader.GetString(1),
+            Price    = reader.GetDecimal(2),
+            Category = reader.GetString(3),
+            Stock    = reader.GetInt32(4)
+        });
+    }
+
+    return products;
+}</code></pre>
+        </div>
+
+        <h3 id="ado-params">Parameterized Queries — Prevent SQL Injection</h3>
+        <div class="code-block">
+          <div class="code-block-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">C# — Parameterized INSERT / SELECT</span></div>
+          <pre><code class="language-csharp">// ✅ CORRECT — parameterized query (safe from SQL injection)
+public async Task&lt;Product?&gt; GetByIdAsync(int id)
+{
+    await using var conn = new SqlConnection(_connStr);
+    await conn.OpenAsync();
+
+    // @id is a parameter — NEVER use string concatenation
+    const string sql = "SELECT * FROM Products WHERE Id = @id AND IsActive = 1";
+
+    await using var cmd = new SqlCommand(sql, conn);
+    cmd.Parameters.AddWithValue("@id", id);     // ← safe substitution
+
+    await using var reader = await cmd.ExecuteReaderAsync();
+
+    if (await reader.ReadAsync())
+    {
+        return new Product { Id = reader.GetInt32(0), Name = reader.GetString(1) };
+    }
+    return null;
+}
+
+// ❌ WRONG — SQL injection vulnerability
+// var sql = $"SELECT * FROM Products WHERE Id = {id}";  // NEVER do this!</code></pre>
+        </div>
+
+        <h3 id="ado-execute">ExecuteNonQuery &amp; ExecuteScalar</h3>
+        <div class="code-block">
+          <div class="code-block-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">C# — INSERT, UPDATE, DELETE, Scalar</span></div>
+          <pre><code class="language-csharp">// ExecuteNonQuery — for INSERT / UPDATE / DELETE (returns rows affected)
+public async Task&lt;int&gt; CreateAsync(CreateProductRequest req)
+{
+    await using var conn = new SqlConnection(_connStr);
+    await conn.OpenAsync();
+
+    const string sql = @"
+        INSERT INTO Products (Name, Price, Category, Stock, IsActive, CreatedAt)
+        VALUES (@name, @price, @category, @stock, 1, @created);
+        SELECT SCOPE_IDENTITY();";   // ← return new Id
+
+    await using var cmd = new SqlCommand(sql, conn);
+    cmd.Parameters.AddWithValue("@name",     req.Name);
+    cmd.Parameters.AddWithValue("@price",    req.Price);
+    cmd.Parameters.AddWithValue("@category", req.Category);
+    cmd.Parameters.AddWithValue("@stock",    req.Stock);
+    cmd.Parameters.AddWithValue("@created",  DateTime.UtcNow);
+
+    // ExecuteScalar — returns single value (the new ID from SCOPE_IDENTITY)
+    var result = await cmd.ExecuteScalarAsync();
+    return Convert.ToInt32(result);
+}
+
+// Count with ExecuteScalar
+public async Task&lt;int&gt; CountAsync()
+{
+    await using var conn = new SqlConnection(_connStr);
+    await conn.OpenAsync();
+    await using var cmd = new SqlCommand("SELECT COUNT(*) FROM Products WHERE IsActive=1", conn);
+    return (int)(await cmd.ExecuteScalarAsync())!;
+}
+
+// Soft delete with ExecuteNonQuery
+public async Task DeleteAsync(int id)
+{
+    await using var conn = new SqlConnection(_connStr);
+    await conn.OpenAsync();
+    await using var cmd = new SqlCommand(
+        "UPDATE Products SET IsActive=0 WHERE Id=@id", conn);
+    cmd.Parameters.AddWithValue("@id", id);
+    int rowsAffected = await cmd.ExecuteNonQueryAsync();
+    if (rowsAffected == 0) throw new NotFoundException($"Product {id} not found");
+}</code></pre>
+        </div>
+
+        <h3 id="ado-transaction">Transactions in ADO.NET</h3>
+        <div class="code-block">
+          <div class="code-block-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">C# — SqlTransaction</span></div>
+          <pre><code class="language-csharp">// Wrap multiple operations in a transaction — all succeed or all fail
+public async Task TransferStockAsync(int fromId, int toId, int qty)
+{
+    await using var conn = new SqlConnection(_connStr);
+    await conn.OpenAsync();
+
+    await using var tx = conn.BeginTransaction();  // ← start transaction
+    try
+    {
+        await using var decreaseCmd = new SqlCommand(
+            "UPDATE Products SET Stock = Stock - @qty WHERE Id = @id", conn, tx);
+        decreaseCmd.Parameters.AddWithValue("@qty", qty);
+        decreaseCmd.Parameters.AddWithValue("@id",  fromId);
+        await decreaseCmd.ExecuteNonQueryAsync();
+
+        await using var increaseCmd = new SqlCommand(
+            "UPDATE Products SET Stock = Stock + @qty WHERE Id = @id", conn, tx);
+        increaseCmd.Parameters.AddWithValue("@qty", qty);
+        increaseCmd.Parameters.AddWithValue("@id",  toId);
+        await increaseCmd.ExecuteNonQueryAsync();
+
+        await tx.CommitAsync();   // ← both succeeded → commit
+    }
+    catch
+    {
+        await tx.RollbackAsync(); // ← any failure → rollback both
+        throw;
+    }
+}</code></pre>
+        </div>
+
+        <!-- ============ WHEN TO USE ============ -->
+        <h2 id="when-to-use">When to Use Each Approach</h2>
+        <div class="table-wrap">
+        <table class="comparison-table">
+          <thead><tr><th>Scenario</th><th>Use</th><th>Reason</th></tr></thead>
+          <tbody>
+            <tr><td>Standard CRUD (most cases)</td><td><strong>EF Core</strong></td><td>Less code, auto-migrations, change tracking</td></tr>
+            <tr><td>Complex joins / reporting queries</td><td><strong>EF Core + LINQ</strong></td><td>Fluent API composes well</td></tr>
+            <tr><td>Bulk insert/update (10k+ rows)</td><td><strong>ADO.NET</strong></td><td>No change tracking overhead; use SqlBulkCopy</td></tr>
+            <tr><td>Stored procedures with complex logic</td><td><strong>ADO.NET</strong></td><td>Direct SqlCommand with CommandType.StoredProcedure</td></tr>
+            <tr><td>Flexible client-driven queries</td><td><strong>GraphQL</strong></td><td>Client specifies exactly what fields it needs</td></tr>
+            <tr><td>Legacy database (no migrations possible)</td><td><strong>ADO.NET</strong></td><td>Full control over raw SQL</td></tr>
+            <tr><td>Performance-critical hot path</td><td><strong>Dapper or ADO.NET</strong></td><td>Minimal overhead vs EF Core</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <!-- ============ INTERVIEW TIPS ============ -->
+        <div class="callout callout-success">
+          <span class="callout-icon">💡</span>
+          <div class="callout-content">
+            <p class="callout-title">Interview Tips — Data Access</p>
+            <ul style="margin:0;padding-left:1.2rem;">
+              <li><strong>Q: What is the difference between EF Core and ADO.NET?</strong> — EF Core is an ORM (abstract, LINQ, auto-SQL). ADO.NET is raw (SQL strings, readers, full control).</li>
+              <li><strong>Q: What is AsNoTracking()?</strong> — Disables EF Core's change-tracking for read-only queries. Faster because EF doesn't keep an in-memory snapshot of returned entities.</li>
+              <li><strong>Q: How do you prevent SQL injection in ADO.NET?</strong> — Always use parameterized queries (<code>cmd.Parameters.AddWithValue</code>). Never concatenate user input into SQL strings.</li>
+              <li><strong>Q: What is a soft delete?</strong> — Setting <code>IsActive = false</code> instead of running <code>DELETE</code>. Data is preserved for auditing; EF Core's <code>HasQueryFilter</code> automatically filters it out.</li>
+              <li><strong>Q: When would you use a transaction?</strong> — When multiple operations must succeed or fail together (e.g., debit one account, credit another). Use <code>SqlTransaction</code> in ADO.NET or <code>SaveChangesAsync()</code> wraps everything in a transaction automatically in EF Core.</li>
+            </ul>
+          </div>
+        </div>
+
+        <nav class="page-nav">
+          <a href="webapi-graphql.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">&#8592;</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">GraphQL</span></div>
+          </a>
+          <a href="csharp.html" class="page-nav-item">
+            <div><span class="page-nav-label">Next</span><span class="page-nav-title">C# &amp; OOP</span></div>
+            <span class="page-nav-arrow">&#8594;</span>
+          </a>
+        </nav>
+
+      </article>
+    </div>
+  </main>
+</div>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="index.html" class="footer-brand">
+      <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div>
+      DevDocs
+    </a>
+    <ul class="footer-links">
+      <li><a href="webapi.html">Web API</a></li>
+      <li><a href="ef-core.html">EF Core</a></li>
+      <li><a href="linq.html">LINQ</a></li>
+      <li><a href="interview.html">Interview</a></li>
+    </ul>
+    <p class="footer-copy">&#169; 2025 DevDocs. For learning &amp; interview prep.</p>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
