@@ -183,18 +183,25 @@ code {
   font-size: inherit;
 }
 
-/* GitHub Code Link — Icon with hover tooltip */
+/* Animation for GitHub icon */
+@keyframes github-bounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(5deg); }
+}
+
+/* GitHub Code Link — Animated GitHub icon with hover tooltip */
 .github-link {
   display: inline-block;
-  margin-left: 8px;
+  margin-left: 10px;
   position: relative;
   cursor: pointer;
+  vertical-align: middle;
 }
 
 .github-link::after {
   content: attr(data-tooltip);
   position: absolute;
-  bottom: 125%;
+  bottom: 130%;
   left: 50%;
   transform: translateX(-50%);
   background: var(--text-1);
@@ -211,10 +218,11 @@ code {
 }
 
 .github-link::before {
-  content: '🔗';
+  content: '🐙';
   display: inline-block;
-  font-size: 16px;
-  transition: transform var(--t-fast);
+  font-size: 18px;
+  animation: github-bounce 2.5s ease-in-out infinite;
+  transition: all var(--t-fast);
 }
 
 .github-link:hover::after {
@@ -222,7 +230,8 @@ code {
 }
 
 .github-link:hover::before {
-  transform: scale(1.2);
+  animation: none;
+  transform: scale(1.4) rotate(20deg);
 }
 
 .github-link {
