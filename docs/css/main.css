@@ -175,17 +175,12 @@ code {
   word-break: break-word;
 }
 
-/* Code inside question summaries — invisible styling, text flows naturally */
+/* Code inside question summaries — completely transparent to layout */
 .qa-question code {
-  background: transparent !important;
-  border: none !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  color: var(--text-1) !important;
-  font-size: 1em !important;
-  font-family: inherit !important;
-  word-break: normal !important;
+  display: contents;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 /* ----------------------------------------------------------------
