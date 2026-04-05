@@ -175,10 +175,10 @@ code {
   word-break: break-word;
 }
 
-/* Code inside question summaries — completely transparent to layout */
+/* Code inside question summaries — completely transparent to layout with blue color */
 .qa-question code {
   display: contents;
-  color: inherit;
+  color: var(--primary);
   font-family: inherit;
   font-size: inherit;
 }
