@@ -45,6 +45,16 @@
     menuBtn.addEventListener('click', toggleSidebar);
     if (overlay) overlay.addEventListener('click', closeSidebar);
 
+    // Save sidebar scroll position before clicking links
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+      link.addEventListener('click', () => {
+        if (sidebar) {
+          sessionStorage.setItem('sidebarScrollPos', sidebar.scrollTop);
+        }
+        closeSidebar();
+      });
+    });
+
     // Close on ESC
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeSidebar();
@@ -76,6 +86,16 @@
 
   function markActiveSidebarLink() {
     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    const sidebar = document.getElementById('sidebar');
+
+    // Restore sidebar scroll position if saved
+    const savedScroll = sessionStorage.getItem('sidebarScrollPos');
+    if (sidebar && savedScroll) {
+      setTimeout(() => {
+        sidebar.scrollTop = parseInt(savedScroll);
+      }, 0);
+    }
+
     document.querySelectorAll('.sidebar-link').forEach(link => {
       const href = link.getAttribute('href') || '';
       const linkFile = href.split('/').pop();
