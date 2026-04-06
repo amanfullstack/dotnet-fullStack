@@ -264,6 +264,13 @@
       }
     }
   </style>
+  <!-- Theme initialization script (runs immediately, no flash) -->
+  <script>
+    (function() {
+      const theme = localStorage.getItem('docsTheme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
 </head>
 <body>
 <div class="dark-mode" data-theme="light">
