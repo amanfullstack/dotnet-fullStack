@@ -1075,16 +1075,6 @@ pre code {
   font-weight: 600;
 }
 
-.project-tab-icon {
-  font-size: 18px;
-  display: inline-flex;
-}
-
-.project-tab-icon {
-  font-size: var(--text-lg);
-  display: inline-flex;
-}
-
 /* Project topics under tabs */
 .project-topics-list {
   display: flex;
