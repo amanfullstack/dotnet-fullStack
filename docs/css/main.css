@@ -602,36 +602,21 @@ pre code {
 
 /* ═══ PINNED SECTION - COMPACT ═══ */
 .sidebar-pinned {
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  position: relative;
   margin-bottom: var(--sp-3);
   padding: var(--sp-2);
-  background: linear-gradient(180deg, rgba(14, 165, 233, 0.2), rgba(14, 165, 233, 0.08));
-  border: 1px solid rgba(14, 165, 233, 0.3);
+  background: linear-gradient(180deg, rgba(14, 165, 233, 0.15), rgba(14, 165, 233, 0.06));
+  border: 1px solid rgba(14, 165, 233, 0.25);
   border-radius: var(--r-base);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   margin-left: var(--sp-1);
   margin-right: var(--sp-1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.3s ease;
+  transition: all 0.3s ease;
 
   [data-theme="dark"] & {
-    background: linear-gradient(180deg, rgba(59, 130, 246, 0.25), rgba(59, 130, 246, 0.1));
-    border-color: rgba(59, 130, 246, 0.35);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
-}
-
-/* Enhanced shadow when pinned section is "floating" on scroll */
-@supports (position: sticky) {
-  .sidebar-pinned {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  }
-
-  .sidebar-pinned:not(:first-child) {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(180deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.08));
+    border-color: rgba(59, 130, 246, 0.3);
   }
 }
 
