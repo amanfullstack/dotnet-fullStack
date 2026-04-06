@@ -816,6 +816,7 @@ pre code {
   font-weight: 500;
   position: relative;
   overflow: visible;
+  min-height: 32px;
 }
 
 .sidebar-link:hover {
