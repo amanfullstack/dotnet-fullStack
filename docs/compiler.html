@@ -215,6 +215,8 @@
       background: var(--surface);
       color: var(--text-1);
       line-height: 1.6;
+      box-sizing: border-box;
+      display: block;
     }
 
     @media (max-width: 1024px) {
@@ -625,8 +627,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load initial sample code
   if (codeEditor) {
+    console.log('✓ Code editor found, loading sample code');
+    console.log('Sample code length:', sampleCode.javascript.length);
     codeEditor.value = sampleCode.javascript;
     codeEditor.focus();
+    console.log('✓ Sample code loaded, textarea value length:', codeEditor.value.length);
+  } else {
+    console.error('✗ Code editor element not found');
   }
 
   // Update editor when language changes

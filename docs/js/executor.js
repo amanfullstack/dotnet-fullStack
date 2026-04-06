@@ -492,8 +492,6 @@ class CodeExecutor {
       }
     });
   }
-    });
-  }
 
   /**
    * Format duration as readable string
