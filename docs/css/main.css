@@ -732,41 +732,52 @@ pre code {
   display: none;
 }
 
-/* Pin Button Styling - Visible & Working */
+/* Pin Button Styling - Visible on Hover */
 .pin-btn {
   position: absolute;
   right: 6px;
   top: 50%;
-  transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
+  transform: translateY(-50%) scale(0.8);
+  width: 20px;
+  height: 20px;
   border: none;
   background: none;
-  color: var(--primary);
+  color: var(--text-3);
   cursor: pointer;
-  font-size: 16px;
-  transition: all 0.2s ease;
+  font-size: 14px;
+  transition: all 0.2s ease-out;
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 1;
-  pointer-events: auto;
+  opacity: 0;
+  pointer-events: none;
   z-index: 100;
 }
 
 .sidebar-link:hover .pin-btn {
-  transform: translateY(-50%) scale(1.3) rotate(25deg);
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%) scale(1);
+  color: var(--primary);
+}
+
+.sidebar-link:hover .pin-btn:hover {
+  transform: translateY(-50%) scale(1.3) rotate(15deg);
+  color: var(--warning);
 }
 
 .pin-btn.pinned {
   opacity: 1;
-  background: var(--primary);
-  color: white;
+  pointer-events: auto;
+  color: var(--primary);
+  background: rgba(14, 165, 233, 0.1);
+  border-radius: 50%;
 }
 
 .pin-btn.pinned:hover {
   background: var(--warning);
-  transform: translateY(-50%) scale(1.15) rotate(-15deg);
+  color: white;
+  transform: translateY(-50%) scale(1.2) rotate(-20deg);
 }
 
 .sidebar-section {
