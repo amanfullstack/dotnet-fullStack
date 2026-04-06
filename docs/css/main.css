@@ -732,48 +732,35 @@ pre code {
   display: none;
 }
 
-/* Pin Button Styling - Make it visible and easy to interact */
+/* Pin Button Styling - Visible & Working */
 .pin-btn {
   position: absolute;
-  right: 4px;
+  right: 6px;
   top: 50%;
   transform: translateY(-50%);
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  min-height: 32px;
-  border: 1px solid rgba(14, 165, 233, 0.2);
-  background: rgba(14, 165, 233, 0.08);
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: none;
   color: var(--primary);
   cursor: pointer;
-  border-radius: 6px;
   font-size: 16px;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
+  pointer-events: none;
   z-index: 100;
-  padding: 0;
-  flex-shrink: 0;
-}
-
-[data-theme="dark"] .pin-btn {
-  background: rgba(59, 130, 246, 0.1);
-  border-color: rgba(59, 130, 246, 0.25);
 }
 
 .sidebar-link:hover .pin-btn {
   opacity: 1;
+  pointer-events: auto;
 }
 
-.pin-btn:hover,
-.pin-btn.pinned {
-  background: var(--primary);
-  color: white;
-  border-color: var(--primary);
-  transform: translateY(-50%) scale(1.2) rotate(20deg);
-  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+.pin-btn:hover {
+  transform: translateY(-50%) scale(1.3) rotate(25deg);
 }
 
 .pin-btn.pinned {
@@ -833,6 +820,7 @@ pre code {
   margin: 2px var(--sp-1);
   font-weight: 500;
   position: relative;
+  overflow: visible;
 }
 
 .sidebar-link:hover {
@@ -1010,8 +998,8 @@ pre code {
 .project-tabs-section {
   display: flex;
   flex-direction: column;
-  margin-bottom: var(--sp-3);
-  padding: var(--sp-2);
+  margin-bottom: var(--sp-2);
+  padding: var(--sp-1);
   background: transparent;
   border: none;
 }
@@ -1089,8 +1077,9 @@ pre code {
 .project-topics-list {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-0-5);
-  padding: var(--sp-2) 0;
+  gap: 2px;
+  padding: var(--sp-1) 0;
+  margin: var(--sp-2) 0 0 0;
 }
 
 .project-topics-list .sidebar-link {
