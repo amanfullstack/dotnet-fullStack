@@ -749,17 +749,12 @@ pre code {
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  pointer-events: none;
+  opacity: 1;
+  pointer-events: auto;
   z-index: 100;
 }
 
 .sidebar-link:hover .pin-btn {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.pin-btn:hover {
   transform: translateY(-50%) scale(1.3) rotate(25deg);
 }
 
