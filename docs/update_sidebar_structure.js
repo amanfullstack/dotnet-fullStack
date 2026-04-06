@@ -67,6 +67,18 @@ const newSidebarStructure = `      <!-- Home -->
             <div class="sidebar-project-topic">
               <a href="mvc-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
             </div>
+            <div class="sidebar-project-topic">
+              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🎮</span> Controllers &amp; Actions</a>
+            </div>
+            <div class="sidebar-project-topic">
+              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">👁️</span> Views &amp; Razor</a>
+            </div>
+            <div class="sidebar-project-topic">
+              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Models &amp; Validation</a>
+            </div>
+            <div class="sidebar-project-topic">
+              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">💼</span> Services &amp; HttpClient</a>
+            </div>
           </div>
         </div>
 
@@ -84,6 +96,21 @@ const newSidebarStructure = `      <!-- Home -->
             <div class="sidebar-project-topic">
               <a href="angular-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
             </div>
+            <div class="sidebar-project-topic">
+              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Components &amp; Templates</a>
+            </div>
+            <div class="sidebar-project-topic">
+              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">💼</span> Services &amp; DI</a>
+            </div>
+            <div class="sidebar-project-topic">
+              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">〰️</span> RxJS &amp; Observables</a>
+            </div>
+            <div class="sidebar-project-topic">
+              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">📋</span> Reactive Forms</a>
+            </div>
+            <div class="sidebar-project-topic">
+              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🗺️</span> Router &amp; Navigation</a>
+            </div>
           </div>
         </div>
 
@@ -100,6 +127,21 @@ const newSidebarStructure = `      <!-- Home -->
             </div>
             <div class="sidebar-project-topic">
               <a href="react-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
+            </div>
+            <div class="sidebar-project-topic">
+              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🎣</span> Hooks &amp; State</a>
+            </div>
+            <div class="sidebar-project-topic">
+              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🔄</span> Custom Hooks</a>
+            </div>
+            <div class="sidebar-project-topic">
+              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🌍</span> Context API</a>
+            </div>
+            <div class="sidebar-project-topic">
+              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">📋</span> Forms &amp; Validation</a>
+            </div>
+            <div class="sidebar-project-topic">
+              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🗺️</span> React Router</a>
             </div>
           </div>
         </div>
