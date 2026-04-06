@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASP.NET MVC - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div> DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="webapi.html">Web API</a>
+            <a href="ef-core.html">EF Core</a>
+            <a href="linq.html">LINQ</a>
+            <a href="interview.html">Interview</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-section">
+                <ul class="sidebar-links">
+                    <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">📦 Projects</h3>
+                <ul class="sidebar-links">
+                    <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge badge-done">✨</span></a></li>
+                    <li><a href="mvc.html" class="sidebar-link active"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge badge-done">✨</span></a></li>
+                    <li><a href="angular.html" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge badge-done">✨</span></a></li>
+                    <li><a href="react.html" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge badge-done">✨</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <article class="article">
+                <nav class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="sep">/</span>
+                    <span class="current">ASP.NET MVC</span>
+                </nav>
+
+                <div class="page-title-block">
+                    <h1 class="page-title">🖥️ ASP.NET MVC - Server-Side Web Application</h1>
+                    <p class="page-subtitle">A modern ASP.NET MVC 8 web application demonstrating server-side rendering, Razor views, and RESTful integration with ProductCatalogAPI.</p>
+                    <div class="page-meta">
+                        <span class="badge badge-success">Complete</span>
+                        <span class="badge badge-primary">.NET 8</span>
+                    </div>
+                </div>
+
+                <div class="callout callout-info">
+                    <span class="callout-icon">💡</span>
+                    <div class="callout-content">
+                        <p class="callout-title">What is ASP.NET MVC?</p>
+                        <p class="callout-body">MVC (Model-View-Controller) separates your application into three layers. The server renders HTML and sends complete web pages to the browser. Perfect for traditional web applications with rich user experiences.</p>
+                    </div>
+                </div>
+
+                <h2>Features</h2>
+                <ul>
+                    <li>✅ Product List with Search & Filter</li>
+                    <li>✅ Create, Edit, Delete Products</li>
+                    <li>✅ Detail View for Individual Products</li>
+                    <li>✅ Dark/Light Theme Toggle</li>
+                    <li>✅ Responsive Bootstrap 5 Design</li>
+                    <li>✅ Dependency Injection & Service Layer</li>
+                    <li>✅ Error Handling & Validation</li>
+                </ul>
+
+                <h2>Tech Stack</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Component</th>
+                            <th>Technology</th>
+                        </tr>
+                        <tr>
+                            <td>Framework</td>
+                            <td>ASP.NET MVC 8 (.NET 8)</td>
+                        </tr>
+                        <tr>
+                            <td>Language</td>
+                            <td>C# 12</td>
+                        </tr>
+                        <tr>
+                            <td>UI Framework</td>
+                            <td>Bootstrap 5</td>
+                        </tr>
+                        <tr>
+                            <td>Templating</td>
+                            <td>Razor Views</td>
+                        </tr>
+                        <tr>
+                            <td>Backend</td>
+                            <td>ProductCatalogAPI REST</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h2>Getting Started</h2>
+                <pre><code class="language-bash"># Clone and navigate
+cd ProductCatalogMVC-ASP.NET-MVC
+
+# Run the application
+dotnet run
+
+# Open browser to https://localhost:5001
+</code></pre>
+
+                <h2>Project Structure</h2>
+                <ul>
+                    <li><strong>Controllers/</strong> - Handle HTTP requests (ProductsController)</li>
+                    <li><strong>Models/</strong> - Data models (Product, ProductViewModel)</li>
+                    <li><strong>Views/</strong> - Razor templates (HTML + C#)</li>
+                    <li><strong>Services/</strong> - Business logic (ProductService)</li>
+                    <li><strong>wwwroot/</strong> - Static files (CSS, JS)</li>
+                </ul>
+
+                <h2>Resources</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <a href="mvc-setup.html" class="btn btn-primary" style="text-align: center; padding: 1rem;">📚 Setup Guide</a>
+                    <a href="https://github.com/[USER]/dotnet-fullStack/tree/main/ProductCatalogMVC-ASP.NET-MVC" target="_blank" class="btn btn-outline-primary" style="text-align: center; padding: 1rem;">🔗 GitHub Source</a>
+                </div>
+
+                <h2>Why ASP.NET MVC?</h2>
+                <div class="callout callout-success">
+                    <span class="callout-icon">✓</span>
+                    <div class="callout-content">
+                        <p><strong>Best for:</strong> Traditional web applications, content-heavy sites, real-time HTML rendering, quick server-side validation.</p>
+                    </div>
+                </div>
+
+            </article>
+        </div>
+    </main>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <a href="index.html" class="footer-brand">
+            <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div> DevDocs
+        </a>
+        <p class="footer-copy">© 2025 DevDocs. For learning & interviews.</p>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

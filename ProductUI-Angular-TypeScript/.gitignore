@@ -1,0 +1,64 @@
+# Angular .gitignore
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+package-lock.json
+yarn.lock
+
+# Build output
+dist/
+out-tsc/
+bazel-out/
+
+# Development tools
+.angular/
+.angular.json
+angular.json.bak
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.user
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# Testing
+coverage/
+karma.conf.js
+
+# Compilation
+*.ngfactory.ts
+*.ngstyle.ts
+
+# Angular compiled files
+*.ngsummary.json
+*.shim.ngstyle.ts
+*.shim.ts
+
+# TypeScript
+*.js
+*.js.map
+!karma.conf.js
+!protractor.conf.js
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# IDE
+.editorconfig
+.eslintignore
+.prettierignore

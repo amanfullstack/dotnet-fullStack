@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASP.NET MVC Setup Guide - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div> DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="webapi.html">Web API</a>
+            <a href="ef-core.html">EF Core</a>
+            <a href="linq.html">LINQ</a>
+            <a href="interview.html">Interview</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-section">
+                <ul class="sidebar-links">
+                    <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">📦 Projects</h3>
+                <ul class="sidebar-links">
+                    <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge badge-done">✨</span></a></li>
+                    <li><a href="mvc.html" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge badge-done">✨</span></a></li>
+                    <li><a href="angular.html" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge badge-done">✨</span></a></li>
+                    <li><a href="react.html" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge badge-done">✨</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <article class="article">
+                <nav class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="sep">/</span>
+                    <a href="mvc.html">MVC</a>
+                    <span class="sep">/</span>
+                    <span class="current">Setup Guide</span>
+                </nav>
+
+                <div class="page-title-block">
+                    <h1 class="page-title">🖥️ ASP.NET MVC Setup Guide</h1>
+                    <p class="page-subtitle">Complete step-by-step guide to set up and run the ProductCatalogMVC project locally.</p>
+                </div>
+
+                <h2>Prerequisites</h2>
+                <div class="callout callout-warning">
+                    <span class="callout-icon">⚠️</span>
+                    <div class="callout-content">
+                        <p>Before starting, ensure you have:</p>
+                        <ul>
+                            <li>✅ .NET 8.0 SDK or later installed</li>
+                            <li>✅ Visual Studio 2022 or VS Code with C# extension</li>
+                            <li>✅ ProductCatalogAPI running on localhost:5000</li>
+                            <li>✅ Git (for cloning the repository)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>1. Clone or Navigate to Project</h2>
+                <pre><code class="language-bash"># Using Git
+git clone https://github.com/[USER]/dotnet-fullStack.git
+cd dotnet-fullStack/ProductCatalogMVC-ASP.NET-MVC
+
+# Or if already cloned
+cd ProductCatalogMVC-ASP.NET-MVC
+</code></pre>
+
+                <h2>2. Verify API is Running</h2>
+                <p>The MVC project depends on the ProductCatalogAPI. Make sure it's running:</p>
+                <pre><code class="language-bash">cd ProductCatalogAPI-WebAPI-EFCore
+dotnet run
+
+# Should show: "Now listening on: http://localhost:5000"
+</code></pre>
+
+                <h2>3. Restore Dependencies</h2>
+                <pre><code class="language-bash"># Restore NuGet packages
+dotnet restore
+
+# Or in Visual Studio: Build > Rebuild Solution
+</code></pre>
+
+                <h2>4. Configure Application</h2>
+                <p>Edit <code>appsettings.json</code> if needed:</p>
+                <pre><code class="language-json">{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information"
+    }
+  },
+  "ProductCatalogApi": {
+    "BaseUrl": "http://localhost:5000"
+  }
+}
+</code></pre>
+
+                <h2>5. Run the Application</h2>
+                <pre><code class="language-bash"># Start the development server
+dotnet run
+
+# Or in Visual Studio: Press F5 or Debug > Start Debugging
+
+# Application starts on:
+# - HTTP: http://localhost:5000
+# - HTTPS: https://localhost:5001
+</code></pre>
+
+                <h2>6. Access the Application</h2>
+                <p>Open your browser to:</p>
+                <ul>
+                    <li><strong>Home Page:</strong> https://localhost:5001 (or http://localhost:5000)</li>
+                    <li><strong>Products List:</strong> https://localhost:5001/Products</li>
+                    <li><strong>Create New Product:</strong> https://localhost:5001/Products/Create</li>
+                </ul>
+
+                <h2>Features</h2>
+                <div class="callout callout-success">
+                    <span class="callout-icon">✓</span>
+                    <div class="callout-content">
+                        <p>Once running, you can:</p>
+                        <ul>
+                            <li>📋 View all products in a responsive table</li>
+                            <li>🔍 Search products by name or category</li>
+                            <li>➕ Create new products via form</li>
+                            <li>✏️ Edit existing product details</li>
+                            <li>👁️ View individual product details</li>
+                            <li>🗑️ Delete products with confirmation</li>
+                            <li>🌙 Toggle dark/light theme</li>
+                            <li>📱 Full responsive design for mobile/tablet</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>Troubleshooting</h2>
+
+                <h3>Issue: Cannot connect to ProductCatalogAPI</h3>
+                <p><strong>Solution:</strong> Ensure the API is running on localhost:5000</p>
+                <pre><code class="language-bash"># In another terminal window, run:
+cd ProductCatalogAPI-WebAPI-EFCore
+dotnet run
+</code></pre>
+
+                <h3>Issue: Port already in use</h3>
+                <p><strong>Solution:</strong> Change the launch URL in launchSettings.json</p>
+                <pre><code class="language-json">"applicationUrl": "https://localhost:5002;http://localhost:5001"
+</code></pre>
+
+                <h3>Issue: SSL/TLS certificate error</h3>
+                <p><strong>Solution:</strong> Trust the development certificate</p>
+                <pre><code class="language-bash">dotnet dev-certs https --trust
+</code></pre>
+
+                <h2>Development Workflow</h2>
+                <pre><code class="language-bash"># Watch for changes and auto-reload
+dotnet watch run
+
+# Build only
+dotnet build
+
+# Publish for production
+dotnet publish -c Release
+</code></pre>
+
+                <h2>Project Structure</h2>
+                <pre><code class="language-tree">ProductCatalogMVC-ASP.NET-MVC/
+├── Controllers/
+│   └── ProductsController.cs     (6 CRUD actions)
+├── Models/
+│   ├── Product.cs                (Entity model)
+│   └── ProductViewModel.cs       (View model)
+├── Views/
+│   ├── Shared/
+│   │   └── _Layout.cshtml        (Master layout)
+│   └── Products/
+│       ├── Index.cshtml          (Product list)
+│       ├── Create.cshtml         (New product form)
+│       ├── Edit.cshtml           (Edit product form)
+│       ├── Delete.cshtml         (Confirmation)
+│       └── Details.cshtml        (Product details)
+├── Services/
+│   ├── IProductService.cs        (Interface)
+│   └── ProductService.cs         (HTTP client)
+├── wwwroot/
+│   ├── css/
+│   │   ├── site.css              (Custom styles)
+│   │   └── theme.css             (Dark/light theme)
+│   └── js/
+│       └── theme.js              (Theme toggle)
+├── Program.cs                    (DI & middleware setup)
+└── appsettings.json              (Configuration)
+</code></pre>
+
+                <h2>Next Steps</h2>
+                <ol>
+                    <li>Read<a href="mvc.html"> the MVC overview</a></li>
+                    <li>Check the <a href="mvc-learning.html">LEARNING_GUIDE.md</a> for MVC concepts</li>
+                    <li>Explore the <a href="mvc-documentation.html">MVC_DOCUMENTATION.md</a> for complete API reference</li>
+                    <li>View source on <a href="https://github.com/[USER]/dotnet-fullStack/tree/main/ProductCatalogMVC-ASP.NET-MVC" target="_blank">GitHub</a></li>
+                </ol>
+
+            </article>
+        </div>
+    </main>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <a href="index.html" class="footer-brand">
+            <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div> DevDocs
+        </a>
+        <p class="footer-copy">© 2025 DevDocs. For learning & interviews.</p>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

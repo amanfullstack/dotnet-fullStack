@@ -1,0 +1,108 @@
+/* Theme CSS Variables - Light Mode (Default) */
+:root[data-theme="light"],
+[data-theme="light"] {
+    --color-bg: #ffffff;
+    --color-bg-secondary: #f8fafc;
+    --color-text: #0f172a;
+    --color-text-secondary: #334155;
+    --color-border: #e2e8f0;
+    --color-primary: #0ea5e9;
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-danger: #ef4444;
+}
+
+/* Dark Mode CSS Variables */
+:root[data-theme="dark"],
+[data-theme="dark"] {
+    --color-bg: #0f172a;
+    --color-bg-secondary: #1e293b;
+    --color-text: #f1f5f9;
+    --color-text-secondary: #cbd5e1;
+    --color-border: #334155;
+    --color-primary: #38bdf8;
+    --color-success: #86efac;
+    --color-warning: #fbbf24;
+    --color-danger: #fca5a5;
+}
+
+/* Apply theme to body and main elements */
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar {
+    background-color: var(--color-bg-secondary) !important;
+    border-color: var(--color-border) !important;
+}
+
+.navbar-brand {
+    color: var(--color-text) !important;
+}
+
+.nav-link {
+    color: var(--color-text-secondary) !important;
+}
+
+.nav-link:hover {
+    color: var(--color-primary) !important;
+}
+
+.card {
+    background-color: var(--color-bg-secondary);
+    border-color: var(--color-border);
+    color: var(--color-text);
+}
+
+.card-header {
+    background-color: var(--color-border) !important;
+    border-color: var(--color-border) !important;
+}
+
+.form-control,
+.form-select {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    border-color: var(--color-border);
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    border-color: var(--color-primary);
+}
+
+.table {
+    --bs-table-bg: var(--color-bg-secondary);
+    --bs-table-color: var(--color-text);
+    --bs-table-border-color: var(--color-border);
+    --bs-table-hover-bg: var(--color-border);
+}
+
+.btn-outline-secondary {
+    --bs-btn-color: var(--color-text-secondary);
+    --bs-btn-border-color: var(--color-border);
+}
+
+.btn-outline-secondary:hover {
+    --bs-btn-bg: var(--color-border);
+    --bs-btn-color: var(--color-text);
+}
+
+.alert {
+    --bs-alert-bg: rgba(var(--color-primary), 0.1);
+    --bs-alert-border-color: var(--color-primary);
+}
+
+.badge {
+    background-color: var(--color-primary) !important;
+}
+
+footer {
+    background-color: var(--color-bg-secondary) !important;
+    border-color: var(--color-border) !important;
+    color: var(--color-text-secondary);
+}

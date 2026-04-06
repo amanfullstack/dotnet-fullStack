@@ -1,0 +1,77 @@
+@model ProductCatalogMVC.Models.Product
+
+@{
+    ViewData["Title"] = $"Product: {Model.Name}";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="mb-3">
+            <a href="/Products" class="btn btn-outline-secondary btn-sm">← Back to Products</a>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-light">
+                <h3 class="mb-0">👁️ @Model.Name</h3>
+            </div>
+
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-2">Description</h6>
+                        <p>@(string.IsNullOrEmpty(Model.Description) ? "No description provided" : Model.Description)</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-2">Category</h6>
+                        <p><span class="badge bg-info">@Model.Category</span></p>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <h6 class="text-muted mb-2">Price</h6>
+                        <h3 class="text-success">${@Model.Price:F2}</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="text-muted mb-2">Stock Quantity</h6>
+                        <h3 class="@(Model.StockQuantity > 10 ? "text-success" : Model.StockQuantity > 0 ? "text-warning" : "text-danger")">
+                            @Model.StockQuantity
+                        </h3>
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="text-muted mb-2">Status</h6>
+                        <h3>
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactive</span>
+                            }
+                        </h3>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row text-muted small">
+                    <div class="col-md-6">
+                        <p><strong>Created:</strong> @Model.CreatedDate.ToString("MMM dd, yyyy HH:mm")</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Updated:</strong> @Model.UpdatedDate.ToString("MMM dd, yyyy HH:mm")</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-light">
+                <a href="/Products/Edit/@Model.Id" class="btn btn-warning btn-sm">✏️ Edit</a>
+                <a href="/Products/Delete/@Model.Id" class="btn btn-danger btn-sm">🗑️ Delete</a>
+                <a href="/Products" class="btn btn-outline-secondary btn-sm">Back</a>
+            </div>
+        </div>
+    </div>
+</div>

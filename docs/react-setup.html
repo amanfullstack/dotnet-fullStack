@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Setup Guide - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div> DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="webapi.html">Web API</a>
+            <a href="ef-core.html">EF Core</a>
+            <a href="linq.html">LINQ</a>
+            <a href="interview.html">Interview</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-section">
+                <ul class="sidebar-links">
+                    <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">📦 Projects</h3>
+                <ul class="sidebar-links">
+                    <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge badge-done">✨</span></a></li>
+                    <li><a href="mvc.html" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge badge-done">✨</span></a></li>
+                    <li><a href="angular.html" class="sidebar-link"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge badge-done">✨</span></a></li>
+                    <li><a href="react.html" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge badge-done">✨</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <article class="article">
+                <nav class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="sep">/</span>
+                    <a href="react.html">React</a>
+                    <span class="sep">/</span>
+                    <span class="current">Setup Guide</span>
+                </nav>
+
+                <div class="page-title-block">
+                    <h1 class="page-title">⚛️ React Setup Guide</h1>
+                    <p class="page-subtitle">Complete step-by-step guide to set up and run the ProductUI-React project locally.</p>
+                </div>
+
+                <h2>Prerequisites</h2>
+                <div class="callout callout-warning">
+                    <span class="callout-icon">⚠️</span>
+                    <div class="callout-content">
+                        <p>Before starting, ensure you have:</p>
+                        <ul>
+                            <li>✅ Node.js 16+ and npm 7+ installed</li>
+                            <li>✅ ProductCatalogAPI running on localhost:5000</li>
+                            <li>✅ Git (for cloning the repository)</li>
+                            <li>✅ A modern browser (Chrome, Firefox, Safari, or Edge)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>1. Check Prerequisites</h2>
+                <pre><code class="language-bash"># Check Node.js version (should be 16+)
+node --version
+
+# Check npm version (should be 7+)
+npm --version
+</code></pre>
+
+                <h2>2. Clone or Navigate to Project</h2>
+                <pre><code class="language-bash"># Using Git
+git clone https://github.com/[USER]/dotnet-fullStack.git
+cd dotnet-fullStack/ProductUI-React-JavaScript
+
+# Or if already cloned
+cd ProductUI-React-JavaScript
+</code></pre>
+
+                <h2>3. Verify API is Running</h2>
+                <p>The React app depends on the ProductCatalogAPI. Make sure it's running:</p>
+                <pre><code class="language-bash">cd ProductCatalogAPI-WebAPI-EFCore
+dotnet run
+
+# Should show: "Now listening on: http://localhost:5000"
+</code></pre>
+
+                <h2>4. Install Dependencies</h2>
+                <pre><code class="language-bash"># Install npm packages (takes 1-2 minutes)
+npm install
+
+# Verify installation
+npm --version
+ls node_modules | head
+</code></pre>
+
+                <h2>5. Configure Environment</h2>
+                <p>Create or verify <code>.env</code> file in project root:</p>
+                <pre><code class="language-bash">VITE_API_URL=http://localhost:5000/api
+</code></pre>
+
+                <h2>6. Start Development Server</h2>
+                <pre><code class="language-bash"># Start Vite dev server
+npm run dev
+
+# Server starts on http://localhost:5173 (or next available port)
+# Output shows the exact URL
+</code></pre>
+
+                <h2>7. Access the Application</h2>
+                <ul>
+                    <li><strong>Home Page:</strong> http://localhost:5173</li>
+                    <li><strong>Products List:</strong> http://localhost:5173/</li>
+                    <li><strong>Create Product:</strong> http://localhost:5173/create</li>
+                    <li><strong>Edit Product:</strong> http://localhost:5173/edit/:id</li>
+                    <li><strong>Product Detail:</strong> http://localhost:5173/:id</li>
+                </ul>
+
+                <h2>Features</h2>
+                <div class="callout callout-success">
+                    <span class="callout-icon">✓</span>
+                    <div class="callout-content">
+                        <p>Once running, you can:</p>
+                        <ul>
+                            <li>📋 View all products in a responsive table</li>
+                            <li>🔍 Search products by name or category</li>
+                            <li>➕ Create new products via modal form</li>
+                            <li>✏️ Edit existing product details</li>
+                            <li>👁️ View individual product details</li>
+                            <li>🗑️ Delete products with confirmation</li>
+                            <li>🌙 Toggle dark/light theme</li>
+                            <li>📱 Full responsive design for mobile/tablet</li>
+                            <li>⚡ Fast HMR (Hot Module Replacement) with Vite</li>
+                            <li>🎯 Modern React hooks for state management</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>Troubleshooting</h2>
+
+                <h3>Issue: Cannot connect to ProductCatalogAPI</h3>
+                <p><strong>Solution:</strong> Ensure the API is running on localhost:5000</p>
+                <pre><code class="language-bash"># In another terminal window, run:
+cd ProductCatalogAPI-WebAPI-EFCore
+dotnet run
+</code></pre>
+
+                <h3>Issue: CORS Error from API</h3>
+                <p><strong>Solution:</strong> Configure Vite proxy in vite.config.js:</p>
+                <pre><code class="language-javascript">export default {
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, '/api')
+      }
+    }
+  }
+}
+</code></pre>
+
+                <h3>Issue: Port 5173 already in use</h3>
+                <p><strong>Solution:</strong> Vite will automatically use the next available port</p>
+                <pre><code class="language-bash"># Check what port was used
+npm run dev
+
+# Or manually specify a port
+npm run dev -- --port 5174
+</code></pre>
+
+                <h2>Development Workflow</h2>
+                <pre><code class="language-bash"># Dev server with HMR
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build locally
+npm run preview
+
+# Run tests (if configured)
+npm run test
+
+# Format code
+npm run format
+</code></pre>
+
+                <h2>Project Structure</h2>
+                <pre><code class="language-tree">ProductUI-React-JavaScript/
+├── src/
+│   ├── components/
+│   │   ├── ProductList.jsx        (List & table component)
+│   │   ├── ProductForm.jsx        (Create/edit form)
+│   │   ├── ProductDetail.jsx      (Detail view)
+│   │   ├── ProductDelete.jsx      (Delete confirmation)
+│   │   ├── ThemeToggle.jsx        (Theme switcher)
+│   │   └── Toast.jsx              (Notifications)
+│   ├── pages/
+│   │   ├── ListPage.jsx           (Products list page)
+│   │   ├── CreatePage.jsx         (Create product page)
+│   │   ├── EditPage.jsx           (Edit product page)
+│   │   └── DetailPage.jsx         (Product detail page)
+│   ├── services/
+│   │   └── productService.js      (Fetch API wrapper)
+│   ├── hooks/
+│   │   ├── useProduct.js          (Product CRUD hook)
+│   │   └── useLocalStorage.js     (Local storage hook)
+│   ├── context/
+│   │   └── ThemeContext.jsx       (Theme provider)
+│   ├── styles/
+│   │   ├── App.css                (App styles)
+│   │   ├── index.css              (Global styles)
+│   │   └── theme.css              (Dark/light theme)
+│   ├── App.jsx                    (Main component)
+│   ├── main.jsx                   (Entry point)
+│   └── index.html
+├── vite.config.js                 (Vite configuration)
+├── package.json                   (Dependencies)
+└── .env                           (Environment variables)
+</code></pre>
+
+                <h2>Building for Production</h2>
+                <pre><code class="language-bash"># Create optimized build
+npm run build
+
+# Output goes to dist/ folder
+# Files are minified and optimized for performance
+</code></pre>
+
+                <h2>Deployment Options</h2>
+                <ul>
+                    <li><strong>Netlify:</strong> <code>npm run build</code> → drag dist/ folder</li>
+                    <li><strong>Vercel:</strong> Connect GitHub repo, auto-deploys</li>
+                    <li><strong>GitHub Pages:</strong> Configure vite.config.js for base path</li>
+                    <li><strong>Docker:</strong> Multi-stage build for production image</li>
+                </ul>
+
+                <h2>Next Steps</h2>
+                <ol>
+                    <li>Read the <a href="react.html">React overview</a></li>
+                    <li>Check the <a href="react-learning.html">LEARNING_GUIDE.md</a> for React concepts</li>
+                    <li>Explore the <a href="react-documentation.html">REACT_DOCUMENTATION.md</a> for complete reference</li>
+                    <li>View source on <a href="https://github.com/[USER]/dotnet-fullStack/tree/main/ProductUI-React-JavaScript" target="_blank">GitHub</a></li>
+                </ol>
+
+            </article>
+        </div>
+    </main>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <a href="index.html" class="footer-brand">
+            <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div> DevDocs
+        </a>
+        <p class="footer-copy">© 2025 DevDocs. For learning & interviews.</p>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+# ASP.NET MVC .gitignore
+
+# .NET Build Results
+bin/
+obj/
+Debug/
+Release/
+x64/
+x86/
+
+# Visual Studio
+.vs/
+*.sln.docstates
+.vscode/
+*.user
+*.suo
+*.userosscache
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+*.mdf
+*.ldf
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local
+launchSettings.json
+
+# Build output
+publish/
+PublishProfiles/
+
+# Coverage
+coverage/
+TestResults/
+*.trx
+
+# Local database
+Product*.db

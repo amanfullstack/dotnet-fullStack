@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div> DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="webapi.html">Web API</a>
+            <a href="ef-core.html">EF Core</a>
+            <a href="linq.html">LINQ</a>
+            <a href="interview.html">Interview</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-section">
+                <ul class="sidebar-links">
+                    <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">📦 Projects</h3>
+                <ul class="sidebar-links">
+                    <li><a href="webapi.html" class="sidebar-link"><span class="sidebar-link-icon">🌐</span> Web API <span class="badge badge-done">✨</span></a></li>
+                    <li><a href="mvc.html" class="sidebar-link"><span class="sidebar-link-icon">🖥️</span> MVC <span class="badge badge-done">✨</span></a></li>
+                    <li><a href="angular.html" class="sidebar-link active"><span class="sidebar-link-icon">🔺</span> Angular <span class="badge badge-done">✨</span></a></li>
+                    <li><a href="react.html" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React <span class="badge badge-done">✨</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <article class="article">
+                <nav class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="sep">/</span>
+                    <span class="current">Angular</span>
+                </nav>
+
+                <div class="page-title-block">
+                    <h1 class="page-title">🔺 Angular - TypeScript SPA Framework</h1>
+                    <p class="page-subtitle">A modern Angular 18 Single Page Application with TypeScript, Reactive Forms, RxJS, and full-featured product management.</p>
+                    <div class="page-meta">
+                        <span class="badge badge-success">Complete</span>
+                        <span class="badge badge-primary">Angular 18+</span>
+                    </div>
+                </div>
+
+                <div class="callout callout-info">
+                    <span class="callout-icon">💡</span>
+                    <div class="callout-content">
+                        <p class="callout-title">What is Angular?</p>
+                        <p class="callout-body">Angular is a comprehensive framework for building dynamic web applications. It provides powerful features like component-based architecture, reactive programming with RxJS, powerful forms, and strong TypeScript support out of the box.</p>
+                    </div>
+                </div>
+
+                <h2>Features</h2>
+                <ul>
+                    <li>✅ Component-Based Architecture</li>
+                    <li>✅ Reactive Forms with Validation</li>
+                    <li>✅ Real-time Data Binding</li>
+                    <li>✅ Angular Router for Navigation</li>
+                    <li>✅ RxJS Observables & Operators</li>
+                    <li>✅ TypeScript Strong Typing</li>
+                    <li>✅ Dark/Light Theme Support</li>
+                    <li>✅ Dependency Injection</li>
+                </ul>
+
+                <h2>Tech Stack</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Component</th>
+                            <th>Technology</th>
+                        </tr>
+                        <tr>
+                            <td>Framework</td>
+                            <td>Angular 18+</td>
+                        </tr>
+                        <tr>
+                            <td>Language</td>
+                            <td>TypeScript 5.2+</td>
+                        </tr>
+                        <tr>
+                            <td>Reactive</td>
+                            <td>RxJS 7.8+</td>
+                        </tr>
+                        <tr>
+                            <td>UI Framework</td>
+                            <td>Bootstrap 5</td>
+                        </tr>
+                        <tr>
+                            <td>API Client</td>
+                            <td>HttpClientModule</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h2>Getting Started</h2>
+                <pre><code class="language-bash"># Navigate to project
+cd ProductUI-Angular-TypeScript
+
+# Install dependencies
+npm install
+
+# Start development server
+ng serve
+
+# Open browser to http://localhost:4200
+</code></pre>
+
+                <h2>Key Concepts</h2>
+                <ul>
+                    <li><strong>Components</strong> - Reusable UI building blocks</li>
+                    <li><strong>Services</strong> - Shared business logic & API calls</li>
+                    <li><strong>Reactive Forms</strong> - Form validation & control</li>
+                    <li><strong>Observables</strong> - Async data streaming</li>
+                    <li><strong>Router</strong> - Client-side navigation</li>
+                    <li><strong>Dependency Injection</strong> - Loose coupling</li>
+                </ul>
+
+                <h2>Resources</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <a href="angular-setup.html" class="btn btn-primary" style="text-align: center; padding: 1rem;">📚 Setup Guide</a>
+                    <a href="https://github.com/[USER]/dotnet-fullStack/tree/main/ProductUI-Angular-TypeScript" target="_blank" class="btn btn-outline-primary" style="text-align: center; padding: 1rem;">🔗 GitHub Source</a>
+                </div>
+
+                <h2>Why Angular?</h2>
+                <div class="callout callout-success">
+                    <span class="callout-icon">✓</span>
+                    <div class="callout-content">
+                        <p><strong>Best for:</strong> Enterprise applications, large-scale SPAs, teams preferring strong typing, comprehensive frameworks with batteries included.</p>
+                    </div>
+                </div>
+
+            </article>
+        </div>
+    </main>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <a href="index.html" class="footer-brand">
+            <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div> DevDocs
+        </a>
+        <p class="footer-copy">© 2025 DevDocs. For learning & interviews.</p>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
