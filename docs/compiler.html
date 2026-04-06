@@ -586,7 +586,7 @@ const langBadges = {
   python: 'Python'
 };
 
-let executor = new CodeExecutor();
+let executor = null;
 
 // Escape HTML
 function escapeHtml(text) {
@@ -612,6 +612,9 @@ function scrollToOutput() {
 
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize executor
+  executor = new CodeExecutor();
+
   const codeEditor = document.getElementById('code-editor');
   const langSelect = document.getElementById('lang-select');
   const runBtn = document.getElementById('run-btn');
@@ -623,6 +626,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load initial sample code
   if (codeEditor) {
     codeEditor.value = sampleCode.javascript;
+    codeEditor.focus();
   }
 
   // Update editor when language changes
@@ -635,8 +639,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (consoleContent) {
         consoleContent.innerHTML = '<div class="console-line info">Output will appear here when you run your code...</div>';
       }
-      if (codeEditor) {
+      if (codeEditor && sampleCode[lang]) {
         codeEditor.value = sampleCode[lang];
+        codeEditor.focus();
       }
     });
   }
@@ -644,6 +649,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Run code
   if (runBtn) {
     runBtn.addEventListener('click', async () => {
+      if (!executor) {
+        if (consoleContent) {
+          consoleContent.innerHTML = '<div class="console-line error">Error: Executor not ready. Please refresh the page.</div>';
+        }
+        return;
+      }
+
       const lang = langSelect.value;
       const code = codeEditor.value;
 
