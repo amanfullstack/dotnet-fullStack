@@ -423,12 +423,58 @@
   }
 
   /* ---------------------------------------------------------------
+     PROJECT COLLAPSIBLE TOPICS
+  --------------------------------------------------------------- */
+  function initProjectCollapse() {
+    const headers = document.querySelectorAll('.sidebar-project-header');
+
+    headers.forEach(header => {
+      const projectName = header.getAttribute('data-project');
+      const topics = header.nextElementSibling;
+
+      if (!topics || !topics.classList.contains('sidebar-project-topics')) {
+        return;
+      }
+
+      // Check if this project is the "active" one (page belongs to it)
+      const activeLink = topics.querySelector('.sidebar-link.active');
+      const shouldExpand = activeLink !== null;
+
+      // Restore from localStorage or use default
+      const savedState = localStorage.getItem(`project-${projectName}`);
+      if (savedState !== null) {
+        if (savedState === 'collapsed') {
+          header.classList.add('collapsed');
+          topics.classList.add('collapsed');
+        } else {
+          header.classList.remove('collapsed');
+          topics.classList.remove('collapsed');
+        }
+      } else if (!shouldExpand) {
+        // Default: collapse all except active
+        header.classList.add('collapsed');
+        topics.classList.add('collapsed');
+      }
+
+      // Toggle on click
+      header.addEventListener('click', () => {
+        header.classList.toggle('collapsed');
+        topics.classList.toggle('collapsed');
+
+        const isCollapsed = header.classList.contains('collapsed');
+        localStorage.setItem(`project-${projectName}`, isCollapsed ? 'collapsed' : 'expanded');
+      });
+    });
+  }
+
+  /* ---------------------------------------------------------------
      INIT
   --------------------------------------------------------------- */
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     initSidebar();
     initCollapseBtn();
+    initProjectCollapse();
     initCopyButtons();
     initTOC();
     initSearch();
