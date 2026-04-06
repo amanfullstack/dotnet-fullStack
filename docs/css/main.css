@@ -2764,6 +2764,7 @@ details[open] .qa-chevron {
 
 /* ═══════════════════ TOP BANNER: MARQUEE QUOTES + TECH STACK */
 .top-banner {
+  width: 100%;
   background: linear-gradient(90deg,
     rgba(14, 165, 233, 0.08),
     rgba(139, 92, 246, 0.08),
@@ -2771,11 +2772,13 @@ details[open] .qa-chevron {
   border-bottom: 2px solid var(--primary);
   padding: var(--sp-2) var(--sp-4);
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: var(--sp-4);
   position: relative;
   z-index: 100;
   backdrop-filter: blur(10px);
+  box-sizing: border-box;
 }
 
 [data-theme="dark"] .top-banner {
@@ -2851,6 +2854,8 @@ details[open] .qa-chevron {
   gap: var(--sp-8);
   animation: marquee 30s linear infinite;
   padding: 0 var(--sp-4);
+  white-space: nowrap;
+  width: max-content;
 }
 
 .quotes-marquee:hover {
