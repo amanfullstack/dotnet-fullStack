@@ -601,67 +601,15 @@ async function initMonaco() {
   };
 }
 
-// Update editor when language changes
-document.getElementById('lang-select').addEventListener('change', (e) => {
-  const lang = e.target.value;
-  const badge = document.getElementById('lang-badge');
-  badge.textContent = langBadges[lang];
-
-  // Show/hide SQL table info
-  document.getElementById('sql-info').style.display = lang === 'sql' ? 'block' : 'none';
-
-  // Clear console output
-  document.getElementById('console-content').innerHTML = '<div class="console-line info">Output will appear here when you run your code...</div>';
-
-  // Update editor language and code
-  if (monacoEditor) {
-    const editorModel = monacoEditor.getModel();
-    monaco.editor.setModelLanguage(editorModel, lang === 'csharp' ? 'csharp' : lang === 'sql' ? 'sql' : lang === 'python' ? 'python' : 'javascript');
-    monacoEditor.setValue(sampleCode[lang]);
-  }
-});
-
-// Run code
-document.getElementById('run-btn').addEventListener('click', async () => {
-  const lang = document.getElementById('lang-select').value;
-  const code = monacoEditor.getValue();
-  const runBtn = document.getElementById('run-btn');
-  const consoleContent = document.getElementById('console-content');
-
-  runBtn.disabled = true;
-  runBtn.textContent = '⏳ Running...';
-  consoleContent.innerHTML = '<div class="console-line info">Executing code...</div>';
-
-  try {
-    const result = await executor.execute(code, lang, '', '');
-
-    if (result.success && result.output) {
-      const formatted = formatOutput(result.output, lang);
-      consoleContent.innerHTML = `<pre class="console-line success">${formatted}</pre>`;
-    } else if (result.error) {
-      consoleContent.innerHTML = `<pre class="console-line error">${escapeHtml(result.error)}</pre>`;
-    } else {
-      consoleContent.innerHTML = '<div class="console-line info">Execution completed (no output)</div>';
-    }
-
-    if (result.duration) {
-      consoleContent.innerHTML += `<div class="console-meta">⏱️ ${result.duration}ms</div>`;
-    }
-
-    // Scroll to output
-    scrollToOutput();
-  } catch (err) {
-    consoleContent.innerHTML = `<pre class="console-line error">Error: ${escapeHtml(err.message)}</pre>`;
-    scrollToOutput();
-  } finally {
-    runBtn.disabled = false;
-    runBtn.textContent = '▶ Run';
-  }
-});
+// Escape HTML
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
 
 // Format output based on language
 function formatOutput(output, lang) {
-  // Just escape HTML - executor already handles language-specific formatting
   return escapeHtml(output);
 }
 
@@ -675,28 +623,101 @@ function scrollToOutput() {
   }
 }
 
-// Clear console
-document.getElementById('clear-btn').addEventListener('click', () => {
-  document.getElementById('console-content').innerHTML = '<div class="console-line info">Output cleared...</div>';
+// Initialize all event listeners and Monaco on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize Monaco editor
+  initMonaco();
+
+  // Update editor when language changes
+  const langSelect = document.getElementById('lang-select');
+  if (langSelect) {
+    langSelect.addEventListener('change', (e) => {
+      const lang = e.target.value;
+      const badge = document.getElementById('lang-badge');
+      if (badge) badge.textContent = langBadges[lang];
+
+      // Show/hide SQL table info
+      const sqlInfo = document.getElementById('sql-info');
+      if (sqlInfo) sqlInfo.style.display = lang === 'sql' ? 'block' : 'none';
+
+      // Clear console output
+      const consoleContent = document.getElementById('console-content');
+      if (consoleContent) {
+        consoleContent.innerHTML = '<div class="console-line info">Output will appear here when you run your code...</div>';
+      }
+
+      // Update editor language and code
+      if (monacoEditor) {
+        const editorModel = monacoEditor.getModel();
+        const monacoLang = lang === 'csharp' ? 'csharp' : lang === 'sql' ? 'sql' : lang === 'python' ? 'python' : 'javascript';
+        monaco.editor.setModelLanguage(editorModel, monacoLang);
+        monacoEditor.setValue(sampleCode[lang]);
+      }
+    });
+  }
+
+  // Run code
+  const runBtn = document.getElementById('run-btn');
+  if (runBtn) {
+    runBtn.addEventListener('click', async () => {
+      const lang = document.getElementById('lang-select').value;
+      const code = monacoEditor ? monacoEditor.getValue() : '';
+      const consoleContent = document.getElementById('console-content');
+
+      if (runBtn && consoleContent) {
+        runBtn.disabled = true;
+        runBtn.textContent = '⏳ Running...';
+        consoleContent.innerHTML = '<div class="console-line info">Executing code...</div>';
+
+        try {
+          const result = await executor.execute(code, lang, '', '');
+
+          if (result.success && result.output) {
+            const formatted = formatOutput(result.output, lang);
+            consoleContent.innerHTML = `<pre class="console-line success">${formatted}</pre>`;
+          } else if (result.error) {
+            consoleContent.innerHTML = `<pre class="console-line error">${escapeHtml(result.error)}</pre>`;
+          } else {
+            consoleContent.innerHTML = '<div class="console-line info">Execution completed (no output)</div>';
+          }
+
+          if (result.duration) {
+            consoleContent.innerHTML += `<div class="console-meta">⏱️ ${result.duration}ms</div>`;
+          }
+
+          scrollToOutput();
+        } catch (err) {
+          consoleContent.innerHTML = `<pre class="console-line error">Error: ${escapeHtml(err.message)}</pre>`;
+          scrollToOutput();
+        } finally {
+          runBtn.disabled = false;
+          runBtn.textContent = '▶ Run';
+        }
+      }
+    });
+  }
+
+  // Clear console
+  const clearBtn = document.getElementById('clear-btn');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      const consoleContent = document.getElementById('console-content');
+      if (consoleContent) {
+        consoleContent.innerHTML = '<div class="console-line info">Output cleared...</div>';
+      }
+    });
+  }
+
+  // Listen for theme changes and update Monaco editor
+  const originalSetAttribute = Element.prototype.setAttribute;
+  Element.prototype.setAttribute = function(name, value) {
+    originalSetAttribute.call(this, name, value);
+    if (name === 'data-theme' && monacoEditor) {
+      const isDarkMode = value === 'dark';
+      monaco.editor.setTheme(isDarkMode ? 'vs-dark' : 'vs');
+    }
+  };
 });
-
-// Escape HTML
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-// Initialize
-initMonaco();
-
-// Listen for theme changes and update Monaco editor
-const originalSetAttribute = Element.prototype.setAttribute;
-Element.prototype.setAttribute = function(name, value) {
-  originalSetAttribute.call(this, name, value);
-  if (name === 'data-theme' && monacoEditor) {
-    const isDarkMode = value === 'dark';
-    monaco.editor.setTheme(isDarkMode ? 'vs-dark' : 'vs');
   }
 };
 

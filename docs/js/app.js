@@ -605,9 +605,12 @@
 
     // Restore last active project or detect from current page
     const currentProject = detectCurrentProject();
-    const savedProject = localStorage.getItem('activeProject') || currentProject || 'webapi';
+    const savedProject = localStorage.getItem('activeProject');
 
-    const activeTab = document.querySelector(`[data-project="${savedProject}"]`);
+    // Use saved project if available and tabs exist for it, otherwise use current page
+    const projectToActivate = (savedProject && document.querySelector(`[data-project="${savedProject}"]`)) ? savedProject : currentProject;
+
+    const activeTab = document.querySelector(`[data-project="${projectToActivate}"]`);
     if (activeTab) {
       activeTab.click();
     }
@@ -620,6 +623,7 @@
     if (currentPath.includes('mvc') || currentPath === 'mvc.html' || currentPath === 'mvc-setup.html') return 'mvc';
     if (currentPath.includes('angular')) return 'angular';
     if (currentPath.includes('react')) return 'react';
+    if (currentPath.includes('compiler')) return 'webapi'; // Compiler is part of Web API section
     if (currentPath.includes('webapi') || currentPath.includes('ef-core') ||
         currentPath.includes('ado-net') || currentPath.includes('linq') ||
         currentPath.includes('collections')) return 'webapi';
