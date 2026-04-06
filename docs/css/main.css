@@ -672,7 +672,7 @@ pre code {
   min-height: 32px;
   transition: all var(--t-fast);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   white-space: nowrap;
 }
 
@@ -684,7 +684,7 @@ pre code {
 .sidebar-pinned-item .sidebar-link:hover {
   background: rgba(14, 165, 233, 0.25);
   border-color: rgba(14, 165, 233, 0.4);
-  transform: scale(1.05);
+  transform: scale(1.08);
   box-shadow: 0 2px 8px rgba(14, 165, 233, 0.2);
 }
 
@@ -692,6 +692,40 @@ pre code {
   background: var(--primary);
   border-color: var(--primary);
   box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
+/* Unpin button for pinned items */
+.unpin-btn-pinned {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: var(--danger);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all var(--t-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  z-index: 100;
+}
+
+.sidebar-pinned-item .sidebar-link:hover .unpin-btn-pinned {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.unpin-btn-pinned:hover {
+  background: #dc2626;
+  transform: scale(1.15);
 }
 
 .sidebar-pinned-item .pin-btn {

@@ -473,6 +473,34 @@
       sidebarInner.insertBefore(pinnedSection, sidebarInner.firstChild);
     }
 
+  function renderPinnedSection(pinnedItems) {
+    let pinnedSection = document.querySelector('.sidebar-pinned');
+
+    if (pinnedItems.length === 0) {
+      if (pinnedSection) pinnedSection.remove();
+      return;
+    }
+
+    // Create or update pinned section
+    if (!pinnedSection) {
+      pinnedSection = document.createElement('div');
+      pinnedSection.className = 'sidebar-pinned';
+
+      const header = document.createElement('div');
+      header.className = 'sidebar-pinned-header';
+      header.textContent = 'Favorites';
+
+      const list = document.createElement('ul');
+      list.className = 'sidebar-pinned-list';
+
+      pinnedSection.appendChild(header);
+      pinnedSection.appendChild(list);
+
+      const sidebar = document.getElementById('sidebar');
+      const sidebarInner = sidebar.querySelector('.sidebar-inner');
+      sidebarInner.insertBefore(pinnedSection, sidebarInner.firstChild);
+    }
+
     // Update pinned list
     const list = pinnedSection.querySelector('.sidebar-pinned-list');
     list.innerHTML = '';
@@ -481,23 +509,40 @@
       const li = document.createElement('li');
       li.className = 'sidebar-pinned-item';
 
+      // Extract emoji from text (first character that looks like emoji)
+      const emojiMatch = item.text.match(/[\p{Emoji}]/u);
+      const emoji = emojiMatch ? emojiMatch[0] : '📌';
+      const textWithoutEmoji = item.text.replace(/[\p{Emoji}]/gu, '').trim();
+
+      // Create link
       const link = document.createElement('a');
       link.href = item.href;
       link.className = 'sidebar-link';
-      link.innerHTML = item.text;
+      link.setAttribute('data-emoji', emoji);
+      link.setAttribute('title', textWithoutEmoji);
+      link.style.fontSize = '0'; // Hide text, show emoji via CSS ::before
 
-      const pinBtn = document.createElement('button');
-      pinBtn.className = 'pin-btn pinned';
-      pinBtn.innerHTML = '📌';
-      pinBtn.title = 'Unpin from favorites';
+      // Create unpin button
+      const unpinBtn = document.createElement('button');
+      unpinBtn.className = 'unpin-btn-pinned';
+      unpinBtn.innerHTML = '✕';
+      unpinBtn.title = `Unpin "${textWithoutEmoji}"`;
+      unpinBtn.setAttribute('aria-label', `Unpin ${textWithoutEmoji}`);
 
-      pinBtn.addEventListener('click', (e) => {
+      unpinBtn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        togglePin(pinBtn, item.href, item.text);
+        // Unpin by removing from list
+        pinnedItems = pinnedItems.filter(p => p.href !== item.href);
+        localStorage.setItem('pinnedMenuItems', JSON.stringify(pinnedItems));
+        renderPinnedSection(pinnedItems);
+
+        // Also update the pin button in sidebar if visible
+        const pinBtns = document.querySelectorAll(`.pin-btn[data-href="${item.href}"]`);
+        pinBtns.forEach(btn => btn.classList.remove('pinned'));
       });
 
-      link.appendChild(pinBtn);
+      link.appendChild(unpinBtn);
       li.appendChild(link);
       list.appendChild(li);
     });
