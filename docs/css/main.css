@@ -1145,6 +1145,22 @@ pre code {
   overflow-x: hidden;
 }
 
+/* Compiler page (alternative layout for non-article pages) */
+.site-container {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  min-width: 0;
+  overflow-x: hidden;
+  transition: margin-left var(--t-slow);
+}
+
+.site-main {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--sp-12) var(--sp-8) var(--sp-16);
+  overflow-x: hidden;
+}
+
 /* Wide content (for hub pages / grids) */
 .content-wrapper.wide {
   max-width: 1100px;
@@ -2296,6 +2312,7 @@ details[open] .qa-chevron {
   .sidebar-overlay.open { display: block; }
 
   .main-content { margin-left: 0; }
+  .site-container { margin-left: 0; }
   .site-footer { margin-left: 0; }
 
   .content-wrapper {
@@ -2630,6 +2647,7 @@ details[open] .qa-chevron {
   /* Collapsed state — desktop only */
   body.sidebar-collapsed .sidebar        { transform: translateX(-100%); }
   body.sidebar-collapsed .main-content   { margin-left: 0; }
+  body.sidebar-collapsed .site-container { margin-left: 0; }
   body.sidebar-collapsed .site-footer    { margin-left: 0; }
   body.sidebar-collapsed .sidebar-open-tab { display: flex; }
 }
