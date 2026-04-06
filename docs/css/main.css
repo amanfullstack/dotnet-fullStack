@@ -1012,19 +1012,15 @@ pre code {
 
 .project-tabs {
   display: flex;
-  gap: 16px;
-  padding: 8px 12px 12px 12px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-  justify-content: flex-start;
+  gap: 8px;
+  padding: 10px 8px 12px 8px;
+  justify-content: center;
   align-items: center;
   background: transparent;
 }
 
 .project-tabs::-webkit-scrollbar {
-  height: 3px;
-  background: transparent;
+  display: none;
 }
 
 .project-tabs::-webkit-scrollbar-thumb {
@@ -1036,12 +1032,12 @@ pre code {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  font-size: 18px;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
   background: transparent;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease-out;
   white-space: nowrap;
