@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Interview - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div> DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="angular.html">Angular</a>
+            <a href="interview.html">Interview</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-section">
+                <ul class="sidebar-links">
+                    <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🎓 Interview Prep</h3>
+                <ul class="sidebar-links">
+                    <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+                    <li><a href="interview-angular.html" class="sidebar-link active"><span class="sidebar-link-icon">🔺</span> Angular</a></li>
+                    <li><a href="interview-react.html" class="sidebar-link"><span class="sidebar-link-icon">⚛️</span> React</a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <nav class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span class="sep">/</span>
+                <a href="interview.html">Interview</a>
+                <span class="sep">/</span>
+                <span class="current">Angular</span>
+            </nav>
+
+            <article class="article">
+                <div class="page-title-block">
+                    <h1 class="page-title">🔺 Angular Interview Questions</h1>
+                    <p class="page-subtitle">15 essential interview Q&As covering components, services, RxJS, Reactive Forms, routing, and examples from ProductUI-Angular project.</p>
+                </div>
+
+                <div class="callout callout-info">
+                    <span class="callout-icon">💡</span>
+                    <div class="callout-content">
+                        <p><strong>What's tested?</strong> Components & Templates, Services & DI, RxJS Observables, Reactive Forms, Routing, Change Detection, Async Pipe, and TypeScript.</p>
+                    </div>
+                </div>
+
+                <!-- Q1 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #f97316; background: var(--color-surface);">
+                    <h3>Q1: What is Angular and its core concepts?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> Angular is a TypeScript-based frontend framework by Google for building Single Page Applications (SPAs).</p>
+                            <p><strong>Core Concepts:</strong></p>
+                            <ul style="margin: 0.5rem 0;">
+                                <li><strong>Components:</strong> Reusable UI building blocks</li>
+                                <li><strong>Services:</strong> Business logic, data access (shared)</li>
+                                <li><strong>Dependency Injection:</strong> Manages service instances</li>
+                                <li><strong>Routing:</strong> Navigation between views</li>
+                                <li><strong>RxJS:</strong> Reactive programming with Observables</li>
+                                <li><strong>Forms:</strong> Template-driven or Reactive</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q2 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #f97316; background: var(--color-surface);">
+                    <h3>Q2: Explain Components in Angular</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> A component is a reusable UI unit with class logic, template (HTML), and styles.</p>
+                            <pre><code class="language-typescript">// product-list.component.ts
+import { Component, OnInit } from '@angular/core';
+import { ProductService } from '../services/product.service';
+
+@Component({
+  selector: 'app-product-list',
+  templateUrl: './product-list.component.html',
+  styleUrls: ['./product-list.component.css']
+})
+export class ProductListComponent implements OnInit {
+  products: any[] = [];
+  loading = false;
+
+  constructor(private productService: ProductService) {}
+
+  ngOnInit(): void {
+    this.loadProducts();
+  }
+
+  loadProducts(): void {
+    this.loading = true;
+    this.productService.getProducts().subscribe({
+      next: (data) => {
+        this.products = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error loading products', err);
+        this.loading = false;
+      }
+    });
+  }
+}</code></pre>
+                            <pre><code class="language-xml">&lt;!-- product-list.component.html --&gt;
+&lt;div class="product-list"&gt;
+  &lt;div *ngIf="loading" class="spinner"&gt;Loading...&lt;/div&gt;
+
+  &lt;div *ngFor="let product of products" class="product-card"&gt;
+    &lt;h3&gt;{{ product.name }}&lt;/h3&gt;
+    &lt;p&gt;{{ product.description }}&lt;/p&gt;
+    &lt;p class="price"&gt;${{ product.price | number:'1.2-2' }}&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q3 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #f97316; background: var(--color-surface);">
+                    <h3>Q3: What are Services and how do you use Dependency Injection?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <pre><code class="language-typescript">// services/product.service.ts
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ProductService {
+  private apiUrl = 'http://localhost:5000/api/products';
+
+  constructor(private http: HttpClient) {}
+
+  getProducts(): Observable&lt;any[]&gt; {
+    return this.http.get&lt;any[]&gt;(this.apiUrl);
+  }
+
+  getProduct(id: number): Observable&lt;any&gt; {
+    return this.http.get&lt;any&gt;(`${this.apiUrl}/${id}`);
+  }
+
+  createProduct(product: any): Observable&lt;any&gt; {
+    return this.http.post&lt;any&gt;(this.apiUrl, product);
+  }
+
+  updateProduct(id: number, product: any): Observable&lt;any&gt; {
+    return this.http.put&lt;any&gt;(`${this.apiUrl}/${id}`, product);
+  }
+
+  deleteProduct(id: number): Observable&lt;void&gt; {
+    return this.http.delete&lt;void&gt;(`${this.apiUrl}/${id}`);
+  }
+}
+
+// In Component - Auto-injected
+export class ProductListComponent {
+  constructor(private productService: ProductService) {}
+  // productService is available
+}</code></pre>
+                            <p><strong>Benefits:</strong> Loose coupling, testability, single responsibility</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q4 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #f97316; background: var(--color-surface);">
+                    <h3>Q4: Explain RxJS Observables and subscription</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> Observable is a stream of data that can be subscribed to. Async.</p>
+                            <pre><code class="language-typescript">// Using Observables from HttpClient
+this.productService.getProducts().subscribe({
+  next: (data) => {
+    console.log('Products loaded:', data);
+    this.products = data;
+  },
+  error: (err) => console.error('Error:', err),
+  complete: () => console.log('Stream completed')
+});
+
+// Or using RxJS operators
+this.productService.getProducts()
+  .pipe(
+    map(products => products.filter(p => p.price > 100)),
+    tap(filtered => console.log('Filtered:', filtered)),
+    catchError(err => {
+      console.error('Error:', err);
+      return of([]); // Return empty array on error
+    })
+  )
+  .subscribe(data => this.products = data);
+
+// Unsubscribe to avoid memory leaks
+subscription.unsubscribe();
+
+// Or use async pipe (auto unsubscribe)
+&lt;div *ngFor="let product of (productService.getProducts() | async)"&gt;
+  {{ product.name }}
+&lt;/div&gt;</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q5 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #f97316; background: var(--color-surface);">
+                    <h3>Q5: What are Reactive Forms and how to use them?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> Reactive Forms provide explicit, immutable API for form handling. Programmatic and powerful.</p>
+                            <pre><code class="language-typescript">// Component - product-form.component.ts
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProductService } from '../services/product.service';
+
+@Component({
+  selector: 'app-product-form',
+  templateUrl: './product-form.component.html'
+})
+export class ProductFormComponent {
+  productForm: FormGroup;
+
+  constructor(
+    private fb: FormBuilder,
+    private productService: ProductService
+  ) {
+    this.productForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      description: [''],
+      price: ['', [Validators.required, Validators.min(0)]],
+      stockQuantity: [0, Validators.required],
+      category: ['', Validators.required]
+    });
+  }
+
+  onSubmit(): void {
+    if (this.productForm.invalid) return;
+
+    this.productService.createProduct(this.productForm.value)
+      .subscribe({
+        next: () => {
+          console.log('Product created');
+          this.productForm.reset();
+        },
+        error: (err) => console.error('Error:', err)
+      });
+  }
+}</code></pre>
+                            <pre><code class="language-xml">&lt;!-- product-form.component.html --&gt;
+&lt;form [formGroup]="productForm" (ngSubmit)="onSubmit()"&gt;
+  &lt;div&gt;
+    &lt;label&gt;Name&lt;/label&gt;
+    &lt;input formControlName="name" /&gt;
+    &lt;span *ngIf="productForm.get('name')?.hasError('required')"&gt;
+      Name is required
+    &lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;div&gt;
+    &lt;label&gt;Price&lt;/label&gt;
+    &lt;input type="number" formControlName="price" /&gt;
+    &lt;span *ngIf="productForm.get('price')?.hasError('min')"&gt;
+      Price must be >= 0
+    &lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;button [disabled]="productForm.invalid"&gt;Create&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q6 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #f97316; background: var(--color-surface);">
+                    <h3>Q6: Explain Angular Routing</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <pre><code class="language-typescript">// app-routing.module.ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ProductListComponent } from './components/product-list/product-list.component';
+import { ProductDetailComponent } from './components/product-detail/product-detail.component';
+import { ProductFormComponent } from './components/product-form/product-form.component';
+
+const routes: Routes = [
+  { path: '', component: ProductListComponent },
+  { path: 'products', component: ProductListComponent },
+  { path: 'products/:id', component: ProductDetailComponent },
+  { path: 'products/:id/edit', component: ProductFormComponent },
+  { path: 'create', component: ProductFormComponent },
+  { path: '**', redirectTo: '' }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+// In Component - Navigate programmatically
+import { Router, ActivatedRoute } from '@angular/router';
+
+export class ProductDetailComponent implements OnInit {
+  productId: number;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    // Get ID from route params
+    this.productId = +this.route.snapshot.params['id'];
+  }
+
+  goBack(): void {
+    this.router.navigate(['/products']);
+  }
+
+  editProduct(): void {
+    this.router.navigate(['/products', this.productId, 'edit']);
+  }
+}</code></pre>
+                            <pre><code class="language-xml">&lt;!-- In template --&gt;
+&lt;a routerLink="/products"&gt;Back to List&lt;/a&gt;
+&lt;a [routerLink]="['/products', product.id]"&gt;View Details&lt;/a&gt;
+
+&lt;!-- Router outlet displays routed component --&gt;
+&lt;router-outlet&gt;&lt;/router-outlet&gt;</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q7 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #f97316; background: var(--color-surface);">
+                    <h3>Q7: What is the async pipe and why use it?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> The async pipe subscribes to Observables/Promises and auto-unsubscribes when component destroys.</p>
+                            <pre><code class="language-typescript">// Component
+export class ProductListComponent {
+  products$ = this.productService.getProducts();
+
+  constructor(private productService: ProductService) {}
+}
+
+// Template - async pipe handles subscription
+&lt;div *ngFor="let product of (products$ | async)"&gt;
+  {{ product.name }}
+&lt;/div&gt;
+
+// Equivalent to (without async pipe):
+&lt;div *ngFor="let product of products"&gt;
+  {{ product.name }}
+&lt;/div&gt;
+
+// And in component:
+products: any[] = [];
+ngOnInit(): void {
+  this.productService.getProducts().subscribe(data => {
+    this.products = data;
+  });
+}
+// Need to manually unsubscribe in ngOnDestroy
+
+// Benefits: Auto-unsubscribe, OnPush change detection, cleaner code</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q8 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #f97316; background: var(--color-surface);">
+                    <h3>Q8: Explain Change Detection in Angular</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> Change Detection determines when Angular updates the view based on data changes.</p>
+                            <pre><code class="language-typescript">// Default Strategy: CheckAlways (slow, checks entire tree)
+@Component({
+  selector: 'app-product',
+  template: '...'
+})
+export class ProductComponent {
+  data = 'initial';
+}
+
+// OnPush Strategy: Only checks when @Input changes or events fire (fast)
+@Component({
+  selector: 'app-product',
+  template: '...',
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class ProductComponent {
+  @Input() product: any;
+}
+
+// Using OnPush with Observables
+@Component({
+  selector: 'app-product-list',
+  template: `
+    &lt;app-product *ngFor="let p of (products$ | async)"
+                  [product]="p"
+                  (changeDetection)="OnPush"&gt;
+    &lt;/app-product&gt;
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class ProductListComponent {
+  products$ = this.productService.getProducts();
+  constructor(private productService: ProductService) {}
+}</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q9 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #f97316; background: var(--color-surface);">
+                    <h3>Q9: What are RxJS operators? Give examples</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> Operators transform Observable streams. Common ones:</p>
+                            <pre><code class="language-typescript">// map: Transform each value
+this.productService.getProducts()
+  .pipe(
+    map(products => products.map(p => ({...p, price: p.price * 1.1})))
+  )
+  .subscribe(data => console.log(data));
+
+// filter: Keep only matching values
+.pipe(filter(product => product.price > 100))
+
+// switchMap: Switch to new Observable (cancel previous)
+this.route.params.pipe(
+  switchMap(params => this.productService.getProduct(params['id']))
+)
+
+// tap: Side effects without changing data
+.pipe(tap(data => console.log('Before filter:', data)))
+
+// catchError: Handle errors
+.pipe(
+  catchError(err => {
+    console.error('Error:', err);
+    return of([]); // Return fallback
+  })
+)
+
+// mergeMap: Handle multiple requests
+.pipe(
+  mergeMap(products => this.getDetails(products))
+)
+
+// debounceTime: Wait before emitting
+searchControl.valueChanges.pipe(
+  debounceTime(300),
+  distinctUntilChanged(),
+  switchMap(query => this.search(query))
+)</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q10 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #f97316; background: var(--color-surface);">
+                    <h3>Q10: How to handle HTTP interceptors?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <pre><code class="language-typescript">// http.interceptor.ts
+import { Injectable } from '@angular/core';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  constructor(private authService: AuthService) {}
+
+  intercept(req: HttpRequest&lt;any&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;any&gt;&gt; {
+    // Add auth token to all requests
+    const token = this.authService.getToken();
+    const authReq = req.clone({
+      setHeaders: { Authorization: `Bearer ${token}` }
+    });
+
+    return next.handle(authReq);
+  }
+}
+
+// app.module.ts - Register interceptor
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
+@NgModule({
+  imports: [HttpClientModule],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ]
+})
+export class AppModule { }</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q11 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #f97316; background: var(--color-surface);">
+                    <h3>Q11: What are Lifecycle Hooks?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <pre><code class="language-typescript">import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+
+export class ProductListComponent implements OnInit, OnDestroy {
+  products: any[];
+  subscription: Subscription;
+
+  constructor(private productService: ProductService) {}
+
+  // Called when component initialized
+  ngOnInit(): void {
+    this.loadProducts();
+  }
+
+  // Called on input property change
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('Input changed:', changes);
+  }
+
+  // Called after view/template created
+  ngAfterViewInit(): void {
+    console.log('View initialized');
+  }
+
+  // Called before component destroyed
+  ngOnDestroy(): void {
+    // Cleanup: unsubscribe, clear timers
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  loadProducts(): void {
+    this.subscription = this.productService.getProducts()
+      .subscribe(data => this.products = data);
+  }
+}</code></pre>
+                            <p><strong>Common hooks:</strong> OnInit, OnChanges, OnDestroy, AfterViewInit</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q12 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #f97316; background: var(--color-surface);">
+                    <h3>Q12: How do you share data between components?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <pre><code class="language-typescript">// 1. Parent to Child: @Input
+@Component({
+  selector: 'app-child',
+  template: '&lt;p&gt;{{ product.name }}&lt;/p&gt;'
+})
+export class ChildComponent {
+  @Input() product: any;
+}
+
+// Parent template:
+&lt;app-child [product]="currentProduct"&gt;&lt;/app-child&gt;
+
+// 2. Child to Parent: @Output
+@Component({
+  selector: 'app-child',
+  template: '&lt;button (click)="onSelect()"&gt;Select&lt;/button&gt;'
+})
+export class ChildComponent {
+  @Output() selected = new EventEmitter&lt;any&gt;();
+
+  onSelect(): void {
+    this.selected.emit(this.product);
+  }
+}
+
+// Parent:
+&lt;app-child (selected)="onProductSelected($event)"&gt;&lt;/app-child&gt;
+onProductSelected(product: any): void {
+  console.log('Selected:', product);
+}
+
+// 3. Via Service (Shared):
+@Injectable({ providedIn: 'root' })
+export class DataService {
+  data$ = new BehaviorSubject&lt;any&gt;(null);
+}
+
+// Component A:
+this.dataService.data$.next(newValue);
+
+// Component B:
+this.dataService.data$.subscribe(value => this.data = value);</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q13 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #f97316; background: var(--color-surface);">
+                    <h3>Q13: How to implement lazy loading in Angular?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> Lazy loading loads feature modules only when needed (improves initial load time).</p>
+                            <pre><code class="language-typescript">// app-routing.module.ts
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  {
+    path: 'products',
+    loadChildren: () => import('./products/products.module')
+      .then(m => m.ProductsModule)
+  },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module')
+      .then(m => m.AdminModule)
+  }
+];
+
+// products/products-routing.module.ts
+const routes: Routes = [
+  { path: '', component: ProductListComponent },
+  { path: ':id', component: ProductDetailComponent }
+];
+
+// products/products.module.ts
+@NgModule({
+  declarations: [ProductListComponent, ProductDetailComponent],
+  imports: [CommonModule, ProductsRoutingModule]
+})
+export class ProductsModule { }</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q14 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #f97316; background: var(--color-surface);">
+                    <h3>Q14: What are Guards and how to implement them?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> Guards control access to routes (protect admin pages, login required, etc.)</p>
+                            <pre><code class="language-typescript">// auth.guard.ts
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
+
+@Injectable({ providedIn: 'root' })
+export class AuthGuard implements CanActivate {
+  constructor(private authService: AuthService, private router: Router) {}
+
+  canActivate(): boolean {
+    if (this.authService.isLoggedIn()) {
+      return true;
+    }
+
+    this.router.navigate(['/login']);
+    return false;
+  }
+}
+
+// In routing:
+const routes: Routes = [
+  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] }
+];</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q15 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #f97316; background: var(--color-surface);">
+                    <h3>Q15: TypeScript - What are Interfaces and generics?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <pre><code class="language-typescript">// Interface - Define object structure
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  description?: string; // Optional
+}
+
+// Generics - Reusable with type variables
+interface ApiResponse&lt;T&gt; {
+  success: boolean;
+  data: T;
+  error?: string;
+}
+
+// Use:
+const productResponse: ApiResponse&lt;Product&gt; = {
+  success: true,
+  data: { id: 1, name: 'Laptop', price: 999 }
+};
+
+// Service with generics:
+@Injectable()
+export class ApiService {
+  get&lt;T&gt;(url: string): Observable&lt;T&gt; {
+    return this.http.get&lt;T&gt;(url);
+  }
+}</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <div style="margin-top: 3rem; padding: 1.5rem; background: var(--color-surface); border-radius: 8px;">
+                    <h3>💪 Keep Practicing!</h3>
+                    <p>Study the actual <a href="angular.html">ProductUI-Angular project</a> to see components, services, and RxJS patterns in action. Focus on understanding the async pipe and reactive patterns.</p>
+                </div>
+            </article>
+        </div>
+    </main>
+</div>
+
+<script src="js/app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASP.NET MVC Interview - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div> DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="webapi.html">Web API</a>
+            <a href="mvc.html">MVC</a>
+            <a href="interview.html">Interview</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-section">
+                <ul class="sidebar-links">
+                    <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🎓 Interview Prep</h3>
+                <ul class="sidebar-links">
+                    <li><a href="interview.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> All Questions</a></li>
+                    <li><a href="interview-mvc.html" class="sidebar-link active"><span class="sidebar-link-icon">🖥️</span> ASP.NET MVC</a></li>
+                    <li><a href="interview-solid.html" class="sidebar-link"><span class="sidebar-link-icon">📐</span> SOLID Principles</a></li>
+                    <li><a href="interview-patterns.html" class="sidebar-link"><span class="sidebar-link-icon">🎨</span> Design Patterns</a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <nav class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span class="sep">/</span>
+                <a href="interview.html">Interview</a>
+                <span class="sep">/</span>
+                <span class="current">ASP.NET MVC</span>
+            </nav>
+
+            <article class="article">
+                <div class="page-title-block">
+                    <h1 class="page-title">🖥️ ASP.NET MVC Interview Questions</h1>
+                    <p class="page-subtitle">15 essential interview Q&As covering MVC architecture, controllers, views, models, and real examples from ProductCatalogMVC project.</p>
+                </div>
+
+                <div class="callout callout-info">
+                    <span class="callout-icon">💡</span>
+                    <div class="callout-content">
+                        <p><strong>What's tested in interviews?</strong> MVC pattern, Controllers & Actions, Views & Razor, Model Binding, Dependency Injection, View Components, State Management (ViewData, TempData, ViewBag), and Real-world patterns.</p>
+                    </div>
+                </div>
+
+                <!-- Q1 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #8b5cf6; background: var(--color-surface);">
+                    <h3>Q1: What is the MVC Pattern and why use it?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> MVC (Model-View-Controller) separates your application into three layers:</p>
+                            <ul style="margin: 0.5rem 0;">
+                                <li><strong>Model:</strong> Data and business logic (Product, ProductService)</li>
+                                <li><strong>View:</strong> User interface (Razor .cshtml files)</li>
+                                <li><strong>Controller:</strong> Handles user requests and orchestrates M & V (ProductsController)</li>
+                            </ul>
+                            <p><strong>Why?</strong> Separation of concerns, easier testing, reusable components, and maintainable code.</p>
+                            <p><strong>Real Example:</strong></p>
+                            <pre><code class="language-csharp">// Controllers/ProductsController.cs
+public class ProductsController : Controller
+{
+    private readonly IProductService _productService;
+
+    public ProductsController(IProductService productService)
+    {
+        _productService = productService; // DI
+    }
+
+    public async Task&lt;IActionResult&gt; Index()
+    {
+        // Fetch from Model (Service)
+        var products = await _productService.GetAllProductsAsync();
+        // Pass to View
+        return View(products);
+    }
+}</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q2 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #8b5cf6; background: var(--color-surface);">
+                    <h3>Q2: Explain Controllers and Action Methods in ASP.NET MVC</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> A Controller is a class that handles HTTP requests. Action Methods are public methods in a Controller that respond to HTTP requests.</p>
+                            <p><strong>HTTP Methods Mapping:</strong></p>
+                            <ul style="margin: 0.5rem 0;">
+                                <li>GET: Retrieve data (display page)</li>
+                                <li>POST: Submit data (form submission)</li>
+                                <li>PUT: Update entire resource</li>
+                                <li>DELETE: Remove resource</li>
+                                <li>PATCH: Partial update</li>
+                            </ul>
+                            <p><strong>Code Example:</strong></p>
+                            <pre><code class="language-csharp">// CRUD Actions from ProductsController
+[HttpGet]
+public async Task&lt;IActionResult&gt; Index(string search, string category)
+{
+    var products = await _productService.GetAllProductsAsync();
+    if (!string.IsNullOrEmpty(search))
+        products = products.Where(p => p.Name.Contains(search)).ToList();
+    return View(products);
+}
+
+[HttpGet]
+public IActionResult Create()
+{
+    return View(); // Display form
+}
+
+[HttpPost]
+public async Task&lt;IActionResult&gt; Create(Product product)
+{
+    if (!ModelState.IsValid)
+        return View(product);
+
+    await _productService.CreateProductAsync(product);
+    TempData[&quot;Success&quot;] = &quot;Product created!&quot;;
+    return RedirectToAction(&quot;Index&quot;);
+}</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q3 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #8b5cf6; background: var(--color-surface);">
+                    <h3>Q3: What are Views and Razor? How do you pass data to views?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> Views are .cshtml files containing HTML + Razor syntax. Razor lets you mix C# with HTML.</p>
+                            <p><strong>Ways to pass data to views:</strong></p>
+                            <ul style="margin: 0.5rem 0;">
+                                <li><strong>Model:</strong> <code>View(dataObject)</code></li>
+                                <li><strong>ViewBag:</strong> Dynamic, not strongly-typed</li>
+                                <li><strong>ViewData:</strong> Dictionary-based</li>
+                                <li><strong>TempData:</strong> One-time data (survives redirect)</li>
+                            </ul>
+                            <p><strong>Razor Example (Views/Products/Index.cshtml):</strong></p>
+                            <pre><code class="language-xml">@model List&lt;Product&gt;
+
+&lt;h2&gt;Product List&lt;/h2&gt;
+&lt;table class="table"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Name&lt;/th&gt;
+      &lt;th&gt;Price&lt;/th&gt;
+      &lt;th&gt;Actions&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    @foreach (var product in Model)
+    {
+      &lt;tr&gt;
+        &lt;td&gt;@product.Name&lt;/td&gt;
+        &lt;td&gt;$@product.Price.ToString("F2")&lt;/td&gt;
+        &lt;td&gt;
+          &lt;a href="@Url.Action(&quot;Edit&quot;, new { id = product.Id })"&gt;Edit&lt;/a&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    }
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q4 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #8b5cf6; background: var(--color-surface);">
+                    <h3>Q4: Explain Model Binding in ASP.NET MVC</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> Model Binding automatically converts HTTP request data (form, query, route) into C# objects.</p>
+                            <pre><code class="language-csharp">// From form data to Product model
+[HttpPost]
+public async Task&lt;IActionResult&gt; Create(Product product)
+{
+    // ASP.NET automatically maps form fields to Product properties
+    // Form field "Name" → product.Name
+    // Form field "Price" → product.Price
+
+    if (!ModelState.IsValid) // Validates using [Required], [Range], etc.
+        return View(product);
+
+    await _productService.CreateProductAsync(product);
+    return RedirectToAction("Index");
+}</code></pre>
+                            <p><strong>Sources of Model Binding:</strong> Form data, Query string, Route values, Custom sources</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q5 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #8b5cf6; background: var(--color-surface);">
+                    <h3>Q5: What is Dependency Injection in ASP.NET MVC and why is it important?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> DI is a pattern that provides dependencies (services) to a class instead of the class creating them. Makes code testable and loosely coupled.</p>
+                            <pre><code class="language-csharp">// Program.cs - Register services
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddScoped&lt;IProductService, ProductService&gt;();
+builder.Services.AddHttpClient();
+
+// ProductsController - Inject IProductService
+public class ProductsController : Controller
+{
+    private readonly IProductService _productService;
+
+    // Constructor Injection
+    public ProductsController(IProductService productService)
+    {
+        _productService = productService;
+    }
+}</code></pre>
+                            <p><strong>Benefits:</strong> Loose coupling, testability, flexibility, centralized configuration</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q6 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #8b5cf6; background: var(--color-surface);">
+                    <h3>Q6: What is TempData and how is it different from ViewData?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>ViewData:</strong> Dictionary for passing data from Controller to View (same request)</p>
+                            <p><strong>TempData:</strong> Dictionary that survives redirects (one-time use)</p>
+                            <pre><code class="language-csharp">// ProductsController.cs - Setting success message
+[HttpPost]
+public async Task&lt;IActionResult&gt; Create(Product product)
+{
+    if (!ModelState.IsValid)
+        return View(product);
+
+    await _productService.CreateProductAsync(product);
+
+    // Message persists through redirect
+    TempData["Success"] = "Product created successfully!";
+    return RedirectToAction("Index");
+}
+
+// In View (Views/Products/Index.cshtml)
+@if (TempData["Success"] != null)
+{
+    &lt;div class="alert alert-success"&gt;
+        @TempData["Success"]
+    &lt;/div&gt;
+}</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q7 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #8b5cf6; background: var(--color-surface);">
+                    <h3>Q7: Explain the Request-Response Cycle in ASP.NET MVC</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Step-by-step:</strong></p>
+                            <ol style="margin: 0.5rem 0;">
+                                <li>User enters URL or submits form (HTTP Request)</li>
+                                <li>Routing matches URL to Controller/Action</li>
+                                <li>Controller selected and Action method invoked</li>
+                                <li>Model Binding converts request data to objects</li>
+                                <li>Action executes business logic (CRUD via Service)</li>
+                                <li>Result returned (View, Redirect, Json)</li>
+                                <li>View Engine renders Razor template + data</li>
+                                <li>HTML sent back to browser (HTTP Response)</li>
+                            </ol>
+                            <p><strong>Example Flow for "Create Product":</strong></p>
+                            <p>Form Submit → ProductsController.Create(POST) → ProductService.CreateProductAsync() → TempData Message → RedirectToAction("Index") → ProductsController.Index(GET) → Service.GetAllProductsAsync() → View rendered with success message</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q8 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #8b5cf6; background: var(--color-surface);">
+                    <h3>Q8: What is Routing in ASP.NET MVC?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> Routing maps URLs to Controllers and Actions.</p>
+                            <pre><code class="language-csharp">// Program.cs - Convention-based routing
+app.MapDefaultControllerRoute();
+// Pattern: /{controller}/{action}/{id?}
+
+// Examples:
+// /products/index → ProductsController.Index()
+// /products/create → ProductsController.Create()
+// /products/edit/5 → ProductsController.Edit(5)
+
+// Or use Attribute routing:
+[Route("products")]
+public class ProductsController : Controller
+{
+    [HttpGet("")]
+    public async Task&lt;IActionResult&gt; Index() { }
+
+    [HttpGet("{id}")]
+    public async Task&lt;IActionResult&gt; Details(int id) { }
+}</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q9 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #8b5cf6; background: var(--color-surface);">
+                    <h3>Q9: How to validate user input in MVC?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <pre><code class="language-csharp">// Models/Product.cs - Data Annotations
+public class Product
+{
+    public int Id { get; set; }
+
+    [Required(ErrorMessage = "Name is required")]
+    [StringLength(100, MinimumLength = 3)]
+    public string Name { get; set; }
+
+    [Range(0.01, 10000, ErrorMessage = "Price must be between 0.01 and 10000")]
+    public decimal Price { get; set; }
+
+    [EmailAddress]
+    public string? Email { get; set; }
+}
+
+// In Controllers - Check ModelState
+[HttpPost]
+public async Task&lt;IActionResult&gt; Create(Product product)
+{
+    if (!ModelState.IsValid)
+    {
+        // Return form with errors
+        return View(product);
+    }
+
+    await _productService.CreateProductAsync(product);
+    return RedirectToAction("Index");
+}
+
+// In Views - Display validation errors
+&lt;span asp-validation-for="Name" class="text-danger"&gt;&lt;/span&gt;</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q10 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #8b5cf6; background: var(--color-surface);">
+                    <h3>Q10: What is the Service Layer pattern and why use it?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> Service Layer abstracts business logic and data access. Controllers use services instead of directly accessing databases.</p>
+                            <pre><code class="language-csharp">// Services/IProductService.cs
+public interface IProductService
+{
+    Task&lt;List&lt;Product&gt;&gt; GetAllProductsAsync();
+    Task&lt;Product&gt; GetProductByIdAsync(int id);
+    Task CreateProductAsync(Product product);
+    Task UpdateProductAsync(Product product);
+    Task DeleteProductAsync(int id);
+}
+
+// Services/ProductService.cs - Implementation
+public class ProductService : IProductService
+{
+    private readonly HttpClient _httpClient;
+
+    public ProductService(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
+    public async Task&lt;List&lt;Product&gt;&gt; GetAllProductsAsync()
+    {
+        var response = await _httpClient.GetAsync("http://localhost:5000/api/products");
+        var json = await response.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject&lt;List&lt;Product&gt;&gt;(json);
+    }
+}
+
+// In Controller - Use service
+public class ProductsController : Controller
+{
+    private readonly IProductService _productService;
+
+    public ProductsController(IProductService productService)
+    {
+        _productService = productService;
+    }
+
+    public async Task&lt;IActionResult&gt; Index()
+    {
+        var products = await _productService.GetAllProductsAsync();
+        return View(products);
+    }
+}</code></pre>
+                            <p><strong>Benefits:</strong> Testability, separation of concerns, code reuse</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q11 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #8b5cf6; background: var(--color-surface);">
+                    <h3>Q11: How does HttpClient work in MVC for API integration?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <pre><code class="language-csharp">// Program.cs - Register HttpClient
+builder.Services.AddHttpClient();
+
+// ProductService.cs - Using HttpClient to call Web API
+public class ProductService : IProductService
+{
+    private readonly HttpClient _httpClient;
+
+    public ProductService(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+        _httpClient.BaseAddress = new Uri("http://localhost:5000/api/");
+    }
+
+    public async Task&lt;List&lt;Product&gt;&gt; GetAllProductsAsync()
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync("products");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject&lt;List&lt;Product&gt;&gt;(json) ?? new();
+        }
+        catch (Exception ex)
+        {
+            // Handle error
+            return new();
+        }
+    }
+
+    public async Task CreateProductAsync(Product product)
+    {
+        var json = JsonConvert.SerializeObject(product);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var response = await _httpClient.PostAsync("products", content);
+        response.EnsureSuccessStatusCode();
+    }
+}</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q12 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #8b5cf6; background: var(--color-surface);">
+                    <h3>Q12: How do you handle errors and exceptions in MVC?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> Use try-catch in services, middleware for global errors, and display messages in views.</p>
+                            <pre><code class="language-csharp">// Program.cs - Global exception middleware
+app.UseExceptionHandler("/Home/Error");
+
+// Error Handler Action
+public IActionResult Error()
+{
+    var exceptionDetails = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+    return View(new ErrorViewModel { RequestId = exceptionDetails });
+}
+
+// In Service
+public async Task CreateProductAsync(Product product)
+{
+    try
+    {
+        var json = JsonConvert.SerializeObject(product);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        var response = await _httpClient.PostAsync("products", content);
+        response.EnsureSuccessStatusCode();
+    }
+    catch (HttpRequestException ex)
+    {
+        // Log and re-throw or return default
+        throw new InvalidOperationException("Failed to create product", ex);
+    }
+}
+
+// In Views - Display error messages
+@if (ViewData["Error"] != null)
+{
+    &lt;div class="alert alert-danger"&gt;@ViewData["Error"]&lt;/div&gt;
+}</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q13 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #8b5cf6; background: var(--color-surface);">
+                    <h3>Q13: What are Partial Views and how do you use them?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Answer:</strong> Partial Views are reusable view fragments. Like components in React/Angular.</p>
+                            <pre><code class="language-xml">// Create: Views/Shared/_ProductCard.cshtml
+@model Product
+
+&lt;div class="card"&gt;
+  &lt;h5&gt;@Model.Name&lt;/h5&gt;
+  &lt;p&gt;$@Model.Price.ToString("F2")&lt;/p&gt;
+&lt;/div&gt;
+
+// Use in main view:
+@foreach (var product in Model)
+{
+    &lt;partial name="_ProductCard" model="product" /&gt;
+}</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q14 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #8b5cf6; background: var(--color-surface);">
+                    <h3>Q14: Explain the Layout page and _ViewStart.cshtml</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <p><strong>Layout:</strong> Master page with common HTML structure (navigation, footer)</p>
+                            <p><strong>_ViewStart.cshtml:</strong> Specifies default layout for all views</p>
+                            <pre><code class="language-csharp">// Views/_ViewStart.cshtml
+@{
+    Layout = "_Layout";
+}
+
+// Views/Shared/_Layout.cshtml
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;@ViewData["Title"]&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;nav&gt;&lt;!-- Navigation --&gt;&lt;/nav&gt;
+    &lt;main&gt;
+      @RenderBody() &lt;!-- Page content inserted here --&gt;
+    &lt;/main&gt;
+    &lt;footer&gt;&lt;!-- Footer --&gt;&lt;/footer&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Q15 -->
+                <div style="margin: 2rem 0; padding: 1rem; border-left: 4px solid #8b5cf6; background: var(--color-surface);">
+                    <h3>Q15: What is the difference between MVC and Web API?</h3>
+                    <details style="cursor: pointer;">
+                        <summary style="font-weight: 600; margin: 0.5rem 0;">Click to expand answer</summary>
+                        <div style="margin-top: 1rem; line-height: 1.6;">
+                            <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                                <thead>
+                                    <tr style="background: var(--color-surface-hover);">
+                                        <th style="padding: 0.75rem; border: 1px solid var(--color-border); text-align: left;">Feature</th>
+                                        <th style="padding: 0.75rem; border: 1px solid var(--color-border); text-align: left;">MVC</th>
+                                        <th style="padding: 0.75rem; border: 1px solid var(--color-border); text-align: left;">Web API</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 0.75rem; border: 1px solid var(--color-border);">Output</td>
+                                        <td style="padding: 0.75rem; border: 1px solid var(--color-border);">HTML pages</td>
+                                        <td style="padding: 0.75rem; border: 1px solid var(--color-border);">JSON/XML data</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 0.75rem; border: 1px solid var(--color-border);">Client</td>
+                                        <td style="padding: 0.75rem; border: 1px solid var(--color-border);">Web browser</td>
+                                        <td style="padding: 0.75rem; border: 1px solid var(--color-border);">Any HTTP client (mobile, desktop, web)</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 0.75rem; border: 1px solid var(--color-border);">Rendering</td>
+                                        <td style="padding: 0.75rem; border: 1px solid var(--color-border);">Server-side (Razor)</td>
+                                        <td style="padding: 0.75rem; border: 1px solid var(--color-border);">Client-side (JavaScript/React/Angular)</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 0.75rem; border: 1px solid var(--color-border);">Use Case</td>
+                                        <td style="padding: 0.75rem; border: 1px solid var(--color-border);">Traditional web apps</td>
+                                        <td style="padding: 0.75rem; border: 1px solid var(--color-border);">Microservices, mobile apps, SPAs</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p><strong>ProductCatalogMVC:</strong> Calls ProductCatalogAPI to get data, renders HTML server-side</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div style="margin-top: 3rem; padding: 1.5rem; background: var(--color-surface); border-radius: 8px;">
+                    <h3>💪 Keep Practicing!</h3>
+                    <p>Review the actual <a href="mvc.html">ProductCatalogMVC project</a> to see these patterns in action. Focus on understanding the request-response cycle and how services abstract HTTP calls to the Web API.</p>
+                </div>
+            </article>
+        </div>
+    </main>
+</div>
+
+<script src="js/app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>
