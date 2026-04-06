@@ -26,6 +26,29 @@
 <!-- Reading Progress Bar -->
 <div id="readingProgress" class="progress-fill" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
 
+<!-- ═══════════════════════════════════════════ TOP BANNER: QUOTES MARQUEE + TECH STACK -->
+<div class="top-banner">
+  <div class="banner-content">
+    <!-- Tech Stack (Left) -->
+    <div class="tech-stack-display">
+      <span class="tech-label">⚡ Latest:</span>
+      <div class="tech-versions-inline" id="tech-versions-inline">
+        <span class="tech-badge">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Quotes Marquee (Center) -->
+    <div class="quotes-marquee-wrapper">
+      <div class="quotes-marquee" id="quotes-marquee">
+        <span class="marquee-item">Loading inspirational quotes...</span>
+      </div>
+    </div>
+
+    <!-- Close Button (Right) -->
+    <button class="banner-close-btn" onclick="this.closest('.top-banner').style.display='none';">✕</button>
+  </div>
+</div>
+
 <!-- Search Modal -->
 <div id="searchModal" class="search-modal">
   <div class="search-modal-box animate-fade">
@@ -247,56 +270,26 @@
       </section>
 
       <!-- ═══════════════════════════════════════════ WIDGETS: QUOTES, NEWS, VERSIONS -->
+      <!-- ═══════════════════════════════════════════ QUOTES TOP BANNER -->
+      <!-- ═══════════════════════════════════════════ NEWS SECTION -->
       <section class="widgets-section">
-
-        <!-- NEWS HERO (Full Width) -->
-        <div class="widget-card news-widget news-hero">
-          <div class="widget-header">
-            <span class="widget-icon pulse">📰</span>
-            <div>
-              <h3 class="widget-title">Tech & Dev News Feed</h3>
-              <p class="widget-subtitle">Latest articles and updates from the development community</p>
+        <!-- News Grid (3 Cards) -->
+        <div class="news-section-wrapper">
+          <h2 class="section-title">
+            📰 Tech & Dev News
+          </h2>
+          <div class="news-cards-container" id="news-cards-container">
+            <div class="news-card loading">
+              <div class="news-card-placeholder">✓ Loading tech news...</div>
             </div>
-          </div>
-          <div class="news-ticker" id="news-ticker">
-            <div class="news-item loading">✓ Loading latest tech news...</div>
+            <div class="news-card loading">
+              <div class="news-card-placeholder">✓ Loading tech news...</div>
+            </div>
+            <div class="news-card loading">
+              <div class="news-card-placeholder">✓ Loading tech news...</div>
+            </div>
           </div>
         </div>
-
-        <!-- Quotes & Versions Grid -->
-        <div class="widgets-grid secondary">
-
-          <!-- QUOTES SLIDER -->
-          <div class="widget-card quotes-widget">
-            <div class="widget-header compact">
-              <span class="widget-icon">💡</span>
-              <h3 class="widget-title">Daily Coding Quotes</h3>
-            </div>
-            <div class="quotes-container">
-              <div class="quotes-slider" id="quotes-slider">
-                <div class="quote-slide loading">✓ Loading inspirational quotes...</div>
-              </div>
-              <div class="quotes-controls">
-                <button class="quote-dot active" data-slide="0"></button>
-                <button class="quote-dot" data-slide="1"></button>
-                <button class="quote-dot" data-slide="2"></button>
-              </div>
-            </div>
-          </div>
-
-          <!-- VERSIONS -->
-          <div class="widget-card versions-widget">
-            <div class="widget-header compact">
-              <span class="widget-icon">📦</span>
-              <h3 class="widget-title">Latest Tech Versions</h3>
-            </div>
-            <div class="versions-list" id="versions-list">
-              <div class="version-item loading">✓ Loading latest versions...</div>
-            </div>
-          </div>
-
-        </div>
-
       </section>
 
       <!-- ═══════════════════════════════════════════ PROJECTS -->
@@ -751,6 +744,7 @@ app.Run();</code></pre>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script src="js/app.js"></script>
 <script src="js/widgets.js"></script>
+<script src="js/widgets-api.js"></script>
 
 </body>
 </html>

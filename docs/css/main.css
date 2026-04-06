@@ -2575,53 +2575,28 @@ details[open] .qa-chevron {
 
 /* ═══════════════════ NEWS TICKER */
 .news-ticker {
-  min-height: 200px;
-  overflow: hidden;
-  border-radius: var(--r-lg);
-  background: linear-gradient(135deg, rgba(14,165,233,0.08), rgba(10,185,153,0.08));
-  padding: var(--sp-4);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--sp-4);
+  min-height: auto;
+  overflow: visible;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
   position: relative;
 }
 
-.news-ticker::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 20px;
-  background: linear-gradient(to bottom, var(--surface), transparent);
-  z-index: 10;
-  pointer-events: none;
-}
-
+.news-ticker::before,
 .news-ticker::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 20px;
-  background: linear-gradient(to top, var(--surface), transparent);
-  z-index: 10;
-  pointer-events: none;
-}
-
-[data-theme="dark"] .news-ticker::before,
-[data-theme="dark"] .news-ticker::after {
-  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.8), transparent),
-              linear-gradient(to top, rgba(15, 23, 42, 0.8), transparent);
+  display: none;
 }
 
 .news-items-scroll {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-3);
-  animation: scrollUp 15s linear infinite;
+  display: contents;
 }
 
 .news-items-scroll:hover {
-  animation-play-state: paused;
+  animation-play-state: auto;
 }
 
 @keyframes scrollUp {
@@ -2630,30 +2605,89 @@ details[open] .qa-chevron {
 }
 
 .news-item {
-  padding: var(--sp-3);
-  background: rgba(255, 255, 255, 0.5);
-  border-left: 3px solid var(--primary);
-  border-radius: var(--r-md);
+  padding: var(--sp-4);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(14, 165, 233, 0.2);
+  border-radius: var(--r-lg);
   cursor: pointer;
-  transition: all 0.2s ease;
-  min-height: 50px;
+  transition: all 0.3s ease;
+  min-height: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
 [data-theme="dark"] .news-item {
-  background: rgba(30, 41, 59, 0.6);
+  background: rgba(30, 41, 59, 0.7);
+  border-color: rgba(59, 130, 246, 0.2);
 }
 
 .news-item:hover {
-  background: rgba(14, 165, 233, 0.15);
-  transform: translateX(4px);
+  background: rgba(14, 165, 233, 0.1);
+  border-color: var(--primary);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(14, 165, 233, 0.15);
+}
+
+[data-theme="dark"] .news-item:hover {
+  background: rgba(59, 130, 246, 0.15);
+  box-shadow: 0 12px 28px rgba(59, 130, 246, 0.2);
 }
 
 .news-title {
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--text-1);
+  margin: 0 0 var(--sp-2) 0;
+  line-height: 1.4;
+}
+
+.news-description {
   font-size: var(--text-sm);
+  color: var(--text-2);
+  margin: 0 0 var(--sp-3) 0;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.news-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-3);
+  border-top: 1px solid rgba(14, 165, 233, 0.1);
+  font-size: var(--text-xs);
+  color: var(--text-3);
+}
+
+.news-source {
+  display: inline-block;
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--primary);
+  padding: 2px 8px;
+  border-radius: 4px;
   font-weight: 600;
+}
+
+.news-date {
+  color: var(--text-3);
+  font-size: var(--text-xs);
+}
+
+.news-link {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.news-link:hover {
+  text-decoration: underline;
+}
   color: var(--text-1);
   line-height: 1.4;
 }
@@ -2726,6 +2760,249 @@ details[open] .qa-chevron {
   text-align: center;
   color: var(--text-3);
   border-left: 3px solid var(--border);
+}
+
+/* ═══════════════════ TOP BANNER: MARQUEE QUOTES + TECH STACK */
+.top-banner {
+  background: linear-gradient(90deg,
+    rgba(14, 165, 233, 0.08),
+    rgba(139, 92, 246, 0.08),
+    rgba(16, 185, 129, 0.08));
+  border-bottom: 2px solid var(--primary);
+  padding: var(--sp-2) var(--sp-4);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  position: relative;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+
+[data-theme="dark"] .top-banner {
+  background: linear-gradient(90deg,
+    rgba(14, 165, 233, 0.12),
+    rgba(139, 92, 246, 0.12),
+    rgba(16, 185, 129, 0.12));
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--sp-4);
+}
+
+/* Tech Stack Display (Left) */
+.tech-stack-display {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.tech-label {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.tech-versions-inline {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 0 var(--sp-2);
+}
+
+.tech-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(14, 165, 233, 0.15);
+  border: 1px solid rgba(14, 165, 233, 0.3);
+  border-radius: 999px;
+  font-size: var(--text-xs);
+  color: var(--primary);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.tech-badge:hover {
+  background: rgba(14, 165, 233, 0.25);
+  border-color: var(--primary);
+}
+
+/* Quotes Marquee (Center) */
+.quotes-marquee-wrapper {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.quotes-marquee {
+  display: flex;
+  gap: var(--sp-8);
+  animation: marquee 30s linear infinite;
+  padding: 0 var(--sp-4);
+}
+
+.quotes-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.marquee-item {
+  font-size: var(--text-sm);
+  color: var(--text-1);
+  font-style: italic;
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.marquee-item::before {
+  content: '💡';
+  display: inline-block;
+}
+
+/* Close Button (Right) */
+.banner-close-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  background: transparent;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  font-size: var(--text-lg);
+  color: var(--text-2);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-close-btn:hover {
+  background: var(--danger);
+  color: white;
+  border-color: var(--danger);
+}
+
+@media (max-width: 1024px) {
+  .banner-content {
+    flex-wrap: wrap;
+  }
+
+  .tech-stack-display {
+    flex-basis: 100%;
+    order: 1;
+  }
+
+  .quotes-marquee-wrapper {
+    flex-basis: 100%;
+    order: 2;
+  }
+
+  .banner-close-btn {
+    order: 3;
+  }
+}
+
+@media (max-width: 640px) {
+  .top-banner {
+    padding: var(--sp-2);
+    gap: var(--sp-2);
+  }
+
+  .tech-label {
+    display: none;
+  }
+
+  .marquee-item {
+    font-size: var(--text-xs);
+  }
+
+  .tech-badge {
+    padding: 2px 6px;
+    font-size: 10px;
+  }
+}
+
+/* ═══════════════════ NEWS SECTION */
+.news-section-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--sp-5);
+}
+
+.news-section-wrapper .section-title {
+  grid-column: 1 / -1;
+  margin-bottom: var(--sp-3);
+}
+
+.news-cards-container {
+  display: contents;
+}
+
+/* ═══════════════════ NEWS CARD (3-col grid) */
+.news-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--sp-4);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  cursor: pointer;
+}
+
+[data-theme="dark"] .news-card {
+  background: rgba(15, 23, 42, 0.8);
+  border-color: rgba(59, 130, 246, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.news-card:hover {
+  border-color: var(--primary);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 12px 32px rgba(14, 165, 233, 0.15);
+  transform: translateY(-4px);
+}
+
+[data-theme="dark"] .news-card:hover {
+  background: rgba(15, 23, 42, 0.95);
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.2);
+}
+
+.news-card-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-3);
+  font-size: var(--text-sm);
+  text-align: center;
 }
 
 /* Hero eyebrow badge */

@@ -185,7 +185,7 @@ class WidgetsManager {
   }
 
   /**
-   * Render news ticker with scroll animation
+   * Render news as modern card grid (3 columns)
    */
   renderNews() {
     const ticker = document.getElementById('news-ticker');
@@ -193,18 +193,25 @@ class WidgetsManager {
 
     ticker.innerHTML = '';
 
-    // Duplicate news for seamless loop
-    const allNews = [...this.news, ...this.news];
+    // Display up to 6 news articles in 3-column grid
+    const displayedNews = this.news.slice(0, 6);
 
-    const scrollContainer = document.createElement('div');
-    scrollContainer.className = 'news-items-scroll';
-
-    allNews.forEach((article) => {
+    displayedNews.forEach((article) => {
       const item = document.createElement('div');
       item.className = 'news-item';
+
+      // Extract description if available
+      const description = article.description || article.body_markdown?.substring(0, 100) || 'Latest tech news and updates';
+      const source = article.user?.name || article.source || 'Dev.to';
+      const date = article.published_at ? new Date(article.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Today';
+
       item.innerHTML = `
         <div class="news-title">${article.title}</div>
-        <div class="news-source">${article.user?.name || article.source || 'Dev.to'}</div>
+        <div class="news-description">${description}${description.length < 100 ? '' : '...'}</div>
+        <div class="news-meta">
+          <span class="news-source">${source}</span>
+          <span class="news-date">${date}</span>
+        </div>
       `;
 
       if (article.url) {
@@ -212,13 +219,13 @@ class WidgetsManager {
         item.addEventListener('click', () => {
           window.open(article.url, '_blank');
         });
+        item.addEventListener('mouseenter', () => {
+          item.style.animation = 'float 0.3s ease-out forwards';
+        });
       }
 
-      scrollContainer.appendChild(item);
+      ticker.appendChild(item);
     });
-
-    ticker.appendChild(scrollContainer);
-    console.log('✓ News ticker rendered');
   }
 
   /**
