@@ -735,26 +735,27 @@ pre code {
 /* Pin Button Styling */
 .pin-btn {
   position: absolute;
-  right: var(--sp-2);
+  right: 6px;
   top: 50%;
   transform: translateY(-50%);
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border: none;
-  background: rgba(14, 165, 233, 0.1);
+  background: rgba(14, 165, 233, 0.08);
   color: var(--primary);
   cursor: pointer;
-  border-radius: var(--r-sm);
-  font-size: 12px;
+  border-radius: 4px;
+  font-size: 14px;
   transition: all var(--t-fast);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
+  z-index: 50;
 }
 
 [data-theme="dark"] .pin-btn {
-  background: rgba(59, 130, 246, 0.15);
+  background: rgba(59, 130, 246, 0.12);
 }
 
 .sidebar-link:hover .pin-btn {
@@ -764,7 +765,8 @@ pre code {
 .pin-btn:hover {
   background: var(--primary);
   color: white;
-  transform: translateY(-50%) scale(1.1) rotate(15deg);
+  transform: translateY(-50%) scale(1.15) rotate(15deg);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
 }
 
 .pin-btn.pinned {
@@ -814,7 +816,7 @@ pre code {
   display: flex;
   align-items: center;
   gap: var(--sp-1-5);
-  padding: 6px var(--sp-3);
+  padding: 6px var(--sp-4) 6px var(--sp-3);
   font-size: 13px;
   color: var(--text-2);
   border-radius: calc(var(--r-base) - 2px);
@@ -823,6 +825,7 @@ pre code {
   text-decoration: none;
   margin: 2px var(--sp-1);
   font-weight: 500;
+  position: relative;
 }
 
 .sidebar-link:hover {
@@ -1001,13 +1004,16 @@ pre code {
   display: flex;
   flex-direction: column;
   margin-bottom: var(--sp-4);
-  border-bottom: 2px solid var(--surface-2);
+  padding: var(--sp-3) var(--sp-4);
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.05), rgba(14, 165, 233, 0.02));
+  border-radius: var(--r-base);
+  border: 1px solid rgba(14, 165, 233, 0.1);
 }
 
 .project-tabs {
   display: flex;
-  gap: var(--sp-1);
-  padding: var(--sp-2) var(--sp-4);
+  gap: var(--sp-2);
+  padding: var(--sp-2);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
@@ -1026,32 +1032,41 @@ pre code {
 .project-tab {
   display: inline-flex;
   align-items: center;
-  gap: var(--sp-1-5);
-  padding: var(--sp-1-5) var(--sp-3);
-  font-size: var(--text-sm);
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-2);
-  background: var(--surface-2);
-  border: 1px solid var(--border-1);
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1.5px solid rgba(14, 165, 233, 0.15);
+  border-radius: 8px;
   cursor: pointer;
-  transition: all var(--t-fast);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   white-space: nowrap;
   user-select: none;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+[data-theme="dark"] .project-tab {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(59, 130, 246, 0.2);
 }
 
 .project-tab:hover {
   color: var(--primary);
-  background: var(--surface-3);
-  border-color: var(--primary);
-  transform: translateY(-2px);
+  background: rgba(14, 165, 233, 0.1);
+  border-color: rgba(14, 165, 233, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
 }
 
 .project-tab.active {
-  color: var(--white);
-  background: var(--primary);
+  color: white;
+  background: linear-gradient(135deg, var(--primary), #0284c7);
   border-color: var(--primary);
-  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+  box-shadow: 0 8px 24px rgba(14, 165, 233, 0.4);
+  transform: translateY(-2px);
 }
 
 .project-tab-icon {
