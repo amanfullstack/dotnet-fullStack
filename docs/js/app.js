@@ -383,6 +383,127 @@
 
 
   /* ---------------------------------------------------------------
+     PIN MENU ITEMS (UP TO 5)
+  --------------------------------------------------------------- */
+  function initPinning() {
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+
+    // Get pinned items from localStorage
+    const pinnedItems = JSON.parse(localStorage.getItem('pinnedMenuItems') || '[]');
+
+    // Add pin buttons to all sidebar links
+    document.querySelectorAll('.sidebar-link:not(.sidebar-pinned-item .sidebar-link)').forEach(link => {
+      const href = link.getAttribute('href') || '';
+      const text = link.textContent.trim();
+
+      const pinBtn = document.createElement('button');
+      pinBtn.className = 'pin-btn';
+      pinBtn.innerHTML = '📌';
+      pinBtn.title = 'Pin to favorites';
+      pinBtn.setAttribute('data-href', href);
+      pinBtn.setAttribute('data-text', text);
+
+      // Check if already pinned
+      if (pinnedItems.some(item => item.href === href)) {
+        pinBtn.classList.add('pinned');
+      }
+
+      pinBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        togglePin(pinBtn, href, text);
+      });
+
+      link.appendChild(pinBtn);
+    });
+
+    // Render pinned section
+    renderPinnedSection(pinnedItems);
+  }
+
+  function togglePin(btn, href, text) {
+    let pinnedItems = JSON.parse(localStorage.getItem('pinnedMenuItems') || '[]');
+    const isPinned = btn.classList.contains('pinned');
+
+    if (isPinned) {
+      // Unpin
+      pinnedItems = pinnedItems.filter(item => item.href !== href);
+      btn.classList.remove('pinned');
+    } else {
+      // Pin (max 5)
+      if (pinnedItems.length < 5) {
+        pinnedItems.push({ href, text });
+        btn.classList.add('pinned');
+      } else {
+        alert('Maximum 5 pinned items. Unpin one to add another.');
+        return;
+      }
+    }
+
+    localStorage.setItem('pinnedMenuItems', JSON.stringify(pinnedItems));
+    renderPinnedSection(pinnedItems);
+  }
+
+  function renderPinnedSection(pinnedItems) {
+    let pinnedSection = document.querySelector('.sidebar-pinned');
+
+    if (pinnedItems.length === 0) {
+      if (pinnedSection) pinnedSection.remove();
+      return;
+    }
+
+    // Create or update pinned section
+    if (!pinnedSection) {
+      pinnedSection = document.createElement('div');
+      pinnedSection.className = 'sidebar-pinned';
+
+      const header = document.createElement('div');
+      header.className = 'sidebar-pinned-header';
+      header.textContent = 'Favorites';
+
+      const list = document.createElement('ul');
+      list.className = 'sidebar-pinned-list';
+
+      pinnedSection.appendChild(header);
+      pinnedSection.appendChild(list);
+
+      const sidebar = document.getElementById('sidebar');
+      const sidebarInner = sidebar.querySelector('.sidebar-inner');
+      sidebarInner.insertBefore(pinnedSection, sidebarInner.firstChild);
+    }
+
+    // Update pinned list
+    const list = pinnedSection.querySelector('.sidebar-pinned-list');
+    list.innerHTML = '';
+
+    pinnedItems.forEach(item => {
+      const li = document.createElement('li');
+      li.className = 'sidebar-pinned-item';
+
+      const link = document.createElement('a');
+      link.href = item.href;
+      link.className = 'sidebar-link';
+      link.innerHTML = item.text;
+
+      const pinBtn = document.createElement('button');
+      pinBtn.className = 'pin-btn pinned';
+      pinBtn.innerHTML = '📌';
+      pinBtn.title = 'Unpin from favorites';
+
+      pinBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        togglePin(pinBtn, item.href, item.text);
+      });
+
+      link.appendChild(pinBtn);
+      li.appendChild(link);
+      list.appendChild(li);
+    });
+  }
+
+  /* ---------------------------------------------------------------
      SIDEBAR COLLAPSE (DESKTOP)
   --------------------------------------------------------------- */
   function initCollapseBtn() {
@@ -487,6 +608,7 @@
     initTheme();
     initSidebar();
     initCollapseBtn();
+    initPinning();
     initProjectTabs();
     initCopyButtons();
     initTOC();
