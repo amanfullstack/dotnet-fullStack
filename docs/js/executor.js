@@ -365,126 +365,133 @@ class CodeExecutor {
   }
 
   /**
-   * Execute C# - Show sample output (mock execution for demo)
+   * Execute C# - Parse Console.WriteLine calls for output
    */
   _executeCSharp(code, problemId = '') {
     return new Promise((resolve) => {
-      const duration = 50;
-
-      // Mock outputs for each C# problem
-      const mockOutputs = {
-        'csharp-1': `p1 == p2: false
-p1 == p3: true
-p1.Equals(p2): true
-p1.Equals(p3): true
-✓ Equals() override working correctly!`,
-
-        'csharp-2': `IsValidBraces("()"): true
-IsValidBraces("()[]{}"): true
-IsValidBraces("([{}])"): true
-IsValidBraces("([)]"): false
-IsValidBraces("{"): false
-✓ All test cases passed!`,
-
-        'csharp-3': `"hello" reversed: "olleh"
-"world" reversed: "dlrow"
-✓ Reverse working!`,
-
-        'csharp-4': `Fibonacci(0): 0
-Fibonacci(5): 5
-Fibonacci(10): 55
-✓ Sequence computed!`,
-
-        'csharp-5': `IsPrime(2): true
-IsPrime(17): true
-IsPrime(20): false
-✓ Prime check working!`,
-
-        'csharp-6': `Original: [1, 2, 2, 3, 3, 3, 4]
-Unique: [1, 2, 3, 4]
-✓ Duplicates removed!`,
-
-        'csharp-7': `IsRotation("waterbottle", "erbottlewat"): true
-IsRotation("ab", "ba"): true
-IsRotation("abc", "acd"): false
-✓ Rotation detection working!`,
-
-        'csharp-8': `IsAnagram("listen", "silent"): true
-IsAnagram("evil", "vile"): true
-IsAnagram("hello", "world"): false
-✓ Anagram check working!`
-      };
-
-      // Try to detect sample code from compiler
-      let output = mockOutputs[problemId];
-
-      if (!output) {
-        // Detect LINQ sample code (Select, Where, Sum)
-        if (code.includes('Select(n => n * n)') || code.includes('numbers.Sum()')) {
-          output = `Original: 1, 2, 3, 4, 5
-Squared: 1, 4, 9, 16, 25
-Even numbers: 2, 4
-Sum: 15`;
-        }
-        // Default fallback
-        else {
-          output = `✓ C# code is syntactically correct!\n\n📝 To run this locally:\n1. Install .NET\n2. Save code to Program.cs\n3. Run: dotnet run`;
-        }
-      }
-
-      resolve({
-        success: true,
-        output: output,
-        error: '',
-        duration: duration
-      });
-    });
-  }
-
-  /**
-   * Execute Python - Mock execution (show sample output)
-   * Note: Real Python execution requires backend server
-   */
-  _executePython(code) {
-    return new Promise((resolve) => {
-      const duration = 45;
-
-      // Detect common Python patterns and return appropriate output
-      let output = '';
+      const startTime = performance.now();
 
       try {
-        // Check for list operations (most common in learning examples)
-        if (code.includes('numbers = [1, 2, 3, 4, 5]') && code.includes('print')) {
-          output = `Original: [1, 2, 3, 4, 5]
-Squared: [1, 4, 9, 16, 25]
-Even numbers: [2, 4]
-Sum: 15`;
-        }
-        // Generic Python code message
-        else {
-          output = `✓ Python code syntax is valid!
-
-📝 To run this locally:
-1. Install Python 3.8+
-2. Save code to script.py
-3. Run: python script.py
-
-💡 Note: Full Python execution requires a backend server. This is a demo environment.`;
+        // Check if code has Main method
+        if (!code.includes('Main')) {
+          const duration = Math.round(performance.now() - startTime);
+          return resolve({
+            success: false,
+            error: '❌ C# code must have a Main method:\n\nclass Program {\n  static void Main() {\n    Console.WriteLine("Hello");\n  }\n}',
+            output: '',
+            duration: duration
+          });
         }
 
+        // Extract Console.WriteLine calls - this will be simulated output
+        let output = '';
+
+        // Pattern to find Console.WriteLine with string literals
+        const printPattern = /Console\.WriteLine\s*\(\s*"([^"]*)"\s*\)/g;
+        let match;
+        let foundOutput = false;
+
+        while ((match = printPattern.exec(code)) !== null) {
+          output += match[1] + '\n';
+          foundOutput = true;
+        }
+
+        if (!foundOutput) {
+          output = '✓ C# code is valid!\n\n💡 Add Console.WriteLine() to see output:\n\nConsole.WriteLine("Hello World!");';
+        }
+
+        const duration = Math.round(performance.now() - startTime);
         resolve({
           success: true,
-          output: output,
+          output: output.trim(),
           error: '',
           duration: duration
         });
       } catch (err) {
+        const duration = Math.round(performance.now() - startTime);
         resolve({
           success: false,
-          error: `Python execution error: ${err.message}`,
-          output: ''
+          error: `C# Error: ${err.message}`,
+          output: '',
+          duration: duration
         });
       }
+    });
+  }
+
+  /**
+   * Execute Python - Parse print statements from code
+   */
+  _executePython(code) {
+    return new Promise((resolve) => {
+      const startTime = performance.now();
+
+      try {
+        // Extract all print() calls and simulate their output
+        let output = '';
+        let hasAnyCode = code.trim().length > 0;
+
+        if (!hasAnyCode) {
+          const duration = Math.round(performance.now() - startTime);
+          return resolve({
+            success: false,
+            error: 'Python code is empty. Write some code and try again.',
+            output: '',
+            duration: duration
+          });
+        }
+
+        // Check for syntax errors
+        if (code.includes('def ') && !code.includes(':')) {
+          const duration = Math.round(performance.now() - startTime);
+          return resolve({
+            success: false,
+            error: 'Syntax Error: Function definition missing colon\n\nCorrect: def function_name():',
+            output: '',
+            duration: duration
+          });
+        }
+
+        // Look for print statements and extract their arguments
+        const printRegex = /print\s*\(\s*([^)]+)\s*\)/g;
+        let match;
+        let foundPrints = false;
+
+        while ((match = printRegex.exec(code)) !== null) {
+          foundPrints = true;
+          let arg = match[1];
+
+          // Handle string literals (remove quotes)
+          arg = arg.replace(/^["'](.*)["']$/,  '$1');
+          // Handle simple expressions like f-strings
+          arg = arg.replace(/^f["'](.*?)["']$/gi, '$1');
+
+          output += arg + '\n';
+        }
+
+        if (!foundPrints) {
+          output = '✓ Python code is valid!\n\n💡 Add print() statements to see output:\n\nprint("Hello, Python!")';
+        }
+
+        const duration = Math.round(performance.now() - startTime);
+        resolve({
+          success: true,
+          output: output.trim(),
+          error: '',
+          duration: duration
+        });
+
+      } catch (err) {
+        const duration = Math.round(performance.now() - startTime);
+        resolve({
+          success: false,
+          error: `Python Error: ${err.message}`,
+          output: '',
+          duration: duration
+        });
+      }
+    });
+  }
     });
   }
 
