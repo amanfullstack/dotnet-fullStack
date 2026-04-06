@@ -41,14 +41,14 @@ class WidgetsAPI {
     try {
       console.log('📚 Fetching quotes...');
 
-      // Use Quotable API for programming/learning related quotes
-      const response = await fetch('https://api.quotable.io/random?tags=inspirational,wisdom,technology');
+      // Use Quotable API for quotes
+      const response = await fetch('https://api.quotable.io/random?tags=inspirational');
 
       if (!response.ok) throw new Error('Failed to fetch quote');
 
       const data = await response.json();
 
-      // Create quote array with fetched quote + some hardcoded ones
+      // Create quote array with fetched quote + fallback ones
       this.quotes = [
         {
           text: data.content,
@@ -65,16 +65,12 @@ class WidgetsAPI {
         {
           text: "First, solve the problem. Then, write the code.",
           author: "John Johnson"
-        },
-        {
-          text: "Quality is not an act, it is a habit.",
-          author: "Aristotle"
         }
       ];
 
       console.log('✓ Quotes loaded:', this.quotes.length);
     } catch (err) {
-      console.error('✗ Error loading quotes:', err);
+      console.warn('⚠ Using fallback quotes');
       // Fallback quotes
       this.quotes = [
         {
@@ -86,8 +82,16 @@ class WidgetsAPI {
           author: "Steve Jobs"
         },
         {
-          text: "Life is what happens when you're busy making other plans.",
-          author: "John Lennon"
+          text: "Code is poetry written in a language computers understand.",
+          author: "Unknown"
+        },
+        {
+          text: "Any fool can write code. Good programmers write code for humans.",
+          author: "Martin Fowler"
+        },
+        {
+          text: "The best code is no code at all.",
+          author: "Jeff Atwood"
         }
       ];
     }
@@ -101,7 +105,7 @@ class WidgetsAPI {
       console.log('📰 Fetching tech news...');
 
       // Use Dev.to API (no auth required) for tech news
-      const response = await fetch('https://dev.to/api/articles?per_page=3&tag=webdev,dotnet,javascript,react,angular');
+      const response = await fetch('https://dev.to/api/articles?per_page=3');
 
       if (!response.ok) throw new Error('Failed to fetch news');
 
@@ -119,29 +123,29 @@ class WidgetsAPI {
 
       console.log('✓ News loaded:', this.news.length);
     } catch (err) {
-      console.error('✗ Error loading news:', err);
+      console.warn('⚠ Using fallback news');
       // Fallback news
       this.news = [
         {
-          title: 'Latest .NET 8 Features Released',
-          description: 'Discover new performance improvements and native AOT compilation in .NET 8',
-          url: '#',
+          title: '.NET 8 Performance Enhancements Released',
+          description: 'New SIMD improvements and native AOT compilation features for faster applications',
+          url: 'https://devblogs.microsoft.com/dotnet',
           source: 'Microsoft',
           date: new Date().toLocaleDateString(),
-          tags: ['.NET', 'C#']
+          tags: ['.NET', 'Performance']
         },
         {
-          title: 'React 19 Now Available',
-          description: 'New hooks and improved developer experience with Server Components',
-          url: '#',
-          source: 'React',
+          title: 'React 19 Introduces New Server Components',
+          description: 'Revolutionary approach to building full-stack applications with improved developer experience',
+          url: 'https://react.dev',
+          source: 'React Blog',
           date: new Date().toLocaleDateString(),
           tags: ['React', 'JavaScript']
         },
         {
-          title: 'Angular 17 Performance Improvements',
-          description: 'Faster build times and improved runtime performance',
-          url: '#',
+          title: 'Angular 17 Delivers Major Performance Boost',
+          description: 'Standalone components now default, significant reduction in bundle size and faster rendering',
+          url: 'https://angular.io/blog',
           source: 'Angular',
           date: new Date().toLocaleDateString(),
           tags: ['Angular', 'TypeScript']
@@ -157,63 +161,47 @@ class WidgetsAPI {
     try {
       console.log('📦 Loading tech versions...');
 
-      // Use GitHub API to get latest release info
-      const repos = [
-        { name: '.NET', owner: 'dotnet', repo: 'runtime' },
-        { name: 'React', owner: 'facebook', repo: 'react' },
-        { name: 'Angular', owner: 'angular', repo: 'angular' },
-        { name: 'Node.js', owner: 'nodejs', repo: 'node' },
-        { name: 'TypeScript', owner: 'microsoft', repo: 'TypeScript' },
-        { name: 'Vue', owner: 'vuejs', repo: 'core' }
-      ];
+      // Try to fetch from a simple version API
+      // Using jsDelivr CDN list which is more reliable
+      const versionMap = {
+        '.NET': 'https://api.github.com/repos/dotnet/runtime/releases/latest',
+        'React': 'https://api.github.com/repos/facebook/react/releases/latest',
+        'Angular': 'https://api.github.com/repos/angular/angular/releases/latest',
+        'Node.js': 'https://api.github.com/repos/nodejs/node/releases/latest',
+        'TypeScript': 'https://api.github.com/repos/microsoft/TypeScript/releases/latest',
+        'Vue': 'https://api.github.com/repos/vuejs/core/releases/latest'
+      };
 
-      const versionPromises = repos.map(async r => {
-        try {
-          const response = await fetch(
-            `https://api.github.com/repos/${r.owner}/${r.repo}/releases/latest`,
-            { headers: { 'Accept': 'application/vnd.github.v3+json' } }
-          );
+      // Try to fetch but immediately fallback since we're likely offline or rate-limited
+      const timeout = Promise.race([
+        Promise.all(Object.entries(versionMap).map(async ([name, url]) => {
+          try {
+            const res = await fetch(url);
+            if (!res.ok) return null;
+            const data = await res.json();
+            return { name, version: data.tag_name.replace(/^v/, '').substring(0, 5) };
+          } catch {
+            return null;
+          }
+        })),
+        new Promise(resolve => setTimeout(() => resolve(null), 3000)) // 3 second timeout
+      ]);
 
-          if (!response.ok) return null;
-
-          const release = await response.json();
-          const version = release.tag_name.replace(/^v/, '').substring(0, 5);
-
-          return {
-            name: r.name,
-            version: version,
-            stable: !release.prerelease,
-            url: release.html_url
-          };
-        } catch (e) {
-          console.warn(`Failed to fetch ${r.name} version`);
-          return null;
-        }
-      });
-
-      const results = await Promise.all(versionPromises);
-      this.versions = results.filter(v => v !== null);
-
-      // Fallback if all fail
-      if (this.versions.length === 0) {
-        this.versions = [
-          { name: '.NET', version: '8.0.11', stable: true },
-          { name: 'React', version: '19.0', stable: true },
-          { name: 'Angular', version: '17.1', stable: true },
-          { name: 'Node.js', version: '22.0', stable: true },
-          { name: 'TypeScript', version: '5.5', stable: true },
-          { name: 'Vue', version: '3.4', stable: true }
-        ];
+      const results = await timeout;
+      if (results && results.some(v => v)) {
+        this.versions = results.filter(v => v);
+      } else {
+        throw new Error('API timeout or failed');
       }
 
       console.log('✓ Versions loaded:', this.versions.length);
     } catch (err) {
-      console.error('✗ Error loading versions:', err);
+      console.warn('⚠ Using fallback versions');
       // Fallback versions
       this.versions = [
-        { name: '.NET', version: '8.0.11', stable: true },
+        { name: '.NET', version: '8.0.12', stable: true },
         { name: 'React', version: '19.0', stable: true },
-        { name: 'Angular', version: '17.1', stable: true },
+        { name: 'Angular', version: '17.2', stable: true },
         { name: 'Node.js', version: '22.0', stable: true },
         { name: 'TypeScript', version: '5.5', stable: true },
         { name: 'Vue', version: '3.4', stable: true }
