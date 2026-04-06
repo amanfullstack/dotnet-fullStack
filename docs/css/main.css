@@ -354,7 +354,7 @@ pre code {
    ---------------------------------------------------------------- */
 .site-header {
   position: fixed;
-  top: 50px;
+  top: 0;
   left: 0;
   right: 0;
   height: var(--header-height);
@@ -555,7 +555,7 @@ pre code {
 .page-wrapper {
   display: flex;
   min-height: 100vh;
-  padding-top: calc(50px + var(--header-height));
+  padding-top: var(--header-height);
 }
 
 /* ----------------------------------------------------------------
@@ -563,7 +563,7 @@ pre code {
    ---------------------------------------------------------------- */
 .sidebar {
   position: fixed;
-  top: calc(50px + var(--header-height));
+  top: var(--header-height);
   left: 0;
   bottom: 0;
   width: var(--sidebar-width);
@@ -2764,101 +2764,32 @@ details[open] .qa-chevron {
   border-left: 3px solid var(--border);
 }
 
-/* ═══════════════════ TOP BANNER: MARQUEE QUOTES + TECH STACK */
-.top-banner {
-  position: fixed;
-  top: 3px;
-  left: 0;
-  right: 0;
+/* ═══════════════════ QUOTES MARQUEE BANNER (Below Header) */
+.quotes-banner {
   width: 100%;
+  background: linear-gradient(90deg,
+    rgba(14, 165, 233, 0.06),
+    rgba(139, 92, 246, 0.06),
+    rgba(16, 185, 129, 0.06));
+  border-bottom: 1px solid var(--border);
+  padding: 8px 0;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  position: relative;
+}
+
+[data-theme="dark"] .quotes-banner {
   background: linear-gradient(90deg,
     rgba(14, 165, 233, 0.08),
     rgba(139, 92, 246, 0.08),
     rgba(16, 185, 129, 0.08));
-  border-bottom: 2px solid var(--primary);
-  padding: var(--sp-2) var(--sp-4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--sp-4);
-  z-index: 99;
-  backdrop-filter: blur(10px);
-  box-sizing: border-box;
-}
-
-[data-theme="dark"] .top-banner {
-  background: linear-gradient(90deg,
-    rgba(14, 165, 233, 0.12),
-    rgba(139, 92, 246, 0.12),
-    rgba(16, 185, 129, 0.12));
-}
-
-.banner-content {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-4);
-  width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--sp-4);
-}
-
-/* Tech Stack Display (Left) */
-.tech-stack-display {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-
-.tech-label {
-  font-size: var(--text-sm);
-  font-weight: 700;
-  color: var(--text-1);
-}
-
-.tech-versions-inline {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-1);
-  padding: 0 var(--sp-2);
-}
-
-.tech-badge {
-  display: inline-block;
-  padding: 4px 10px;
-  background: rgba(14, 165, 233, 0.15);
-  border: 1px solid rgba(14, 165, 233, 0.3);
-  border-radius: 999px;
-  font-size: var(--text-xs);
-  color: var(--primary);
-  font-weight: 700;
-  font-family: var(--font-mono);
-  white-space: nowrap;
-  transition: all 0.3s ease;
-}
-
-.tech-badge:hover {
-  background: rgba(14, 165, 233, 0.25);
-  border-color: var(--primary);
-}
-
-/* Quotes Marquee (Center) */
-.quotes-marquee-wrapper {
-  flex: 1;
-  overflow: hidden;
-  position: relative;
-  min-height: 32px;
-  display: flex;
-  align-items: center;
 }
 
 .quotes-marquee {
   display: flex;
-  gap: var(--sp-8);
-  animation: marquee 30s linear infinite;
-  padding: 0 var(--sp-4);
+  gap: var(--sp-12);
+  animation: marquee 60s linear infinite;
+  padding: 0 var(--sp-6);
   white-space: nowrap;
   width: max-content;
 }
@@ -2878,41 +2809,19 @@ details[open] .qa-chevron {
 
 .marquee-item {
   font-size: var(--text-sm);
-  color: var(--text-1);
+  color: var(--text-2);
   font-style: italic;
   white-space: nowrap;
   flex-shrink: 0;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: var(--sp-2);
+  gap: var(--sp-1);
 }
 
 .marquee-item::before {
   content: '💡';
   display: inline-block;
-}
-
-/* Close Button (Right) */
-.banner-close-btn {
-  width: 28px;
-  height: 28px;
-  border: 1px solid var(--border);
-  background: transparent;
-  border-radius: var(--r-md);
-  cursor: pointer;
-  font-size: var(--text-lg);
-  color: var(--text-2);
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.banner-close-btn:hover {
-  background: var(--danger);
-  color: white;
-  border-color: var(--danger);
+  margin-right: var(--sp-1);
 }
 
 @media (max-width: 1024px) {
@@ -3050,6 +2959,55 @@ details[open] .qa-chevron {
   height: 40px;
   background: var(--border);
   flex-shrink: 0;
+}
+
+/* Hero versions bar */
+.hero-versions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-4);
+  margin-top: var(--sp-8);
+  padding-top: var(--sp-6);
+  border-top: 1px solid var(--border);
+}
+
+.versions-badge {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-1);
+  white-space: nowrap;
+}
+
+.versions-icons {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.version-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-2) var(--sp-3);
+  background: rgba(14, 165, 233, 0.08);
+  border: 1px solid rgba(14, 165, 233, 0.2);
+  border-radius: var(--r-lg);
+  font-size: var(--text-xs);
+  color: var(--text-2);
+  font-weight: 600;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.version-icon:hover {
+  background: rgba(14, 165, 233, 0.15);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 /* Projects grid */

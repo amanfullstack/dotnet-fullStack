@@ -253,14 +253,14 @@ class WidgetsAPI {
   }
 
   /**
-   * Render tech versions bar (inline badges)
+   * Render tech versions in hero section with icons
    */
   renderVersionsBar() {
-    const container = document.getElementById('tech-versions-inline');
+    const container = document.getElementById('versions-icons');
     if (!container || this.versions.length === 0) return;
 
     container.innerHTML = this.versions.slice(0, 6).map(v => `
-      <span class="tech-badge" title="${v.version}">${v.name} ${v.version}</span>
+      <span class="version-icon" title="${v.name} ${v.version}">${v.name} <strong>${v.version}</strong></span>
     `).join('');
   }
 

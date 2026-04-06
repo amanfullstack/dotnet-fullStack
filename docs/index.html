@@ -26,29 +26,6 @@
 <!-- Reading Progress Bar -->
 <div id="readingProgress" class="progress-fill" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
 
-<!-- ═══════════════════════════════════════════ TOP BANNER: QUOTES MARQUEE + TECH STACK -->
-<div class="top-banner">
-  <div class="banner-content">
-    <!-- Tech Stack (Left) -->
-    <div class="tech-stack-display">
-      <span class="tech-label">⚡ Latest:</span>
-      <div class="tech-versions-inline" id="tech-versions-inline">
-        <span class="tech-badge">Loading...</span>
-      </div>
-    </div>
-
-    <!-- Quotes Marquee (Center) -->
-    <div class="quotes-marquee-wrapper">
-      <div class="quotes-marquee" id="quotes-marquee">
-        <span class="marquee-item">Loading inspirational quotes...</span>
-      </div>
-    </div>
-
-    <!-- Close Button (Right) -->
-    <button class="banner-close-btn" onclick="this.closest('.top-banner').style.display='none';">✕</button>
-  </div>
-</div>
-
 <!-- Search Modal -->
 <div id="searchModal" class="search-modal">
   <div class="search-modal-box animate-fade">
@@ -91,6 +68,13 @@
     </div>
   </div>
 </header>
+
+<!-- ═══════════════════════════════════════════ QUOTES MARQUEE BANNER -->
+<div class="quotes-banner">
+  <div class="quotes-marquee" id="quotes-marquee">
+    <span class="marquee-item">Loading inspirational quotes...</span>
+  </div>
+</div>
 
 <!-- Page Wrapper -->
 <div class="page-wrapper">
@@ -265,6 +249,14 @@
           <div class="stat-item">
             <span class="stat-number">Free</span>
             <span class="stat-label">Forever</span>
+          </div>
+        </div>
+
+        <!-- Latest Tech Versions -->
+        <div class="hero-versions" id="hero-versions">
+          <div class="versions-badge">⚡ Latest Stack</div>
+          <div class="versions-icons" id="versions-icons">
+            <span class="version-icon" title="Loading...">...</span>
           </div>
         </div>
       </section>
