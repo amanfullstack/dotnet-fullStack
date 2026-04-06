@@ -66,136 +66,65 @@
         </ul>
       </div>
 
-      <!-- Projects -->
-      <div class="sidebar-section" style="margin-bottom: var(--sp-4);">
-        <h3 class="sidebar-category" style="margin-bottom: var(--sp-2);">📦 Projects</h3>
-
-        <!-- Web API Project -->
-        <div class="sidebar-project">
-          <div class="sidebar-project-header" data-project="webapi" style="font-weight: 700; color: var(--primary);">
-            <span class="toggle-icon">▼</span>
-            <span class="sidebar-link-icon">🌐</span> Web API
-            <span class="badge badge-done" style="margin-left: auto; margin-right: 0;">✨</span>
-          </div>
-          <div class="sidebar-project-topics">
-            <div class="sidebar-project-topic">
-              <a href="webapi-architecture.html" class="sidebar-link"><span style="margin-right: 4px;">🏗️</span> Architecture</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="webapi-controllers.html" class="sidebar-link"><span style="margin-right: 4px;">🎮</span> Controllers &amp; REST</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="webapi-models.html" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Models &amp; DTOs</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="webapi-di.html" class="sidebar-link active" class="sidebar-link"><span style="margin-right: 4px;">💉</span> Dependency Injection</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="webapi-middleware.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Middleware</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="webapi-caching.html" class="sidebar-link"><span style="margin-right: 4px;">⚡</span> Caching Strategies</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="webapi-error-handling.html" class="sidebar-link"><span style="margin-right: 4px;">🚨</span> Error Handling</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="webapi-graphql.html" class="sidebar-link"><span style="margin-right: 4px;">🌐</span> GraphQL</a>
-            </div>
-          </div>
+      <!-- Project Tabs (Modern Tab Navigation) -->
+      <div class="project-tabs-section">
+        <div class="project-tabs">
+          <button class="project-tab active" data-project="webapi" title="Web API topics">
+            <span class="project-tab-icon">🌐</span> Web API
+          </button>
+          <button class="project-tab" data-project="mvc" title="MVC topics">
+            <span class="project-tab-icon">🖥️</span> MVC
+          </button>
+          <button class="project-tab" data-project="angular" title="Angular topics">
+            <span class="project-tab-icon">🔺</span> Angular
+          </button>
+          <button class="project-tab" data-project="react" title="React topics">
+            <span class="project-tab-icon">⚛️</span> React
+          </button>
         </div>
 
-        <!-- MVC Project -->
-        <div class="sidebar-project">
-          <div class="sidebar-project-header" data-project="mvc">
-            <span class="toggle-icon">▼</span>
-            <span class="sidebar-link-icon">🖥️</span> MVC
-            <span class="badge badge-done" style="margin-left: auto; margin-right: 0;">✨</span>
-          </div>
-          <div class="sidebar-project-topics">
-            <div class="sidebar-project-topic">
-              <a href="mvc.html" class="sidebar-link"><span style="margin-right: 4px;">📘</span> Overview</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="mvc-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🎮</span> Controllers &amp; Actions</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">👁️</span> Views &amp; Razor</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Models &amp; Validation</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">💼</span> Services &amp; HttpClient</a>
-            </div>
-          </div>
+        <!-- Web API Topics -->
+        <div class="project-topics-list" data-topics="webapi" style="display: flex;">
+          <a href="webapi-architecture.html" class="sidebar-link"><span style="margin-right: 4px;">🏗️</span> Architecture</a>
+          <a href="webapi-controllers.html" class="sidebar-link"><span style="margin-right: 4px;">🎮</span> Controllers &amp; REST</a>
+          <a href="webapi-models.html" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Models &amp; DTOs</a>
+          <a href="webapi-di.html" class="sidebar-link"><span style="margin-right: 4px;">💉</span> Dependency Injection</a>
+          <a href="webapi-middleware.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Middleware</a>
+          <a href="webapi-caching.html" class="sidebar-link"><span style="margin-right: 4px;">⚡</span> Caching Strategies</a>
+          <a href="webapi-error-handling.html" class="sidebar-link"><span style="margin-right: 4px;">🚨</span> Error Handling</a>
+          <a href="webapi-graphql.html" class="sidebar-link"><span style="margin-right: 4px;">🌐</span> GraphQL</a>
         </div>
 
-        <!-- Angular Project -->
-        <div class="sidebar-project">
-          <div class="sidebar-project-header" data-project="angular">
-            <span class="toggle-icon">▼</span>
-            <span class="sidebar-link-icon">🔺</span> Angular
-            <span class="badge badge-done" style="margin-left: auto; margin-right: 0;">✨</span>
-          </div>
-          <div class="sidebar-project-topics">
-            <div class="sidebar-project-topic">
-              <a href="angular.html" class="sidebar-link"><span style="margin-right: 4px;">📗</span> Overview</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="angular-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Components &amp; Templates</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">💼</span> Services &amp; DI</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">〰️</span> RxJS &amp; Observables</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">📋</span> Reactive Forms</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🗺️</span> Router &amp; Navigation</a>
-            </div>
-          </div>
+        <!-- MVC Topics -->
+        <div class="project-topics-list" data-topics="mvc" style="display: none;">
+          <a href="mvc.html" class="sidebar-link"><span style="margin-right: 4px;">📘</span> Overview</a>
+          <a href="mvc-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
+          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🎮</span> Controllers &amp; Actions</a>
+          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">👁️</span> Views &amp; Razor</a>
+          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Models &amp; Validation</a>
+          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">💼</span> Services &amp; HttpClient</a>
         </div>
 
-        <!-- React Project -->
-        <div class="sidebar-project">
-          <div class="sidebar-project-header" data-project="react">
-            <span class="toggle-icon">▼</span>
-            <span class="sidebar-link-icon">⚛️</span> React
-            <span class="badge badge-done" style="margin-left: auto; margin-right: 0;">✨</span>
-          </div>
-          <div class="sidebar-project-topics">
-            <div class="sidebar-project-topic">
-              <a href="react.html" class="sidebar-link"><span style="margin-right: 4px;">📙</span> Overview</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="react-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🎣</span> Hooks &amp; State</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🔄</span> Custom Hooks</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🌍</span> Context API</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">📋</span> Forms &amp; Validation</a>
-            </div>
-            <div class="sidebar-project-topic">
-              <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🗺️</span> React Router</a>
-            </div>
-          </div>
+        <!-- Angular Topics -->
+        <div class="project-topics-list" data-topics="angular" style="display: none;">
+          <a href="angular.html" class="sidebar-link"><span style="margin-right: 4px;">📗</span> Overview</a>
+          <a href="angular-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
+          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Components &amp; Templates</a>
+          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">💼</span> Services &amp; DI</a>
+          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">〰️</span> RxJS &amp; Observables</a>
+          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">📋</span> Reactive Forms</a>
+          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🗺️</span> Router &amp; Navigation</a>
+        </div>
+
+        <!-- React Topics -->
+        <div class="project-topics-list" data-topics="react" style="display: none;">
+          <a href="react.html" class="sidebar-link"><span style="margin-right: 4px;">📙</span> Overview</a>
+          <a href="react-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
+          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🎣</span> Hooks &amp; State</a>
+          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🔄</span> Custom Hooks</a>
+          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🌍</span> Context API</a>
+          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">📋</span> Forms &amp; Validation</a>
+          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🗺️</span> React Router</a>
         </div>
       </div>
 

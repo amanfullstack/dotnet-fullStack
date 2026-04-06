@@ -652,82 +652,101 @@ pre code {
   50% { opacity: 0.7; transform: scale(1.15); }
 }
 
-/* Collapsible project sections in sidebar */
-.sidebar-project {
-  margin-bottom: var(--sp-2);
-}
+/* ================================================================
+   TAB NAVIGATION FOR PROJECTS (Modern Slack/Discord Style)
+   ================================================================ */
 
-.sidebar-project-header {
+.project-tabs-section {
   display: flex;
-  align-items: center;
-  gap: var(--sp-2);
+  flex-direction: column;
+  margin-bottom: var(--sp-4);
+  border-bottom: 2px solid var(--surface-2);
+}
+
+.project-tabs {
+  display: flex;
+  gap: var(--sp-1);
   padding: var(--sp-2) var(--sp-4);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  color: var(--primary);
-  background: rgba(14, 165, 233, 0.08);
-  border-left: 3px solid var(--primary);
-  cursor: pointer;
-  border-radius: 0;
-  transition: all var(--t-fast);
-  user-select: none;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
-.sidebar-project-header:hover {
-  background: rgba(14, 165, 233, 0.15);
+.project-tabs::-webkit-scrollbar {
+  height: 4px;
+  background: transparent;
 }
 
-.sidebar-project-header .toggle-icon {
+.project-tabs::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 2px;
+}
+
+.project-tab {
   display: inline-flex;
-  width: 18px;
-  height: 18px;
   align-items: center;
-  justify-content: center;
-  transition: transform var(--t-fast);
-  margin-right: auto;
-  font-size: 12px;
-}
-
-.sidebar-project-header.collapsed .toggle-icon {
-  transform: rotate(-90deg);
-}
-
-.sidebar-project-topics {
-  max-height: 1000px;
-  overflow: hidden;
-  transition: max-height var(--t-fast), opacity var(--t-fast);
-  opacity: 1;
-}
-
-.sidebar-project-topics.collapsed {
-  max-height: 0;
-  opacity: 0;
-}
-
-.sidebar-project-topic {
-  padding-left: var(--sp-8);
-}
-
-.sidebar-project-topic .sidebar-link {
-  padding: var(--sp-1-5) var(--sp-4);
-  font-size: var(--text-xs);
+  gap: var(--sp-1-5);
+  padding: var(--sp-1-5) var(--sp-3);
+  font-size: var(--text-sm);
+  font-weight: 600;
   color: var(--text-2);
-  border-left: 2px solid transparent;
+  background: var(--surface-2);
+  border: 1px solid var(--border-1);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--t-fast);
+  white-space: nowrap;
+  user-select: none;
 }
 
-.sidebar-project-topic .sidebar-link:hover {
+.project-tab:hover {
   color: var(--primary);
-  border-left-color: var(--primary);
   background: var(--surface-3);
+  border-color: var(--primary);
+  transform: translateY(-2px);
 }
 
-.sidebar-project-topic .sidebar-link.active {
+.project-tab.active {
+  color: var(--white);
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
+.project-tab-icon {
+  font-size: var(--text-lg);
+  display: inline-flex;
+}
+
+/* Project topics under tabs */
+.project-topics-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-0-5);
+  padding: var(--sp-2) 0;
+}
+
+.project-topics-list .sidebar-link {
+  padding: var(--sp-1-5) var(--sp-4);
+  font-size: var(--text-sm);
+  color: var(--text-2);
+  border-left: 3px solid transparent;
+  transition: all var(--t-fast);
+}
+
+.project-topics-list .sidebar-link:hover {
+  color: var(--primary);
+  background: var(--surface-2);
+  border-left-color: var(--primary);
+  padding-left: calc(var(--sp-4) + 4px);
+}
+
+.project-topics-list .sidebar-link.active {
   color: var(--primary);
   background: rgba(14, 165, 233, 0.08);
   border-left-color: var(--primary);
   font-weight: 600;
+  padding-left: calc(var(--sp-4) + 4px);
 }
 
 /* Overlay for mobile sidebar */

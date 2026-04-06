@@ -423,48 +423,61 @@
   }
 
   /* ---------------------------------------------------------------
-     PROJECT COLLAPSIBLE TOPICS
+     PROJECT TAB NAVIGATION (Modern Tab-based UI)
   --------------------------------------------------------------- */
-  function initProjectCollapse() {
-    const headers = document.querySelectorAll('.sidebar-project-header');
+  function initProjectTabs() {
+    const tabs = document.querySelectorAll('.project-tab');
 
-    headers.forEach(header => {
-      const projectName = header.getAttribute('data-project');
-      const topics = header.nextElementSibling;
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const projectName = tab.getAttribute('data-project');
 
-      if (!topics || !topics.classList.contains('sidebar-project-topics')) {
-        return;
-      }
+        // Remove active from all tabs
+        document.querySelectorAll('.project-tab').forEach(t => {
+          t.classList.remove('active');
+        });
 
-      // Check if this project is the "active" one (page belongs to it)
-      const activeLink = topics.querySelector('.sidebar-link.active');
-      const shouldExpand = activeLink !== null;
+        // Hide all topic lists
+        document.querySelectorAll('.project-topics-list').forEach(list => {
+          list.style.display = 'none';
+        });
 
-      // Restore from localStorage or use default
-      const savedState = localStorage.getItem(`project-${projectName}`);
-      if (savedState !== null) {
-        if (savedState === 'collapsed') {
-          header.classList.add('collapsed');
-          topics.classList.add('collapsed');
-        } else {
-          header.classList.remove('collapsed');
-          topics.classList.remove('collapsed');
+        // Add active to clicked tab
+        tab.classList.add('active');
+
+        // Show matching topics list
+        const topicsList = document.querySelector(`[data-topics="${projectName}"]`);
+        if (topicsList) {
+          topicsList.style.display = 'flex';
         }
-      } else if (!shouldExpand) {
-        // Default: collapse all except active
-        header.classList.add('collapsed');
-        topics.classList.add('collapsed');
-      }
 
-      // Toggle on click
-      header.addEventListener('click', () => {
-        header.classList.toggle('collapsed');
-        topics.classList.toggle('collapsed');
-
-        const isCollapsed = header.classList.contains('collapsed');
-        localStorage.setItem(`project-${projectName}`, isCollapsed ? 'collapsed' : 'expanded');
+        // Save preference
+        localStorage.setItem('activeProject', projectName);
       });
     });
+
+    // Restore last active project or detect from current page
+    const currentProject = detectCurrentProject();
+    const savedProject = localStorage.getItem('activeProject') || currentProject || 'webapi';
+
+    const activeTab = document.querySelector(`[data-project="${savedProject}"]`);
+    if (activeTab) {
+      activeTab.click();
+    }
+  }
+
+  /* Detect which project current page belongs to */
+  function detectCurrentProject() {
+    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+
+    if (currentPath.includes('mvc') || currentPath === 'mvc.html' || currentPath === 'mvc-setup.html') return 'mvc';
+    if (currentPath.includes('angular')) return 'angular';
+    if (currentPath.includes('react')) return 'react';
+    if (currentPath.includes('webapi') || currentPath.includes('ef-core') ||
+        currentPath.includes('ado-net') || currentPath.includes('linq') ||
+        currentPath.includes('collections')) return 'webapi';
+
+    return 'webapi'; // default
   }
 
   /* ---------------------------------------------------------------
@@ -474,7 +487,7 @@
     initTheme();
     initSidebar();
     initCollapseBtn();
-    initProjectCollapse();
+    initProjectTabs();
     initCopyButtons();
     initTOC();
     initSearch();
