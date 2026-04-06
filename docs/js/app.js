@@ -473,34 +473,6 @@
       sidebarInner.insertBefore(pinnedSection, sidebarInner.firstChild);
     }
 
-  function renderPinnedSection(pinnedItems) {
-    let pinnedSection = document.querySelector('.sidebar-pinned');
-
-    if (pinnedItems.length === 0) {
-      if (pinnedSection) pinnedSection.remove();
-      return;
-    }
-
-    // Create or update pinned section
-    if (!pinnedSection) {
-      pinnedSection = document.createElement('div');
-      pinnedSection.className = 'sidebar-pinned';
-
-      const header = document.createElement('div');
-      header.className = 'sidebar-pinned-header';
-      header.textContent = 'Favorites';
-
-      const list = document.createElement('ul');
-      list.className = 'sidebar-pinned-list';
-
-      pinnedSection.appendChild(header);
-      pinnedSection.appendChild(list);
-
-      const sidebar = document.getElementById('sidebar');
-      const sidebarInner = sidebar.querySelector('.sidebar-inner');
-      sidebarInner.insertBefore(pinnedSection, sidebarInner.firstChild);
-    }
-
     // Update pinned list
     const list = pinnedSection.querySelector('.sidebar-pinned-list');
     list.innerHTML = '';
@@ -594,9 +566,18 @@
   function initProjectTabs() {
     const tabs = document.querySelectorAll('.project-tab');
 
+    if (tabs.length === 0) {
+      console.warn('No project tabs found');
+      return;
+    }
+
     tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
+      tab.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
         const projectName = tab.getAttribute('data-project');
+        if (!projectName) return;
 
         // Remove active from all tabs
         document.querySelectorAll('.project-tab').forEach(t => {
