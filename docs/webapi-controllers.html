@@ -233,7 +233,7 @@ public async Task&lt;IActionResult&gt; Delete(int id)
         <h2 id="action-results">Action Results</h2>
         <p>Returning the right status code is part of good REST design. ASP.NET Core provides helper methods on <code>ControllerBase</code>.</p>
 
-        <table class="data-table">
+        <div class="table-wrapper"><table class="data-table">
           <thead>
             <tr><th>Method</th><th>Status Code</th><th>When to use</th></tr>
           </thead>
@@ -249,7 +249,7 @@ public async Task&lt;IActionResult&gt; Delete(int id)
             <tr><td><code>Conflict()</code></td><td>409</td><td>Duplicate resource, optimistic concurrency</td></tr>
             <tr><td><code>StatusCode(500, msg)</code></td><td>500</td><td>Unexpected server error</td></tr>
           </tbody>
-        </table>
+        </table></div>
 
         <!-- ===== MODEL BINDING ===== -->
         <h2 id="model-binding">Model Binding</h2>

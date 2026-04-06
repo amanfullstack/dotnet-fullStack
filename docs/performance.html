@@ -169,7 +169,7 @@
 
         <p>Both EF Core and ADO.NET are excellent data access tools — the right choice depends on the operation. ADO.NET wins on raw speed for pure data retrieval, while EF Core wins on developer productivity, change tracking, and migrations.</p>
 
-        <table class="comparison-table">
+        <div class="table-wrapper"><table class="comparison-table">
           <thead>
             <tr>
               <th>Operation</th>
@@ -216,7 +216,7 @@
               <td>EF Core</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
 
         <div class="callout callout-info">
           <span class="callout-icon">💡</span>
@@ -233,7 +233,7 @@
 
         <p>Adding <code>IMemoryCache</code> to the <code>GetAll</code> endpoint in ProductCatalogAPI produced one of the most dramatic single-change performance improvements possible — without touching the database schema or query logic at all.</p>
 
-        <table class="comparison-table">
+        <div class="table-wrapper"><table class="comparison-table">
           <thead>
             <tr>
               <th>Scenario</th>
@@ -268,7 +268,7 @@
               <td>DB query + stores result in cache</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -562,7 +562,7 @@ foreach (var product in products)
 
         <p>LINQ is translated into SQL by EF Core — but only if you stay in <em>IQueryable</em> mode. Calling <code>.ToList()</code> too early pulls all rows into memory and causes subsequent filtering to run in C# rather than in SQL. These patterns make the difference between a query that runs in the database and one that overloads the application server.</p>
 
-        <table class="comparison-table">
+        <div class="table-wrapper"><table class="comparison-table">
           <thead>
             <tr>
               <th>Slow Pattern</th>
@@ -597,7 +597,7 @@ foreach (var product in products)
               <td>Dictionary lookup is O(1); scanning a list per iteration is O(n²) total</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
 
         <!-- ==========================================
              SECTION 7: DECISION MATRIX
@@ -606,7 +606,7 @@ foreach (var product in products)
 
         <p>Use this table as a quick-reference when designing a new feature or reviewing an existing one.</p>
 
-        <table class="comparison-table">
+        <div class="table-wrapper"><table class="comparison-table">
           <thead>
             <tr>
               <th>Scenario</th>
@@ -651,7 +651,7 @@ foreach (var product in products)
               <td>EF Core <code>AddRange</code> is slow at scale; <code>SqlBulkCopy</code> inserts millions of rows per second</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
 
         <!-- ==========================================
              SECTION 8: PRODUCTION OPTIMIZATION CHECKLIST

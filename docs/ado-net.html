@@ -610,7 +610,7 @@ await connection.OpenAsync();
         <h2 id="ef-vs-ado">EF Core vs ADO.NET — When to Use What<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>EF Core and ADO.NET are complementary tools. Most production applications use both: EF Core for the majority of CRUD operations and ADO.NET for the queries that need raw SQL performance or cannot be expressed cleanly in LINQ.</p>
 
-        <table class="comparison-table">
+        <div class="table-wrapper"><table class="comparison-table">
           <thead>
             <tr>
               <th>Criteria</th>
@@ -665,7 +665,7 @@ await connection.OpenAsync();
               <td class="check">Natural — arbitrary GROUP BY, window functions</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
 
         <div class="callout callout-success">
           <span class="callout-icon">✅</span>

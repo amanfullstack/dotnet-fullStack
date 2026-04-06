@@ -442,7 +442,7 @@ public async Task&lt;bool&gt; HardDeleteAsync(int id)
         <h2 id="change-tracking">Change Tracking<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>EF Core automatically tracks the state of every entity it loads. When you call <code>SaveChangesAsync()</code>, it generates the exact SQL needed to sync those changes to the database.</p>
 
-        <table class="comparison-table">
+        <div class="table-wrapper"><table class="comparison-table">
           <thead>
             <tr>
               <th>State</th>
@@ -477,7 +477,7 @@ public async Task&lt;bool&gt; HardDeleteAsync(int id)
               <td>No SQL</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
 
         <div class="code-block">
           <div class="code-block-header">
@@ -500,7 +500,7 @@ var entry = _context.Entry(product);
 Console.WriteLine(entry.State); // EntityState.Unchanged / Modified / Added / Deleted</code></pre>
         </div>
 
-        <table class="comparison-table">
+        <div class="table-wrapper"><table class="comparison-table">
           <thead>
             <tr>
               <th>Criteria</th>
@@ -530,7 +530,7 @@ Console.WriteLine(entry.State); // EntityState.Unchanged / Modified / Added / De
               <td class="check">GET endpoints, reports, read-only APIs</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
 
         <!-- ===================== SOFT DELETE ===================== -->
         <h2 id="soft-delete">Soft Delete Pattern<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
@@ -627,7 +627,7 @@ var categories = await _context.Categories
     .ToListAsync();</code></pre>
         </div>
 
-        <table class="comparison-table">
+        <div class="table-wrapper"><table class="comparison-table">
           <thead>
             <tr>
               <th>Loading Strategy</th>
@@ -652,7 +652,7 @@ var categories = await _context.Categories
               <td>Avoid in APIs — causes N+1 query problems</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
 
         <!-- ===================== MIGRATIONS ===================== -->
         <h2 id="migrations">Migrations<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Migrations" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
@@ -740,7 +740,7 @@ var categories = await _context.Categories
         <h2 id="performance">Performance Tips<a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Services" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>EF Core is fast by default, but a few common patterns cause unnecessary overhead. The following table contrasts mistakes with the recommended approaches.</p>
 
-        <table class="comparison-table">
+        <div class="table-wrapper"><table class="comparison-table">
           <thead>
             <tr>
               <th>Scenario</th>
@@ -780,7 +780,7 @@ var categories = await _context.Categories
               <td><code>EF.CompileAsyncQuery()</code> for compiled queries</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
 
         <div class="code-block">
           <div class="code-block-header">

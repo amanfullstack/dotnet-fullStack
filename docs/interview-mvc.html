@@ -145,7 +145,7 @@
 
         <!-- Quick Reference Table -->
         <h2 id="mvc-overview">MVC Component Reference <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
-        <table class="data-table">
+        <div class="table-wrapper"><table class="data-table">
           <thead>
             <tr>
               <th>MVC Component</th>
@@ -190,7 +190,7 @@
               <td>Separate C# class (e.g., <code>ProductEditViewModel</code>) with <code>@model</code> directive in view</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
 
         <!-- ═══════════ Interview Q&A ═══════════ -->
         <h2 id="mvc-interview">Interview Questions on ASP.NET MVC <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
@@ -423,7 +423,7 @@ public async Task&lt;IActionResult&gt; Delete(int id)
             <summary class="qa-question">Q50. What are ViewBag, ViewData, and TempData? When would you use each? <span class="qa-chevron">▼</span></summary>
             <div class="qa-answer">
               <p>All three are ways to pass data from a controller action to a view (or persist it across redirects). The differences are subtle but important.</p>
-              <table class="data-table" style="margin:15px 0;">
+              <div class="table-wrapper"><table class="data-table" style="margin:15px 0;">
                 <thead>
                   <tr>
                     <th>Mechanism</th>
@@ -452,7 +452,7 @@ public async Task&lt;IActionResult&gt; Delete(int id)
                     <td>One-time messages across redirects (error alerts, success notifications)</td>
                   </tr>
                 </tbody>
-              </table>
+              </table></div>
               <p><strong>ViewBag example — pass ad-hoc data to view:</strong></p>
               <div class="code-block">
                 <div class="code-block-header">
@@ -709,7 +709,7 @@ public async Task&lt;IActionResult&gt; Edit(int id)
             <div class="qa-answer">
               <p><strong>HTML Helpers</strong> are methods that generate HTML markup. They bind to your ViewModel properties, auto-populate values, generate proper <code>name</code> attributes for model binding, and include validation attributes. They improve productivity and reduce typos.</p>
               <p><strong>Common HTML Helpers:</strong></p>
-              <table class="data-table" style="margin:15px 0;">
+              <div class="table-wrapper"><table class="data-table" style="margin:15px 0;">
                 <thead>
                   <tr>
                     <th>Helper</th>
@@ -754,7 +754,7 @@ public async Task&lt;IActionResult&gt; Edit(int id)
                     <td>Display all validation errors at once</td>
                   </tr>
                 </tbody>
-              </table>
+              </table></div>
               <p><strong>Example — Product edit form with helpers:</strong></p>
               <div class="code-block">
                 <div class="code-block-header">
@@ -1229,7 +1229,7 @@ public class TopProductsViewComponent : ViewComponent
         <!-- Bonus: MVC vs Web API Comparison -->
         <h2 id="mvc-vs-webapi">Bonus: MVC vs Web API Comparison <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
         <p>Both follow the MVC pattern and both are built on ASP.NET Core. The key difference is in the response and use case.</p>
-        <table class="data-table">
+        <div class="table-wrapper"><table class="data-table">
           <thead>
             <tr>
               <th>Aspect</th>
@@ -1294,7 +1294,7 @@ public class TopProductsViewComponent : ViewComponent
               <td>ProductCatalogAPI (JSON endpoints for mobile/SPA)</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
 
         <div class="callout callout-info" style="margin-top:2rem;">
           <span class="callout-icon">💡</span>

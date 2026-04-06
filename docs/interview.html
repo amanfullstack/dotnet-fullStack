@@ -665,14 +665,14 @@ public async Task CreateProductAsync(CreateProductRequest req)
             <summary class="qa-question">Q30. What performance improvement did you achieve with caching? <span class="qa-chevron">▼</span></summary>
             <div class="qa-answer">
               <p>Benchmark from ProductCatalogAPI — GetAll endpoint with 100 sequential requests:</p>
-              <table class="comparison-table">
+              <div class="table-wrapper"><table class="comparison-table">
                 <thead><tr><th>Scenario</th><th>Total Time</th><th>DB Queries</th></tr></thead>
                 <tbody>
                   <tr><td>Without cache</td><td>~15 seconds</td><td>100 queries</td></tr>
                   <tr><td>With IMemoryCache</td><td>~250ms</td><td>1 query</td></tr>
                   <tr><td>Improvement</td><td><strong>60x faster</strong></td><td><strong>99% reduction</strong></td></tr>
                 </tbody>
-              </table>
+              </table></div>
               <p>In production with hundreds of requests per minute for the same product list, this eliminates essentially all database load for read operations.</p>
             </div>
           </details>

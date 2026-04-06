@@ -273,7 +273,7 @@ public async Task&lt;Product?&gt; GetByIdAsync(int id)
 
         <!-- ===== COMPARISON ===== -->
         <h2 id="comparison">Cache Strategy Comparison</h2>
-        <table class="data-table">
+        <div class="table-wrapper"><table class="data-table">
           <thead>
             <tr><th>Strategy</th><th>Scope</th><th>Persists restart?</th><th>Multi-server?</th><th>Setup</th></tr>
           </thead>
@@ -283,7 +283,7 @@ public async Task&lt;Product?&gt; GetByIdAsync(int id)
             <tr><td>IDistributedCache (Redis)</td><td>All servers</td><td>Yes</td><td>Yes</td><td>Redis server needed</td></tr>
             <tr><td>EF Query Cache</td><td>In-process (query plan)</td><td>No</td><td>No</td><td>Built-in/automatic</td></tr>
           </tbody>
-        </table>
+        </table></div>
 
         <nav class="page-nav">
           <a href="webapi-middleware.html" class="page-nav-item prev">

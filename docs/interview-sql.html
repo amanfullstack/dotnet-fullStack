@@ -145,7 +145,7 @@
 
         <!-- Quick Reference Table -->
         <h2 id="sql-overview">Quick Reference <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
-        <table class="data-table">
+        <div class="table-wrapper"><table class="data-table">
           <thead>
             <tr>
               <th>SQL Concept</th>
@@ -195,7 +195,7 @@
               <td>For complex multi-step operations or when you need database-side business logic</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
 
         <!-- ═══════════ Q42 — JOINs ═══════════ -->
         <h2 id="q42-joins">Q42. INNER JOIN vs LEFT JOIN vs RIGHT JOIN <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
@@ -487,7 +487,7 @@ CREATE INDEX IX_Products_CategoryPrice ON Products(CategoryId, Price);
         </div>
 
         <h3>Performance Tradeoffs</h3>
-        <table class="data-table">
+        <div class="table-wrapper"><table class="data-table">
           <thead>
             <tr>
               <th>Operation</th>
@@ -522,7 +522,7 @@ CREATE INDEX IX_Products_CategoryPrice ON Products(CategoryId, Price);
               <td>Extra disk for index structure</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
 
         <div class="callout callout-info">
           <span class="callout-icon">💡</span>
@@ -629,7 +629,7 @@ ORDER BY TotalInventoryValue DESC;</code></pre>
         </div>
 
         <h3>DISTINCT vs GROUP BY</h3>
-        <table class="data-table">
+        <div class="table-wrapper"><table class="data-table">
           <thead>
             <tr>
               <th>Feature</th>
@@ -654,7 +654,7 @@ ORDER BY TotalInventoryValue DESC;</code></pre>
               <td>SELECT CategoryId, COUNT(*) FROM Products GROUP BY CategoryId</td>
             </tr>
           </tbody>
-        </table>
+        </table></div>
 
         <!-- ═══════════ Q47 — Transactions & ACID ═══════════ -->
         <h2 id="q47-transactions">Q47. Transactions — What are they? ACID Properties <a href="https://github.com/godisone/dotnet-fullStack/blob/main/ProductCatalogAPI-WebAPI-EFCore/Data/AppDbContext.cs" target="_blank" class="github-link" data-tooltip="View code on GitHub"></a></h2>
