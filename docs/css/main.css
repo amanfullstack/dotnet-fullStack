@@ -1207,20 +1207,24 @@ table.data-table tr:hover td { background: var(--surface-2); }
   border-radius: var(--r-lg);
   margin: var(--sp-4) 0;
   width: 100%;
-  overflow: visible;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  display: block;
 }
 
 .table-wrap table,
 .table-wrapper table {
   margin: 0;
   border-radius: 0;
+  width: 100%;
+  min-width: 100%;
 }
 
 /* SOLID Principles Grid */
 .solid-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--sp-4);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--sp-5);
   margin: var(--sp-6) 0;
 }
 
@@ -1838,6 +1842,36 @@ details[open] .qa-chevron {
   /* Auto grids: respect content, show 2 cols if possible */
   .grid-auto { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
   .grid-topics { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+  /* Tables on mobile: allow horizontal scroll for multi-column tables */
+  .table-wrap,
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: var(--sp-3) 0;
+    border-radius: var(--r-lg);
+  }
+
+  table,
+  table.data-table {
+    font-size: 0.85rem;
+    display: block;
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 100%;
+  }
+
+  table th,
+  table.data-table th {
+    padding: var(--sp-2) var(--sp-2);
+    font-size: 0.8rem;
+  }
+
+  table td,
+  table.data-table td {
+    padding: var(--sp-2) var(--sp-2);
+    font-size: 0.8rem;
+  }
 
   .hero { padding: var(--sp-8) var(--sp-4) var(--sp-8); }
   .hero-title { font-size: var(--text-3xl); }

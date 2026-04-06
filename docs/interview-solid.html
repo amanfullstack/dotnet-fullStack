@@ -124,7 +124,7 @@
 
         <div class="page-title-block">
           <h1 class="page-title">📐 SOLID Design Principles</h1>
-          <p class="page-subtitle">All 5 SOLID principles explained using one consistent scenario: an E-Commerce Order System. Every principle shows exactly what goes wrong (BAD) and how to fix it (GOOD).</p>
+          <p class="page-subtitle">5 principles to write better code. All explained with the simplest possible example: NotificationService sending emails, SMS, and push notifications.</p>
           <div class="page-meta">
             <span class="badge badge-danger">Advanced</span>
             <span class="badge badge-accent">Architecture</span>
@@ -133,1076 +133,583 @@
         </div>
 
         <div class="callout callout-info">
-          <span class="callout-icon">🛒</span>
+          <span class="callout-icon">💡</span>
           <div class="callout-content">
-            <p class="callout-title">Scenario: E-Commerce Order System</p>
-            <p class="callout-body">All 5 principles use the same codebase: placing an order, calculating discounts, processing payment, sending notifications, and accessing order data. Watch how each SOLID violation breaks the system — and how applying the principle fixes it cleanly.</p>
+            <p class="callout-title">What are SOLID Principles?</p>
+            <p class="callout-body">5 rules that help you write clean code. Follow them = easy to test, easy to change, easy to reuse. Ignore them = code becomes a nightmare to maintain.</p>
           </div>
         </div>
 
-        <!-- SOLID Quick Reference -->
-        <h2 id="quick-ref">SOLID at a Glance</h2>
-        <div class="solid-grid">
-          <div class="solid-card">
-            <div class="solid-letter">S</div>
-            <h3>Single Responsibility</h3>
-            <p class="solid-rule">One class = one reason to change</p>
-            <p class="solid-benefit">Easy to test & reuse</p>
-            <a href="#srp" class="solid-link">Learn more →</a>
-          </div>
-          <div class="solid-card">
-            <div class="solid-letter">O</div>
-            <h3>Open/Closed</h3>
-            <p class="solid-rule">Open to extend, closed to modify</p>
-            <p class="solid-benefit">Add features = new classes, not edits</p>
-            <a href="#ocp" class="solid-link">Learn more →</a>
-          </div>
-          <div class="solid-card">
-            <div class="solid-letter">L</div>
-            <h3>Liskov Substitution</h3>
-            <p class="solid-rule">Subclass must honor parent's contract</p>
-            <p class="solid-benefit">Safe polymorphism</p>
-            <a href="#lsp" class="solid-link">Learn more →</a>
-          </div>
-          <div class="solid-card">
-            <div class="solid-letter">I</div>
-            <h3>Interface Segregation</h3>
-            <p class="solid-rule">Don't force unused methods</p>
-            <p class="solid-benefit">Clean, focused interfaces</p>
-            <a href="#isp" class="solid-link">Learn more →</a>
-          </div>
-          <div class="solid-card">
-            <div class="solid-letter">D</div>
-            <h3>Dependency Inversion</h3>
-            <p class="solid-rule">Depend on abstractions not concretions</p>
-            <p class="solid-benefit">Swappable, testable code</p>
-            <a href="#dip" class="solid-link">Learn more →</a>
-          </div>
+        <h2 id="overview">SOLID At A Glance</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th style="padding:12px;">Letter</th>
+                <th style="padding:12px;">Principle</th>
+                <th style="padding:12px;">Simple Rule</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:12px;" ><strong>S</strong></td><td style="padding:12px;">Single Responsibility</td><td style="padding:12px;">One class = one job</td></tr>
+              <tr><td style="padding:12px;"><strong>O</strong></td><td style="padding:12px;">Open/Closed</td><td style="padding:12px;">Extend without editing</td></tr>
+              <tr><td style="padding:12px;"><strong>L</strong></td><td style="padding:12px;">Liskov Substitution</td><td style="padding:12px;">Subclass = parent works</td></tr>
+              <tr><td style="padding:12px;"><strong>I</strong></td><td style="padding:12px;">Interface Segregation</td><td style="padding:12px;">Small, focused interfaces</td></tr>
+              <tr><td style="padding:12px;"><strong>D</strong></td><td style="padding:12px;">Dependency Inversion</td><td style="padding:12px;">Depend on abstractions</td></tr>
+            </tbody>
+          </table>
         </div>
 
-        <!-- ════════════════════════════════════════ -->
-        <!-- S: SINGLE RESPONSIBILITY               -->
-        <!-- ════════════════════════════════════════ -->
+        <!-- S: SINGLE RESPONSIBILITY -->
         <h2 id="srp">S — Single Responsibility Principle</h2>
-        <p><strong>Definition:</strong> A class should have <strong>one, and only one, reason to change</strong>. Split concerns into separate classes.</p>
+        <p><strong>Rule:</strong> A class should have ONE reason to change.</p>
 
-        <h3>❌ BAD: Multiple Responsibilities in One Class</h3>
-        <p>OrderProcessor does validation, discount calculation, payment, email, AND database storage. Six reasons to change = guaranteed to break!</p>
-        <div class="code-block">
-          <div class="code-block-header">
-            <div class="code-dots"><span></span><span></span><span></span></div>
-            <span class="code-lang">csharp</span>
-          </div>
-          <pre><code class="language-csharp">// ❌ BAD: One class, six responsibilities — MESS!
-public class OrderProcessor
+        <h3>❌ BAD Example: One Class Does Everything</h3>
+        <pre><code class="language-csharp">// ❌ BAD: NotificationService does 3 things
+public class NotificationService
 {
-    private readonly string _connString;
-
-    public void ProcessOrder(Order order, Customer customer)
-    {
-        // Responsibility 1: VALIDATION
-        if (order.Items.Count == 0) throw new Exception("Empty order");
-        if (customer.Email == null) throw new Exception("No email");
-
-        // Responsibility 2: DISCOUNT CALCULATION
-        decimal discount = customer.IsVip ? 0.10m : order.Total > 1000 ? 0.05m : 0m;
-        order.Total -= order.Total * discount;
-
-        // Responsibility 3: PAYMENT PROCESSING
-        using var http = new HttpClient();
-        var result = http.PostAsync("https://api.payment.com/charge",
-            new StringContent(order.Total.ToString())).Result;
-        if (!result.IsSuccessStatusCode) throw new Exception("Payment failed");
-
-        // Responsibility 4: EMAIL NOTIFICATION
-        using var smtp = new SmtpClient("smtp.gmail.com");
-        var mail = new MailMessage("orders@store.com", customer.Email);
-        mail.Subject = "Order Confirmed";
-        smtp.Send(mail);
-
-        // Responsibility 5: DATABASE STORAGE
-        using var conn = new SqlConnection(_connString);
-        var cmd = new SqlCommand(
-            "INSERT INTO Orders (CustomerId, Total) VALUES (@id, @total)", conn);
-        cmd.Parameters.AddWithValue("@id", customer.Id);
-        cmd.Parameters.AddWithValue("@total", order.Total);
-        conn.Open();
-        cmd.ExecuteNonQuery();
-
-        // Responsibility 6: LOGGING
-        File.AppendAllText("orders.log", $"Order {order.Id} processed\n");
-    }
-}
-
-// PROBLEMS:
-// ❌ Test needs: real DB, real email server, real payment API, real file system
-// ❌ Change discount logic? Edit ProcessOrder (risky, might break payment!)
-// ❌ Change email format? Edit ProcessOrder (risky, might break validation!)
-// ❌ 6 reasons to change = class will break constantly</code></pre>
-        </div>
-
-        <h3>✅ GOOD: One Responsibility Per Class</h3>
-        <p>Split into 6 focused classes. Each has ONE job. Each testable independently.</p>
-        <div class="code-block">
-          <div class="code-block-header">
-            <div class="code-dots"><span></span><span></span><span></span></div>
-            <span class="code-lang">csharp</span>
-          </div>
-          <pre><code class="language-csharp">// ✓ GOOD: Each class has ONE responsibility
-
-// 1. VALIDATION ONLY
-public interface IOrderValidator
-{
-    void Validate(Order order, Customer customer);
-}
-
-public class OrderValidator : IOrderValidator
-{
-    public void Validate(Order order, Customer customer)
-    {
-        if (order.Items.Count == 0)
-            throw new ArgumentException("Order must contain items");
-        if (customer.Email == null)
-            throw new ArgumentException("Email required");
-    }
-}
-
-// 2. DISCOUNT ONLY
-public interface IDiscountCalculator
-{
-    decimal Calculate(Order order, Customer customer);
-}
-
-public class DiscountCalculator : IDiscountCalculator
-{
-    public decimal Calculate(Order order, Customer customer)
-    {
-        return customer.IsVip ? 0.10m : order.Total > 1000 ? 0.05m : 0m;
-    }
-}
-
-// 3. PAYMENT ONLY
-public interface IPaymentService
-{
-    Task&lt;bool&gt; ChargeAsync(decimal amount);
-}
-
-public class PaymentService : IPaymentService
-{
-    private readonly HttpClient _http;
-    public PaymentService(HttpClient http) => _http = http;
-
-    public async Task&lt;bool&gt; ChargeAsync(decimal amount)
-    {
-        var result = await _http.PostAsync("https://api.payment.com/charge",
-            new StringContent(amount.ToString()));
-        return result.IsSuccessStatusCode;
-    }
-}
-
-// 4. EMAIL ONLY
-public interface IEmailService
-{
-    Task SendAsync(string to, string subject, string body);
-}
-
-public class EmailService : IEmailService
-{
-    public async Task SendAsync(string to, string subject, string body)
+    // Reason to change #1: Email provider changes
+    public void SendEmail(string to, string subject, string body)
     {
         using var smtp = new SmtpClient("smtp.gmail.com");
-        var mail = new MailMessage("orders@store.com", to)
+        var mail = new MailMessage("app@company.com", to)
         {
             Subject = subject,
             Body = body
         };
-        await smtp.SendMailAsync(mail);
-    }
-}
-
-// 5. DATABASE ONLY
-public interface IOrderRepository
-{
-    Task SaveAsync(Order order);
-}
-
-public class OrderRepository : IOrderRepository
-{
-    private readonly string _connString;
-    public OrderRepository(IConfiguration config)
-        => _connString = config.GetConnectionString("Default");
-
-    public async Task SaveAsync(Order order)
-    {
-        using var conn = new SqlConnection(_connString);
-        var cmd = new SqlCommand(
-            "INSERT INTO Orders (CustomerId, Total) VALUES (@id, @total)", conn);
-        cmd.Parameters.AddWithValue("@id", order.CustomerId);
-        cmd.Parameters.AddWithValue("@total", order.Total);
-        await conn.OpenAsync();
-        await cmd.ExecuteNonQueryAsync();
-    }
-}
-
-// 6. LOGGING ONLY
-public interface IOrderLogger
-{
-    Task LogAsync(string message);
-}
-
-public class OrderLogger : IOrderLogger
-{
-    public Task LogAsync(string message)
-        => File.AppendAllTextAsync("orders.log", $"{message}\n");
-}
-
-// 7. ORCHESTRATOR: OrderService (only coordinates, logic elsewhere)
-public class OrderService
-{
-    private readonly IOrderValidator _validator;
-    private readonly IDiscountCalculator _discount;
-    private readonly IPaymentService _payment;
-    private readonly IEmailService _email;
-    private readonly IOrderRepository _repository;
-    private readonly IOrderLogger _logger;
-
-    public OrderService(IOrderValidator validator, IDiscountCalculator discount,
-        IPaymentService payment, IEmailService email, IOrderRepository repository, IOrderLogger logger)
-    {
-        _validator = validator;
-        _discount = discount;
-        _payment = payment;
-        _email = email;
-        _repository = repository;
-        _logger = logger;
+        smtp.Send(mail);
     }
 
-    public async Task ProcessOrderAsync(Order order, Customer customer)
+    // Reason to change #2: SMS provider changes
+    public void SendSms(string phone, string message)
     {
-        _validator.Validate(order, customer);
-
-        decimal discount = _discount.Calculate(order, customer);
-        order.Total -= order.Total * discount;
-
-        bool paid = await _payment.ChargeAsync(order.Total);
-        if (!paid) throw new Exception("Payment failed");
-
-        await _email.SendAsync(customer.Email, "Order Confirmed",
-            $"Thank you! Order #{order.Id}");
-        await _repository.SaveAsync(order);
-        await _logger.LogAsync($"Order {order.Id} completed");
+        Console.WriteLine($"SMS: {message}");
+        // Call Twilio API...
     }
-}
 
-// BENEFITS:
-// ✓ Test DiscountCalculator without payment/email/database
-// ✓ Change email? Edit only EmailService
-// ✓ Add new payment method? Create new IPaymentService, don't edit existing code
-// ✓ Each class has ONE reason to change
-// ✓ Reusable everywhere: DiscountCalculator, EmailService can be used in other features</code></pre>
-        </div>
-
-        <!-- ════════════════════════════════════════ -->
-        <!-- O: OPEN/CLOSED                          -->
-        <!-- ════════════════════════════════════════ -->
-        <h2 id="ocp">O — Open/Closed Principle</h2>
-        <p><strong>Definition:</strong> Classes should be <strong>open for extension but closed for modification</strong>. Add features by creating new classes, not by editing existing ones.</p>
-
-        <h3>❌ BAD: Massive If/Else for New Features</h3>
-        <p>Adding a new shipping method requires editing PaymentProcessor. Modify existing code = risk breaking it!</p>
-        <div class="code-block">
-          <div class="code-block-header">
-            <div class="code-dots"><span></span><span></span><span></span></div>
-            <span class="code-lang">csharp</span>
-          </div>
-          <pre><code class="language-csharp">// ❌ BAD: Every new payment method requires EDITING existing class
-public class PaymentProcessor
-{
-    public bool ProcessPayment(string method, decimal amount)
+    // Reason to change #3: Push notification provider changes
+    public void SendPush(string deviceId, string title, string message)
     {
-        if (method == "CreditCard")
-        {
-            Console.WriteLine($"Charging ${amount} to credit card");
-            return true;
-        }
-        else if (method == "PayPal")
-        {
-            Console.WriteLine($"Charging ${amount} via PayPal");
-            return true;
-        }
-        else if (method == "Bitcoin")
-        {
-            Console.WriteLine($"Charging ${amount} via Bitcoin");
-            return true;
-        }
-        // Add Apple Pay? EDIT this file again!
-        // Add Google Pay? EDIT this file again!
-        return false;
+        Console.WriteLine($"Push: {title}");
+        // Call Firebase API...
     }
 }
 
 // PROBLEMS:
-// ❌ Every new payment method requires modifying PaymentProcessor
-// ❌ Risk: editing might break CreditCard or PayPal processing
-// ❌ Class grows indefinitely — unmaintainable
-// ❌ Violates OCP: not closed for modification</code></pre>
-        </div>
+// ❌ 3 REASONS TO CHANGE: Gmail issue, Twilio issue, Firebase issue
+// ❌ Testing email = must mock SMS + Push
+// ❌ Huge, unmaintainable class</code></pre>
 
-        <h3>✅ GOOD: Strategy Pattern (Interfaces + Polymorphism)</h3>
-        <p>Create new payment classes without touching the processor. EXTENSION without MODIFICATION.</p>
-        <div class="code-block">
-          <div class="code-block-header">
-            <div class="code-dots"><span></span><span></span><span></span></div>
-            <span class="code-lang">csharp</span>
-          </div>
-          <pre><code class="language-csharp">// ✓ GOOD: Open for extension, closed for modification
+        <h3>✅ GOOD Example: One Class Per Responsibility</h3>
+        <pre><code class="language-csharp">// ✓ GOOD: Split into 3 focused classes
 
-// Base contract (never changes!)
-public interface IPaymentMethod
+// #1 Email responsibility ONLY
+public interface IEmailService
 {
-    Task&lt;bool&gt; ChargeAsync(decimal amount);
+    void SendEmail(string to, string subject, string body);
 }
-
-// Existing implementations
-public class CreditCardPayment : IPaymentMethod
+public class EmailService : IEmailService
 {
-    public async Task&lt;bool&gt; ChargeAsync(decimal amount)
+    public void SendEmail(string to, string subject, string body)
     {
-        Console.WriteLine($"Charging ${amount} to credit card");
-        await Task.Delay(50);
-        return true;
-    }
-}
-
-public class PayPalPayment : IPaymentMethod
-{
-    public async Task&lt;bool&gt; ChargeAsync(decimal amount)
-    {
-        Console.WriteLine($"Charging ${amount} via PayPal");
-        await Task.Delay(50);
-        return true;
-    }
-}
-
-public class BitcoinPayment : IPaymentMethod
-{
-    public async Task&lt;bool&gt; ChargeAsync(decimal amount)
-    {
-        Console.WriteLine($"Charging ${amount} via Bitcoin");
-        await Task.Delay(50);
-        return true;
-    }
-}
-
-// NEW PAYMENT METHOD? Just create a new class (no edits to existing code!)
-public class ApplePayPayment : IPaymentMethod
-{
-    public async Task&lt;bool&gt; ChargeAsync(decimal amount)
-    {
-        Console.WriteLine($"Charging ${amount} via Apple Pay");
-        await Task.Delay(50);
-        return true;
-    }
-}
-
-// PaymentProcessor — NEVER CHANGES!
-public class PaymentProcessor
-{
-    private readonly Dictionary&lt;string, IPaymentMethod&gt; _methods;
-
-    public PaymentProcessor()
-    {
-        _methods = new Dictionary&lt;string, IPaymentMethod&gt;
+        using var smtp = new SmtpClient("smtp.gmail.com");
+        var mail = new MailMessage("app@company.com", to)
         {
-            { "card", new CreditCardPayment() },
-            { "paypal", new PayPalPayment() },
-            { "bitcoin", new BitcoinPayment() },
-            { "applepay", new ApplePayPayment() }
+            Subject = subject,
+            Body = body
         };
+        smtp.Send(mail);
+        Console.WriteLine("✓ Email sent");
     }
+}
 
-    // Add new payment method to dictionary dynamically
-    public void RegisterMethod(string name, IPaymentMethod method)
+// #2 SMS responsibility ONLY
+public interface ISmsService
+{
+    void SendSms(string phone, string message);
+}
+public class SmsService : ISmsService
+{
+    public void SendSms(string phone, string message)
     {
-        _methods[name] = method;
+        Console.WriteLine($"✓ SMS sent: {message}");
+        // Twilio API call...
     }
+}
 
-    public async Task&lt;bool&gt; ProcessAsync(string method, decimal amount)
+// #3 Push responsibility ONLY
+public interface IPushService
+{
+    void SendPush(string deviceId, string title, string message);
+}
+public class PushService : IPushService
+{
+    public void SendPush(string deviceId, string title, string message)
     {
-        if (_methods.TryGetValue(method.ToLower(), out var payment))
-            return await payment.ChargeAsync(amount);
-        throw new ArgumentException($"Unknown method: {method}");
+        Console.WriteLine($"✓ Push sent: {title}");
+        // Firebase API call...
     }
 }
 
 // BENEFITS:
-// ✓ PaymentProcessor CLOSED for modification (never change it!)
-// ✓ OPEN for extension (add GooglePayPayment, CryptocurrencyPayment, etc.)
-// ✓ New developers can add payment types without touching existing code
-// ✓ Lower risk of breaking existing functionality
-// ✓ Clean, scalable architecture</code></pre>
+// ✓ EmailService has 1 reason to change: Gmail changes
+// ✓ SmsService has 1 reason to change: Twilio changes
+// ✓ PushService has 1 reason to change: Firebase changes
+// ✓ Test email WITHOUT SMS or Push
+// ✓ Swap Gmail for SendGrid = edit ONLY EmailService</code></pre>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">✓</span>
+          <div class="callout-content">
+            <p class="callout-title">SRP in 1 Sentence</p>
+            <p class="callout-body">Instead of one class doing email+SMS+push, have three classes: EmailService, SmsService, PushService. Each has one job.</p>
+          </div>
         </div>
 
-        <!-- ════════════════════════════════════════ -->
-        <!-- L: LISKOV SUBSTITUTION                  -->
-        <!-- ════════════════════════════════════════ -->
+        <!-- O: OPEN/CLOSED -->
+        <h2 id="ocp">O — Open/Closed Principle</h2>
+        <p><strong>Rule:</strong> Open for EXTENSION, closed for MODIFICATION. Add new features without editing old code.</p>
+
+        <h3>❌ BAD Example: If/Else Explosion</h3>
+        <pre><code class="language-csharp">// ❌ BAD: Adding notification type = editing this class
+public class Notifier
+{
+    public void Send(string type, string recipient, string message)
+    {
+        if (type == "email")
+            Console.WriteLine($"Email to {recipient}: {message}");
+        else if (type == "sms")
+            Console.WriteLine($"SMS to {recipient}: {message}");
+        else if (type == "push")
+            Console.WriteLine($"Push to {recipient}: {message}");
+        // Adding WhatsApp? Edit this method!
+        // Adding Slack? Edit this method!
+    }
+}
+
+// PROBLEMS:
+// ❌ Every new type requires MODIFYING Notifier
+// ❌ Risk of breaking email or SMS
+// ❌ Not extensible</code></pre>
+
+        <h3>✅ GOOD Example: Use Interfaces (Strategy Pattern)</h3>
+        <pre><code class="language-csharp">// ✓ GOOD: Extend without modifying
+
+// Base contract
+public interface INotificationChannel
+{
+    void Send(string recipient, string message);
+}
+
+// Email implementation
+public class EmailChannel : INotificationChannel
+{
+    public void Send(string recipient, string message)
+    {
+        Console.WriteLine($"✓ Email to {recipient}: {message}");
+    }
+}
+
+// SMS implementation
+public class SmsChannel : INotificationChannel
+{
+    public void Send(string recipient, string message)
+    {
+        Console.WriteLine($"✓ SMS to {recipient}: {message}");
+    }
+}
+
+// Push implementation
+public class PushChannel : INotificationChannel
+{
+    public void Send(string recipient, string message)
+    {
+        Console.WriteLine($"✓ Push to {recipient}: {message}");
+    }
+}
+
+// ADDING NEW CHANNEL: NO EDITING!
+public class WhatsAppChannel : INotificationChannel
+{
+    public void Send(string recipient, string message)
+    {
+        Console.WriteLine($"✓ WhatsApp to {recipient}: {message}");
+    }
+}
+
+// Notifier just uses the interface
+public class Notifier
+{
+    private readonly INotificationChannel _channel;
+
+    public Notifier(INotificationChannel channel)
+    {
+        _channel = channel;
+    }
+
+    public void Send(string recipient, string message)
+    {
+        _channel.Send(recipient, message);
+    }
+}
+
+// BENEFITS:
+// ✓ Add WhatsApp = create WhatsAppChannel
+// ✓ No modifications to Notifier
+// ✓ Closed for modification, open for extension!</code></pre>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">✓</span>
+          <div class="callout-content">
+            <p class="callout-title">OCP in 1 Sentence</p>
+            <p class="callout-body">Use interfaces. To add a new notification type, create a new class implementing the interface — don't edit existing code.</p>
+          </div>
+        </div>
+
+        <!-- L: LISKOV SUBSTITUTION -->
         <h2 id="lsp">L — Liskov Substitution Principle</h2>
-        <p><strong>Definition:</strong> <strong>Derived classes must be substitutable for their base</strong>. If code expects a parent type, the child type must work correctly without surprises.</p>
+        <p><strong>Rule:</strong> A subclass must work wherever the parent is expected. No surprises.</p>
 
-        <h3>❌ BAD: Subclass Breaks Parent's Contract</h3>
-        <p>CashPayment implements IPaymentMethod but throws NotImplementedException. Code trusts it not to throw!</p>
-        <div class="code-block">
-          <div class="code-block-header">
-            <div class="code-dots"><span></span><span></span><span></span></div>
-            <span class="code-lang">csharp</span>
-          </div>
-          <pre><code class="language-csharp">// ❌ BAD: CashPayment violates LSP — breaks contract!
-public interface IShippingMethod
+        <h3>❌ BAD Example: Subclass Breaks Contract</h3>
+        <pre><code class="language-csharp">// ❌ BAD: EmailChannel breaks contract
+public interface INotificationChannel
 {
-    Task&lt;bool&gt; ShipAsync(Order order, string address, DateTime deadline);
+    void Send(string recipient, string message);
 }
 
-public class StandardShipping : IShippingMethod
+public class EmailChannel : INotificationChannel
 {
-    public async Task&lt;bool&gt; ShipAsync(Order order, string address, DateTime deadline)
+    public void Send(string recipient, string message)
     {
-        Console.WriteLine($"Shipping to {address}, arrives by {deadline}");
-        await Task.Delay(100);
-        return true;
+        Console.WriteLine($"Sending email to {recipient}");
     }
 }
 
-public class ExpressShipping : IShippingMethod
+// ❌ PROBLEM: CachedChannel pretends to send but doesn't
+public class CachedChannel : INotificationChannel
 {
-    public async Task&lt;bool&gt; ShipAsync(Order order, string address, DateTime deadline)
+    public void Send(string recipient, string message)
     {
-        Console.WriteLine($"Express shipping to {address}, arrives by {deadline}");
-        await Task.Delay(50);
-        return true;
+        // ❌ It just logs, doesn't actually send!
+        Console.WriteLine("Cached (not sent)");
+        throw new NotImplementedException("Cached channel doesn't send");
     }
 }
 
-// ❌ Problem: PickupOnly doesn't support shipping (violates LSP!)
-public class PickupOnly : IShippingMethod
+// Code expects all INotificationChannel to send
+public void ProcessNotifications(INotificationChannel channel)
 {
-    public async Task&lt;bool&gt; ShipAsync(Order order, string address, DateTime deadline)
-    {
-        // ❌ This method doesn't make sense for pickup!
-        // ❌ Violates contract: CallingCode expects this to work
-        if (!string.IsNullOrEmpty(address))
-            throw new NotSupportedException("Pickup doesn't need an address!");
-
-        throw new NotImplementedException("Pickup requires store visit");
-    }
-}
-
-// Calling code trusts IShippingMethod — CRASH when it gets PickupOnly!
-public class OrderService
-{
-    public async Task ShipOrderAsync(IShippingMethod shipping, Order order)
-    {
-        // This might crash with PickupOnly!
-        bool success = await shipping.ShipAsync(order, "123 Main St", DateTime.Now.AddDays(5));
-        if (!success)
-            throw new Exception("Shipping failed");
-    }
+    channel.Send("user@example.com", "Hello");
+    // CRASH if CachedChannel!
 }
 
 // PROBLEMS:
-// ❌ Code assumes all IShippingMethod support address + deadline
-// ❌ PickupOnly breaks the assumption — throws exception
-// ❌ Runtime crash — not caught at compile time
-// ❌ Liskov substitution is violated</code></pre>
-        </div>
+// ❌ Caller expects Send() to work, but it throws exception
+// ❌ LSP violated: CachedChannel is NOT substitutable for INotificationChannel</code></pre>
 
-        <h3>✅ GOOD: Separate Concerns with Different Interfaces</h3>
-        <p>PickupOnly doesn't claim to support shipping. Use separate interfaces for what's actually supported.</p>
-        <div class="code-block">
-          <div class="code-block-header">
-            <div class="code-dots"><span></span><span></span><span></span></div>
-            <span class="code-lang">csharp</span>
-          </div>
-          <pre><code class="language-csharp">// ✓ GOOD: Separate interfaces for different delivery types
+        <h3>✅ GOOD Example: Honor the Contract</h3>
+        <pre><code class="language-csharp">// ✓ GOOD: Separate interface for different needs
 
-// Core fulfillment (every order needs one)
-public interface IFulfillmentMethod
+// Contract: MUST actually send
+public interface INotificationChannel
 {
-    Task&lt;bool&gt; FulfillAsync(Order order);
+    void Send(string recipient, string message);
 }
 
-// For shipped orders
-public interface IShippedFulfillment : IFulfillmentMethod
+// Contract: For storage/caching only
+public interface INotificationLogger
 {
-    Task&lt;bool&gt; ShipAsync(string address, DateTime deadline);
+    void Log(string recipient, string message);
 }
 
-// Standard shipping
-public class StandardShipping : IShippedFulfillment
+// Email SENDS
+public class EmailChannel : INotificationChannel
 {
-    public async Task&lt;bool&gt; FulfillAsync(Order order)
+    public void Send(string recipient, string message)
     {
-        Console.WriteLine("Fulfilling order: standard shipping");
-        await Task.Delay(100);
-        return true;
-    }
-
-    public async Task&lt;bool&gt; ShipAsync(string address, DateTime deadline)
-    {
-        Console.WriteLine($"Shipping to {address}, arrives by {deadline}");
-        await Task.Delay(100);
-        return true;
+        Console.WriteLine($"✓ Sending email to {recipient}");
     }
 }
 
-// Express shipping
-public class ExpressShipping : IShippedFulfillment
+// Cache ONLY LOGS
+public class CacheLogger : INotificationLogger
 {
-    public async Task&lt;bool&gt; FulfillAsync(Order order)
+    public void Log(string recipient, string message)
     {
-        Console.WriteLine("Fulfilling order: express shipping");
-        await Task.Delay(50);
-        return true;
-    }
-
-    public async Task&lt;bool&gt; ShipAsync(string address, DateTime deadline)
-    {
-        Console.WriteLine($"Express shipping to {address}, arrives by {deadline}");
-        await Task.Delay(50);
-        return true;
+        Console.WriteLine($"✓ Cached: {recipient}");
     }
 }
 
-// Pickup only (doesn't implement IShippedFulfillment!)
-public class PickupOnly : IFulfillmentMethod
+// Now safe and clear
+public void ProcessNotifications(INotificationChannel channel)
 {
-    private readonly string _storeLocation;
-
-    public PickupOnly(string storeLocation)
-    {
-        _storeLocation = storeLocation;
-    }
-
-    public async Task&lt;bool&gt; FulfillAsync(Order order)
-    {
-        Console.WriteLine($"Order ready for pickup at {_storeLocation}");
-        await Task.Delay(50);
-        return true;
-    }
+    channel.Send("user@example.com", "Hello");
+    // Safe! All INotificationChannel implementations actually send
 }
 
-// Type-safe calling code
-public class OrderService
+public void LogNotifications(INotificationLogger logger)
 {
-    // Any fulfillment method works here
-    public async Task FulfillOrderAsync(IFulfillmentMethod method, Order order)
-    {
-        bool success = await method.FulfillAsync(order);
-        if (!success)
-            throw new Exception("Fulfillment failed");
-    }
-
-    // Only for shipped orders
-    public async Task ShipOrderAsync(IShippedFulfillment shipping, Order order, string address)
-    {
-        bool success = await shipping.ShipAsync(address, DateTime.Now.AddDays(5));
-        if (!success)
-            throw new Exception("Shipping failed");
-    }
+    logger.Log("user@example.com", "Hello");
+    // Safe! All INotificationLogger implementations log
 }
-
-// Usage
-var pickup = new PickupOnly("Store #5");
-var express = new ExpressShipping();
-
-var service = new OrderService();
-
-// ✓ Works perfectly — PickupOnly honors IFulfillmentMethod contract
-await service.FulfillOrderAsync(pickup, order);
-
-// ✓ Works perfectly — ExpressShipping honors IShippedFulfillment contract
-await service.ShipOrderAsync(express, order, "123 Main St");
-
-// ✓ Compile-time safety — can't pass PickupOnly to ShipOrderAsync!
-// await service.ShipOrderAsync(pickup, order, "123 Main St"); // COMPILER ERROR!
 
 // BENEFITS:
-// ✓ LSP honored: all IFulfillmentMethod are safely substitutable
-// ✓ PickupOnly not forced to implement shipping it doesn't support
-// ✓ Type-safe: compiler prevents misuse
-// ✓ Clear contracts: if you have IShippedFulfillment, you KNOW ShipAsync works</code></pre>
+// ✓ No surprise exceptions
+// ✓ Caller knows what to expect
+// ✓ Safe polymorphism</code></pre>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">✓</span>
+          <div class="callout-content">
+            <p class="callout-title">LSP in 1 Sentence</p>
+            <p class="callout-body">If you pass EmailChannel where INotificationChannel is expected, it works perfectly. Never throw exceptions or do unexpected things.</p>
+          </div>
         </div>
 
-        <!-- ════════════════════════════════════════ -->
-        <!-- I: INTERFACE SEGREGATION                -->
-        <!-- ════════════════════════════════════════ -->
+        <!-- I: INTERFACE SEGREGATION -->
         <h2 id="isp">I — Interface Segregation Principle</h2>
-        <p><strong>Definition:</strong> <strong>Clients should never depend on methods they don't use</strong>. Split fat interfaces into smaller, focused ones.</p>
+        <p><strong>Rule:</strong> Classes should not be forced to implement methods they don't use.</p>
 
-        <h3>❌ BAD: Fat Interface Forces Dummy Implementations</h3>
-        <p>IOrder has 10 methods. DigitalOrder must implement Print/Ship which make no sense for digital.</p>
-        <div class="code-block">
-          <div class="code-block-header">
-            <div class="code-dots"><span></span><span></span><span></span></div>
-            <span class="code-lang">csharp</span>
-          </div>
-          <pre><code class="language-csharp">// ❌ BAD: Fat interface — forces dummy implementations
-public interface IOrder
+        <h3>❌ BAD Example: Fat Interface</h3>
+        <pre><code class="language-csharp">// ❌ BAD: One interface, too many methods
+public interface INotificationService
 {
-    Task ValidateAsync();
-    Task ApplyDiscountAsync(decimal percent);
-    Task ChargePaymentAsync(decimal amount);
-    Task SendEmailAsync(string email);
-
-    // Physical order operations
-    Task PrintLabelAsync();
-    Task SchedulePickupAsync();
-    Task TrackShipmentAsync();
-
-    // Digital order operations
-    Task SendAccessKeyAsync(string email);
-    Task GenerateLicenseAsync();
+    void SendEmail(string to, string subject, string body);
+    void SendSms(string phone, string message);
+    void SendPush(string deviceId, string title, string message);
+    void LogNotification(string recipient, string type);
+    void RetryFailedNotification(int notificationId);
+    void ArchiveNotification(int notificationId);
 }
 
-// Digital order: stuck implementing shipping methods it doesn't need!
-public class DigitalOrder : IOrder
+// ❌ BasicEmailSender must implement ALL 6 methods
+public class BasicEmailSender : INotificationService
 {
-    public async Task ValidateAsync() { /* useful */ }
-    public async Task ApplyDiscountAsync(decimal percent) { /* useful */ }
-    public async Task ChargePaymentAsync(decimal amount) { /* useful */ }
-    public async Task SendEmailAsync(string email) { /* useful */ }
-
-    // ❌ Forced to implement — throws exceptions!
-    public async Task PrintLabelAsync()
+    public void SendEmail(string to, string subject, string body)
     {
-        throw new NotImplementedException("Digital orders don't print");
+        Console.WriteLine("Sending email...");
     }
 
-    public async Task SchedulePickupAsync()
+    // ❌ Forced to implement SMS (it doesn't send SMS!)
+    public void SendSms(string phone, string message)
     {
-        throw new NotImplementedException("Digital orders don't ship");
+        throw new NotImplementedException();
     }
 
-    public async Task TrackShipmentAsync()
+    // ❌ Forced to implement Push (it doesn't send push!)
+    public void SendPush(string deviceId, string title, string message)
     {
-        throw new NotImplementedException("Digital orders don't ship");
+        throw new NotImplementedException();
     }
 
-    public async Task SendAccessKeyAsync(string email) { /* useful */ }
-    public async Task GenerateLicenseAsync() { /* useful */ }
-}
-
-// Physical order: stuck implementing digital methods it doesn't need!
-public class PhysicalOrder : IOrder
-{
-    public async Task ValidateAsync() { /* useful */ }
-    public async Task ApplyDiscountAsync(decimal percent) { /* useful */ }
-    public async Task ChargePaymentAsync(decimal amount) { /* useful */ }
-    public async Task SendEmailAsync(string email) { /* useful */ }
-    public async Task PrintLabelAsync() { /* useful */ }
-    public async Task SchedulePickupAsync() { /* useful */ }
-    public async Task TrackShipmentAsync() { /* useful */ }
-
-    // ❌ Forced to implement — throws exceptions!
-    public async Task SendAccessKeyAsync(string email)
-    {
-        throw new NotImplementedException("Physical orders don't download");
-    }
-
-    public async Task GenerateLicenseAsync()
-    {
-        throw new NotImplementedException("Physical orders don't license");
-    }
+    // ... 3 more not-implemented methods!
 }
 
 // PROBLEMS:
-// ❌ Throwing NotImplementedException defeats the purpose of interfaces!
-// ❌ Developers confused: which methods are actually supported?
-// ❌ Maintenance nightmare: adding method affects unrelated classes
-// ❌ No compile-time guarantee what methods work on which order type</code></pre>
-        </div>
+// ❌ Fat interface = lots of NotImplementedException
+// ❌ Developer confused: which methods actually work?
+// ❌ ISP violated</code></pre>
 
-        <h3>✅ GOOD: Segregated Interfaces (Each Class Uses Only What It Needs)</h3>
-        <div class="code-block">
-          <div class="code-block-header">
-            <div class="code-dots"><span></span><span></span><span></span></div>
-            <span class="code-lang">csharp</span>
-          </div>
-          <pre><code class="language-csharp">// ✓ GOOD: Small, focused interfaces
+        <h3>✅ GOOD Example: Segregated Interfaces</h3>
+        <pre><code class="language-csharp">// ✓ GOOD: Small, focused interfaces
 
-// Core (all orders need these)
-public interface IOrder
+// Senders
+public interface IEmailSender
 {
-    Task ValidateAsync();
-    Task ApplyDiscountAsync(decimal percent);
-    Task ChargePaymentAsync(decimal amount);
+    void SendEmail(string to, string subject, string body);
 }
 
-// Shipped orders need these
-public interface IShippableOrder : IOrder
+public interface ISmsSender
 {
-    Task PrintLabelAsync();
-    Task SchedulePickupAsync();
-    Task TrackShipmentAsync();
+    void SendSms(string phone, string message);
 }
 
-// Digital orders need these
-public interface IDownloadableOrder : IOrder
+public interface IPushSender
 {
-    Task SendAccessKeyAsync(string email);
-    Task GenerateLicenseAsync();
+    void SendPush(string deviceId, string title, string message);
 }
 
-// Digital: no shipping methods!
-public class DigitalOrder : IDownloadableOrder
+// Storage & Logging
+public interface INotificationRepository
 {
-    public async Task ValidateAsync() { Console.WriteLine("Validating..."); }
-    public async Task ApplyDiscountAsync(decimal percent) { Console.WriteLine($"Discount: {percent}%"); }
-    public async Task ChargePaymentAsync(decimal amount) { Console.WriteLine($"Charging ${amount}"); }
-    public async Task SendAccessKeyAsync(string email) { Console.WriteLine($"Sending key to {email}"); }
-    public async Task GenerateLicenseAsync() { Console.WriteLine("License generated"); }
+    void Save(Notification notification);
+    void Retry(int notificationId);
+    void Archive(int notificationId);
 }
 
-// Physical: no digital methods!
-public class PhysicalOrder : IShippableOrder
+// Now BasicEmailSender implements ONLY what it needs
+public class BasicEmailSender : IEmailSender
 {
-    public async Task ValidateAsync() { Console.WriteLine("Validating..."); }
-    public async Task ApplyDiscountAsync(decimal percent) { Console.WriteLine($"Discount: {percent}%"); }
-    public async Task ChargePaymentAsync(decimal amount) { Console.WriteLine($"Charging ${amount}"); }
-    public async Task PrintLabelAsync() { Console.WriteLine("Printing label"); }
-    public async Task SchedulePickupAsync() { Console.WriteLine("Scheduling pickup"); }
-    public async Task TrackShipmentAsync() { Console.WriteLine("Tracking shipment"); }
-}
-
-// Type-safe calling code
-public class OrderProcessor
-{
-    // Works with any order
-    public async Task ProcessAsync(IOrder order)
+    public void SendEmail(string to, string subject, string body)
     {
-        await order.ValidateAsync();
-        await order.ApplyDiscountAsync(0.10m);
-        await order.ChargePaymentAsync(99.99m);
-    }
-
-    // Works ONLY with shippable orders
-    public async Task ShipAsync(IShippableOrder order)
-    {
-        await ProcessAsync(order); // Core processing
-        await order.PrintLabelAsync();
-        await order.SchedulePickupAsync();
-    }
-
-    // Works ONLY with downloadable orders
-    public async Task DownloadAsync(IDownloadableOrder order)
-    {
-        await ProcessAsync(order); // Core processing
-        await order.SendAccessKeyAsync("customer@email.com");
-        await order.GenerateLicenseAsync();
+        Console.WriteLine("✓ Email sent");
     }
 }
 
-// Compile-time safety!
-var physical = new PhysicalOrder();
-var digital = new DigitalOrder();
-
-// ✓ Works — DigitalOrder implements IDownloadableOrder
-await processor.DownloadAsync(digital);
-
-// ✓ Works — PhysicalOrder implements IShippableOrder
-await processor.ShipAsync(physical);
-
-// ❌ COMPILER ERROR! Can't pass DigitalOrder to ShipAsync!
-// await processor.ShipAsync(digital);
+// AdvancedService can implement multiple
+public class AdvancedService : IEmailSender, ISmsSender, IPushSender, INotificationRepository
+{
+    public void SendEmail(string to, string subject, string body) { /* ... */ }
+    public void SendSms(string phone, string message) { /* ... */ }
+    public void SendPush(string deviceId, string title, string message) { /* ... */ }
+    public void Save(Notification n) { /* ... */ }
+    public void Retry(int id) { /* ... */ }
+    public void Archive(int id) { /* ... */ }
+}
 
 // BENEFITS:
-// ✓ No throwaway NotImplemented methods
-// ✓ Clear contracts: if you have IShippableOrder, you KNOW PrintLabel works
-// ✓ Compile-time verification of what methods are available
-// ✓ Easy to add new order types
-// ✓ Focused, reusable interfaces</code></pre>
+// ✓ BasicEmailSender only implements what it needs
+// ✓ No dummy NotImplementedException methods
+// ✓ Clear contracts
+// ✓ Type-safe code</code></pre>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">✓</span>
+          <div class="callout-content">
+            <p class="callout-title">ISP in 1 Sentence</p>
+            <p class="callout-body">Split fat interfaces into small ones. EmailSender implements IEmailSender only (not SMS or Push).</p>
+          </div>
         </div>
 
-        <!-- ════════════════════════════════════════ -->
-        <!-- D: DEPENDENCY INVERSION                 -->
-        <!-- ════════════════════════════════════════ -->
+        <!-- D: DEPENDENCY INVERSION -->
         <h2 id="dip">D — Dependency Inversion Principle</h2>
-        <p><strong>Definition:</strong> <strong>Depend on abstractions, not concretions</strong>. Inject dependencies via constructor; don't create them inside the class.</p>
+        <p><strong>Rule:</strong> Depend on abstractions, not concrete implementations. Inject dependencies.</p>
 
-        <h3>❌ BAD: Tight Coupling (Creates Dependencies Directly)</h3>
-        <p>OrderService directly instantiates SqlOrderRepository and FileLogger. Can't test without real DB/files!</p>
-        <div class="code-block">
-          <div class="code-block-header">
-            <div class="code-dots"><span></span><span></span><span></span></div>
-            <span class="code-lang">csharp</span>
-          </div>
-          <pre><code class="language-csharp">// ❌ BAD: OrderService depends on concrete implementations
-public class SqlOrderRepository
+        <h3>❌ BAD Example: Tight Coupling</h3>
+        <pre><code class="language-csharp">// ❌ BAD: UserController creates EmailService directly
+public class UserController
 {
-    public void Save(Order order)
-    {
-        Console.WriteLine($"Saving to SQL database: Order {order.Id}");
-        // Real database connection...
-    }
-}
+    private readonly EmailService _emailService;
 
-public class FileLogger
-{
-    public void Log(string message)
+    public UserController()
     {
-        Console.WriteLine($"Writing to file: {message}");
-        File.AppendAllText("orders.log", message + "\n");
-    }
-}
-
-// ❌ TIGHT COUPLING: OrderService creates dependencies directly
-public class OrderService
-{
-    private readonly SqlOrderRepository _repository;
-    private readonly FileLogger _logger;
-
-    public OrderService()
-    {
-        _repository = new SqlOrderRepository(); // ❌ Hard-coded dependency!
-        _logger = new FileLogger(); // ❌ Hard-coded dependency!
+        _emailService = new EmailService(); // ❌ Tight coupling!
     }
 
-    public void PlaceOrder(Order order)
+    public void RegisterUser(User user)
     {
-        _repository.Save(order);
-        _logger.Log($"Order {order.Id} placed");
-    }
-}
-
-// TEST NIGHTMARE
-public class OrderServiceTests
-{
-    [Test]
-    public void PlaceOrder_Should_SaveAndLog()
-    {
-        // ❌ PROBLEMS:
-        // - OrderService creates REAL SqlOrderRepository (connects to real DB!)
-        // - OrderService creates REAL FileLogger (writes to real file!)
-        // - Test is SLOW (database operations)
-        // - Test is FRAGILE (depends on DB availability)
-        // - How to verify it saved? Query the real database!?
-        // - How to verify it logged? Read the real file!?
-
-        var service = new OrderService();
-        var order = new Order { Id = 1, Total = 99.99m };
-
-        service.PlaceOrder(order); // Creates real DB connection + file I/O!
-
-        // Can't easily test this!
+        // ... save user ...
+        _emailService.SendEmail(user.Email, "Welcome", "Hi!");
     }
 }
 
 // PROBLEMS:
-// ❌ Can't test without real database
-// ❌ Can't test without file system
-// ❌ Can't swap SQL for MongoDB, PostgreSQL, in-memory, etc.
-// ❌ Can't swap FileLogger for ConsoleLogger, EventLogger, etc.
-// ❌ Depends on low-level implementation details
-// ❌ High coupling = fragile code</code></pre>
-        </div>
+// ❌ UserController depends on concrete EmailService
+// ❌ Can't test without real email (slow, fragile)
+// ❌ Can't swap EmailService for a mock or test double
+// ❌ Change EmailService constructor? Edit UserController!</code></pre>
 
-        <h3>✅ GOOD: Dependency Injection (Depends on Abstractions)</h3>
-        <p>Inject interfaces via constructor. Test with mocks. Swap implementations freely.</p>
-        <div class="code-block">
-          <div class="code-block-header">
-            <div class="code-dots"><span></span><span></span><span></span></div>
-            <span class="code-lang">csharp</span>
-          </div>
-          <pre><code class="language-csharp">// ✓ GOOD: OrderService depends on abstractions
+        <h3>✅ GOOD Example: Dependency Injection</h3>
+        <pre><code class="language-csharp">// ✓ GOOD: Inject the dependency
 
-// Abstractions (interfaces)
-public interface IOrderRepository
+// UserController depends on INTERFACE, not concrete class
+public class UserController
 {
-    Task SaveAsync(Order order);
-}
+    private readonly IEmailService _emailService;
 
-public interface IOrderLogger
-{
-    Task LogAsync(string message);
-}
-
-// Concrete implementations
-public class SqlOrderRepository : IOrderRepository
-{
-    private readonly string _connString;
-
-    public SqlOrderRepository(IConfiguration config)
+    // Inject interface via constructor
+    public UserController(IEmailService emailService)
     {
-        _connString = config.GetConnectionString("Default");
+        _emailService = emailService;
     }
 
-    public async Task SaveAsync(Order order)
+    public void RegisterUser(User user)
     {
-        Console.WriteLine($"Saving to SQL: Order {order.Id}");
-        await Task.Delay(100); // Simulate DB
+        // ... save user ...
+        _emailService.SendEmail(user.Email, "Welcome", "Hi!");
     }
 }
 
-public class FileLogger : IOrderLogger
+// Real implementation
+public class EmailService : IEmailService
 {
-    public async Task LogAsync(string message)
+    public void SendEmail(string to, string subject, string body)
     {
-        Console.WriteLine($"Writing to file: {message}");
-        await File.AppendAllTextAsync("orders.log", message + "\n");
+        Console.WriteLine($"Sending email to {to}");
     }
 }
 
-// ✓ GOOD: OrderService depends on interfaces (abstractions), not concrete classes
-public class OrderService
-{
-    private readonly IOrderRepository _repository;
-    private readonly IOrderLogger _logger;
-
-    // ✓ Inject dependencies via constructor
-    public OrderService(IOrderRepository repository, IOrderLogger logger)
-    {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
-
-    public async Task PlaceOrderAsync(Order order)
-    {
-        await _repository.SaveAsync(order);
-        await _logger.LogAsync($"Order {order.Id} placed");
-    }
-}
-
-// EASY TESTING with mocks!
-public class OrderServiceTests
+// NOW TESTING IS EASY!
+public class UserControllerTests
 {
     [Test]
-    public async Task PlaceOrder_Should_SaveAndLog()
+    public void RegisterUser_Should_SendEmail()
     {
-        // Create mock implementations
-        var mockRepository = new Mock&lt;IOrderRepository&gt;();
-        var mockLogger = new Mock&lt;IOrderLogger&gt;();
+        // Mock the email service
+        var mockEmail = new Mock<IEmailService>();
 
-        // Inject mocks
-        var service = new OrderService(mockRepository.Object, mockLogger.Object);
+        // Inject mock
+        var controller = new UserController(mockEmail.Object);
 
-        // Act
-        var order = new Order { Id = 1, Total = 99.99m };
-        await service.PlaceOrderAsync(order);
+        // Call the method
+        controller.RegisterUser(new User { Email = "test@example.com" });
 
-        // Assert — verify interactions
-        mockRepository.Verify(r => r.SaveAsync(order), Times.Once);
-        mockLogger.Verify(l => l.LogAsync(It.IsAny&lt;string&gt;()), Times.Once);
-
-        // ✓ FAST: No real DB or file I/O!
-        // ✓ ISOLATED: No external dependencies!
-        // ✓ CLEAR: Verify exactly what was called!
+        // Verify email was sent
+        mockEmail.Verify(x => x.SendEmail("test@example.com", "Welcome", "Hi!"), Times.Once);
     }
-
-    [Test]
-    public async Task PlaceOrder_Should_HandleRepositoryError()
-    {
-        // ✓ Easy to test error scenarios with mocks!
-        var mockRepository = new Mock&lt;IOrderRepository&gt;();
-        mockRepository.Setup(r => r.SaveAsync(It.IsAny&lt;Order&gt;()))
-            .ThrowsAsync(new Exception("DB unavailable"));
-
-        var mockLogger = new Mock&lt;IOrderLogger&gt;();
-
-        var service = new OrderService(mockRepository.Object, mockLogger.Object);
-
-        // Act & Assert
-        var order = new Order { Id = 1, Total = 99.99m };
-        var ex = await Assert.ThrowsAsync&lt;Exception&gt;(
-            () => service.PlaceOrderAsync(order));
-        Assert.AreEqual("DB unavailable", ex.Message);
-    }
-}
-
-// Real usage with DI container
-public void ConfigureServices(IServiceCollection services)
-{
-    // Register implementations
-    services.AddScoped&lt;IOrderRepository, SqlOrderRepository&gt;();
-    services.AddScoped&lt;IOrderLogger, FileLogger&gt;();
-    services.AddScoped&lt;OrderService&gt;();
-}
-
-// ✓ Easy to swap implementations
-public void ConfigureTestServices(IServiceCollection services)
-{
-    services.AddScoped&lt;IOrderRepository, InMemoryOrderRepository&gt;();
-    services.AddScoped&lt;IOrderLogger, ConsoleLogger&gt;();
-    services.AddScoped&lt;OrderService&gt;();
 }
 
 // BENEFITS:
-// ✓ Test without real database or file system
-// ✓ Swap implementations: SQL → MongoDB, File → Event Log, etc.
-// ✓ Easy to mock dependencies
-// ✓ OrderService depends on abstractions, not concretions
-// ✓ Loose coupling = flexible, maintainable code
-// ✓ Test runs in milliseconds with mocks!</code></pre>
+// ✓ No real emails during testing
+// ✓ Test is fast and isolated
+// ✓ Easy to swap EmailService for SendgridService
+// ✓ UserController doesn't know (or care) about implementation details</code></pre>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">✓</span>
+          <div class="callout-content">
+            <p class="callout-title">DIP in 1 Sentence</p>
+            <p class="callout-body">Inject IEmailService via constructor, not new EmailService(). This lets you test with mocks and swap implementations.</p>
+          </div>
         </div>
 
-        <!-- Interview Questions -->
-        <h2 id="interview">Interview Questions</h2>
-        <div class="qa-list">
-          <details class="qa-item">
-            <summary class="qa-question">Q1. Explain SRP with your E-Commerce Order System example. <span class="qa-chevron">▼</span></summary>
-            <div class="qa-answer">
-              <p><strong>Answer:</strong> SRP means one class, one responsibility. In a bad design, OrderProcessor does validation, discount, payment, email, database, and logging — 6 reasons to change. The good design splits it: OrderValidator only validates, DiscountCalculator only calculates, PaymentService only processes payment, etc. Now each class has ONE reason to change, is independently testable, and reusable.</p>
-              <p><strong>Why it matters:</strong> If payment rules change, you modify only PaymentService. Risk is isolated. Without SRP, editing one thing risks breaking everything.</p>
-            </div>
-          </details>
-
-          <details class="qa-item">
-            <summary class="qa-question">Q2. How does OCP help when adding new payment methods? <span class="qa-chevron">▼</span></summary>
-            <div class="qa-answer">
-              <p><strong>Answer:</strong> OCP: "open for extension, closed for modification." Bad design: massive if/else in PaymentProcessor. Adding Apple Pay requires editing that class — risky. Good design: IPaymentMethod interface. Each payment type is a separate class (CreditCardPayment, PayPalPayment, ApplePayPayment). Adding a new payment method = create new class implementing IPaymentMethod. PaymentProcessor never changes!</p>
-              <p><strong>Why it matters:</strong> New features don't require editing existing, tested code. Risk is zero.</p>
-            </div>
-          </details>
-
-          <details class="qa-item">
-            <summary class="qa-question">Q3. Explain LSP violation with the shipping example. <span class="qa-chevron">▼</span></summary>
-            <div class="qa-answer">
-              <p><strong>Answer:</strong> LSP: subclass must be safely substitutable for parent. Bad: PickupOnly implements IShippingMethod but throws NotImplementedException because it doesn't support address + deadline. Code expects any IShippingMethod to work — crash! Good: PickupOnly implements IFulfillmentMethod (core only), not IShippedFulfillment. Different interfaces for different fulfillment types. Type-safe — compiler prevents misuse.</p>
-              <p><strong>Why it matters:</strong> Polymorphism only works if subclass honors parent's contract.</p>
-            </div>
-          </details>
-
-          <details class="qa-item">
-            <summary class="qa-question">Q4. What's the benefit of Interface Segregation? <span class="qa-chevron">▼</span></summary>
-            <div class="qa-answer">
-              <p><strong>Answer:</strong> ISP: don't force implementations to depend on unused methods. Bad: IOrder has 10 methods. DigitalOrder forced to implement PrintLabel, ScheduleShip (throws NotImpl). Confusing — what methods actually work? Good: segregate into focused interfaces: IOrder (core), IShippableOrder (physical), IDownloadableOrder (digital). Each class implements only what it needs. Compile-time safety: if you have IShippableOrder, you KNOW PrintLabel works.</p>
-              <p><strong>Why it matters:</strong> Clear contracts, no dummy methods, compile-time verification.</p>
-            </div>
-          </details>
-
-          <details class="qa-item">
-            <summary class="qa-question">Q5. How does DIP enable unit testing? <span class="qa-chevron">▼</span></summary>
-            <div class="qa-answer">
-              <p><strong>Answer:</strong> DIP: depend on abstractions (interfaces), inject via constructor. Bad: OrderService creates SqlOrderRepository and FileLogger directly. Test needs real DB + file I/O — slow, fragile, can't test without external systems. Good: OrderService takes IOrderRepository and IOrderLogger in constructor. Test passes mock implementations. No real DB/files. Lightning-fast tests, complete isolation, easy to test error scenarios.</p>
-              <p><strong>Why it matters:</strong> Unit tests run in milliseconds, not seconds. You can run 1000s of tests locally without infrastructure.</p>
-            </div>
-          </details>
-
-          <details class="qa-item">
-            <summary class="qa-question">Q6. How do SOLID principles work together? <span class="qa-chevron">▼</span></summary>
-            <div class="qa-answer">
-              <p><strong>Answer:</strong> They're interconnected:</p>
-              <ul>
-                <li><strong>SRP + DIP:</strong> Split OrderProcessor into specialized classes (SRP), then inject them (DIP)</li>
-                <li><strong>OCP + LSP:</strong> Use Strategy pattern (OCP: open for extension) with interfaces (LSP: honor contracts)</li>
-                <li><strong>ISP + SRP:</strong> Segregate interfaces (ISP) keeps classes focused (SRP)</li>
-                <li><strong>DIP + OCP:</strong> Depend on abstractions (DIP) lets you swap implementations (OCP) without modifying existing code</li>
-              </ul>
-              <p>Result: code that's maintainable, testable, extensible, and professional.</p>
-            </div>
-          </details>
+        <!-- SUMMARY -->
+        <h2 id="summary">SOLID Summary</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th style="padding:12px;">Principle</th>
+                <th style="padding:12px;">Problem</th>
+                <th style="padding:12px;">Solution</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding:12px;"><strong>S</strong></td>
+                <td style="padding:12px;">One class does email+SMS+push</td>
+                <td style="padding:12px;">Three classes: EmailService, SmsService, PushService</td>
+              </tr>
+              <tr>
+                <td style="padding:12px;"><strong>O</strong></td>
+                <td style="padding:12px;">Adding feature = editing existing code</td>
+                <td style="padding:12px;">Use interfaces, add new implementation</td>
+              </tr>
+              <tr>
+                <td style="padding:12px;"><strong>L</strong></td>
+                <td style="padding:12px;">Subclass throws exceptions, breaks contract</td>
+                <td style="padding:12px;">Separate interfaces for different needs</td>
+              </tr>
+              <tr>
+                <td style="padding:12px;"><strong>I</strong></td>
+                <td style="padding:12px;">Fat interface with NotImplementedException</td>
+                <td style="padding:12px;">Split into focused interfaces</td>
+              </tr>
+              <tr>
+                <td style="padding:12px;"><strong>D</strong></td>
+                <td style="padding:12px;">Tight coupling, hard to test</td>
+                <td style="padding:12px;">Inject interfaces via constructor</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <!-- PAGE NAVIGATION -->
         <nav class="page-nav">
+          <a href="interview.html" class="page-nav-item prev">
+            <span class="page-nav-arrow">←</span>
+            <div><span class="page-nav-label">Previous</span><span class="page-nav-title">All Questions</span></div>
+          </a>
           <a href="interview-patterns.html" class="page-nav-item">
             <div><span class="page-nav-label">Next</span><span class="page-nav-title">Design Patterns</span></div>
             <span class="page-nav-arrow">→</span>
