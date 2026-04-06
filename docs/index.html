@@ -246,6 +246,59 @@
         </div>
       </section>
 
+      <!-- ═══════════════════════════════════════════ WIDGETS: QUOTES, NEWS, VERSIONS -->
+      <section class="widgets-section">
+
+        <!-- NEWS HERO (Full Width) -->
+        <div class="widget-card news-widget news-hero">
+          <div class="widget-header">
+            <span class="widget-icon pulse">📰</span>
+            <div>
+              <h3 class="widget-title">Tech & Dev News Feed</h3>
+              <p class="widget-subtitle">Latest articles and updates from the development community</p>
+            </div>
+          </div>
+          <div class="news-ticker" id="news-ticker">
+            <div class="news-item loading">✓ Loading latest tech news...</div>
+          </div>
+        </div>
+
+        <!-- Quotes & Versions Grid -->
+        <div class="widgets-grid secondary">
+
+          <!-- QUOTES SLIDER -->
+          <div class="widget-card quotes-widget">
+            <div class="widget-header compact">
+              <span class="widget-icon">💡</span>
+              <h3 class="widget-title">Daily Coding Quotes</h3>
+            </div>
+            <div class="quotes-container">
+              <div class="quotes-slider" id="quotes-slider">
+                <div class="quote-slide loading">✓ Loading inspirational quotes...</div>
+              </div>
+              <div class="quotes-controls">
+                <button class="quote-dot active" data-slide="0"></button>
+                <button class="quote-dot" data-slide="1"></button>
+                <button class="quote-dot" data-slide="2"></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- VERSIONS -->
+          <div class="widget-card versions-widget">
+            <div class="widget-header compact">
+              <span class="widget-icon">📦</span>
+              <h3 class="widget-title">Latest Tech Versions</h3>
+            </div>
+            <div class="versions-list" id="versions-list">
+              <div class="version-item loading">✓ Loading latest versions...</div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
       <!-- ═══════════════════════════════════════════ PROJECTS -->
       <section class="content-section">
         <div class="section-header">
@@ -697,6 +750,7 @@ app.Run();</code></pre>
 <!-- Scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script src="js/app.js"></script>
+<script src="js/widgets.js"></script>
 
 </body>
 </html>
