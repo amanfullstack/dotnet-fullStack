@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+
+<div id="readingProgress" class="progress-fill" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<!-- Search Modal -->
+<div id="searchModal" class="search-modal">
+    <div class="search-modal-box animate-fade">
+        <div class="search-modal-input-wrap">
+            <span class="search-modal-icon">🔍</span>
+            <input type="text" id="searchInput" class="search-modal-input" placeholder="Search topics, concepts...">
+            <button id="searchClose" class="search-close-btn">ESC</button>
+        </div>
+        <div id="searchResults" class="search-results"></div>
+    </div>
+</div>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+<!-- Header -->
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div>
+            DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="webapi.html">Web API</a>
+            <a href="ef-core.html">EF Core</a>
+            <a href="linq.html">LINQ</a>
+            <a href="interview.html">Interview</a>
+            <a href="compiler.html">Compiler</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">🔍 Search Results</div>
+                <div class="sidebar-links">
+                    <a href="index.html" class="sidebar-link">← Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <article class="article">
+                <div class="page-title-block">
+                    <h1 class="page-title">Search Results</h1>
+                    <p class="page-subtitle">
+                        Found <span id="resultCount">0</span> results for "<span id="queryDisplay"></span>"
+                    </p>
+                </div>
+
+                <div id="searchPageResults" class="search-page-results">
+                    <div class="search-empty">Enter a search query to find topics, concepts, and more.</div>
+                </div>
+            </article>
+        </div>
+    </main>
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <div class="logo-badge">D</div>
+            <div>
+                <div class="footer-copy">DevDocs — Master Backend Development</div>
+                <div class="footer-copy" style="font-size: 12px; opacity: 0.7;">Built on the ProductCatalog project</div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="js/app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+    // Global search result handler on search results page
+    function performGlobalSearch(query) {
+        if (!query.trim()) {
+            document.getElementById('searchPageResults').innerHTML = '<div class="search-empty">Enter a search query to find topics, concepts, and more.</div>';
+            document.getElementById('resultCount').textContent = '0';
+            return;
+        }
+
+        const results = getAllSearchData().filter(item => {
+            const queryLower = query.toLowerCase();
+            return item.title.toLowerCase().includes(queryLower) ||
+                   item.section.toLowerCase().includes(queryLower) ||
+                   item.keywords.toLowerCase().includes(queryLower) ||
+                   item.description.toLowerCase().includes(queryLower);
+        });
+
+        document.getElementById('resultCount').textContent = results.length;
+        document.getElementById('queryDisplay').textContent = query;
+
+        if (!results.length) {
+            document.getElementById('searchPageResults').innerHTML = '<div class="search-empty">No results found for "' + query + '"</div>';
+            return;
+        }
+
+        const html = results.map(item => `
+            <a href="${item.url}" class="search-page-result">
+                <div class="search-page-result-icon">${item.icon}</div>
+                <div class="search-page-result-content">
+                    <div class="search-page-result-title">${item.title}</div>
+                    <div class="search-page-result-section">${item.section}</div>
+                    <div class="search-page-result-description">${item.description}</div>
+                </div>
+            </a>
+        `).join('');
+
+        document.getElementById('searchPageResults').innerHTML = html;
+    }
+
+    // Get all searchable content
+    function getAllSearchData() {
+        return [
+            // Web API
+            { title: 'Web API Overview', section: 'Web API', url: 'webapi.html', icon: '🌐', keywords: 'rest api asp.net', description: 'Complete guide to building REST APIs with ASP.NET Core' },
+            { title: 'Architecture & Project Setup', section: 'Web API', url: 'webapi-architecture.html', icon: '🏗️', keywords: 'architecture project setup', description: 'Learn how to structure and set up a Web API project' },
+            { title: 'Controllers & REST API', section: 'Web API', url: 'webapi-controllers.html', icon: '🎮', keywords: 'controller action routing endpoints', description: 'Build controllers and define REST endpoints' },
+            { title: 'Models & DTOs', section: 'Web API', url: 'webapi-models.html', icon: '📦', keywords: 'model dto data transfer object', description: 'Model design and Data Transfer Objects' },
+            { title: 'Dependency Injection', section: 'Web API', url: 'webapi-di.html', icon: '💉', keywords: 'dependency injection di ioc container', description: 'Master dependency injection patterns' },
+            { title: 'Middleware Pipeline', section: 'Web API', url: 'webapi-middleware.html', icon: '⚙️', keywords: 'middleware pipeline request response', description: 'Understand the middleware pipeline' },
+            { title: 'Caching Strategies', section: 'Web API', url: 'webapi-caching.html', icon: '⚡', keywords: 'cache caching performance redis', description: 'Implement caching for better performance' },
+            { title: 'Error Handling', section: 'Web API', url: 'webapi-error-handling.html', icon: '🚨', keywords: 'error exception handling validation', description: 'Proper error handling and validation' },
+            { title: 'Data Access & Queries', section: 'Web API', url: 'webapi-data-access.html', icon: '🗾', keywords: 'database query data access', description: 'Data access patterns and queries' },
+            { title: 'GraphQL & HotChocolate', section: 'Web API', url: 'webapi-graphql.html', icon: '📊', keywords: 'graphql query mutation hotchocolate', description: 'Build GraphQL APIs with HotChocolate' },
+
+            // MVC
+            { title: 'MVC Pattern', section: 'MVC', url: 'mvc.html', icon: '🖥️', keywords: 'mvc model view controller pattern', description: 'Complete MVC pattern explanation with examples' },
+            { title: 'MVC Setup & Installation', section: 'MVC', url: 'mvc-setup.html', icon: '📥', keywords: 'setup install create project', description: 'Set up and create MVC projects' },
+            { title: 'Controllers & Actions', section: 'MVC', url: 'mvc-controllers.html', icon: '🎮', keywords: 'controller action routing', description: 'Build MVC controllers and actions' },
+            { title: 'Views & Razor Templates', section: 'MVC', url: 'mvc-views.html', icon: '👁️', keywords: 'view razor html template', description: 'Create views with Razor syntax' },
+            { title: 'Models & ViewModels', section: 'MVC', url: 'mvc-models.html', icon: '📦', keywords: 'model viewmodel data', description: 'Design models and ViewModels' },
+            { title: 'Services & Business Logic', section: 'MVC', url: 'mvc-services.html', icon: '⚙️', keywords: 'service business logic repository', description: 'Implement services and business logic' },
+
+            // Data Access
+            { title: 'Entity Framework Core', section: 'Data Access', url: 'ef-core.html', icon: '🗄️', keywords: 'entity framework core ef orm', description: 'Master Entity Framework Core ORM' },
+            { title: 'ADO.NET', section: 'Data Access', url: 'ado-net.html', icon: '💾', keywords: 'ado.net connection command sqlcommand', description: 'Work with ADO.NET and databases' },
+            { title: 'LINQ & Filtering', section: 'Data Access', url: 'linq.html', icon: '🔗', keywords: 'linq query filter select where', description: 'Master LINQ queries and filtering' },
+            { title: 'Collections in C#', section: 'Data Access', url: 'collections.html', icon: '📊', keywords: 'collection list dictionary array', description: 'Work with C# collections' },
+
+            // React
+            { title: 'React Fundamentals', section: 'React', url: 'react.html', icon: '⚛️', keywords: 'react component jsx', description: 'Learn React fundamentals and components' },
+            { title: 'React Setup & Installation', section: 'React', url: 'react-setup.html', icon: '📥', keywords: 'setup vite npm create-react-app', description: 'Set up React projects' },
+            { title: 'React Hooks', section: 'React', url: 'react-hooks.html', icon: '⚙️', keywords: 'hooks usestate useeffect', description: 'Master React Hooks and Functional Components' },
+            { title: 'Custom Hooks', section: 'React', url: 'react-custom-hooks.html', icon: '🪝', keywords: 'custom hook reusable logic', description: 'Create and use custom hooks' },
+            { title: 'Context API', section: 'React', url: 'react-context.html', icon: '🎯', keywords: 'context usecontext provider', description: 'State management with Context API' },
+            { title: 'Parent-Child Communication', section: 'React', url: 'react-parent-child.html', icon: '👨‍👧', keywords: 'props callback lifting state', description: 'Pass data between parent and child components' },
+            { title: 'Redux State Management', section: 'React', url: 'react-redux.html', icon: '🏪', keywords: 'redux actions reducers store', description: 'Advanced state management with Redux' },
+            { title: 'React Forms', section: 'React', url: 'react-forms.html', icon: '📝', keywords: 'form input validation', description: 'Build and handle forms' },
+            { title: 'React Router', section: 'React', url: 'react-router.html', icon: '🗺️', keywords: 'routing navigation link', description: 'Client-side routing with React Router' },
+
+            // Angular
+            { title: 'Angular Fundamentals', section: 'Angular', url: 'angular.html', icon: '🔺', keywords: 'angular typescript component', description: 'Learn Angular fundamentals' },
+            { title: 'Angular Setup & Installation', section: 'Angular', url: 'angular-setup.html', icon: '📥', keywords: 'setup cli ng new', description: 'Set up Angular projects' },
+            { title: 'Components', section: 'Angular', url: 'angular-components.html', icon: '🧩', keywords: 'component decorator selector', description: 'Build Angular components' },
+            { title: 'Services & Dependency Injection', section: 'Angular', url: 'angular-services.html', icon: '⚙️', keywords: 'service injectable providein', description: 'Create services and use DI' },
+            { title: 'RxJS & Observables', section: 'Angular', url: 'angular-rxjs.html', icon: '📡', keywords: 'rxjs observable subject pipe', description: 'Reactive programming with RxJS' },
+            { title: 'Parent-Child Communication', section: 'Angular', url: 'angular-parent-child.html', icon: '👨‍👧', keywords: 'input output eventemitter', description: 'Component communication in Angular' },
+            { title: 'Forms & Validation', section: 'Angular', url: 'angular-forms.html', icon: '📝', keywords: 'form formcontrol validation', description: 'Build Angular forms' },
+            { title: 'Routing & Navigation', section: 'Angular', url: 'angular-router.html', icon: '🗺️', keywords: 'router routing navigation', description: 'Client-side routing in Angular' },
+
+            // C# & OOP
+            { title: 'C# Programming', section: 'C#', url: 'csharp.html', icon: '💠', keywords: 'csharp language syntax', description: 'C# language fundamentals' },
+            { title: 'Interview Q&A', section: 'Interview', url: 'interview.html', icon: '🎓', keywords: 'interview questions answers backend', description: 'General interview questions and answers' },
+            { title: 'C# Interview Q&A', section: 'Interview', url: 'interview-csharp.html', icon: '🎓', keywords: 'csharp interview oop encapsulation', description: 'C# and OOP interview questions' },
+            { title: 'Extended C# Q&A', section: 'Interview', url: 'interview-csharp.html', icon: '📚', keywords: 'advanced csharp delegates events', description: 'Advanced C# concepts' },
+            { title: 'MVC Interview Q&A', section: 'Interview', url: 'interview-mvc.html', icon: '🎓', keywords: 'mvc interview controller view', description: 'MVC pattern interview questions' },
+            { title: 'React Interview Q&A', section: 'Interview', url: 'interview-react.html', icon: '🎓', keywords: 'react interview hooks lifecycle', description: 'React interview questions' },
+            { title: 'Angular Interview Q&A', section: 'Interview', url: 'interview-angular.html', icon: '🎓', keywords: 'angular interview module decorator', description: 'Angular interview questions' },
+            { title: 'Design Patterns & SOLID', section: 'Interview', url: 'interview-patterns.html', icon: '🏗️', keywords: 'pattern singleton factory solid', description: 'Design patterns and SOLID principles' },
+            { title: 'SOLID Principles', section: 'Interview', url: 'interview-solid.html', icon: '✅', keywords: 'solid single responsibility open closed', description: 'Deep dive into SOLID principles' },
+            { title: 'SQL & Database', section: 'Interview', url: 'interview-sql.html', icon: '🗄️', keywords: 'sql query join group having', description: 'Database and SQL concepts' },
+            { title: 'Coding Challenges', section: 'Interview', url: 'interview-coding.html', icon: '💻', keywords: 'coding algorithm problem solving', description: 'Coding challenges and algorithms' },
+
+            // Performance & Tools
+            { title: 'Performance Optimization', section: 'Advanced', url: 'performance.html', icon: '⚡', keywords: 'performance optimization speed', description: 'Optimize application performance' },
+            { title: 'Learning Paths', section: 'Guides', url: 'learning-paths.html', icon: '🎯', keywords: 'learning path guide', description: 'Structured learning paths' },
+            { title: 'Code Compiler', section: 'Tools', url: 'compiler.html', icon: '🚀', keywords: 'compiler execute code', description: 'Online code compiler and executor' }
+        ];
+    }
+
+    // Handle search on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('q') || '';
+
+        if (query) {
+            document.getElementById('searchInput').value = query;
+            performGlobalSearch(query);
+        }
+
+        // Initialize modal search
+        const input = document.getElementById('searchInput');
+        if (input) {
+            input.addEventListener('input', function() {
+                performGlobalSearch(this.value);
+            });
+        }
+    });
+
+    // Global openSearch function for header
+    function openSearch() {
+        const modal = document.getElementById('searchModal');
+        const input = document.getElementById('searchInput');
+        if (!modal) return;
+        modal.classList.add('open');
+        document.body.classList.add('no-scroll');
+        if (input) { input.value = ''; input.focus(); }
+    }
+
+    function closeSearch() {
+        const modal = document.getElementById('searchModal');
+        if (modal) modal.classList.remove('open');
+        document.body.classList.remove('no-scroll');
+    }
+</script>
+</body>
+</html>

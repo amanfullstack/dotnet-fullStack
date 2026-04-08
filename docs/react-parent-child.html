@@ -167,8 +167,7 @@
 
                 <h2>React Data Flow Principles</h2>
                 <p>React follows a one-way data flow:</p>
-                <pre style="background: #f5f5f5; padding: 15px; border-radius: 8px; overflow-x: auto;">
-┌─────────────────────────────────────────┐
+                <pre><code>┌─────────────────────────────────────────┐
 │ PARENT COMPONENT                        │
 │ ┌────────────────────────────────────┐  │
 │ │ State: products = [...]            │  │
@@ -190,7 +189,7 @@
 DATA FLOW:
 Parent → Children (props)
 Children → Parent (callback functions)
-                </pre>
+                </code></pre>
 
                 <h2>Method 1: Props (Parent to Child)</h2>
                 <p>The primary way to pass data from parent to child. Props are read-only and flow downward.</p>
