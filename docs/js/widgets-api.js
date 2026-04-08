@@ -10,6 +10,31 @@ class WidgetsAPI {
     this.news = [];
     this.versions = [];
     this.currentQuoteIndex = 0;
+    this.localContext = null;
+    this.timeInterval = null;
+    this.weatherInterval = null;
+    this.cacheKeys = {
+      location: 'devdocs_local_snapshot_location',
+      weather: 'devdocs_local_snapshot_weather',
+      geoPromptCooldown: 'devdocs_local_snapshot_geo_cooldown_until'
+    };
+    this.cacheTtl = {
+      locationMs: 12 * 60 * 60 * 1000,
+      weatherMs: 15 * 60 * 1000,
+      geoPromptCooldownMs: 24 * 60 * 60 * 1000
+    };
+    this.defaultLocation = {
+      city: 'New Delhi',
+      region: 'Delhi',
+      country: 'India',
+      timezone: 'Asia/Kolkata',
+      latitude: 28.6139,
+      longitude: 77.2090
+    };
+    this.currentWeather = {
+      weatherCode: null,
+      feelsLike: null
+    };
   }
 
   /**
@@ -22,7 +47,8 @@ class WidgetsAPI {
     await Promise.allSettled([
       this.loadQuotes(),
       this.loadNews(),
-      this.loadVersions()
+      this.loadVersions(),
+      this.loadLocalSnapshot()
     ]);
 
     // Render widgets - they'll have fallback data if APIs failed
@@ -247,6 +273,424 @@ class WidgetsAPI {
   }
 
   /**
+   * Detect user location and load local time + weather snapshot
+   */
+  async loadLocalSnapshot() {
+    const timeEl = document.getElementById('local-time-value');
+    const weatherMainEl = document.getElementById('local-weather-main');
+    const weatherMetaEl = document.getElementById('local-weather-meta');
+
+    if (!timeEl || !weatherMainEl || !weatherMetaEl) return;
+
+    this.localContext = {
+      ...this.defaultLocation,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || this.defaultLocation.timezone
+    };
+
+    this.updateLocalClock();
+
+    if (this.timeInterval) clearInterval(this.timeInterval);
+    this.timeInterval = setInterval(() => this.updateLocalClock(), 1000);
+
+    try {
+      const cachedLocation = this.getCachedData(this.cacheKeys.location, this.cacheTtl.locationMs);
+      const permissionState = await this.getGeolocationPermissionState();
+
+      let location = null;
+      if (permissionState === 'granted') {
+        location = await this.tryBrowserGeolocation();
+      }
+
+      if (!location && cachedLocation) {
+        location = cachedLocation;
+      }
+
+      if (!location) {
+        location = await this.detectUserLocation();
+      }
+
+      if (!location) {
+        location = { ...this.defaultLocation, source: 'fallback' };
+      }
+
+      if (location) {
+        this.localContext = {
+          city: location.city || this.defaultLocation.city,
+          region: location.region || this.defaultLocation.region,
+          country: location.country || this.defaultLocation.country,
+          timezone: location.timezone || this.defaultLocation.timezone,
+          latitude: typeof location.latitude === 'number' ? location.latitude : this.defaultLocation.latitude,
+          longitude: typeof location.longitude === 'number' ? location.longitude : this.defaultLocation.longitude,
+          source: location.source || 'fallback'
+        };
+
+        if (location.source !== 'fallback' || !cachedLocation) {
+          this.setCachedData(this.cacheKeys.location, this.localContext);
+        }
+
+        this.updateLocalClock();
+      }
+
+      await this.loadLocalWeather(this.localContext.latitude, this.localContext.longitude);
+    } catch (error) {
+      console.warn('⚠ Could not load local snapshot:', error);
+      this.localContext = { ...this.defaultLocation };
+      this.updateLocalClock();
+      await this.loadLocalWeather(this.localContext.latitude, this.localContext.longitude);
+    }
+  }
+
+  async detectUserLocation() {
+    const geoLocation = await this.tryBrowserGeolocation();
+    if (geoLocation) return geoLocation;
+    return this.tryIpLocation();
+  }
+
+  async getGeolocationPermissionState() {
+    if (!navigator.permissions || !navigator.permissions.query) return 'unsupported';
+
+    try {
+      const status = await navigator.permissions.query({ name: 'geolocation' });
+      return status.state;
+    } catch (error) {
+      return 'unknown';
+    }
+  }
+
+  async tryBrowserGeolocation() {
+    if (!navigator.geolocation) return null;
+    const canTry = await this.canAttemptGeolocation();
+    if (!canTry) return null;
+
+    try {
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 8000,
+          maximumAge: 10 * 60 * 1000
+        });
+      });
+
+      const latitude = Number(position.coords.latitude);
+      const longitude = Number(position.coords.longitude);
+
+      const locationName = await this.reverseGeocode(latitude, longitude);
+      return {
+        latitude,
+        longitude,
+        city: locationName.city,
+        region: locationName.region,
+        country: locationName.country,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
+        source: 'geo'
+      };
+    } catch (error) {
+      if (error && (error.code === 1 || error.code === 2)) {
+        this.startGeolocationCooldown();
+      }
+      return null;
+    }
+  }
+
+  async canAttemptGeolocation() {
+    const cooldownUntil = Number(localStorage.getItem(this.cacheKeys.geoPromptCooldown) || 0);
+    const isCooldownActive = Date.now() < cooldownUntil;
+
+    if (!navigator.permissions || !navigator.permissions.query) {
+      return !isCooldownActive;
+    }
+
+    try {
+      const status = await navigator.permissions.query({ name: 'geolocation' });
+      if (status.state === 'granted') {
+        return true;
+      }
+      if (status.state === 'denied') {
+        this.startGeolocationCooldown();
+        return false;
+      }
+      return !isCooldownActive;
+    } catch (error) {
+      return !isCooldownActive;
+    }
+  }
+
+  startGeolocationCooldown() {
+    const cooldownUntil = Date.now() + this.cacheTtl.geoPromptCooldownMs;
+    localStorage.setItem(this.cacheKeys.geoPromptCooldown, String(cooldownUntil));
+  }
+
+  async reverseGeocode(latitude, longitude) {
+    try {
+      const response = await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${latitude}&longitude=${longitude}&count=1&language=en`);
+      if (!response.ok) throw new Error('Reverse geocoding failed');
+
+      const data = await response.json();
+      const place = data.results && data.results[0] ? data.results[0] : null;
+
+      return {
+        city: place?.name || 'Your area',
+        region: place?.admin1 || '',
+        country: place?.country || ''
+      };
+    } catch (error) {
+      return { city: 'Your area', region: '', country: '' };
+    }
+  }
+
+  async tryIpLocation() {
+    try {
+      const response = await fetch('https://ipapi.co/json/');
+      if (!response.ok) throw new Error('IP location request failed');
+
+      const data = await response.json();
+      const latitude = Number(data.latitude);
+      const longitude = Number(data.longitude);
+
+      return {
+        latitude: Number.isFinite(latitude) ? latitude : null,
+        longitude: Number.isFinite(longitude) ? longitude : null,
+        city: data.city || 'Your area',
+        region: data.region || '',
+        country: data.country_name || '',
+        timezone: data.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
+        source: 'ip'
+      };
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async loadLocalWeather(latitude, longitude) {
+    const weatherMainEl = document.getElementById('local-weather-main');
+    const weatherMetaEl = document.getElementById('local-weather-meta');
+
+    if (!weatherMainEl) return;
+
+    try {
+      const cachedWeather = this.getCachedData(this.cacheKeys.weather, this.cacheTtl.weatherMs);
+      const hasMatchingCoords = cachedWeather
+        && typeof cachedWeather.latitude === 'number'
+        && typeof cachedWeather.longitude === 'number'
+        && Math.abs(cachedWeather.latitude - latitude) < 0.02
+        && Math.abs(cachedWeather.longitude - longitude) < 0.02;
+
+      if (hasMatchingCoords) {
+        weatherMainEl.textContent = cachedWeather.main;
+        if (weatherMetaEl) weatherMetaEl.title = cachedWeather.meta;
+        this.currentWeather = {
+          weatherCode: typeof cachedWeather.weatherCode === 'number' ? cachedWeather.weatherCode : null,
+          feelsLike: typeof cachedWeather.feelsLike === 'number' ? cachedWeather.feelsLike : null
+        };
+        this.renderLocalScene();
+        return;
+      }
+
+      const response = await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=auto`
+      );
+
+      if (!response.ok) throw new Error('Weather request failed');
+
+      const data = await response.json();
+      const current = data.current;
+      if (!current) throw new Error('Weather data missing');
+
+      const weatherInfo = this.getWeatherInfo(current.weather_code);
+      const tempRounded = Math.round(current.temperature_2m);
+      const mainText = `${tempRounded}°`;
+      const metaText = `${weatherInfo.label} • Feels like ${Math.round(current.apparent_temperature)}° • Wind ${Math.round(current.wind_speed_10m)} km/h • ${this.getLocationLabel()}`;
+
+      this.currentWeather = {
+        weatherCode: current.weather_code,
+        feelsLike: current.apparent_temperature
+      };
+
+      weatherMainEl.textContent = mainText;
+      if (weatherMetaEl) weatherMetaEl.title = metaText;
+      this.setCachedData(this.cacheKeys.weather, {
+        latitude,
+        longitude,
+        main: mainText,
+        meta: metaText,
+        weatherCode: current.weather_code,
+        feelsLike: current.apparent_temperature
+      });
+      this.renderLocalScene();
+    } catch (error) {
+      weatherMainEl.textContent = '--°';
+      weatherMetaEl.textContent = `Could not fetch live weather • ${this.getLocationLabel()}`;
+      this.currentWeather = { weatherCode: null, feelsLike: null };
+      this.renderLocalScene();
+    }
+  }
+
+  getCachedData(key, maxAgeMs) {
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) return null;
+
+      const payload = JSON.parse(raw);
+      if (!payload || typeof payload.timestamp !== 'number') return null;
+      if (Date.now() - payload.timestamp > maxAgeMs) return null;
+
+      return payload.data || null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  setCachedData(key, data) {
+    try {
+      localStorage.setItem(key, JSON.stringify({
+        timestamp: Date.now(),
+        data
+      }));
+    } catch (error) {
+      // Ignore quota/storage access issues and continue with live data.
+    }
+  }
+
+  updateLocalClock() {
+    const timeEl = document.getElementById('local-time-value');
+    if (!timeEl || !this.localContext) return;
+
+    const now = new Date();
+    const timeZone = this.localContext.timezone || 'UTC';
+
+    const timeText = new Intl.DateTimeFormat([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+      timeZone
+    }).format(now);
+
+    const locationLabel = this.getLocationLabel();
+
+    timeEl.textContent = timeText;
+    this.renderLocalScene();
+  }
+
+  renderLocalScene() {
+    const widgetEl = document.getElementById('hero-local-widget');
+    if (!widgetEl || !this.localContext) return;
+
+    const now = new Date();
+    const timeZone = this.localContext.timezone || this.defaultLocation.timezone;
+    const hour = Number(new Intl.DateTimeFormat('en-US', {
+      hour: '2-digit',
+      hour12: false,
+      timeZone
+    }).format(now));
+
+    const partOfDay = hour >= 6 && hour < 17
+      ? 'day'
+      : hour >= 17 && hour < 20
+        ? 'evening'
+        : 'night';
+
+    const feelsLike = this.currentWeather.feelsLike;
+    const weatherCode = this.currentWeather.weatherCode;
+    const weatherGroup = typeof weatherCode === 'number' && [95, 96, 99].includes(weatherCode)
+      ? 'storm'
+      : typeof weatherCode === 'number' && [2, 3, 45, 48, 51, 53, 55, 61, 63, 65, 80, 81, 82].includes(weatherCode)
+        ? 'cloudy'
+        : 'clear';
+
+    const tempBand = typeof feelsLike === 'number'
+      ? (feelsLike >= 34 ? 'hot' : feelsLike <= 12 ? 'cold' : 'mild')
+      : 'mild';
+
+    const palette = this.getLocalThemePalette(partOfDay, weatherGroup, tempBand);
+
+    widgetEl.style.setProperty('--local-bg-1', palette.bg1);
+    widgetEl.style.setProperty('--local-bg-2', palette.bg2);
+    widgetEl.style.setProperty('--local-bg-3', palette.bg3);
+    widgetEl.style.setProperty('--local-glow', palette.glow);
+  }
+
+  getLocalThemePalette(partOfDay, weatherGroup, tempBand) {
+    if (partOfDay === 'night') {
+      if (weatherGroup === 'storm') {
+        return { bg1: '#0b1020', bg2: '#1e293b', bg3: '#334155', glow: 'rgba(71, 85, 105, 0.45)' };
+      }
+      if (tempBand === 'cold') {
+        return { bg1: '#082f49', bg2: '#1e3a5f', bg3: '#0f172a', glow: 'rgba(56, 189, 248, 0.32)' };
+      }
+      return { bg1: '#0f172a', bg2: '#1e293b', bg3: '#312e81', glow: 'rgba(99, 102, 241, 0.30)' };
+    }
+
+    if (partOfDay === 'evening') {
+      if (weatherGroup === 'storm') {
+        return { bg1: '#7c2d12', bg2: '#9a3412', bg3: '#431407', glow: 'rgba(249, 115, 22, 0.38)' };
+      }
+      if (tempBand === 'hot') {
+        return { bg1: '#fdba74', bg2: '#fb7185', bg3: '#f97316', glow: 'rgba(251, 113, 133, 0.34)' };
+      }
+      return { bg1: '#fed7aa', bg2: '#fda4af', bg3: '#c4b5fd', glow: 'rgba(244, 114, 182, 0.30)' };
+    }
+
+    if (weatherGroup === 'storm') {
+      return { bg1: '#64748b', bg2: '#475569', bg3: '#334155', glow: 'rgba(71, 85, 105, 0.35)' };
+    }
+    if (tempBand === 'hot') {
+      return { bg1: '#fdba74', bg2: '#fb7185', bg3: '#f97316', glow: 'rgba(251, 113, 133, 0.30)' };
+    }
+    if (tempBand === 'cold') {
+      return { bg1: '#bae6fd', bg2: '#93c5fd', bg3: '#38bdf8', glow: 'rgba(56, 189, 248, 0.30)' };
+    }
+
+    return { bg1: '#e0f2fe', bg2: '#bfdbfe', bg3: '#dbeafe', glow: 'rgba(59, 130, 246, 0.32)' };
+  }
+
+  getLocationLabel() {
+    if (!this.localContext) return 'New Delhi, Delhi, India';
+
+    const parts = [
+      this.localContext.city,
+      this.localContext.region,
+      this.localContext.country
+    ].filter(Boolean);
+
+    return parts.length > 0 ? parts.join(', ') : 'New Delhi, Delhi, India';
+  }
+
+  getWeatherInfo(code) {
+    const mappings = {
+      0: { label: 'Clear sky', icon: '☀️' },
+      1: { label: 'Mostly clear', icon: '🌤️' },
+      2: { label: 'Partly cloudy', icon: '⛅' },
+      3: { label: 'Overcast', icon: '☁️' },
+      45: { label: 'Foggy', icon: '🌫️' },
+      48: { label: 'Foggy', icon: '🌫️' },
+      51: { label: 'Light drizzle', icon: '🌦️' },
+      53: { label: 'Drizzle', icon: '🌦️' },
+      55: { label: 'Heavy drizzle', icon: '🌧️' },
+      56: { label: 'Freezing drizzle', icon: '🌧️' },
+      57: { label: 'Freezing drizzle', icon: '🌧️' },
+      61: { label: 'Light rain', icon: '🌦️' },
+      63: { label: 'Rain', icon: '🌧️' },
+      65: { label: 'Heavy rain', icon: '🌧️' },
+      66: { label: 'Freezing rain', icon: '🌧️' },
+      67: { label: 'Freezing rain', icon: '🌧️' },
+      71: { label: 'Light snow', icon: '🌨️' },
+      73: { label: 'Snow', icon: '❄️' },
+      75: { label: 'Heavy snow', icon: '❄️' },
+      77: { label: 'Snow grains', icon: '🌨️' },
+      80: { label: 'Rain showers', icon: '🌦️' },
+      81: { label: 'Rain showers', icon: '🌧️' },
+      82: { label: 'Heavy showers', icon: '⛈️' },
+      85: { label: 'Snow showers', icon: '🌨️' },
+      86: { label: 'Heavy snow showers', icon: '🌨️' },
+      95: { label: 'Thunderstorm', icon: '⛈️' },
+      96: { label: 'Thunderstorm with hail', icon: '⛈️' },
+      99: { label: 'Thunderstorm with hail', icon: '⛈️' }
+    };
+
+    return mappings[code] || { label: 'Unknown conditions', icon: '🌍' };
+  }
+
+  /**
    * Fetch latest .NET version
    */
   async fetchDotNetVersion() {
@@ -392,6 +836,17 @@ class WidgetsAPI {
       await this.loadNews();
       this.renderNewsCards();
     }, 1800000);
+
+    // Auto-refresh local weather every 15 minutes
+    if (this.weatherInterval) clearInterval(this.weatherInterval);
+    this.weatherInterval = setInterval(async () => {
+      if (!this.localContext) return;
+
+      const { latitude, longitude } = this.localContext;
+      if (typeof latitude === 'number' && typeof longitude === 'number') {
+        await this.loadLocalWeather(latitude, longitude);
+      }
+    }, 900000);
 
     // Marquee is auto-animated via CSS
     // Close button handled inline in HTML

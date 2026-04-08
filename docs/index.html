@@ -55,6 +55,11 @@
       <a href="compiler.html">Compiler</a>
     </nav>
     <div class="header-actions">
+      <div class="nav-widget" id="hero-local-widget" aria-live="polite">
+        <span class="widget-time" id="local-time-value">--:--</span>
+        <span class="widget-temp" id="local-weather-main">--°</span>
+        <span class="widget-location" id="local-weather-meta" title="Location">📍</span>
+      </div>
       <div class="search-bar" data-search-open onclick="openSearch()">
         <span>🔍</span>
         <input type="text" placeholder="Search..." readonly>
@@ -225,6 +230,12 @@
   <main class="main-content">
     <div class="content-wrapper wide">
 
+      <!-- ═══════════════════════════════════════════════ GREETING -->
+      <div class="greeting-section">
+        <h2 class="greeting-text">✨ Welcome, Developer</h2>
+        <p class="greeting-subtitle">Build, Learn & Master Full-Stack Development with Production-Grade Examples</p>
+      </div>
+
       <!-- ═══════════════════════════════════════════════ HERO -->
       <section class="hero-section">
 
@@ -290,6 +301,7 @@
             <span class="version-icon" title="Loading...">...</span>
           </div>
         </div>
+
       </section>
 
       <!-- ═══════════════════════════════════════════ WIDGETS: QUOTES, NEWS, VERSIONS -->

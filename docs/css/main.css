@@ -2386,11 +2386,29 @@ details[open] .qa-chevron {
   .grid-auto { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
   .grid-topics { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
   .hero-stats { gap: var(--sp-5); }
+  .nav-widget {
+    gap: 6px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    display: flex;
+  }
+  .widget-time, .widget-temp {
+    font-size: 0.9rem;
+  }
   .header-nav { display: none; }
   .search-bar { min-width: 160px; }
+
+  /* Greeting section tablet */
+  .greeting-section {
+    padding: var(--sp-10) 0 var(--sp-7);
+    margin-bottom: var(--sp-10);
+  }
+
+  .greeting-text {
+    font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+  }
 }
 
-/* Mobile */
 @media (max-width: 768px) {
   :root {
     --header-height: 58px;
@@ -2423,6 +2441,27 @@ details[open] .qa-chevron {
 
   .content-wrapper {
     padding: var(--sp-8) var(--sp-4) var(--sp-12);
+  }
+
+  .nav-widget {
+    gap: 3px;
+    padding: 4px 8px;
+    font-size: 0.72rem;
+    border-radius: 6px;
+    display: none !important;
+  }
+
+  .widget-time, .widget-temp, .widget-location {
+    font-size: 0.75rem;
+  }
+
+  .widget-time {
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+
+  .widget-temp {
+    white-space: nowrap;
   }
 
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
@@ -2528,6 +2567,9 @@ details[open] .qa-chevron {
   /* Minimize header actions spacing on small phones */
   .header-actions { gap: 4px; }
 
+  /* Hide widget on very small screens to prevent logo overlap */
+  .nav-widget { display: none !important; }
+
   /* Phone - Search bar as icon-only button */
   .search-bar {
     max-width: 36px;
@@ -2598,6 +2640,40 @@ details[open] .qa-chevron {
 /* ----------------------------------------------------------------
    24. HOMEPAGE — MISSING CLASS DEFINITIONS
    ---------------------------------------------------------------- */
+
+/* Greeting Section */
+.greeting-section {
+  padding: var(--sp-12) 0 var(--sp-8);
+  text-align: center;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.06), rgba(139, 92, 246, 0.06));
+  border-radius: var(--r-xl);
+  border: 1px solid rgba(14, 165, 233, 0.12);
+  margin-bottom: var(--sp-12);
+}
+
+.greeting-text {
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 var(--sp-3) 0;
+  letter-spacing: -0.02em;
+}
+
+.greeting-subtitle {
+  font-size: var(--text-lg);
+  color: var(--text-2);
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+[data-theme="dark"] .greeting-section {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(168, 85, 247, 0.08));
+  border-color: rgba(139, 92, 246, 0.15);
+}
 
 /* Section wrappers */
 .hero-section {
@@ -3278,6 +3354,80 @@ body.homepage .quotes-banner {
   color: var(--primary);
 }
 
+/* Header Navigation Widget - Premium Modern with Weather Theme */
+.nav-widget {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 6px 12px;
+  --local-bg-1: #e0f2fe;
+  --local-bg-2: #bfdbfe;
+  --local-bg-3: #dbeafe;
+  --local-glow: rgba(59, 130, 246, 0.32);
+  background:
+    radial-gradient(circle at 15% 10%, rgba(255,255,255,.4), transparent 40%),
+    linear-gradient(135deg, var(--local-bg-1), var(--local-bg-2) 55%, var(--local-bg-3));
+  border: 1px solid rgba(14, 165, 233, 0.25);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--text-1);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px var(--local-glow);
+}
+
+.nav-widget:hover {
+  border-color: rgba(14, 165, 233, 0.4);
+  box-shadow: 0 6px 16px var(--local-glow);
+  transform: translateY(-2px);
+}
+
+[data-theme="dark"] .nav-widget {
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+[data-theme="dark"] .nav-widget:hover {
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.25);
+}
+
+.widget-time {
+  font-weight: 700;
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.widget-temp {
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 0.95rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.widget-location {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  cursor: help;
+}
+
+[data-theme="dark"] .widget-time,
+[data-theme="dark"] .widget-temp {
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+
+
+
+
 /* Projects grid */
 .projects-grid {
   display: grid;
@@ -3550,7 +3700,21 @@ body.homepage .quotes-banner {
   .hero-section {
     padding-top: var(--sp-6);
   }
-}
+
+  /* Greeting section responsive */
+  .greeting-section {
+    padding: var(--sp-8) 0 var(--sp-6);
+    margin-bottom: var(--sp-8);
+  }
+
+  .greeting-text {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    margin-bottom: var(--sp-2);
+  }
+
+  .greeting-subtitle {
+    font-size: var(--text-base);
+  }
 
 /* ================================================================
    SECTION 28 — HERO ORBIT ANIMATION
