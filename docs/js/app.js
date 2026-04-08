@@ -368,7 +368,40 @@
 
     // Performance & Learning
     { title: 'Performance Profiling & Optimization', section: 'Advanced', url: 'performance.html', icon: '⚡', keywords: 'performance profiling dotnet benchmark memory cpu caching optimization', description: 'Profile and optimize application performance' },
-    { title: 'Structured Learning & Skill Paths', section: 'Guides', url: 'learning-paths.html', icon: '🎯', keywords: 'learning path guide roadmap curriculum backend frontend full stack', description: 'Follow guided learning paths for different skill levels' }
+    { title: 'Structured Learning & Skill Paths', section: 'Guides', url: 'learning-paths.html', icon: '🎯', keywords: 'learning path guide roadmap curriculum backend frontend full stack', description: 'Follow guided learning paths for different skill levels' },
+
+    // Coding Challenges - C#
+    { title: 'Compare Two Objects - Reference vs Value Types', section: 'Coding Challenges', url: 'interview-coding.html#csharp-1', icon: '💻', keywords: 'reference value type comparison csharp object', description: 'Understand reference vs value types through object comparison' },
+    { title: 'Valid Braces/Parentheses Matching - Stack', section: 'Coding Challenges', url: 'interview-coding.html#csharp-2', icon: '💻', keywords: 'braces parentheses matching balanced stack validation', description: 'Check if braces, parentheses are balanced using stack data structure' },
+    { title: 'Reverse String - Multiple Approaches', section: 'Coding Challenges', url: 'interview-coding.html#csharp-3', icon: '💻', keywords: 'string reverse array builtin algorithm', description: 'Reverse a string using different techniques' },
+    { title: 'Fibonacci Series - Recursive, Iterative, Memoization', section: 'Coding Challenges', url: 'interview-coding.html#csharp-4', icon: '💻', keywords: 'fibonacci recursive iterative memoization dynamic programming', description: 'Implement Fibonacci with different optimization approaches' },
+    { title: 'Prime Number Check', section: 'Coding Challenges', url: 'interview-coding.html#csharp-5', icon: '💻', keywords: 'prime number check divisor mathematical algorithm', description: 'Determine if a number is prime efficiently' },
+    { title: 'Remove Duplicates from Array', section: 'Coding Challenges', url: 'interview-coding.html#csharp-6', icon: '💻', keywords: 'remove duplicates array deduplication hashset', description: 'Remove duplicate elements while preserving order' },
+    { title: 'String Rotation Check', section: 'Coding Challenges', url: 'interview-coding.html#csharp-7', icon: '💻', keywords: 'string rotation rotation check substring', description: 'Check if one string is a rotation of another' },
+    { title: 'Anagram Detection', section: 'Coding Challenges', url: 'interview-coding.html#csharp-8', icon: '💻', keywords: 'anagram detection character count sorting comparison', description: 'Determine if two strings are anagrams' },
+
+    // Coding Challenges - SQL
+    { title: 'Nth Highest Salary - ROW_NUMBER, DENSE_RANK, CTE', section: 'Coding Challenges', url: 'interview-coding.html#sql-1', icon: '💻', keywords: 'nth highest salary rank dense rank cte window function sql', description: 'Find nth highest salary using window functions and CTEs' },
+    { title: 'Maximum Salary Per Department', section: 'Coding Challenges', url: 'interview-coding.html#sql-2', icon: '💻', keywords: 'maximum salary department group by aggregate sql', description: 'Calculate max salary per department using GROUP BY' },
+    { title: 'Running Total - SUM OVER Window Function', section: 'Coding Challenges', url: 'interview-coding.html#sql-3', icon: '💻', keywords: 'running total cumulative sum window function over sql', description: 'Calculate running totals using SUM OVER window function' },
+    { title: 'Gap Detection in Sequence', section: 'Coding Challenges', url: 'interview-coding.html#sql-4', icon: '💻', keywords: 'gap detection sequence missing values sql', description: 'Find gaps in sequential data' },
+    { title: 'Find Duplicate Records', section: 'Coding Challenges', url: 'interview-coding.html#sql-5', icon: '💻', keywords: 'duplicate records find duplicates group by having sql', description: 'Identify duplicate rows in a table' },
+    { title: 'RANK vs DENSE_RANK vs ROW_NUMBER', section: 'Coding Challenges', url: 'interview-coding.html#sql-6', icon: '💻', keywords: 'rank dense rank row number window function comparison sql', description: 'Understand differences between ranking window functions' },
+
+    // Coding Challenges - JavaScript
+    { title: 'Debounce Function Implementation', section: 'Coding Challenges', url: 'interview-coding.html#js-1', icon: '💻', keywords: 'debounce function implementation timer delay event', description: 'Implement debounce to limit function execution' },
+    { title: 'Promise Chain vs Async/Await - Error Handling', section: 'Coding Challenges', url: 'interview-coding.html#js-2', icon: '💻', keywords: 'promise async await error handling try catch', description: 'Compare promise chains and async/await patterns' },
+    { title: 'Event Loop Execution Order - Callbacks, Promises, setTimeout', section: 'Coding Challenges', url: 'interview-coding.html#js-3', icon: '💻', keywords: 'event loop callback promise settimeout microtask macrotask', description: 'Understand JavaScript event loop execution order' },
+    { title: 'Deep Clone vs Shallow Clone', section: 'Coding Challenges', url: 'interview-coding.html#js-4', icon: '💻', keywords: 'deep clone shallow clone object copy recursion', description: 'Implement deep cloning to copy nested objects' },
+    { title: 'Closure Counter Pattern', section: 'Coding Challenges', url: 'interview-coding.html#js-5', icon: '💻', keywords: 'closure counter function closure encapsulation', description: 'Use closures to create counters with private variables' },
+
+    // Coding Challenges - Algorithms
+    { title: 'Two Sum - Array', section: 'Coding Challenges', url: 'interview-coding.html#algo-1', icon: '💻', keywords: 'two sum target array hash map algorithm', description: 'Find two numbers that sum to a target value' },
+    { title: 'Longest Substring Without Repeating Characters', section: 'Coding Challenges', url: 'interview-coding.html#algo-2', icon: '💻', keywords: 'longest substring repeating characters sliding window', description: 'Find longest substring with unique characters using sliding window' },
+    { title: 'Merge Sorted Arrays', section: 'Coding Challenges', url: 'interview-coding.html#algo-3', icon: '💻', keywords: 'merge sorted arrays combine sort algorithm', description: 'Merge two sorted arrays efficiently' },
+    { title: 'Binary Search vs Linear Search', section: 'Coding Challenges', url: 'interview-coding.html#algo-4', icon: '💻', keywords: 'binary search linear search performance comparison', description: 'Understand search algorithm differences and optimization' },
+    { title: 'Linked List Reversal - Iterative & Recursive', section: 'Coding Challenges', url: 'interview-coding.html#algo-5', icon: '💻', keywords: 'linked list reversal iterative recursive node pointer', description: 'Reverse a linked list using iteration and recursion' },
+    { title: 'Tree Traversal - DFS & BFS', section: 'Coding Challenges', url: 'interview-coding.html#algo-6', icon: '💻', keywords: 'tree traversal dfs bfs depth first breadth first', description: 'Traverse trees using depth-first and breadth-first search' }
   ];
 
   function initSearch() {
