@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker - DevOps & Containerization - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 20px;
+            background: var(--surface-2);
+            border-radius: var(--r-lg);
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .flow-box {
+            background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            min-width: 150px;
+            text-align: center;
+            font-weight: 600;
+            animation: pulse-box 2s ease-in-out infinite;
+        }
+        .flow-arrow {
+            font-size: 24px;
+            margin: 0 15px;
+            animation: arrow-flow 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-box {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        @keyframes arrow-flow {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+    </style>
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+
+<div id="readingProgress" class="progress-fill" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div>
+            DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="webapi.html">Web API</a>
+            <a href="ef-core.html">EF Core</a>
+            <a href="linq.html">LINQ</a>
+            <a href="interview.html">Interview</a>
+            <a href="compiler.html">Compiler</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-section">
+                <ul class="sidebar-links">
+                    <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+                </ul>
+            </div>
+
+            <div class="project-tabs-section">
+                <div class="project-tabs">
+                    <button class="project-tab" data-project="webapi" title="Web API">🌐</button>
+                    <button class="project-tab" data-project="mvc" title="MVC">🖥️</button>
+                    <button class="project-tab" data-project="angular" title="Angular">🅰️</button>
+                    <button class="project-tab" data-project="react" title="React">⚛️</button>
+                </div>
+
+                <div class="project-topics-list" data-topics="webapi" style="display: none;">
+                    <a href="webapi.html" class="sidebar-link"><span style="margin-right: 4px;">🌐</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="mvc" style="display: none;">
+                    <a href="mvc.html" class="sidebar-link"><span style="margin-right: 4px;">📘</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="angular" style="display: none;">
+                    <a href="angular.html" class="sidebar-link"><span style="margin-right: 4px;">📗</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="react" style="display: none;">
+                    <a href="react.html" class="sidebar-link"><span style="margin-right: 4px;">📙</span> Overview</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🏗️ Advanced Architecture</h3>
+                <ul class="sidebar-links">
+                    <li><a href="microservices.html" class="sidebar-link"><span style="margin-right: 4px;">🔌</span> Microservices</a></li>
+                    <li><a href="event-driven-architecture.html" class="sidebar-link"><span style="margin-right: 4px;">⚡</span> Event-Driven</a></li>
+                    <li><a href="kafka.html" class="sidebar-link"><span style="margin-right: 4px;">📡</span> Kafka</a></li>
+                    <li><a href="rabbitmq-kafka-comparison.html" class="sidebar-link"><span style="margin-right: 4px;">⚔️</span> RabbitMQ vs Kafka</a></li>
+                    <li><a href="mfe.html" class="sidebar-link"><span style="margin-right: 4px;">🎨</span> Micro Frontends</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🔧 DevOps & Infrastructure</h3>
+                <ul class="sidebar-links">
+                    <li><a href="docker.html" class="sidebar-link active"><span style="margin-right: 4px;">🐳</span> Docker</a></li>
+                    <li><a href="kubernetes.html" class="sidebar-link"><span style="margin-right: 4px;">☸️</span> Kubernetes</a></li>
+                    <li><a href="git-version-control.html" class="sidebar-link"><span style="margin-right: 4px;">🔀</span> Git & Version Control</a></li>
+                    <li><a href="git-docker-kubernetes-flow.html" class="sidebar-link"><span style="margin-right: 4px;">🚀</span> Deployment Strategies</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🎓 Interview Prep</h3>
+                <ul class="sidebar-links">
+                    <li><a href="interview.html" class="sidebar-link"><span style="margin-right: 4px;">💡</span> All Questions</a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <article class="article">
+                <nav class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="sep">/</span>
+                    <a href="index.html">DevOps</a>
+                    <span class="sep">/</span>
+                    <span class="current">Docker</span>
+                </nav>
+
+                <div class="page-title-block">
+                    <h1 class="page-title">🐳 Docker - Containerization & Deployment</h1>
+                    <p class="page-subtitle">Package your app + dependencies in a shipping container. Works the same on your laptop, CI/CD, and production. No more "works on my machine" problems.</p>
+                </div>
+
+                <div class="callout callout-info">
+                    <span class="callout-icon">🏗️</span>
+                    <div class="callout-content">
+                        <p class="callout-title">Real-World Analogy: Shipping Containers</p>
+                        <p class="callout-body"><strong>❌ Without Docker:</strong> You mail your app on your laptop with all its dependencies scattered around. Recipient's environment different? App breaks.</p>
+                        <p class="callout-body"><strong>✅ With Docker:</strong> You pack your app + Node.js 18 + MongoDB into a standardized shipping container. Load it anywhere, runs identically. No surprises.</p>
+                    </div>
+                </div>
+
+                <h2>Why Containerization Matters</h2>
+                <p><strong>The Problem Without Docker:</strong></p>
+                <ul>
+                    <li>❌ <strong>"Works on my machine":</strong> Your Windows laptop has Node 18, server has Node 16 → Different behavior</li>
+                    <li>❌ <strong>Environment Hell:</strong> Dev team uses PostgreSQL 12, production uses PostgreSQL 14 → Bugs only appear in prod</li>
+                    <li>❌ <strong>Slow Onboarding:</strong> New team member takes 2 days to install all dependencies & get it working</li>
+                    <li>❌ <strong>Dependency Conflicts:</strong> App A needs Java 11, App B needs Java 17 → Both can't run on same server</li>
+                    <li>❌ <strong>Risky Deployments:</strong> Manual setup on production = high chance of missing a step</li>
+                </ul>
+
+                <p><strong>The Solution WITH Docker:</strong></p>
+                <ul>
+                    <li>✅ <strong>Consistency:</strong> Image built once, runs identically everywhere</li>
+                    <li>✅ <strong>Isolation:</strong> Each container has its own runtime, no conflicts</li>
+                    <li>✅ <strong>Reproducibility:</strong> Anyone can run `docker run myapp:1.0.0` and get exact same environment</li>
+                    <li>✅ <strong>Speed:</strong> Deploy in seconds instead of hours of manual setup</li>
+                </ul>
+
+                <h2>Key Concepts</h2>
+
+                <h3>1️⃣ Images vs Containers</h3>
+                <div class="concept-card">
+                    <p><strong>Docker Image:</strong> Template/Blueprint (like a .zip file)</p>
+                    <pre><code class="language-text">FROM mcr.microsoft.com/dotnet/aspnet:8.0
+COPY app .
+ENTRYPOINT ["dotnet", "app.dll"]
+↓
+Result: myapp:1.0.0 (370 MB image file)</code></pre>
+
+                    <p><strong>Docker Container:</strong> Running instance of image (like executable running in memory)</p>
+                    <pre><code class="language-text">docker run myapp:1.0.0
+↓
+Result: Container PID 1234 running, consuming 50 MB RAM</code></pre>
+
+                    <p><strong>Analogy:</strong> Image = Class, Container = Object instance</p>
+                </div>
+
+                <h3>2️⃣ Multi-Stage Builds (Keep Images Small)</h3>
+                <div class="concept-card">
+                    <p><strong>❌ WRONG (Bloated image):</strong></p>
+                    <pre><code class="language-dockerfile">FROM mcr.microsoft.com/dotnet/sdk:8.0
+COPY . .
+RUN dotnet publish -c Release
+ENTRYPOINT ["dotnet", "ProductCatalogAPI.dll"]
+# Result: 2 GB image (includes SDK, build tools, everything)</code></pre>
+
+                    <p><strong>✅ RIGHT (Optimized):</strong></p>
+                    <pre><code class="language-dockerfile"># Stage 1: Build (need SDK)
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS builder
+COPY . .
+RUN dotnet publish -c Release -o /app
+
+# Stage 2: Runtime (only need runtime)
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+COPY --from=builder /app .
+ENTRYPOINT ["dotnet", "ProductCatalogAPI.dll"]
+# Result: 370 MB image (only runtime, no SDK)</code></pre>
+
+                    <p><strong>Why?</strong> Build stage needs full SDK (800 MB). Runtime stage only needs ASP.NET runtime (160 MB). Final image: 370 MB instead of 2 GB!</p>
+                </div>
+
+                <h3>3️⃣ Base Images (FROM clause)</h3>
+                <div class="concept-card">
+                    <p><strong>Base Image = Operating System + Runtime</strong></p>
+                    <pre><code class="language-dockerfile">FROM mcr.microsoft.com/dotnet/aspnet:8.0
+# = Ubuntu 22.04 + .NET 8.0 runtime
+# Size: ~160 MB (precompiled, optimized for .NET)
+
+FROM node:18-alpine
+# = Alpine Linux + Node.js 18
+# Size: ~170 MB (lighter than node:18-bookworm which is 1.1 GB)</code></pre>
+
+                    <p><strong>Pick wisely:</strong>
+                    <ul>
+                        <li><code>mcr.microsoft.com/dotnet/aspnet:8.0</code> → Optimized for .NET apps</li>
+                        <li><code>node:18-alpine</code> → Lightweight (Alpine = 5 MB base, Bookworm = 120 MB)</li>
+                        <li><code>ubuntu:22.04</code> → Universal but heavier (77 MB)</li>
+                    </ul></p>
+                </div>
+
+                <h3>4️⃣ Docker Layers (How images are built)</h3>
+                <div class="concept-card">
+                    <p><strong>Each instruction = new layer (like git commits)</strong></p>
+                    <pre><code class="language-dockerfile">FROM mcr.microsoft.com/dotnet/aspnet:8.0                    # Layer 1
+COPY . /app                                                  # Layer 2
+RUN dotnet restore                                           # Layer 3
+RUN dotnet publish -c Release -o /bin                        # Layer 4
+ENTRYPOINT ["dotnet", "/bin/ProductCatalogAPI.dll"]          # Layer 5</code></pre>
+
+                    <p><strong>Docker caches layers:</strong> If you rebuild and only change code, it reuses layers 1-3, rebuilds only layer 4!</p>
+
+                    <p><strong>Optimization:</strong> Order instructions by how often they change (rarely-changing first, frequently-changing last):</p>
+                    <pre><code class="language-dockerfile">FROM mcr.microsoft.com/dotnet/sdk:8.0 AS builder    # Base image (never changes)
+COPY *.csproj .                                      # Project file (rarely changes)
+RUN dotnet restore                                   # Dependencies (rarely changes)
+COPY . .                                             # Source code (always changes)
+RUN dotnet publish -c Release</code></pre>
+                </div>
+
+                <h3>5️⃣ Environment Variables & Port Exposure</h3>
+                <div class="concept-card">
+                    <p><strong>Production-Ready Dockerfile:</strong></p>
+                    <pre><code class="language-dockerfile">FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=builder /app/publish .
+
+# Configure runtime
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_URLS=http://+:5000
+ENV DOTNET_RUNNING_IN_CONTAINER=true
+
+# Expose port
+EXPOSE 5000
+
+# Security: Don't run as root
+USER app
+
+ENTRYPOINT ["dotnet", "ProductCatalogAPI.dll"]</code></pre>
+
+                    <p>When you run: <code>docker run -p 8080:5000 productcatalogapi:1.0.0</code></p>
+                    <ul>
+                        <li>Container port 5000 → Host port 8080</li>
+                        <li>Visit <code>http://localhost:8080/api/products</code></li>
+                    </ul></p>
+                </div>
+
+                <h2>Complete ProductCatalog Example</h2>
+                <p><strong>Step 1: Create Dockerfile in ProductCatalogAPI folder</strong></p>
+                <pre><code class="language-dockerfile"># syntax=docker/dockerfile:1
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS builder
+WORKDIR /src
+
+# Copy project files
+COPY ["ProductCatalogAPI.csproj", "."]
+
+# Restore NuGet packages
+RUN dotnet restore "ProductCatalogAPI.csproj"
+
+# Copy source code
+COPY . .
+
+# Publish to Release folder
+RUN dotnet publish "ProductCatalogAPI.csproj" -c Release -o /app/publish
+
+# ===== Runtime Stage =====
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+
+# Copy compiled app from builder
+COPY --from=builder /app/publish .
+
+# Configuration
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_URLS=http://+:5000
+
+# Security: don't run as root
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+USER appuser
+
+EXPOSE 5000
+
+ENTRYPOINT ["dotnet", "ProductCatalogAPI.dll"]</code></pre>
+
+                <p><strong>Step 2: Build the image</strong></p>
+                <pre><code class="language-bash">cd d:\dotnet-fullStack\ProductCatalogAPI-WebAPI-EFCore
+docker build -t productcatalogapi:1.0.0 .
+# Output: Successfully built image with tag productcatalogapi:1.0.0</code></pre>
+
+                <p><strong>Step 3: Run the container</strong></p>
+                <pre><code class="language-bash"># Basic run
+docker run -p 5000:5000 productcatalogapi:1.0.0
+
+# Background run with name
+docker run -d --name product-api -p 5000:5000 productcatalogapi:1.0.0
+
+# With environment variables
+docker run -d --name product-api \
+  -p 5000:5000 \
+  -e DATABASE_URL="Server=localhost;Database=ProductCatalog" \
+  productcatalogapi:1.0.0
+
+# Check logs
+docker logs -f product-api
+
+# Stop container
+docker stop product-api</code></pre>
+
+                <h2>Best Practices</h2>
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <strong>1. Use multi-stage builds</strong>
+                        <p>Separate build and runtime stages to minimize final image size.</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>2. Pin base image versions</strong>
+                        <p>Use <code>node:18.19.0</code> not <code>node:latest</code>. Latest changes without notice!</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>3. Use .dockerignore</strong>
+                        <p>Exclude node_modules, .git, bin, obj → faster builds</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>4. Don't run as root</strong>
+                        <p>Use <code>USER appuser</code> for security. Containers breaking out = less damage</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>5. Keep layers minimal</strong>
+                        <p>Combine RUN commands: <code>RUN apt-get && apt-get clean</code> prevents bloat</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>6. Use health checks</strong>
+                        <p><code>HEALTHCHECK CMD curl http://localhost/health</code> → Orchestrators know if container is sick</p>
+                    </div>
+                </div>
+
+                <h2>Common Mistakes</h2>
+                <ul>
+                    <li><strong>❌ Installing dev dependencies in production:</strong> <code>RUN npm install --save-dev webpack</code> in final image bloats it. Use build stage.</li>
+                    <li><strong>❌ Using :latest tag:</strong> <code>FROM node:latest</code> means different build = different environment. ALWAYS tag versions!</li>
+                    <li><strong>❌ Not caching dependencies:</strong> Copy package.json BEFORE source code so docker caches dependency layer</li>
+                    <li><strong>❌ Running as root:</strong> Container escapes = attacker has root access. Use non-root user!</li>
+                    <li><strong>❌ Storing secrets in image:</strong> <code>RUN export API_KEY=secret123</code> is visible in image history. Use environment variables at runtime!</li>
+                </ul>
+
+                <h2>Interview Q&A</h2>
+                <div class="concept-card">
+                    <p><strong>Q: What's the difference between a Docker image and a container?</strong></p>
+                    <p>A: Image is a blueprint (immutable template), container is a running instance. Like class vs object.</p>
+                </div>
+
+                <div class="concept-card">
+                    <p><strong>Q: Why use multi-stage builds?</strong></p>
+                    <p>A: Build stage needs compilers/SDKs (heavy). Runtime stage only needs runtime. Multi-stage lets you discard build stage files, keeping final image small (370 MB vs 2 GB).</p>
+                </div>
+
+                <div class="concept-card">
+                    <p><strong>Q: How do you reduce Docker image size?</strong></p>
+                    <p>A: (1) Use multi-stage builds, (2) Use alpine base images, (3) Remove cache after package installs, (4) Pin exact dependency versions, (5) Use .dockerignore to exclude unnecessary files.</p>
+                </div>
+
+                <h2>Next Steps</h2>
+                <p>Now that your code is containerized, learn how <strong>Kubernetes orchestrates</strong> these containers:</p>
+                <p>→ <a href="kubernetes.html">☸️ Kubernetes: Auto-scaling, Self-healing, Rolling Updates</a></p>
+            </article>
+
+            <nav class="page-nav">
+                <a href="mfe.html" class="nav-prev">← Micro Frontends</a>
+                <a href="kubernetes.html" class="nav-next">Kubernetes →</a>
+            </nav>
+        </div>
+    </main>
+</div>
+
+<script src="js/app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

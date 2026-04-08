@@ -315,7 +315,13 @@
     { title: 'Event-Driven Architecture', section: 'Advanced Architecture', url: 'event-driven-architecture.html', icon: '⚡', keywords: 'event driven architecture publishers subscribers event bus', description: 'Publish-subscribe pattern for decoupled services' },
     { title: 'Kafka Message Streaming', section: 'Advanced Architecture', url: 'kafka.html', icon: '📡', keywords: 'kafka topics partitions consumers message streaming high throughput', description: 'Distributed event streaming platform for high-throughput scenarios' },
     { title: 'RabbitMQ vs Kafka Comparison', section: 'Advanced Architecture', url: 'rabbitmq-kafka-comparison.html', icon: '⚔️', keywords: 'rabbitmq kafka comparison message broker when to use', description: 'Compare two message brokers and choose the right one' },
-    { title: 'Micro Frontends (MFE)', section: 'Advanced Architecture', url: 'mfe.html', icon: '🎨', keywords: 'micro frontend mfe module federation webpack independent deployment', description: 'Break frontend monolith into independent applications' }
+    { title: 'Micro Frontends (MFE)', section: 'Advanced Architecture', url: 'mfe.html', icon: '🎨', keywords: 'micro frontend mfe module federation webpack independent deployment', description: 'Break frontend monolith into independent applications' },
+
+    // DevOps & Infrastructure
+    { title: 'Docker - Containerization', section: 'DevOps', url: 'docker.html', icon: '🐳', keywords: 'docker container image dockerfile multi-stage build containerization', description: 'Package apps with dependencies, works everywhere - standardized, reproducible deployment' },
+    { title: 'Kubernetes - Orchestration', section: 'DevOps', url: 'kubernetes.html', icon: '☸️', keywords: 'kubernetes k8s pods deployment service auto-scaling self-healing rolling update', description: 'Orchestrate containers, auto-scaling, self-healing, zero-downtime deployments' },
+    { title: 'Git & Version Control', section: 'DevOps', url: 'git-version-control.html', icon: '🔀', keywords: 'git version control branches pull request code review ci/cd pipeline github', description: 'Collaborate on code, track changes, code review, automated CI/CD pipeline' },
+    { title: 'Complete Deployment Flow', section: 'DevOps', url: 'git-docker-kubernetes-flow.html', icon: '🚀', keywords: 'deployment pipeline git docker kubernetes cicd continuous integration automatic rollback', description: 'End-to-end: commit code → tests → Docker build → K8s deploy → Live in production' }
   ];
 
   function initSearch() {

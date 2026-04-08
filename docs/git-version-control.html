@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git & Version Control - CI/CD Pipeline - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 20px;
+            background: var(--surface-2);
+            border-radius: var(--r-lg);
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .flow-box {
+            background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            min-width: 150px;
+            text-align: center;
+            font-weight: 600;
+            animation: pulse-box 2s ease-in-out infinite;
+        }
+        .flow-arrow {
+            font-size: 24px;
+            margin: 0 15px;
+            animation: arrow-flow 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-box {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        @keyframes arrow-flow {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+    </style>
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+
+<div id="readingProgress" class="progress-fill" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div>
+            DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="webapi.html">Web API</a>
+            <a href="ef-core.html">EF Core</a>
+            <a href="linq.html">LINQ</a>
+            <a href="interview.html">Interview</a>
+            <a href="compiler.html">Compiler</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-section">
+                <ul class="sidebar-links">
+                    <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+                </ul>
+            </div>
+
+            <div class="project-tabs-section">
+                <div class="project-tabs">
+                    <button class="project-tab" data-project="webapi" title="Web API">🌐</button>
+                    <button class="project-tab" data-project="mvc" title="MVC">🖥️</button>
+                    <button class="project-tab" data-project="angular" title="Angular">🅰️</button>
+                    <button class="project-tab" data-project="react" title="React">⚛️</button>
+                </div>
+
+                <div class="project-topics-list" data-topics="webapi" style="display: none;">
+                    <a href="webapi.html" class="sidebar-link"><span style="margin-right: 4px;">🌐</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="mvc" style="display: none;">
+                    <a href="mvc.html" class="sidebar-link"><span style="margin-right: 4px;">📘</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="angular" style="display: none;">
+                    <a href="angular.html" class="sidebar-link"><span style="margin-right: 4px;">📗</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="react" style="display: none;">
+                    <a href="react.html" class="sidebar-link"><span style="margin-right: 4px;">📙</span> Overview</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🏗️ Advanced Architecture</h3>
+                <ul class="sidebar-links">
+                    <li><a href="microservices.html" class="sidebar-link"><span style="margin-right: 4px;">🔌</span> Microservices</a></li>
+                    <li><a href="event-driven-architecture.html" class="sidebar-link"><span style="margin-right: 4px;">⚡</span> Event-Driven</a></li>
+                    <li><a href="kafka.html" class="sidebar-link"><span style="margin-right: 4px;">📡</span> Kafka</a></li>
+                    <li><a href="rabbitmq-kafka-comparison.html" class="sidebar-link"><span style="margin-right: 4px;">⚔️</span> RabbitMQ vs Kafka</a></li>
+                    <li><a href="mfe.html" class="sidebar-link"><span style="margin-right: 4px;">🎨</span> Micro Frontends</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🔧 DevOps & Infrastructure</h3>
+                <ul class="sidebar-links">
+                    <li><a href="docker.html" class="sidebar-link"><span style="margin-right: 4px;">🐳</span> Docker</a></li>
+                    <li><a href="kubernetes.html" class="sidebar-link"><span style="margin-right: 4px;">☸️</span> Kubernetes</a></li>
+                    <li><a href="git-version-control.html" class="sidebar-link active"><span style="margin-right: 4px;">🔀</span> Git & Version Control</a></li>
+                    <li><a href="git-docker-kubernetes-flow.html" class="sidebar-link"><span style="margin-right: 4px;">🚀</span> Deployment Strategies</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🎓 Interview Prep</h3>
+                <ul class="sidebar-links">
+                    <li><a href="interview.html" class="sidebar-link"><span style="margin-right: 4px;">💡</span> All Questions</a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <article class="article">
+                <nav class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="sep">/</span>
+                    <a href="index.html">DevOps</a>
+                    <span class="sep">/</span>
+                    <span class="current">Git & CI/CD</span>
+                </nav>
+
+                <div class="page-title-block">
+                    <h1 class="page-title">🔀 Git & Version Control - CI/CD Pipeline</h1>
+                    <p class="page-subtitle">Collaborate on code, review changes safely, and auto-deploy when you push. Git + GitHub Actions = automated production deployments.</p>
+                </div>
+
+                <div class="callout callout-info">
+                    <span class="callout-icon">⏱️</span>
+                    <div class="callout-content">
+                        <p class="callout-title">Real-World Analogy: Time Machine + Team Collaboration</p>
+                        <p class="callout-body"><strong>❌ Without Git:</strong> 10 developers editing same code file, emailing each other versions, Alice overwrites Bob's changes, app breaks.</p>
+                        <p class="callout-body"><strong>✅ With Git:</strong> Each developer has own branch. Alice's changes in feature/product-filter, Bob's in feature/add-sorting. Merge branches only after code review. Full history = go back to any moment.</p>
+                    </div>
+                </div>
+
+                <h2>Why Version Control?</h2>
+                <p><strong>Problems Without Git:</strong></p>
+                <ul>
+                    <li>❌ <strong>Lost code:</strong> Deleted file by mistake? No backup. Lost forever.</li>
+                    <li>❌ <strong>Conflicts:</strong> Alice && Bob both modify same file → Who wins? Manual merge nightmare</li>
+                    <li>❌ <strong>No history:</strong> Code broke yesterday. What changed? Guess and pray</li>
+                    <li>❌ <strong>No rollback:</strong> Production broken by latest deploy. Can't revert to yesterday's working version</li>
+                    <li>❌ <strong>No code review:</strong> Anyone pushes anything → Bad code reaches production</li>
+                </ul>
+
+                <h2>Key Concepts</h2>
+
+                <h3>1️⃣ Commits (Snapshots in Time)</h3>
+                <div class="concept-card">
+                    <p><strong>Commit = "Save game" checkpoint with message explaining change</strong></p>
+                    <pre><code class="language-bash">git add ProductService.cs
+git commit -m "feat: add product filter by category"
+# Creates: Commit hash abcd1234 with timestamp, author, message</code></pre>
+
+                    <p><strong>Good commit:</strong> One logical change (not "fixed stuff" + "refactored" + "updated").</p>
+                    <p><strong>Example history:</strong></p>
+                    <pre><code class="language-text">abcd1234 feat: add product filter by category
+xyz5678  fix: handle null category ids
+klm9101  test: add unit tests for filter
+→ Each commit is reversible, reviewable, testable</code></pre>
+                </div>
+
+                <h3>2️⃣ Branches (Parallel Development)</h3>
+                <div class="concept-card">
+                    <p><strong>Branch = separate copy of code (independent change)</strong></p>
+                    <pre><code class="language-bash"># Alice works on new feature
+git checkout -b feature/product-filter
+# Bob works on bug fix independently
+git checkout -b bugfix/null-reference
+
+# Both can commit to their branches without interfering
+# Later: Merge when both complete</code></pre>
+
+                    <p><strong>Why?</strong> Main branch stays stable. Features developed separately. Only merge when tested.</p>
+                </div>
+
+                <h3>3️⃣ Pull Requests (Code Review)</h3>
+                <div class="concept-card">
+                    <p><strong>PR = "Can I merge my feature into main?"</strong></p>
+                    <pre><code class="language-bash"># Alice pushes feature branch
+git push origin feature/product-filter
+
+# Creates Pull Request on GitHub
+# → Bob reviews code: "Looks good! +1"
+# → CI/CD pipeline runs tests automatically
+# → All pass? → Merge button enabled
+# → Alice clicks merge → Code integrated to main</code></pre>
+
+                    <p><strong>Benefits:</strong> Code review catches bugs, knowledge sharing, audit trail.</p>
+                </div>
+
+                <h3>4️⃣ CI/CD Pipeline (Automated Testing & Deployment)</h3>
+                <div class="concept-card">
+                    <p><strong>On every push: Auto-test, auto-build, auto-deploy</strong></p>
+                    <pre><code class="language-yaml"># .github/workflows/deploy.yml
+name: CI/CD Pipeline
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run tests
+        run: dotnet test
+      - name: Build Docker image
+        run: docker build -t productcatalogapi:latest .
+      - name: Push to registry
+        run: docker push myregistry.azurecr.io/productcatalogapi:latest
+      - name: Deploy to Kubernetes
+        run: kubectl apply -f k8s-deployment.yaml</code></pre>
+
+                    <p>Result: Push code → Tests pass → Build image → Deploy to production (all automated!)</p>
+                </div>
+
+                <h3>5️⃣ Tags (Release Markers)</h3>
+                <div class="concept-card">
+                    <p><strong>Tag = label on specific commit (version marker)</strong></p>
+                    <pre><code class="language-bash"># Mark a release
+git tag -a v1.2.0 -m "Release version 1.2.0 - Added product filter"
+git push origin v1.2.0
+
+# Later: If v1.2.0 has bug → Deploy v1.2.1 instead
+# Can always check out: git checkout v1.2.0 → Exact code from that release</code></pre>
+
+                    <p><strong>Why?</strong> Track which code is in production. Audit trail. Quick rollback to previous version.</p>
+                </div>
+
+                <h2>Complete Git Workflow (Team Scenario)</h2>
+                <pre><code class="language-bash">== DEVELOPER: Alice ==
+# 1. Create feature branch
+git checkout -b feature/add-product-filter
+
+# 2. Make changes
+# Edit ProductService.cs, ProductController.cs
+git add ProductService.cs ProductController.cs
+git commit -m "feat: add product filter by category
+
+- Added ProductService.filter(categoryId) method
+- Updated ProductController.GetProducts() endpoint
+- Supports null categoryId (returns all products)"
+
+# 3. Push to remote
+git push origin feature/add-product-filter
+
+== GITHUB: Pull Request ==
+# Alice creates PR on GitHub
+# Title: "feat: add product filter by category"
+# Description: "Users can now filter products by category from the UI"
+
+# Link issues: Closes #123 (issue tracker)
+
+== CI/CD PIPELINE: Automatic ==
+# GitHub Actions triggered:
+✓ Linting ✓ Unit tests ✓ Integration tests ✓ Build Docker image
+# All pass → "All checks passed"
+
+== CODE REVIEW: Bob ==
+# Bob reviews PR
+# Comments: "Nice! Have you considered edge case when categoryId is 0?"
+# Alice commits fix: git commit -m "test: add edge case for categoryId == 0"
+# Bob approves: "Looks great! 👍"
+
+== DEPLOYMENT: Automatic ==
+# Alice clicks "Merge pull request"
+git merge feature/add-product-filter → main
+
+# GitHub Actions triggered again:
+✓ Tests pass ✓ Build image: productcatalogapi:v1.2.1
+✓ Push to registry: myregistry.azurecr.io/productcatalogapi:v1.2.1
+✓ Update Kubernetes: kubectl apply -f deployment.yaml (image: v1.2.1)
+
+# Result: ProductCatalogAPI v1.2.1 deployed to production
+# Zero downtime rolling update (Kubernetes handles gradual Pod replacement)</code></pre>
+
+                <h2>Branching Strategies</h2>
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <strong>Git Flow (Traditional)</strong>
+                        <pre><code>main (releases)
+  ↑ merge release
+release/ (release candidates)
+  ↑ merge develop
+develop (next version)
+  ↑ merge feature
+feature/xxx (features)</code></pre>
+                        <p><strong>Good for:</strong> Complex apps with scheduled releases</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>GitHub Flow (Modern)</strong>
+                        <pre><code>main (always deployable)
+  ↑ merge feature
+feature/xxx (features)</code></pre>
+                        <p><strong>Good for:</strong> Continuous deployment, web apps, startups</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>Trunk-Based (Advanced)</strong>
+                        <pre><code>main (everyone commits)
+All commits to main
+Feature flags hide incomplete features</code></pre>
+                        <p><strong>Good for:</strong> High-throughput teams, microservices</p>
+                    </div>
+                </div>
+
+                <h2>GitOps: Kubernetes Deployment from Git</h2>
+                <p><strong>Super advanced: Git becomes source of truth for infrastructure</strong></p>
+                <pre><code class="language-text">Developer commits to Git
+  ↓
+Kubernetes manifests updated in Git repo
+  ↓
+ArgoCD watches the Git repo
+  ↓
+ArgoCD detects change: "manifests.yaml changed from v1.1 to v1.2"
+  ↓
+ArgoCD auto-syncs: kubectl apply -f manifests.yaml
+  ↓
+Kubernetes cluster updated
+  ↓
+ProductCatalogAPI running v1.2 in production
+
+Result: Git = single source of truth for entire system</code></pre>
+
+                <h2>Best Practices</h2>
+                <ul>
+                    <li><strong>✅ Small focused commits:</strong> One feature/fix per commit. Easier to review, revert if needed</li>
+                    <li><strong>✅ Meaningful commit messages:</strong> "fix: handle null product ids" > "fixed stuff"</li>
+                    <li><strong>✅ .gitignore everything sensitive:</strong> bin/, obj/, .env, appsettings.Secrets.json</li>
+                    <li><strong>✅ Branch protection on main:</strong> Require code review + tests pass before merge</li>
+                    <li><strong>✅ Tag releases:</strong> v1.2.0, v1.3.0. Easy to track versions</li>
+                    <li><strong>✅ Atomic commits:</strong> Commit only compiles = safe to revert</li>
+                </ul>
+
+                <h2>Common Mistakes</h2>
+                <ul>
+                    <li><strong>❌ Large feature branches:</strong> Develop for 2 weeks → Merge conflicts nightmare. Merge daily instead</li>
+                    <li><strong>❌ Committing secrets:</strong> API keys, passwords in code → Visible forever in history. Use environment variables!</li>
+                    <li><strong>❌ Bad commit messages:</strong> "asdf", "fixed", "updated" → Impossible to understand history. Use conventional commits: feat:, fix:, test:</li>
+                    <li><strong>❌ Force push to main:</strong> NEVER. Rewrites history, everyone confused. Only amend unpushed commits</li>
+                    <li><strong>❌ Merging without tests:</strong> Tests haven't run → Broken code reaches production. Require CI/CD pass!</li>
+                </ul>
+
+                <h2>Interview Q&A</h2>
+                <div class="concept-card">
+                    <p><strong>Q: Why use branches instead of committing directly to main?</strong></p>
+                    <p>A: Safety + code review + parallel development. Main stays stable. Features developed independently. Only merge proven code.</p>
+                </div>
+
+                <div class="concept-card">
+                    <p><strong>Q: What's difference between merge and rebase?</strong></p>
+                    <p>A: Merge = creates merge commit (preserves history, non-linear). Rebase = replays commits on top (linear history). Use merge for shared branches, rebase for local cleanup.</p>
+                </div>
+
+                <div class="concept-card">
+                    <p><strong>Q: How do you handle merge conflicts?</strong></p>
+                    <p>A: Edit file, mark both sections as resolved, test, commit. Or use git mergetool. Or abort (git merge --abort) and rebase instead.</p>
+                </div>
+
+                <h2>Next Steps</h2>
+                <p>Git handles version control. Docker handles containerization. How do they work together in production?</p>
+                <p>→ <a href="git-docker-kubernetes-flow.html">🚀 End-to-End: Git → Docker → Kubernetes Complete Flow</a></p>
+            </article>
+
+            <nav class="page-nav">
+                <a href="kubernetes.html" class="nav-prev">← Kubernetes</a>
+                <a href="git-docker-kubernetes-flow.html" class="nav-next">Complete Flow →</a>
+            </nav>
+        </div>
+    </main>
+</div>
+
+<script src="js/app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

@@ -134,6 +134,17 @@
                 </ul>
             </div>
 
+            <!-- DevOps & Infrastructure -->
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🔧 DevOps & Infrastructure</h3>
+                <ul class="sidebar-links">
+                    <li><a href="docker.html" class="sidebar-link"><span style="margin-right: 4px;">🐳</span> Docker</a></li>
+                    <li><a href="kubernetes.html" class="sidebar-link"><span style="margin-right: 4px;">☸️</span> Kubernetes</a></li>
+                    <li><a href="git-version-control.html" class="sidebar-link"><span style="margin-right: 4px;">🔀</span> Git & Version Control</a></li>
+                    <li><a href="git-docker-kubernetes-flow.html" class="sidebar-link"><span style="margin-right: 4px;">🚀</span> Deployment Strategies</a></li>
+                </ul>
+            </div>
+
             <div class="sidebar-section">
                 <h3 class="sidebar-category">🎓 Interview Prep</h3>
                 <ul class="sidebar-links">
@@ -462,6 +473,27 @@ Example: Inventory Service down
   → Returns "Out of stock" to prevent cascading failures
   → After timeout, tries again (HALF_OPEN)
   → If works: back to normal (CLOSED)</code></pre>
+                </div>
+
+                <h2>🚀 Deployment: Docker & Kubernetes</h2>
+                <p>Once you've split your monolith into microservices, how do you deploy and manage them? That's where containerization and orchestration come in:</p>
+
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <strong>🐳 Docker: Standardized Containers</strong>
+                        <p>Each microservice gets its own Docker image. Same image runs on dev laptop, CI/CD, and production.</p>
+                        <p><a href="docker.html">Learn Docker → Containerization basics</a></p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>☸️ Kubernetes: Orchestration</strong>
+                        <p>Deploy multiple microservices across Kubernetes cluster. Auto-scales, self-heals, rolling updates, zero downtime.</p>
+                        <p><a href="kubernetes.html">Learn Kubernetes → Manage containers at scale</a></p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>🚀 Complete Flow</strong>
+                        <p>Git code → Tests pass → Docker image → Kubernetes deploy → Live (all automatic).</p>
+                        <p><a href="git-docker-kubernetes-flow.html">See the complete pipeline</a></p>
+                    </div>
                 </div>
 
                 <nav class="page-nav">

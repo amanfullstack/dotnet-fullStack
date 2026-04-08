@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Deployment Flow - Git to Kubernetes - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+
+<div id="readingProgress" class="progress-fill" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div>
+            DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="webapi.html">Web API</a>
+            <a href="ef-core.html">EF Core</a>
+            <a href="linq.html">LINQ</a>
+            <a href="interview.html">Interview</a>
+            <a href="compiler.html">Compiler</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-section">
+                <ul class="sidebar-links">
+                    <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+                </ul>
+            </div>
+
+            <div class="project-tabs-section">
+                <div class="project-tabs">
+                    <button class="project-tab" data-project="webapi" title="Web API">🌐</button>
+                    <button class="project-tab" data-project="mvc" title="MVC">🖥️</button>
+                    <button class="project-tab" data-project="angular" title="Angular">🅰️</button>
+                    <button class="project-tab" data-project="react" title="React">⚛️</button>
+                </div>
+
+                <div class="project-topics-list" data-topics="webapi" style="display: none;">
+                    <a href="webapi.html" class="sidebar-link"><span style="margin-right: 4px;">🌐</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="mvc" style="display: none;">
+                    <a href="mvc.html" class="sidebar-link"><span style="margin-right: 4px;">📘</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="angular" style="display: none;">
+                    <a href="angular.html" class="sidebar-link"><span style="margin-right: 4px;">📗</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="react" style="display: none;">
+                    <a href="react.html" class="sidebar-link"><span style="margin-right: 4px;">📙</span> Overview</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🏗️ Advanced Architecture</h3>
+                <ul class="sidebar-links">
+                    <li><a href="microservices.html" class="sidebar-link"><span style="margin-right: 4px;">🔌</span> Microservices</a></li>
+                    <li><a href="event-driven-architecture.html" class="sidebar-link"><span style="margin-right: 4px;">⚡</span> Event-Driven</a></li>
+                    <li><a href="kafka.html" class="sidebar-link"><span style="margin-right: 4px;">📡</span> Kafka</a></li>
+                    <li><a href="rabbitmq-kafka-comparison.html" class="sidebar-link"><span style="margin-right: 4px;">⚔️</span> RabbitMQ vs Kafka</a></li>
+                    <li><a href="mfe.html" class="sidebar-link"><span style="margin-right: 4px;">🎨</span> Micro Frontends</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🔧 DevOps & Infrastructure</h3>
+                <ul class="sidebar-links">
+                    <li><a href="docker.html" class="sidebar-link"><span style="margin-right: 4px;">🐳</span> Docker</a></li>
+                    <li><a href="kubernetes.html" class="sidebar-link"><span style="margin-right: 4px;">☸️</span> Kubernetes</a></li>
+                    <li><a href="git-version-control.html" class="sidebar-link"><span style="margin-right: 4px;">🔀</span> Git & Version Control</a></li>
+                    <li><a href="git-docker-kubernetes-flow.html" class="sidebar-link active"><span style="margin-right: 4px;">🚀</span> Deployment Strategies</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🎓 Interview Prep</h3>
+                <ul class="sidebar-links">
+                    <li><a href="interview.html" class="sidebar-link"><span style="margin-right: 4px;">💡</span> All Questions</a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <article class="article">
+                <nav class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="sep">/</span>
+                    <a href="index.html">DevOps</a>
+                    <span class="sep">/</span>
+                    <span class="current">Complete Deployment Flow</span>
+                </nav>
+
+                <div class="page-title-block">
+                    <h1 class="page-title">🚀 Complete Deployment Flow: Git → Docker → Kubernetes</h1>
+                    <p class="page-subtitle">The full journey: Developer commits code, tests run, Docker image builds, Kubernetes deploys to production, all automatically. Zero-downtime rolling updates.</p>
+                </div>
+
+                <div class="callout callout-warning">
+                    <span class="callout-icon">🎯</span>
+                    <div class="callout-content">
+                        <p class="callout-title">The Big Picture: How Modern DevOps Works</p>
+                        <p class="callout-body"><strong>1. Developer writes code</strong> → <strong>2. Pushes to Git</strong> → <strong>3. CI/CD tests & builds</strong> → <strong>4. Docker image created</strong> → <strong>5. Pushed to registry</strong> → <strong>6. K8s deploys</strong> → <strong>7. Running in production</strong> (all automated!)</p>
+                    </div>
+                </div>
+
+                <h2>The Complete Flow Diagram</h2>
+                <pre><code class="language-text">┌─────────────────────────────────────────────────────────────────────────────┐
+│                    PRODUCTION DEPLOYMENT PIPELINE                           │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+DEVELOPER ENVIRONMENT
+════════════════════════════════════════════════════════════════════════════════
+  Developer: amana                                             (laptop)
+  ┌──────────────────────────────────┐
+  │  ProductCatalogAPI               │
+  │  ├── ProductController.cs        │  Adds product filter feature
+  │  ├── ProductService.cs           │
+  │  └── ProductFilter.cs (new)      │
+  └──────────────────────────────────┘
+               ↓
+  $ git add ProductFilter.cs
+  $ git commit -m "feat: add product name filter"
+  $ git push origin feature/product-filter
+
+GIT REPOSITORY
+════════════════════════════════════════════════════════════════════════════════
+  GitHub: https://github.com/amana/dotnet-fullStack
+
+  ┌─────────────────────────────────────────────┐
+  │  feature/product-filter branch              │
+  │  Commit: abc1234 "add product name filter"  │
+  │  ↓ Pull Request Created                      │
+  └─────────────────────────────────────────────┘
+              ↓
+  Bob reviews, approves
+  Alice merges to main branch
+              ↓
+  ┌─────────────────────────────────────────────┐
+  │  main branch (production code)              │
+  │  Commit: abc1234 merged to main             │
+  │  Git webhook: trigger GitHub Actions        │
+  └─────────────────────────────────────────────┘
+
+CI/CD PIPELINE (GitHub Actions)
+════════════════════════════════════════════════════════════════════════════════
+  Automated workflow on every push to main:
+
+  Step 1: CHECKOUT CODE
+  └─ git clone repo → /workspace/
+
+  Step 2: RUN TESTS
+  ├─ $ dotnet test
+  ├─ ✓ 25 unit tests passed
+  ├─ ✓ 8 integration tests passed
+  └─ Test result: SUCCESS
+
+  Step 3: BUILD APPLICATION
+  ├─ $ dotnet build -c Release
+  └─ Build result: SUCCESS (ProductCatalogAPI.dll created)
+
+  Step 4: BUILD DOCKER IMAGE
+  ├─ $ docker build -t productcatalogapi:v1.2.0 .
+  ├─ FROM mcr.microsoft.com/dotnet/aspnet:8.0
+  ├─ COPY app/ → /app/
+  ├─ Compress dependencies, optimize layers
+  └─ Image created: 370 MB (productcatalogapi:v1.2.0)
+
+  Step 5: PUSH TO REGISTRY
+  ├─ $ docker login myregistry.azurecr.io
+  ├─ $ docker push myregistry.azurecr.io/productcatalogapi:v1.2.0
+  └─ Image available globally, can be pulled from anywhere
+
+KUBERNETES CLUSTER (Azure AKS, AWS EKS, etc.)
+════════════════════════════════════════════════════════════════════════════════
+  Step 6: UPDATE DEPLOYMENT
+  ├─ Updated deployment.yaml:
+  │  image: myregistry.azurecr.io/productcatalogapi:v1.2.0  (was v1.1.5)
+  ├─ $ kubectl apply -f deployment.yaml
+  └─ Change detected by Kubernetes controller
+
+  Step 7: ROLLING UPDATE
+  ┌──────────────────────────────────────────────────┐
+  │ BEFORE (v1.1.5):                                 │
+  │ - ProductAPI-Pod-1 (v1.1.5)        CPU: 45%     │
+  │ - ProductAPI-Pod-2 (v1.1.5)        CPU: 52%     │
+  │ - ProductAPI-Pod-3 (v1.1.5)        CPU: 48%     │
+  └──────────────────────────────────────────────────┘
+              ↓ Rolling update starts (no downtime)
+  ┌──────────────────────────────────────────────────┐
+  │ PHASE 1: Start new Pod                           │
+  │ - ProductAPI-Pod-1 (v1.1.5)        CPU: 45%     │
+  │ - ProductAPI-Pod-2 (v1.1.5)        CPU: 52%     │
+  │ - ProductAPI-Pod-3 (v1.1.5)        CPU: 48%     │
+  │ - ProductAPI-Pod-4 (v1.2.0) [NEW]  Starting...  │
+  └──────────────────────────────────────────────────┘
+              ↓ Health checks pass, route traffic
+  ┌──────────────────────────────────────────────────┐
+  │ PHASE 2: Drain traffic from old Pod              │
+  │ - ProductAPI-Pod-1 (v1.1.5)        [DRAINING]   │
+  │ - ProductAPI-Pod-2 (v1.1.5)        CPU: 52%     │
+  │ - ProductAPI-Pod-3 (v1.1.5)        CPU: 48%     │
+  │ - ProductAPI-Pod-4 (v1.2.0)        CPU: 45%     │
+  └──────────────────────────────────────────────────┘
+              ↓ In-flight requests complete
+  ┌──────────────────────────────────────────────────┐
+  │ PHASE 3: Terminate old Pod                       │
+  │ - ProductAPI-Pod-2 (v1.1.5)        CPU: 52%     │
+  │ - ProductAPI-Pod-3 (v1.1.5)        CPU: 48%     │
+  │ - ProductAPI-Pod-4 (v1.2.0)        CPU: 45%     │
+  │ - ProductAPI-Pod-5 (v1.2.0) [NEW]  Starting...  │
+  └──────────────────────────────────────────────────┘
+              ↓ Repeat for remaining Pods
+  ┌──────────────────────────────────────────────────┐
+  │ AFTER (v1.2.0):                                  │
+  │ - ProductAPI-Pod-4 (v1.2.0)        CPU: 45%     │
+  │ - ProductAPI-Pod-5 (v1.2.0)        CPU: 52%     │
+  │ - ProductAPI-Pod-6 (v1.2.0)        CPU: 48%     │
+  │ ✅ ZERO DOWNTIME (users didn't notice!)         │
+  └──────────────────────────────────────────────────┘
+              ↓
+  Monitoring detects issue? → Auto-rollback to v1.1.5
+
+PRODUCTION RUNNING
+════════════════════════════════════════════════════════════════════════════════
+  ProductCatalogAPI v1.2.0 serving requests
+  ✅ ProductAPI: 3 replicas (balanced load)
+  ✅ Product filter feature LIVE
+
+  Users can now:
+  - Visit /products?filter=electronics
+  - See filtered product list
+  - Everything working smoothly</code></pre>
+
+                <h2>Timeline: From Commit to Production</h2>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: var(--surface-2);">
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid var(--border);">Time</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid var(--border);">Tool</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid var(--border);">Action</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid var(--border);">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">09:30</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Git</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Developer commits: "feat: add product filter"</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">✓ Committed</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">09:31</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Git</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Code review & approval</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">✓ Approved</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">09:32</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Git</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Merge to main branch</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">✓ Merged</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">09:32</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">GitHub Actions</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Trigger CI/CD pipeline</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">⏳ Running</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">09:33</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">GitHub Actions</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Run tests (25 unit, 8 integration)</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">✓ All passed</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">09:34</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Docker</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Build image: productcatalogapi:v1.2.0</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">✓ Built (370 MB)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">09:35</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Docker</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Push to registry</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">✓ Pushed</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">09:36</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Kubernetes</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Update Deployment manifest</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">✓ Updated (v1.2.0)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">09:36-09:41</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Kubernetes</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Rolling update (3 Pods, ~2 min each)</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">✓ Zero downtime</td>
+                        </tr>
+                        <tr style="background: var(--surface-2);">
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">09:41</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Production</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">Feature LIVE (all users have access)</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border);">✅ LIVE</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>Phase-Based: When Each Tool is Used</h2>
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <strong>📱 Development Phase</strong>
+                        <p><strong>Tool: Git</strong></p>
+                        <p>Developer writes code, commits daily. Feature branches for isolation. Code reviews before merge. Main always works.</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>🧪 Testing Phase</strong>
+                        <p><strong>Tool: GitHub Actions (CI/CD)</strong></p>
+                        <p>On every commit: unit tests, integration tests, security scans run auto-automatically. If tests fail → don't deploy.</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>📦 Build Phase</strong>
+                        <p><strong>Tool: Docker</strong></p>
+                        <p>Tested code → Docker image (reproducible, versioned). Multi-stage build keeps size small (370 MB). Push to registry.</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>⏱️ Staging Phase</strong>
+                        <p><strong>Tool: Kubernetes</strong></p>
+                        <p>Deploy image to staging cluster. Run smoke tests, integration tests, load tests. Verify everything before prod.</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>🚀 Production Phase</strong>
+                        <p><strong>Tool: Kubernetes</strong></p>
+                        <p>Deploy image to production cluster. Rolling updates (zero downtime). Health checks, monitoring, auto-scaling. If issue: auto-rollback.</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>📊 Monitoring Phase</strong>
+                        <p><strong>Tool: Prometheus/Grafana</strong></p>
+                        <p>Track metrics: CPU, memory, errors, latency. Alerts if something goes wrong. Ready to rollback if needed.</p>
+                    </div>
+                </div>
+
+                <h2>What If Something Goes Wrong?</h2>
+                <pre><code class="language-text">SCENARIO: New feature breaks payment processing in production
+
+DETECTION (Monitoring)
+├─ Prometheus alert: "Payment Error Rate > 5%"
+└─ Alert fires to Slack/PagerDuty
+
+IMMEDIATE ACTION (Kubernetes)
+├─ Operator clicks "Rollback to v1.1.5"
+├─ K8s immediately terminates v1.2.0 Pods
+├─ Creates v1.1.5 Pods (version from Git tag)
+├─ Rolling update: v1.2.0 → v1.1.5 (2-3 minutes)
+└─ Production stable again ✅
+
+ROOT CAUSE (Git Investigation)
+├─ Developer checks: "What changed between v1.1.5 and v1.2.0?"
+├─ git diff v1.1.5 v1.2.0 → Shows commit "feat: add product filter"
+├─ Reviews code: "Ah! I see the bug in ProductController line 45"
+└─ Fix bug → git commit -m "fix: handle null category in filter"
+
+REDEPLOYMENT (Full cycle again)
+├─ git push fix commit → GitHub
+├─ GitHub Actions triggers (tests, build, push image)
+├─ Kubernetes deploys v1.2.1 (with fix)
+└─ Production running smoothly again ✅</code></pre>
+
+                <h2>Key Takeaways</h2>
+                <ul style="font-size: 16px; line-height: 1.8;">
+                    <li><strong>Git:</strong> Version control, collaboration, audit trail</li>
+                    <li><strong>CI/CD (GitHub Actions):</strong> Automated testing, building, pushing</li>
+                    <li><strong>Docker:</strong> Standardized, reproducible, versioned containers</li>
+                    <li><strong>Kubernetes:</strong> Automated deployment, scaling, self-healing, rolling updates</li>
+                    <li><strong>Together:</strong> Commit code → Tests run → Docker image → K8s deploys → Production (all automatic!)</li>
+                </ul>
+
+                <h2>Interview Q&A</h2>
+                <div class="concept-card">
+                    <p><strong>Q: Walk me through deploying a new feature from code commit to production.</strong></p>
+                    <p>A: Commit to Git → Code review → Merge to main → GitHub Actions triggered → Tests run → Docker image built → Pushed to registry → Kubernetes deployment updated → Rolling update (zero downtime) → Feature LIVE. Time: ~5-10 minutes, all automated.</p>
+                </div>
+
+                <div class="concept-card">
+                    <p><strong>Q: What if tests fail in the pipeline?</strong></p>
+                    <p>A: Build stops, no Docker image created, nothing deployed. Developer get notification, fixes code, commits fix, pipeline runs again. Broken code never reaches production.</p>
+                </div>
+
+                <div class="concept-card">
+                    <p><strong>Q: How do you deploy without downtime?</strong></p>
+                    <p>A: Kubernetes rolling updates. Start new Pod v1.2.0 → Health checks pass → Route traffic to new Pod → Drain traffic from old Pod v1.1.5 → Stop old Pod → Repeat for remaining Pods. User never sees downtime.</p>
+                </div>
+
+                <h2>Related Topics</h2>
+                <ul>
+                    <li>🐳 <a href="docker.html">Docker: Images, Containers, Dockerfiles</a></li>
+                    <li>☸️ <a href="kubernetes.html">Kubernetes: Pods, Deployments, Services</a></li>
+                    <li>🔀 <a href="git-version-control.html">Git: Branches, PRs, CI/CD Pipeline</a></li>
+                    <li>🔌 <a href="microservices.html">Microservices: Architecture Pattern</a></li>
+                </ul>
+            </article>
+
+            <nav class="page-nav">
+                <a href="git-version-control.html" class="nav-prev">← Git & Version Control</a>
+                <a href="microservices.html" class="nav-next">Microservices Architecture →</a>
+            </nav>
+        </div>
+    </main>
+</div>
+
+<script src="js/app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

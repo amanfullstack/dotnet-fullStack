@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kubernetes - Container Orchestration - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 20px;
+            background: var(--surface-2);
+            border-radius: var(--r-lg);
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .flow-box {
+            background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            min-width: 150px;
+            text-align: center;
+            font-weight: 600;
+            animation: pulse-box 2s ease-in-out infinite;
+        }
+        .flow-arrow {
+            font-size: 24px;
+            margin: 0 15px;
+            animation: arrow-flow 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-box {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        @keyframes arrow-flow {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+    </style>
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+
+<div id="readingProgress" class="progress-fill" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div>
+            DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="webapi.html">Web API</a>
+            <a href="ef-core.html">EF Core</a>
+            <a href="linq.html">LINQ</a>
+            <a href="interview.html">Interview</a>
+            <a href="compiler.html">Compiler</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-section">
+                <ul class="sidebar-links">
+                    <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+                </ul>
+            </div>
+
+            <div class="project-tabs-section">
+                <div class="project-tabs">
+                    <button class="project-tab" data-project="webapi" title="Web API">🌐</button>
+                    <button class="project-tab" data-project="mvc" title="MVC">🖥️</button>
+                    <button class="project-tab" data-project="angular" title="Angular">🅰️</button>
+                    <button class="project-tab" data-project="react" title="React">⚛️</button>
+                </div>
+
+                <div class="project-topics-list" data-topics="webapi" style="display: none;">
+                    <a href="webapi.html" class="sidebar-link"><span style="margin-right: 4px;">🌐</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="mvc" style="display: none;">
+                    <a href="mvc.html" class="sidebar-link"><span style="margin-right: 4px;">📘</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="angular" style="display: none;">
+                    <a href="angular.html" class="sidebar-link"><span style="margin-right: 4px;">📗</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="react" style="display: none;">
+                    <a href="react.html" class="sidebar-link"><span style="margin-right: 4px;">📙</span> Overview</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🏗️ Advanced Architecture</h3>
+                <ul class="sidebar-links">
+                    <li><a href="microservices.html" class="sidebar-link"><span style="margin-right: 4px;">🔌</span> Microservices</a></li>
+                    <li><a href="event-driven-architecture.html" class="sidebar-link"><span style="margin-right: 4px;">⚡</span> Event-Driven</a></li>
+                    <li><a href="kafka.html" class="sidebar-link"><span style="margin-right: 4px;">📡</span> Kafka</a></li>
+                    <li><a href="rabbitmq-kafka-comparison.html" class="sidebar-link"><span style="margin-right: 4px;">⚔️</span> RabbitMQ vs Kafka</a></li>
+                    <li><a href="mfe.html" class="sidebar-link"><span style="margin-right: 4px;">🎨</span> Micro Frontends</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🔧 DevOps & Infrastructure</h3>
+                <ul class="sidebar-links">
+                    <li><a href="docker.html" class="sidebar-link"><span style="margin-right: 4px;">🐳</span> Docker</a></li>
+                    <li><a href="kubernetes.html" class="sidebar-link active"><span style="margin-right: 4px;">☸️</span> Kubernetes</a></li>
+                    <li><a href="git-version-control.html" class="sidebar-link"><span style="margin-right: 4px;">🔀</span> Git & Version Control</a></li>
+                    <li><a href="git-docker-kubernetes-flow.html" class="sidebar-link"><span style="margin-right: 4px;">🚀</span> Deployment Strategies</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🎓 Interview Prep</h3>
+                <ul class="sidebar-links">
+                    <li><a href="interview.html" class="sidebar-link"><span style="margin-right: 4px;">💡</span> All Questions</a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <article class="article">
+                <nav class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="sep">/</span>
+                    <a href="index.html">DevOps</a>
+                    <span class="sep">/</span>
+                    <span class="current">Kubernetes</span>
+                </nav>
+
+                <div class="page-title-block">
+                    <h1 class="page-title">☸️ Kubernetes - Container Orchestration</h1>
+                    <p class="page-subtitle">Automatically scale, heal, and deploy thousands of containers across multiple servers. Think of it as an orchestra conductor for Docker containers.</p>
+                </div>
+
+                <div class="callout callout-info">
+                    <span class="callout-icon">🎭</span>
+                    <div class="callout-content">
+                        <p class="callout-title">Real-World Analogy: Orchestra Conductor</p>
+                        <p class="callout-body"><strong>❌ Without Kubernetes:</strong> 100 musicians (containers) on stage, each following their own sheet music. If violinist gets sick → play stops. Manual reschedule → chaos.</p>
+                        <p class="callout-body"><strong>✅ With Kubernetes:</strong> Conductor (K8s) watches orchestra. Violinist gets sick? → Auto-replace from backup. Need louder sound? → Auto-add 3 more violinists. Rain storm? → Move everyone inside. Perfect harmony without conductor intervening.</p>
+                    </div>
+                </div>
+
+                <h2>Why Kubernetes?</h2>
+                <p><strong>Problems at Scale (100s of containers):</strong></p>
+                <ul>
+                    <li>❌ <strong>Manual Management:</strong> SSH into 50 servers, manually start containers → Slow, error-prone</li>
+                    <li>❌ <strong>Container Dies:</strong> If ProductAPI-Pod-3 crashes → Customer gets 504. Need someone to restart it NOW</li>
+                    <li>❌ <strong>No Auto-Scaling:</strong> Black Friday traffic spike? Manually spin up 20 more instances? Too slow!</li>
+                    <li>❌ <strong>No Orchestration:</strong> How to deploy v2.0 without downtime? Manually kill old ones, start new ones → Risk of downtime</li>
+                    <li>❌ <strong>Networking Hell:</strong> How do containers securely communicate? Hard-coded IP addresses? Nightmare when containers move</li>
+                </ul>
+
+                <p><strong>Solutions WITH Kubernetes:</strong></p>
+                <ul>
+                    <li>✅ <strong>Self-Healing:</strong> Container crashes? K8s auto-restarts it</li>
+                    <li>✅ <strong>Auto-Scaling:</strong> CPU usage 80%? K8s auto-creates more Pods</li>
+                    <li>✅ <strong>Rolling Updates:</strong> Deploy v2.0: Start new Pod, drain traffic from old Pod, delete old Pod → Zero downtime</li>
+                    <li>✅ <strong>Service Discovery:</strong> Containers can find each other by name (internal DNS)</li>
+                    <li>✅ <strong>Load Balancing:</strong> Traffic auto-distributed across replicas</li>
+                </ul>
+
+                <h2>Key Concepts</h2>
+
+                <h3>1️⃣ Pod (Smallest K8s Unit)</h3>
+                <div class="concept-card">
+                    <p><strong>Pod = Wrapper around container(s)</strong></p>
+                    <pre><code class="language-text">Usually: 1 container per Pod
+Sometimes: 2-3 containers (tightly coupled only!)
+
+Example:
+┌────────────────────────────┐
+│ Pod (unique IP shared)      │
+├────────────────────────────┤
+│ Container: ProductAPI      │
+│ Container: Logging Sidecar │
+└────────────────────────────┘</code></pre>
+
+                    <p><strong>Why not just containers?</strong> K8s Pods are Linux networking namespace → All containers in Pod share IP/localhost. Easy inter-process communication.</p>
+                </div>
+
+                <h3>2️⃣ Deployment (Desired State)</h3>
+                <div class="concept-card">
+                    <p><strong>Declarative: "I want 3 replicas of ProductAPI v1.2.0"</strong></p>
+                    <pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-api
+spec:
+  replicas: 3              # "I want 3 copies running"
+  selector:
+    matchLabels:
+      app: product-api
+  template:
+    metadata:
+      labels:
+        app: product-api
+    spec:
+      containers:
+      - name: product-api
+        image: myregistry.azurecr.io/productcatalogapi:1.2.0
+        ports:
+        - containerPort: 5000
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 10</code></pre>
+
+                    <p><strong>K8s watches & maintains:</strong> If one Pod crashes → K8s auto-creates new one. Always 3 replicas.</p>
+                </div>
+
+                <h3>3️⃣ Service (Network Expose)</h3>
+                <div class="concept-card">
+                    <p><strong>Problem: Pods are temporary. IP changes when Pod restart. How does frontend find backend?</strong></p>
+                    <p><strong>Solution: Service = Stable DNS name + Load Balancer</strong></p>
+                    <pre><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: product-api
+spec:
+  type: LoadBalancer          # Expose outside cluster
+  selector:
+    app: product-api          # Route traffic to Pods with this label
+  ports:
+  - port: 80                  # External port (what users see)
+    targetPort: 5000          # Internal Pod port
+    protocol: TCP</code></pre>
+
+                    <p><strong>Result:</strong> Frontend calls <code>http://product-api</code> → Automatically routed to one of 3 Pods (round-robin load balanced)</p>
+                </div>
+
+                <h3>4️⃣ ConfigMap & Secrets</h3>
+                <div class="concept-card">
+                    <p><strong>Problem: How to configure apps without rebuilding image?</strong></p>
+                    <p><strong>ConfigMap = Config as YAML (not in image)</strong></p>
+                    <pre><code class="language-yaml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  LOG_LEVEL: "INFO"
+  MAX_CONNECTIONS: "100"
+  DATABASE_HOST: "postgres.default.svc.cluster.local"</code></pre>
+
+                    <p><strong>Secret = Encrypted config (passwords, tokens)</strong></p>
+                    <pre><code class="language-yaml">apiVersion: v1
+kind: Secret
+metadata:
+  name: db-credentials
+type: Opaque
+stringData:
+  password: "super-secret-password-123"</code></pre>
+
+                    <p>Reference in Deployment:</p>
+                    <pre><code class="language-yaml">env:
+- name: LOG_LEVEL
+  valueFrom:
+    configMapKeyRef:
+      name: app-config
+      key: LOG_LEVEL
+- name: DB_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: db-credentials
+      key: password</code></pre>
+                </div>
+
+                <h3>5️⃣ Ingress (HTTP Routing)</h3>
+                <div class="concept-card">
+                    <p><strong>Service gives internal routing. Ingress gives external HTTP routing.</strong></p>
+                    <pre><code class="language-yaml">apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-gateway
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: api.example.com
+    http:
+      paths:
+      - path: /products
+        pathType: Prefix
+        backend:
+          service:
+            name: product-api
+            port:
+              number: 80
+      - path: /orders
+        pathType: Prefix
+        backend:
+          service:
+            name: order-api
+            port:
+              number: 80</code></pre>
+
+                    <p><strong>Result:</strong> User visits api.example.com/products → Routed to product-api Service</p>
+                </div>
+
+                <h2>Complete Microservices Example</h2>
+                <p><strong>Live in production: 3 microservices on Kubernetes</strong></p>
+                <pre><code class="language-text">┌────────────────────────────────────────────────────────────┐
+│              Kubernetes Cluster                            │
+├────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌──────────────────────────────────────────────────────┐ │
+│  │ Ingress (api.example.com routes traffic)            │ │
+│  └──────────────────────────────────────────────────────┘ │
+│         ↓                                                  │
+│  ┌──────────────────────────────────────────────────────┐ │
+│  │ ProductAPI Service (Load Balancer, stable IP)       │ │
+│  │ - Pod  1 (productcatalogapi:1.2.0)  [CPU: 85%]     │ │
+│  │ - Pod  2 (productcatalogapi:1.2.0)  [CPU: 90%]     │ │
+│  │ - Pod  3 (productcatalogapi:1.2.0)  [CPU: 92%]     │ │
+│  │                                                      │ │
+│  │ HPA (HorizontalPodAutoscaler) watches CPU          │ │
+│  │ → Avg CPU > 80% → Scale to 5 replicas              │ │
+│  └──────────────────────────────────────────────────────┘ │
+│         ↓                                                  │
+│  ┌──────────────────────────────────────────────────────┐ │
+│  │ OrderAPI Service (3 replicas)                       │ │
+│  │ - Pod  1                                            │ │
+│  │ - Pod  2                                            │ │
+│  │ - Pod  3                                            │ │
+│  └──────────────────────────────────────────────────────┘ │
+│         ↓                                                  │
+│  ┌──────────────────────────────────────────────────────┐ │
+│  │ PaymentAPI Service (2 replicas, critical service)  │ │
+│  │ - Pod  1                                            │ │
+│  │ - Pod  2 (Pod 1 crashed, restarted)                │ │
+│  └──────────────────────────────────────────────────────┘ │
+│                                                             │
+│  ConfigMap: app-config                                     │
+│  Secret: db-credentials (encrypted)                        │
+│  PersistentVolume: PostgreSQL data (survives Pod restart) │
+│                                                             │
+└────────────────────────────────────────────────────────────┘</code></pre>
+
+                <h2>Best Practices</h2>
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <strong>1. Set resource limits</strong>
+                        <p>Memory & CPU limits prevent one greedy Pod from starving others.</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>2. Use health checks</strong>
+                        <p>Liveness probes detect dead Pods. Readiness probes prevent traffic before ready.</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>3. Namespaces for isolation</strong>
+                        <p>Dev/staging/prod in separate namespaces. RBAC controls access.</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>4. Use ConfigMap + Secrets</strong>
+                        <p>Never hardcode config in Deployment. Update ConfigMap, K8s redeploys.</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>5. StatelessPods</strong>
+                        <p>Pods should be replaceable. Persist data to PersistentVolumes, not Pod disk.</p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>6. Monitor with Prometheus</strong>
+                        <p>Scrape metrics from Pods. Alert on high CPU/memory usage.</p>
+                    </div>
+                </div>
+
+                <h2>Common Mistakes</h2>
+                <ul>
+                    <li><strong>❌ No resource limits:</strong> One Pod eats 100% CPU → Starves other Pods. Always set requests/limits!</li>
+                    <li><strong>❌ Missing health checks:</strong> Broken Pod processes traffic → Cascading issues. Use livenessProbe + readinessProbe!</li>
+                    <li><strong>❌ Hardcoding config in image:</strong> Change one value = rebuild image. Use ConfigMap instead!</li>
+                    <li><strong>❌ Not using Namespaces:</strong> Dev/prod mixed → Dev test breaks production. Use namespaces!</li>
+                    <li><strong>❌ Stateful Pods:</strong> Pod restarts = data lost. Use PersistentVolumes for databases!</li>
+                </ul>
+
+                <h2>Interview Q&A</h2>
+                <div class="concept-card">
+                    <p><strong>Q: What's the difference between a Pod and a container?</strong></p>
+                    <p>A: Container = single process. Pod = one or more containers in same network namespace (shared IP). Pod is K8s smallest unit.</p>
+                </div>
+
+                <div class="concept-card">
+                    <p><strong>Q: How does Kubernetes keep Deployments running?</strong></p>
+                    <p>A: Controller watches actual vs desired state. If Pod dies: controller detects (Pod missing) → creates new Pod. If too many Pods → kills extras. Continuous reconciliation.</p>
+                </div>
+
+                <div class="concept-card">
+                    <p><strong>Q: When to use Kubernetes vs Docker Compose?</strong></p>
+                    <p>A: Compose = single machine, dev/staging. K8s = multi-node cluster, production (auto-scaling, self-healing, rolling updates).</p>
+                </div>
+
+                <h2>Next Steps</h2>
+                <p>Kubernetes manages the deployment. Where did the images come from? Learn how Git triggers Docker builds:</p>
+                <p>→ <a href="git-version-control.html">🔀 Git & Version Control: How Code Changes Trigger CI/CD</a></p>
+            </article>
+
+            <nav class="page-nav">
+                <a href="docker.html" class="nav-prev">← Docker</a>
+                <a href="git-version-control.html" class="nav-next">Git & Version Control →</a>
+            </nav>
+        </div>
+    </main>
+</div>
+
+<script src="js/app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

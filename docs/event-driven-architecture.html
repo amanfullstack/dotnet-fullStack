@@ -134,6 +134,17 @@
                 </ul>
             </div>
 
+            <!-- DevOps & Infrastructure -->
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🔧 DevOps & Infrastructure</h3>
+                <ul class="sidebar-links">
+                    <li><a href="docker.html" class="sidebar-link"><span style="margin-right: 4px;">🐳</span> Docker</a></li>
+                    <li><a href="kubernetes.html" class="sidebar-link"><span style="margin-right: 4px;">☸️</span> Kubernetes</a></li>
+                    <li><a href="git-version-control.html" class="sidebar-link"><span style="margin-right: 4px;">🔀</span> Git & Version Control</a></li>
+                    <li><a href="git-docker-kubernetes-flow.html" class="sidebar-link"><span style="margin-right: 4px;">🚀</span> Deployment Strategies</a></li>
+                </ul>
+            </div>
+
             <div class="sidebar-section">
                 <h3 class="sidebar-category">🎓 Interview Prep</h3>
                 <ul class="sidebar-links">
@@ -533,6 +544,43 @@ Order Service → Publish Event → Event Bus
                         <li>High volume of requests (scalability needed)</li>
                     </ul>
                     <p><strong>Hybrid approach:</strong> Create order (direct call for validation) → Publish event (async for side effects)</p>
+                </div>
+
+                <h2>✅ Containerizing Event Services</h2>
+                <p>When you deploy event-driven microservices, each service (Order, Inventory, Payment, Email) runs in its own container. Here's how the pieces fit together:</p>
+
+                <pre><code class="language-text">Development:
+  Order Service (C#) + Event Handler Code
+    ↓
+  Docker image: order-service:v1.2.0
+    ↓
+  Kubernetes Deployment: 3 replicas
+
+When order is created:
+  Order Service publishes event
+  → Event Message Queue (RabbitMQ/Kafka)
+  → Inventory Service consumes (in separate Pod)
+  → Payment Service consumes (in separate Pod)
+  → Email Service consumes (in separate Pod)
+
+All services independent, isolated, scaling automatically</code></pre>
+
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <strong>🐳 Docker for Services</strong>
+                        <p>Each service (Order, Inventory, etc.) gets Dockerfile + Docker image</p>
+                        <p><a href="docker.html">Learn Docker</a></p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>☸️ Kubernetes for Orchestration</strong>
+                        <p>Deploy multiple service images, manage scaling and self-healing</p>
+                        <p><a href="kubernetes.html">Learn Kubernetes</a></p>
+                    </div>
+                    <div class="concept-card">
+                        <strong>🚀 Complete Pipeline</strong>
+                        <p>Code → Tests → Docker build → K8s deploy (all automatic)</p>
+                        <p><a href="git-docker-kubernetes-flow.html">See full flow</a></p>
+                    </div>
                 </div>
 
                 <nav class="page-nav">
