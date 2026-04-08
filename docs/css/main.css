@@ -2398,6 +2398,9 @@ details[open] .qa-chevron {
 
   .menu-btn { display: flex; }
 
+  /* Reduce header padding on mobile to give more space */
+  .header-inner { padding: 0 var(--sp-3); }
+
   .sidebar {
     transform: translateX(-100%);
     box-shadow: var(--shadow-xl);
@@ -2459,6 +2462,9 @@ details[open] .qa-chevron {
   .page-nav { grid-template-columns: 1fr; }
   .page-nav-item.prev { flex-direction: row; text-align: left; }
 
+  /* Reduce header action gaps on mobile */
+  .header-actions { gap: var(--sp-1); }
+
   /* Mobile Search Bar - Keep visible but make responsive */
   .search-bar {
     min-width: auto;
@@ -2511,6 +2517,9 @@ details[open] .qa-chevron {
   .hero-cta .btn { justify-content: center; }
   .path-card { padding: var(--sp-5); }
   .project-card { padding: var(--sp-5); }
+
+  /* Minimize header actions spacing on small phones */
+  .header-actions { gap: 4px; }
 
   /* Phone - Search bar as icon-only button */
   .search-bar {
