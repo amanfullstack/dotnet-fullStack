@@ -265,9 +265,16 @@ class WidgetsAPI {
   }
 
   /**
-   * Setup event listeners (marquee auto-plays, no buttons needed)
+   * Setup event listeners and auto-refresh
    */
   setupEventListeners() {
+    // Auto-refresh news every 30 minutes (1800000 ms)
+    setInterval(async () => {
+      console.log('🔄 Auto-refreshing news...');
+      await this.loadNews();
+      this.renderNewsCards();
+    }, 1800000);
+
     // Marquee is auto-animated via CSS
     // Close button handled inline in HTML
   }
