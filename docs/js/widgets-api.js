@@ -214,21 +214,38 @@ class WidgetsAPI {
    */
   renderQuotesBanner() {
     const container = document.getElementById('quotes-marquee');
-    if (!container || this.quotes.length === 0) return;
+    if (!container) {
+      console.error('❌ quotes-marquee container not found');
+      return;
+    }
 
-    // Create marquee items that repeat
+    if (this.quotes.length === 0) {
+      console.warn('⚠ No quotes loaded');
+      container.innerHTML = '<span class="marquee-item">"The best code is code that\'s easy to understand." — Steve McConnell</span>';
+      return;
+    }
+
+    console.log(`✓ Rendering ${this.quotes.length} quotes in banner`);
+
+    // Create marquee items that repeat for seamless scrolling
     const marqueeHTML = [...this.quotes, ...this.quotes]
-      .map(quote => `
-        <span class="marquee-item">"${quote.text}" — ${quote.author}</span>
-      `).join('');
+      .map(q => `<span class="marquee-item">"${q.text}" — ${q.author}</span>`)
+      .join('');
 
     container.innerHTML = marqueeHTML;
 
-    // Restart animation
+    // Ensure animation runs at correct speed (60s)
     container.style.animation = 'none';
+    container.style.display = 'flex';
+    container.style.gap = '60px';
+    container.style.whiteSpace = 'nowrap';
+    container.style.width = 'max-content';
+
     setTimeout(() => {
-      container.style.animation = 'marquee 30s linear infinite';
+      container.style.animation = 'marquee 60s linear infinite';
     }, 10);
+
+    console.log('✓ Banner quotes rendered');
   }
 
   /**
