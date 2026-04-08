@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micro Frontends - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 20px;
+            background: var(--surface-2);
+            border-radius: var(--r-lg);
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .flow-box {
+            background: linear-gradient(135deg, #ec4899, #f43f5e);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            min-width: 150px;
+            text-align: center;
+            font-weight: 600;
+            animation: pulse-box 2s ease-in-out infinite;
+        }
+        .flow-arrow {
+            font-size: 24px;
+            margin: 0 15px;
+            animation: arrow-flow 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-box {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        @keyframes arrow-flow {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+    </style>
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+
+<div id="readingProgress" class="progress-fill" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div>
+            DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="webapi.html">Web API</a>
+            <a href="ef-core.html">EF Core</a>
+            <a href="linq.html">LINQ</a>
+            <a href="interview.html">Interview</a>
+            <a href="compiler.html">Compiler</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-section">
+                <ul class="sidebar-links">
+                    <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+                </ul>
+            </div>
+
+            <div class="project-tabs-section">
+                <div class="project-tabs">
+                    <button class="project-tab" data-project="webapi" title="Web API">🌐</button>
+                    <button class="project-tab" data-project="mvc" title="MVC">🖥️</button>
+                    <button class="project-tab" data-project="angular" title="Angular">🅰️</button>
+                    <button class="project-tab" data-project="react" title="React">⚛️</button>
+                </div>
+
+                <div class="project-topics-list" data-topics="webapi" style="display: none;">
+                    <a href="webapi.html" class="sidebar-link"><span style="margin-right: 4px;">🌐</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="mvc" style="display: none;">
+                    <a href="mvc.html" class="sidebar-link"><span style="margin-right: 4px;">📘</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="angular" style="display: none;">
+                    <a href="angular.html" class="sidebar-link"><span style="margin-right: 4px;">📗</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="react" style="display: none;">
+                    <a href="react.html" class="sidebar-link"><span style="margin-right: 4px;">📙</span> Overview</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🏗️ Advanced Architecture</h3>
+                <ul class="sidebar-links">
+                    <li><a href="microservices.html" class="sidebar-link"><span style="margin-right: 4px;">🔌</span> Microservices</a></li>
+                    <li><a href="event-driven-architecture.html" class="sidebar-link"><span style="margin-right: 4px;">⚡</span> Event-Driven</a></li>
+                    <li><a href="kafka.html" class="sidebar-link"><span style="margin-right: 4px;">📡</span> Kafka</a></li>
+                    <li><a href="rabbitmq-kafka-comparison.html" class="sidebar-link"><span style="margin-right: 4px;">⚔️</span> RabbitMQ vs Kafka</a></li>
+                    <li><a href="mfe.html" class="sidebar-link active"><span style="margin-right: 4px;">🎨</span> Micro Frontends</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🎓 Interview Prep</h3>
+                <ul class="sidebar-links">
+                    <li><a href="interview.html" class="sidebar-link"><span style="margin-right: 4px;">💡</span> All Questions</a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <article class="article">
+                <nav class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="sep">/</span>
+                    <span class="current">Micro Frontends (Module Federation)</span>
+                </nav>
+
+                <div class="page-title-block">
+                    <h1 class="page-title">🎨 Micro Frontends / Module Federation</h1>
+                    <p class="page-subtitle">Break your giant React/Angular app into independent micro apps. Each team deploys their own app simultaneously without affecting others.</p>
+                </div>
+
+                <div class="callout callout-info">
+                    <span class="callout-icon">🏬</span>
+                    <div class="callout-content">
+                        <p class="callout-title">Real-World Analogy: Shopping Mall</p>
+                        <p class="callout-body"><strong>❌ Monolithic Frontend:</strong> One big store. Want to renovate shoes section? Entire store closes.</p>
+                        <p class="callout-body"><strong>✅ Micro Frontends:</strong> Shopping mall with independent stores. Shoes store renovates, others stay open. Customers navigate freely between stores.</p>
+                    </div>
+                </div>
+
+                <h2>The Monolithic Frontend Problem</h2>
+                <p><strong>One Giant React App Issues:</strong></p>
+                <ul>
+                    <li>❌ 5 teams share same codebase (merge conflicts)</li>
+                    <li>❌ Bug in Products tab crashes entire app</li>
+                    <li>❌ Deploy one fix = redeploy everything (risky)</li>
+                    <li>❌ Bundle size grows (50MB+), slow load times</li>
+                    <li>❌ Teams can't use different React versions/libraries</li>
+                    <li>❌ Long feedback loop (code → test → deploy)</li>
+                </ul>
+
+                <h2>Micro Frontends Solution</h2>
+
+                <div class="flow-diagram">
+                    <div class="flow-box">Monolithic<br>(One Huge App)</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box">Micro Frontends<br>(Independent Apps)</div>
+                </div>
+
+                <pre><code class="language-text">BEFORE - MONOLITHIC REACT APP
+┌─────────────────────────────────────────┐
+│ ProductUI-React (Single Massive App)    │
+│                                         │
+│ ├─ Product Catalog Component            │
+│ ├─ Shopping Cart Component              │
+│ ├─ Checkout Component                   │
+│ ├─ User Profile Component               │
+│ ├─ Analytics Dashboard Component        │
+│ │                                       │
+│ │ Package.json: 50 shared dependencies  │
+│ │ Bundle size: 500KB (gzipped)          │
+│ │ All loaded upfront (slow initial)     │
+│ │ One bug = entire app broken           │
+│ │                                       │
+│ └─ Deploy: All features together        │
+└─────────────────────────────────────────┘
+
+AFTER - MICRO FRONTENDS
+┌──────────────────┐  ┌──────────────────┐
+│  Host App        │  │ Product Micro App│
+│ (Container/Shell)│  │ (Standalone)     │
+│                  │  │                  │
+│ Routes:          │  │ Exports:         │
+│ - /products   ──────► ProductCatalog   │
+│ - /cart       ────┐  │ ProductDetail   │
+│ - /checkout   ──┐ │  │ ProductSearch   │
+│ - /profile    ─┐│ │  │                 │
+│                ││ │  │ Own version of  │
+│                ││ │  │ React, Redux    │
+│                ││ │  │ Can deploy alone│
+│                ││ │  └──────────────────┘
+│                ││
+│                │└──────────────────┐
+│                │   Cart Micro App  │
+│                │  (Independent)    │
+│                │                   │
+│                │  Exports:         │
+│                │  - CartIcon       │
+│                │  - CartModal      │
+│                │  - CheckoutFlow   │
+│                │                   │
+│                │  Deploy separately│
+│                │  without touching │
+│                │  Product app      │
+│                └───────────────────┘</code></pre>
+
+                <h2>Key Concepts</h2>
+
+                <h3>1️⃣ Module Federation (Webpack 5)</h3>
+                <div class="concept-card">
+                    <p><strong>Share code at runtime (not build time):</strong></p>
+                    <pre><code class="language-javascript">// webpack.config.js
+module.exports = {
+  output: {
+    publicPath: 'http://localhost:3000/'
+  },
+  plugins: [
+    new ModuleFederationPlugin({
+      name: 'products',              // App name
+      filename: 'remoteEntry.js',    // Entry point
+      exposes: {
+        './ProductCatalog': './src/components/ProductCatalog',
+        './ProductDetail': './src/components/ProductDetail'
+      },
+      shared: {
+        react: { singleton: true },
+        'react-dom': { singleton: true }
+      }
+    })
+  ]
+};
+
+// Share React between apps = avoid loading twice!
+// Products app and Cart app use same React instance</code></pre>
+
+                    <p><strong>How it works:</strong></p>
+                    <ol>
+                        <li>Products app (micro) built → outputs remoteEntry.js + components</li>
+                        <li>Products app deployed to http://micro1.com/remoteEntry.js</li>
+                        <li>Host app loads remoteEntry.js at runtime</li>
+                        <li>Host imports ProductCatalog from remote app</li>
+                        <li>Both share same React instance (avoid duplication)</li>
+                    </ol>
+                </div>
+
+                <h3>2️⃣ Host App (Shell/Container)</h3>
+                <div class="concept-card">
+                    <p><strong>Main app that orchestrates micro apps:</strong></p>
+                    <pre><code class="language-javascript">// main-app/webpack.config.js
+const ModuleFederationPlugin = require('webpack').container.ModuleFederationPlugin;
+
+module.exports = {
+  plugins: [
+    new ModuleFederationPlugin({
+      name: 'host',
+      remotes: {
+        products: 'products@http://localhost:3001/remoteEntry.js',
+        cart: 'cart@http://localhost:3002/remoteEntry.js',
+        checkout: 'checkout@http://localhost:3003/remoteEntry.js'
+      },
+      shared: {
+        react: { singleton: true },
+        'react-dom': { singleton: true }
+      }
+    })
+  ]
+};
+
+// App.jsx - Host app
+function App() {
+  return (
+    <div>
+      <Header />
+      <Router>
+        <Routes>
+          {/* Local routes */}
+          <Route path="/home" component={Home} />
+
+          {/* Remote micro app routes */}
+          <Route path="/products/*" component={ProductsRemote} />
+          <Route path="/cart/*" component={CartRemote} />
+          <Route path="/checkout/*" component={CheckoutRemote} />
+        </Routes>
+      </Router>
+    </div>
+  );
+}</code></pre>
+                </div>
+
+                <h3>3️⃣ Micro Apps (Remotes)</h3>
+                <div class="concept-card">
+                    <p><strong>Independent React apps that plug into host:</strong></p>
+                    <pre><code class="language-javascript">// products-app/webpack.config.js
+new ModuleFederationPlugin({
+  name: 'products',
+  filename: 'remoteEntry.js',
+  exposes: {
+    './ProductCatalog': './src/ProductCatalog.jsx',
+    './ProductDetail': './src/ProductDetail.jsx'
+  },
+  shared: ['react', 'react-dom']
+});
+
+// products-app/src/ProductCatalog.jsx
+import React, { useState } from 'react';
+import useProducts from './hooks/useProducts';
+
+export default function ProductCatalog() {
+  const { products } = useProducts();
+  const [selected, setSelected] = useState(null);
+
+  return (
+    <div className="catalog">
+      <h1>Product Catalog</h1>
+      <div className="products">
+        {products.map(p => (
+          <div key={p.id} onClick={() => setSelected(p)}>
+            {p.name} - ${p.price}
+          </div>
+        ))}
+      </div>
+      {selected && <ProductDetail product={selected} />}
+    </div>
+  );
+}
+
+// This component:
+// ✅ Can be developed independently
+// ✅ Deployed separately to micro1.com
+// ✅ Loaded by host app at runtime
+// ✅ Uses its own React version (if needed)</code></pre>
+                </div>
+
+                <h3>4️⃣ Cross-App Communication</h3>
+                <div class="concept-card">
+                    <p><strong>How micro apps talk to each other:</strong></p>
+
+                    <p><strong>Method 1: Shared State (Context/Redux)</strong></p>
+                    <pre><code class="language-javascript">// Store shared at host level
+import { Provider } from 'react-redux';
+import store from './store';
+
+function App() {
+  return (
+    <Provider store={store}>
+      <Products />
+      <Cart />
+      <Checkout />
+    </Provider>
+  );
+}
+
+// All micro apps can dispatch/subscribe
+// Products: dispatch(addToCart(product))
+// Cart: reads cart state
+// Problem: Not fully independent!</code></pre>
+
+                    <p><strong>Method 2: Event Bus (More Decoupled)</strong></p>
+                    <pre><code class="language-javascript">// shared-event-bus.js (simple pub/sub)
+const eventBus = {
+  subscribers: {},
+
+  subscribe(event, callback) {
+    if (!this.subscribers[event]) {
+      this.subscribers[event] = [];
+    }
+    this.subscribers[event].push(callback);
+  },
+
+  publish(event, data) {
+    if (this.subscribers[event]) {
+      this.subscribers[event].forEach(cb => cb(data));
+    }
+  }
+};
+
+export default eventBus;
+
+// Products App
+import eventBus from '../shared/eventBus';
+
+function ProductCatalog() {
+  return (
+    <button onClick={() => {
+      eventBus.publish('product:added-to-cart', productData);
+      // Event published, Cart app listens independently
+    }}>
+      Add to Cart
+    </button>
+  );
+}
+
+// Cart App
+import eventBus from '../shared/eventBus';
+
+function Cart() {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    eventBus.subscribe('product:added-to-cart', (product) => {
+      setItems([...items, product]);
+    });
+  }, [items]);
+
+  return <div>{items.length} items</div>;
+}</code></pre>
+                </div>
+
+                <h2>Code Example: Complete Micro Frontend Setup</h2>
+
+                <h3>Project Structure</h3>
+                <pre><code class="language-text">ecommerce-microfrontends/
+├── host-app/                 (Main container app)
+│   ├── webpack.config.js
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── bootstrap.jsx     (Entry point)
+│   │   └── index.jsx
+│   └── package.json
+│
+├── product-mfe/              (Product micro frontend)
+│   ├── webpack.config.js
+│   ├── src/
+│   │   ├── ProductCatalog.jsx
+│   │   ├── ProductDetail.jsx
+│   │   └── bootstrap.jsx
+│   └── package.json
+│
+├── cart-mfe/                 (Cart micro frontend)
+│   ├── webpack.config.js
+│   ├── src/
+│   │   ├── CartWidget.jsx
+│   │   ├── CartPage.jsx
+│   │   └── bootstrap.jsx
+│   └── package.json
+│
+└── checkout-mfe/             (Checkout micro frontend)
+    ├── webpack.config.js
+    ├── src/
+    │   ├── CheckoutFlow.jsx
+    │   └── bootstrap.jsx
+    └── package.json</code></pre>
+
+                <h3>Host App Setup</h3>
+                <pre><code class="language-javascript">// host-app/src/App.jsx
+import React, { Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+// Dynamically load remote micro apps
+const Products = lazy(() => import('products/ProductCatalog'));
+const Cart = lazy(() => import('cart/CartPage'));
+const Checkout = lazy(() => import('checkout/CheckoutFlow'));
+
+export default function App() {
+  return (
+    <Router>
+      <div className="app">
+        <header className="header">
+          <h1>E-Commerce Platform</h1>
+          <nav>
+            <a href="/">Home</a>
+            <a href="/products">Products</a>
+            <a href="/cart">Cart</a>
+            <a href="/checkout">Checkout</a>
+          </nav>
+        </header>
+
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="/products/*" element={<Products />} />
+            <Route path="/cart/*" element={<Cart />} />
+            <Route path="/checkout/*" element={<Checkout />} />
+          </Routes>
+        </Suspense>
+      </div>
+    </Router>
+  );
+}
+
+// host-app/webpack.config.js
+new ModuleFederationPlugin({
+  name: 'host',
+  remotes: {
+    products: 'products@http://localhost:3001/remoteEntry.js',
+    cart: 'cart@http://localhost:3002/remoteEntry.js',
+    checkout: 'checkout@http://localhost:3003/remoteEntry.js'
+  },
+  shared: {
+    react: { singleton: true, requiredVersion: '^18.0.0' },
+    'react-dom': { singleton: true, requiredVersion: '^18.0.0' },
+    'react-router-dom': { singleton: true }
+  }
+});</code></pre>
+
+                <h3>Micro App Setup (Product)</h3>
+                <pre><code class="language-javascript">// product-mfe/webpack.config.js
+new ModuleFederationPlugin({
+  name: 'products',
+  filename: 'remoteEntry.js',
+  exposes: {
+    './ProductCatalog': './src/ProductCatalog.jsx',
+    './ProductDetail': './src/ProductDetail.jsx'
+  },
+  shared: {
+    react: { singleton: true, requiredVersion: '^18.0.0' },
+    'react-dom': { singleton: true, requiredVersion: '^18.0.0' }
+  }
+});
+
+// product-mfe/src/ProductCatalog.jsx
+import React, { useEffect, useState } from 'react';
+
+export default function ProductCatalog() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    // Fetch from API
+    fetch('/api/products')
+      .then(r => r.json())
+      .then(data => setProducts(data));
+  }, []);
+
+  return (
+    <div className="product-catalog">
+      <h2>Products</h2>
+      <div className="grid">
+        {products.map(p => (
+          <div key={p.id} className="product-card">
+            <img src={p.image} alt={p.name} />
+            <h3>{p.name}</h3>
+            <p>${p.price}</p>
+            <button onClick={() => {
+              // Communicate with Cart micro app
+              window.eventBus?.publish('addToCart', p);
+            }}>
+              Add to Cart
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}</code></pre>
+
+                <h2>Best Practices</h2>
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <h4>✅ Shared React Singleton</h4>
+                        <p>Ensure all micro apps load React once. Prevents version conflicts and bundle bloat.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>✅ Clear Boundaries</h4>
+                        <p>Each micro app owns specific features. Products team ≠ Cart team.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>✅ Event-Based Communication</h4>
+                        <p>Micro apps publish events, subscribe to events. Loosely coupled.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>✅ Independent Deployments</h4>
+                        <p>Each micro app has own CI/CD pipeline. Deploy Products without touching Cart.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>✅ Separate Versioning</h4>
+                        <p>Micro apps can use different library versions independently.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>✅ Error Boundaries</h4>
+                        <p>One micro app crashes ≠ host app crashes. Use React Error Boundaries.</p>
+                    </div>
+                </div>
+
+                <h2>Common Mistakes</h2>
+
+                <div class="callout callout-danger">
+                    <span class="callout-icon">⚠️</span>
+                    <div class="callout-content">
+                        <p class="callout-title">❌ Mistake: Tight Coupling Between Micro Apps</p>
+                        <p class="callout-body">If Products app directly imports Cart app code, they're not independent! Use event bus or shared state instead.</p>
+                    </div>
+                </div>
+
+                <div class="callout callout-danger">
+                    <span class="callout-icon">⚠️</span>
+                    <div class="callout-content">
+                        <p class="callout-title">❌ Mistake: Loading Shared Libraries Multiple Times</p>
+                        <p class="callout-body">If React/Redux loaded 3 times = bundle bloat, memory waste. Configure singleton: true in shared config.</p>
+                    </div>
+                </div>
+
+                <div class="callout callout-danger">
+                    <span class="callout-icon">⚠️</span>
+                    <div class="callout-content">
+                        <p class="callout-title">❌ Mistake: No Version Compatibility</p>
+                        <p class="callout-body">One micro app uses React 17, another uses 18 = conflicts. Define minimum versions in shared config.</p>
+                    </div>
+                </div>
+
+                <h2>When to Use Micro Frontends</h2>
+                <p><strong>✅ Use when:</strong></p>
+                <ul>
+                    <li>Large team (5+ developers)</li>
+                    <li>Multiple independent features (Products, Cart, Checkout)</li>
+                    <li>Want independent deployments</li>
+                    <li>Need different tech stacks (one team React, one Vue)</li>
+                    <li>Bundle size is problem (code splitting not enough)</li>
+                </ul>
+
+                <p><strong>❌ Don't use when:</strong></p>
+                <ul>
+                    <li>Small app, small team</li>
+                    <li>Tightly coupled features (need constant sync)</li>
+                    <li>Complex shared state management</li>
+                    <li>Real-time data sync critical</li>
+                    <li>Learning React (adds too much complexity)</li>
+                </ul>
+
+                <h2>Interview Q&amp;A</h2>
+
+                <h3>Q1: How is Micro Frontends different from Lazy Loading?</h3>
+                <div class="concept-card">
+                    <p><strong>A:</strong> Similar concept but different:</p>
+                    <p><strong>Lazy Loading:</strong> One app, split code by routes. ProductCatalog loads when /products visited.</p>
+                    <p><strong>Micro Frontends:</strong> Multiple independent apps. Product app is separate codebase, deployment, team!</p>
+                    <p><strong>Analogy:</strong> Lazy loading = one bookstore with sections. Micro frontends = separate bookstores that share mall.</p>
+                </div>
+
+                <h3>Q2: What happens if a micro app crashes?</h3>
+                <div class="concept-card">
+                    <p><strong>A:</strong> Only that micro app fails, not entire host!</p>
+                    <ul>
+                        <li>Product micro app crashes → /products shows error</li>
+                        <li>Host app still works → /home, /cart, /checkout fine</li>
+                        <li>Use Suspense + Error Boundary for graceful fallback</li>
+                    </ul>
+                    <pre><code class="language-javascript">// Error boundary wrapper
+<ErrorBoundary fallback={<div>Products temporarily unavailable</div>}>
+  <Suspense fallback={<Spinner />}>
+    <Products />
+  </Suspense>
+</ErrorBoundary></code></pre>
+                </div>
+
+                <h3>Q3: How do you manage shared state between micro apps?</h3>
+                <div class="concept-card">
+                    <p><strong>A:</strong> Three approaches:</p>
+                    <p><strong>1. Redux Store (Simple):</strong> Host app provides Redux store, all micro apps access it. Problem: tight coupling.</p>
+                    <p><strong>2. Event Bus (Better):</strong> Publish/subscribe pattern. Micro apps emit events, others listen. Loosely coupled.</p>
+                    <p><strong>3. External API:</strong> All micro apps call backend API for data. No shared state needed! Most scalable.</p>
+                    <p><strong>Recommendation:</strong> Use Event Bus for UI state, API calls for data state.</p>
+                </div>
+
+                <nav class="page-nav">
+                    <a href="rabbitmq-kafka-comparison.html" class="page-nav-item prev">
+                        <span class="page-nav-arrow">←</span>
+                        <div><span class="page-nav-label">Previous</span><span class="page-nav-title">RabbitMQ vs Kafka</span></div>
+                    </a>
+                    <a href="interview.html" class="page-nav-item">
+                        <div><span class="page-nav-label">Next</span><span class="page-nav-title">Interview prep</span></div>
+                        <span class="page-nav-arrow">→</span>
+                    </a>
+                </nav>
+
+            </article>
+        </div>
+    </main>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <a href="index.html" class="footer-brand">
+            <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div>
+            DevDocs
+        </a>
+        <ul class="footer-links">
+            <li><a href="webapi.html">Web API</a></li>
+            <li><a href="ef-core.html">EF Core</a></li>
+            <li><a href="linq.html">LINQ</a></li>
+            <li><a href="interview.html">Interview</a></li>
+        </ul>
+        <p class="footer-copy">© 2025 DevDocs. For learning &amp; interview prep.</p>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

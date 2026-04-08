@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kafka - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 20px;
+            background: var(--surface-2);
+            border-radius: var(--r-lg);
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .flow-box {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            min-width: 150px;
+            text-align: center;
+            font-weight: 600;
+            animation: pulse-box 2s ease-in-out infinite;
+        }
+        .flow-arrow {
+            font-size: 24px;
+            margin: 0 15px;
+            animation: arrow-flow 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-box {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        @keyframes arrow-flow {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+    </style>
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+
+<div id="readingProgress" class="progress-fill" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div>
+            DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="webapi.html">Web API</a>
+            <a href="ef-core.html">EF Core</a>
+            <a href="linq.html">LINQ</a>
+            <a href="interview.html">Interview</a>
+            <a href="compiler.html">Compiler</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-section">
+                <ul class="sidebar-links">
+                    <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+                </ul>
+            </div>
+
+            <div class="project-tabs-section">
+                <div class="project-tabs">
+                    <button class="project-tab" data-project="webapi" title="Web API">🌐</button>
+                    <button class="project-tab" data-project="mvc" title="MVC">🖥️</button>
+                    <button class="project-tab" data-project="angular" title="Angular">🅰️</button>
+                    <button class="project-tab" data-project="react" title="React">⚛️</button>
+                </div>
+
+                <div class="project-topics-list" data-topics="webapi" style="display: none;">
+                    <a href="webapi.html" class="sidebar-link"><span style="margin-right: 4px;">🌐</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="mvc" style="display: none;">
+                    <a href="mvc.html" class="sidebar-link"><span style="margin-right: 4px;">📘</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="angular" style="display: none;">
+                    <a href="angular.html" class="sidebar-link"><span style="margin-right: 4px;">📗</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="react" style="display: none;">
+                    <a href="react.html" class="sidebar-link"><span style="margin-right: 4px;">📙</span> Overview</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🏗️ Advanced Architecture</h3>
+                <ul class="sidebar-links">
+                    <li><a href="microservices.html" class="sidebar-link"><span style="margin-right: 4px;">🔌</span> Microservices</a></li>
+                    <li><a href="event-driven-architecture.html" class="sidebar-link"><span style="margin-right: 4px;">⚡</span> Event-Driven</a></li>
+                    <li><a href="kafka.html" class="sidebar-link active"><span style="margin-right: 4px;">📡</span> Kafka</a></li>
+                    <li><a href="rabbitmq-kafka-comparison.html" class="sidebar-link"><span style="margin-right: 4px;">⚔️</span> RabbitMQ vs Kafka</a></li>
+                    <li><a href="mfe.html" class="sidebar-link"><span style="margin-right: 4px;">🎨</span> Micro Frontends</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🎓 Interview Prep</h3>
+                <ul class="sidebar-links">
+                    <li><a href="interview.html" class="sidebar-link"><span style="margin-right: 4px;">💡</span> All Questions</a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <article class="article">
+                <nav class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="sep">/</span>
+                    <span class="current">Apache Kafka</span>
+                </nav>
+
+                <div class="page-title-block">
+                    <h1 class="page-title">📡 Apache Kafka</h1>
+                    <p class="page-subtitle">Distributed event streaming platform handling millions of messages per second. Think of it as a super-powered message queue on steroids.</p>
+                </div>
+
+                <div class="callout callout-info">
+                    <span class="callout-icon">💭</span>
+                    <div class="callout-content">
+                        <p class="callout-title">Real-World Analogy: Post Office</p>
+                        <p class="callout-body"><strong>Mail arrives:</strong> Letters go to post office (Kafka), sorted by zip code (Topic). Multiple postal workers (Consumers) pick up letters from same zip (Consumer Group). Letters stored at post office for days if no one picks them up.</p>
+                        <p class="callout-body"><strong>Unlike RabbitMQ:</strong> RabbitMQ is like a delivery service (deletes after delivery). Kafka is like an archive (stores forever for replay).</p>
+                    </div>
+                </div>
+
+                <h2>Why Kafka?</h2>
+                <p><strong>The Streaming Problem:</strong></p>
+                <ul>
+                    <li>❌ Your app generates 1 MILLION events per second</li>
+                    <li>❌ RabbitMQ starts struggling (bottleneck)</li>
+                    <li>❌ Need to replay events from yesterday (RabbitMQ deletes after delivery)</li>
+                    <li>❌ Want multiple services reading same stream simultaneously</li>
+                    <li>❌ Need disaster recovery (all messages backed up)</li>
+                </ul>
+
+                <h2>Kafka Architecture</h2>
+
+                <div class="flow-diagram">
+                    <div class="flow-box">Producers<br>(Create Events)</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box">Kafka<br>(Distributed)</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box">Consumers<br>(Read Events)</div>
+                </div>
+
+                <pre><code class="language-text">KAFKA ARCHITECTURE
+
+┌─────────────────┐
+│ Producers       │  (Order Service, User Service, etc)
+│ (Write Events)  │
+└────────┬────────┘
+         ↓
+    ┌──────────────────────────────────────────┐
+    │         KAFKA CLUSTER                    │
+    │                                          │
+    │  TOPIC: "orders" (like email inbox)     │
+    │  ┌────────────────────────────────────┐  │
+    │  │ Partition 0 │ Partition 1 │ Part 2 │  │
+    │  │ [Event 1]   │ [Event 5]   │ [Event 9] │
+    │  │ [Event 2]   │ [Event 6]   │ [Event10] │
+    │  │ [Event 3]   │ [Event 7]   │ [Event11] │
+    │  │ [Event 4]   │ [Event 8]   │ [Event12] │
+    │  │ (Replicated │ (Replicated │ (Replicated) │
+    │  │  on 3 nodes)│  on 3 nodes)│           │
+    │  └────────────────────────────────────┘  │
+    │                                          │
+    │  RETENTION: Keep all messages for 7 days│
+    │  (can replay from any point in time)    │
+    └────────┬─────────────────────────────────┘
+             ↓
+    ┌────────────────────────────────────┐
+    │ Consumers (Multiple Groups)        │
+    │                                    │
+    │ Consumer Group A (Email Service)   │
+    │   ├─ Consumer 1 → Partition 0      │
+    │   └─ Consumer 2 → Partition 1      │
+    │                                    │
+    │ Consumer Group B (Analytics)       │
+    │   ├─ Consumer 3 → Partition 0      │
+    │   ├─ Consumer 4 → Partition 1      │
+    │   └─ Consumer 5 → Partition 2      │
+    └────────────────────────────────────┘</code></pre>
+
+                <h2>Key Concepts</h2>
+
+                <h3>1️⃣ Topics & Partitions</h3>
+                <div class="concept-card">
+                    <p><strong>Topic:</strong> Category of events (like email folders)</p>
+                    <pre><code class="language-text">Topic: "orders"          → All order events
+Topic: "user-signups"    → User registration events
+Topic: "payment-events"  → Payment processing events
+
+Each Topic has Partitions (for parallel processing):
+orders: Partition 0 [Event 1, 2, 3, 4]
+orders: Partition 1 [Event 5, 6, 7, 8]
+orders: Partition 2 [Event 9, 10, 11, 12]
+
+✅ Partitions allow 3 consumers to read in parallel
+✅ Same consumer always reads same partition (order guaranteed)</code></pre>
+                </div>
+
+                <h3>2️⃣ Producers (Event Sources)</h3>
+                <div class="concept-card">
+                    <p><strong>Services publishing events to Kafka:</strong></p>
+                    <pre><code class="language-text">var producer = new KafkaProducer(new ProducerConfig
+    { BootstrapServers = "localhost:9092" });
+
+// Publish event
+await producer.ProduceAsync("orders", new Message<string, string>
+{
+    Key = "order-123",    // Route to partition based on key
+    Value = "{orderId: 123, amount: 99.99}"
+});
+
+✅ Kafka stores this message immediately
+✅ Other services can read it now and forever</code></pre>
+                </div>
+
+                <h3>3️⃣ Consumers (Event Readers)</h3>
+                <div class="concept-card">
+                    <p><strong>Services reading events from Kafka:</strong></p>
+                    <pre><code class="language-text">var consumer = new KafkaConsumer(new ConsumerConfig
+{
+    BootstrapServers = "localhost:9092",
+    GroupId = "email-service",  // Consumer group name
+    AutoOffsetReset = AutoOffsetReset.Earliest
+});
+
+consumer.Subscribe(new[] { "orders" });
+
+// Process messages
+while (true)
+{
+    var message = consumer.Consume();
+    Console.WriteLine($"Order: {message.Value}");
+
+    // Send email, save to DB, etc
+
+    consumer.Commit();  // Mark as processed
+}
+
+✅ Consumer remembers position (offset)
+✅ Can restart and resume from where it left off
+✅ Multiple consumers same topic = duplicate processing (by design)</code></pre>
+                </div>
+
+                <h3>4️⃣ Consumer Groups</h3>
+                <div class="concept-card">
+                    <p><strong>Multiple consumers reading same topic independently:</strong></p>
+                    <pre><code class="language-text">Scenario: Order topic with 3 partitions
+
+Consumer Group A (Email Service):
+  - Consumer A1 reads Partition 0
+  - Consumer A2 reads Partition 1
+  - Consumer A3 reads Partition 2
+  → Each consumer processes full event stream
+
+Consumer Group B (Analytics):
+  - Consumer B1 reads Partition 0
+  - Consumer B2 reads Partition 1
+  - Consumer B3 reads Partition 2
+  → Gets ALL same events independently
+
+Same order event processed by:
+  ✅ Email service (send confirmation)
+  ✅ Analytics (record metrics)
+  ✅ Inventory (reserve stock)
+
+Each consumer group maintains own position!</code></pre>
+                </div>
+
+                <h3>5️⃣ Retention & Replay</h3>
+                <div class="concept-card">
+                    <p><strong>Kafka keeps messages for days (configurable):</strong></p>
+                    <pre><code class="language-text">Day 1:  100,000 orders published
+Day 2:  200,000 more orders
+Day 3:  New analytics service joins
+        Reads from Day 1 (replays all messages!)
+        Gets 300,000 historical orders
+
+Or if system crashes:
+        Old consumer restarted
+        Reads from last offset (where it stopped)
+        No lost messages!
+
+Configuration:
+retention.ms = 604800000  (7 days)
+retention.bytes = 1099511627776  (1TB)</code></pre>
+                </div>
+
+                <h2>Code Example: .NET Kafka Producer & Consumer</h2>
+
+                <h3>Order Service - Kafka Producer</h3>
+                <pre><code class="language-csharp">using Confluent.Kafka;
+
+public class KafkaOrderService
+{
+    private readonly IProducer<string, string> _producer;
+
+    public KafkaOrderService()
+    {
+        var config = new ProducerConfig
+        {
+            BootstrapServers = "localhost:9092"
+        };
+        _producer = new ProducerBuilder<string, string>(config).Build();
+    }
+
+    public async Task CreateOrder(Order order)
+    {
+        // Save to database
+        var savedOrder = await _db.Orders.AddAsync(order);
+
+        // Publish to Kafka
+        var orderJson = JsonSerializer.Serialize(new
+        {
+            order.Id,
+            order.CustomerId,
+            order.TotalAmount,
+            order.CreatedAt
+        });
+
+        var deliveryReport = await _producer.ProduceAsync(
+            "orders",  // Topic
+            new Message<string, string>
+            {
+                Key = order.Id.ToString(),  // Partition key
+                Value = orderJson
+            }
+        );
+
+        Console.WriteLine($"Message delivered to {deliveryReport.TopicPartitionOffset}");
+    }
+}</code></pre>
+
+                <h3>Email Service - Kafka Consumer</h3>
+                <pre><code class="language-csharp">using Confluent.Kafka;
+
+public class KafkaEmailService : BackgroundService
+{
+    private readonly IConsumer<string, string> _consumer;
+    private readonly EmailService _emailService;
+
+    public KafkaEmailService(EmailService emailService)
+    {
+        var config = new ConsumerConfig
+        {
+            BootstrapServers = "localhost:9092",
+            GroupId = "email-service-group",
+            AutoOffsetReset = AutoOffsetReset.Earliest,
+            EnableAutoCommit = false
+        };
+
+        _consumer = new ConsumerBuilder<string, string>(config).Build();
+        _consumer.Subscribe(new[] { "orders" });
+        _emailService = emailService;
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            try
+            {
+                var message = _consumer.Consume(stoppingToken);
+
+                if (message == null) continue;
+
+                // Parse event
+                var orderData = JsonSerializer.Deserialize<OrderEvent>(message.Value);
+
+                // Send email
+                await _emailService.SendOrderConfirmationAsync(
+                    orderData.CustomerId,
+                    orderData.Id,
+                    orderData.TotalAmount
+                );
+
+                // Mark as processed
+                _consumer.Commit(message);
+
+                Console.WriteLine($"Email sent for order {orderData.Id}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                // Don't commit = message reprocessed on restart
+            }
+        }
+    }
+
+    public override void Dispose()
+    {
+        _consumer?.Dispose();
+        base.Dispose();
+    }
+}
+
+public class OrderEvent
+{
+    public string Id { get; set; }
+    public string CustomerId { get; set; }
+    public decimal TotalAmount { get; set; }
+    public DateTime CreatedAt { get; set; }
+}</code></pre>
+
+                <h2>Best Practices</h2>
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <h4>✅ Key-Based Partitioning</h4>
+                        <p>Use consistent key so related events go to same partition. Maintains order per key.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>✅ Consumer Groups</h4>
+                        <p>Multiple independent consumers = same topic gets processed multiple ways.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>✅ Offset Management</h4>
+                        <p>Commit offsets only after successful processing. Prevents message loss on crash.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>✅ Topic Naming Convention</h4>
+                        <p>Use clear names: "order-events", "user-signups" not "topic1", "data"</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>✅ Schema Validation</h4>
+                        <p>Use Avro or Protobuf for event schemas. Prevent corrupted messages.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>✅ Monitoring</h4>
+                        <p>Track consumer lag (how far behind vs latest message).</p>
+                    </div>
+                </div>
+
+                <h2>Common Mistakes</h2>
+
+                <div class="callout callout-danger">
+                    <span class="callout-icon">⚠️</span>
+                    <div class="callout-content">
+                        <p class="callout-title">❌ Mistake: Not Committing Offsets</p>
+                        <p class="callout-body">If you don't commit, consumer restarts and reprocesses all messages. Either double-process or lose data!</p>
+                    </div>
+                </div>
+
+                <div class="callout callout-danger">
+                    <span class="callout-icon">⚠️</span>
+                    <div class="callout-content">
+                        <p class="callout-title">❌ Mistake: Using Same Group ID for Different Services</p>
+                        <p class="callout-body">Each service should have own group ID. Same group = they share partitions (only one processes message).</p>
+                    </div>
+                </div>
+
+                <div class="callout callout-danger">
+                    <span class="callout-icon">⚠️</span>
+                    <div class="callout-content">
+                        <p class="callout-title">❌ Mistake: Ignoring Partition Key</p>
+                        <p class="callout-body">No key = random partition. Events for same order go different partitions = out of order!</p>
+                    </div>
+                </div>
+
+                <h2>Kafka vs RabbitMQ (Quick Comparison)</h2>
+                <pre><code class="language-text">KAFKA                           RABBITMQ
+────────────────────────────────────────────────────
+✅ High throughput (1M msgs)    ✅ Low latency
+✅ Stores messages (replay)     ✅ Deletes after delivery
+✅ Consumer groups (elegant)    ✅ Message routing (complex)
+✅ Streaming/Big data           ✅ Task queues
+✅ Partition order              ✅ Direct service calls
+
+Use Kafka for:                Use RabbitMQ for:
+- Analytics pipelines         - Job queues
+- Event sourcing             - RPC calls
+- Audit logs                 - Simple pub/sub
+- Million+ events/sec        - Lightweight messaging</code></pre>
+
+                <h2>Interview Q&amp;A</h2>
+
+                <h3>Q1: How is Kafka different from RabbitMQ?</h3>
+                <div class="concept-card">
+                    <p><strong>A:</strong> Core differences:</p>
+                    <p><strong>Message Retention:</strong> Kafka keeps for days, RabbitMQ deletes after delivery</p>
+                    <p><strong>Throughput:</strong> Kafka built for millions/sec, RabbitMQ for thousands/sec</p>
+                    <p><strong>Consumer Groups:</strong> Kafka has elegant consumer groups, RabbitMQ has exchange/binding complexity</p>
+                    <p><strong>Replay:</strong> Kafka can replay messages, RabbitMQ can't</p>
+                    <p><strong>Use Case:</strong> Kafka for streaming/analytics, RabbitMQ for task queues</p>
+                </div>
+
+                <h3>Q2: What happens if consumer crashes in Kafka?</h3>
+                <div class="concept-card">
+                    <p><strong>A:</strong> Two scenarios:</p>
+                    <p><strong>If consumer committed offset before crash:</strong></p>
+                    <ul>
+                        <li>Consumer restarts</li>
+                        <li>Reads last committed offset</li>
+                        <li>Only processes new messages (after crash)</li>
+                        <li>No message loss, no reprocessing</li>
+                    </ul>
+                    <p><strong>If consumer crashed before committing:</strong></p>
+                    <ul>
+                        <li>Consumer restarts</li>
+                        <li>Message wasn't marked as processed</li>
+                        <li>Reprocesses from before crash</li>
+                        <li>Risk of duplicate processing (must be idempotent!)</li>
+                    </ul>
+                </div>
+
+                <h3>Q3: How do partitions ensure order?</h3>
+                <div class="concept-card">
+                    <p><strong>A:</strong> Only within partition!</p>
+                    <p><strong>Order is guaranteed:</strong> Messages in same partition processed sequentially by single consumer</p>
+                    <p><strong>Order is NOT guaranteed:</strong> Messages in different partitions can be out of order</p>
+                    <p><strong>Solution:</strong> Use consistent key (order ID) so related messages go to same partition</p>
+                    <pre><code class="language-text">Example: Order updates
+Key = "order-123" → Always goes to Partition 0
+  Message 1: Order created
+  Message 2: Payment processed
+  Message 3: Shipped
+  ✅ Processed in order by same consumer
+
+Key = "order-456" → Always goes to Partition 1
+  Messages processed by different consumer, own order</code></pre>
+                </div>
+
+                <nav class="page-nav">
+                    <a href="event-driven-architecture.html" class="page-nav-item prev">
+                        <span class="page-nav-arrow">←</span>
+                        <div><span class="page-nav-label">Previous</span><span class="page-nav-title">Event-Driven</span></div>
+                    </a>
+                    <a href="rabbitmq-kafka-comparison.html" class="page-nav-item">
+                        <div><span class="page-nav-label">Next</span><span class="page-nav-title">RabbitMQ vs Kafka</span></div>
+                        <span class="page-nav-arrow">→</span>
+                    </a>
+                </nav>
+
+            </article>
+        </div>
+    </main>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <a href="index.html" class="footer-brand">
+            <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div>
+            DevDocs
+        </a>
+        <ul class="footer-links">
+            <li><a href="webapi.html">Web API</a></li>
+            <li><a href="ef-core.html">EF Core</a></li>
+            <li><a href="linq.html">LINQ</a></li>
+            <li><a href="interview.html">Interview</a></li>
+        </ul>
+        <p class="footer-copy">© 2025 DevDocs. For learning &amp; interview prep.</p>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

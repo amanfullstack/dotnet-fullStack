@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microservices Architecture - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 20px;
+            background: var(--surface-2);
+            border-radius: var(--r-lg);
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .flow-box {
+            background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            min-width: 150px;
+            text-align: center;
+            font-weight: 600;
+            animation: pulse-box 2s ease-in-out infinite;
+        }
+        .flow-arrow {
+            font-size: 24px;
+            margin: 0 15px;
+            animation: arrow-flow 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-box {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        @keyframes arrow-flow {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+    </style>
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+
+<div id="readingProgress" class="progress-fill" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div>
+            DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="webapi.html">Web API</a>
+            <a href="ef-core.html">EF Core</a>
+            <a href="linq.html">LINQ</a>
+            <a href="interview.html">Interview</a>
+            <a href="compiler.html">Compiler</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-section">
+                <ul class="sidebar-links">
+                    <li><a href="index.html" class="sidebar-link"><span class="sidebar-link-icon">🏠</span> Home</a></li>
+                </ul>
+            </div>
+
+            <div class="project-tabs-section">
+                <div class="project-tabs">
+                    <button class="project-tab" data-project="webapi" title="Web API">🌐</button>
+                    <button class="project-tab" data-project="mvc" title="MVC">🖥️</button>
+                    <button class="project-tab" data-project="angular" title="Angular">🅰️</button>
+                    <button class="project-tab" data-project="react" title="React">⚛️</button>
+                </div>
+
+                <div class="project-topics-list" data-topics="webapi" style="display: none;">
+                    <a href="webapi.html" class="sidebar-link"><span style="margin-right: 4px;">🌐</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="mvc" style="display: none;">
+                    <a href="mvc.html" class="sidebar-link"><span style="margin-right: 4px;">📘</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="angular" style="display: none;">
+                    <a href="angular.html" class="sidebar-link"><span style="margin-right: 4px;">📗</span> Overview</a>
+                </div>
+
+                <div class="project-topics-list" data-topics="react" style="display: none;">
+                    <a href="react.html" class="sidebar-link"><span style="margin-right: 4px;">📙</span> Overview</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🏗️ Advanced Architecture</h3>
+                <ul class="sidebar-links">
+                    <li><a href="microservices.html" class="sidebar-link active"><span style="margin-right: 4px;">🔌</span> Microservices</a></li>
+                    <li><a href="event-driven-architecture.html" class="sidebar-link"><span style="margin-right: 4px;">⚡</span> Event-Driven</a></li>
+                    <li><a href="kafka.html" class="sidebar-link"><span style="margin-right: 4px;">📡</span> Kafka</a></li>
+                    <li><a href="rabbitmq-kafka-comparison.html" class="sidebar-link"><span style="margin-right: 4px;">⚔️</span> RabbitMQ vs Kafka</a></li>
+                    <li><a href="mfe.html" class="sidebar-link"><span style="margin-right: 4px;">🎨</span> Micro Frontends</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-category">🎓 Interview Prep</h3>
+                <ul class="sidebar-links">
+                    <li><a href="interview.html" class="sidebar-link"><span style="margin-right: 4px;">💡</span> All Questions</a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <article class="article">
+                <nav class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="sep">/</span>
+                    <span class="current">Microservices Architecture</span>
+                </nav>
+
+                <div class="page-title-block">
+                    <h1 class="page-title">🔌 Microservices Architecture</h1>
+                    <p class="page-subtitle">Break your massive backend into small, independent services. Scale, deploy, and fix individually without breaking everything.</p>
+                </div>
+
+                <div class="callout callout-info">
+                    <span class="callout-icon">🏪</span>
+                    <div class="callout-content">
+                        <p class="callout-title">Real-World Analogy: Restaurant vs One Chef</p>
+                        <p class="callout-body"><strong>❌ Monolith (One Chef does everything):</strong> One person cooks, plates, cleans, serves. If chef gets sick = restaurant closes.</p>
+                        <p class="callout-body"><strong>✅ Microservices (Specialized team):</strong> Grill chef cooks, plating chef arranges, cleaner cleans. Each person specializes. One person sick ≠ restaurant closes.</p>
+                    </div>
+                </div>
+
+                <h2>The Monolith Problem</h2>
+                <p><strong>Single Large App Issues:</strong></p>
+                <ul>
+                    <li>❌ One bug = entire app crashes</li>
+                    <li>❌ Deploy small fix = redeploy EVERYTHING (risky)</li>
+                    <li>❌ Scaling: Need more traffic? Scale entire app (even parts you don't need)</li>
+                    <li>❌ Tech debt: Huge codebase, hard to understand</li>
+                    <li>❌ Team bottleneck: 5 teams waiting on same codebase</li>
+                </ul>
+
+                <h2>Monolith to Microservices Transition</h2>
+
+                <div class="flow-diagram">
+                    <div class="flow-box">📦 Monolith<br>(All Features)</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box">🔌 Services<br>(Split Apart)</div>
+                </div>
+
+                <pre><code class="language-text">BEFORE - MONOLITHIC E-COMMERCE API
+┌─────────────────────────────────────┐
+│   ProductCatalogAPI (All In One)    │
+│                                     │
+│  GET /api/products                  │
+│  POST /api/orders                   │
+│  PUT /api/users/{id}/address        │
+│  POST /api/payments                 │
+│  GET /api/inventory/{productId}     │
+│                                     │
+│  Database: One huge DB              │
+│  Deploy: Everything at once         │
+│  Scale: Everything or nothing       │
+└─────────────────────────────────────┘
+
+AFTER - MICROSERVICES ARCHITECTURE
+┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+│Product Service│  │ Order Service│  │Payment Service│
+│GET /products │  │POST /orders  │  │POST /payments │
+│ DB: Products │  │ DB: Orders   │  │ DB: Payments  │
+│ Port: 5001   │  │ Port: 5002   │  │ Port: 5003    │
+└──────────────┘  └──────────────┘  └──────────────┘
+
+┌──────────────┐  ┌──────────────┐
+│Inventory Svc │  │  Auth Service│
+│GET /inventory│  │POST /login   │
+│ DB: Inventory│  │ DB: Users    │
+│ Port: 5004   │  │ Port: 5005   │
+└──────────────┘  └──────────────┘
+
+         ↑
+    ┌─────────────────┐
+    │  API Gateway    │
+    │ (localhost:3000)│
+    │ Routes requests │
+    │ to services     │
+    └─────────────────┘</code></pre>
+
+                <h2>Key Concepts</h2>
+
+                <h3>1️⃣ Service Boundaries (Dividing the Monolith)</h3>
+                <div class="concept-card">
+                    <p><strong>Question:</strong> Where do I split? <strong>Answer:</strong> By business domain!</p>
+                    <p><strong>Each service = one business capability:</strong></p>
+                    <pre><code class="language-text">Product Service        → Manage products, search, details
+Order Service          → Create orders, track status
+Payment Service        → Process payments, invoices
+Inventory Service      → Stock levels, reservations
+User/Auth Service      → User accounts, login, profiles
+Notification Service   → Send emails, SMS, push notifications</code></pre>
+                    <p><strong>Why by domain?</strong> Each domain has different requirements (Product = read-heavy, Payment = needs transactions)</p>
+                </div>
+
+                <h3>2️⃣ Database Per Service Pattern</h3>
+                <div class="concept-card">
+                    <p><strong>❌ WRONG:</strong> All services share one database = tightly coupled!</p>
+                    <p><strong>✅ RIGHT:</strong> Each service owns its database</p>
+                    <pre><code class="language-sql">-- Product Service Database
+CREATE TABLE products (id, name, price, category);
+
+-- Order Service Database
+CREATE TABLE orders (id, userId, totalAmount, status);
+
+-- Payment Service Database
+CREATE TABLE payments (id, orderId, amount, status);
+
+-- Each team manages their own DB!
+-- Can use different databases if needed
+-- Product: SQL (structured)
+-- Payments: NoSQL (document-based for transactions)</code></pre>
+                    <p><strong>If services need data?</strong> Call another service's API (not the database directly)</p>
+                </div>
+
+                <h3>3️⃣ Service Communication Patterns</h3>
+                <div class="concept-card">
+
+                    <h4>Synchronous (REST/gRPC) - Wait for Answer</h4>
+                    <pre><code class="language-text">Order Service → (HTTP Call) → Inventory Service
+"Do we have stock?"
+← (Response) ← "Yes! 5 items left"
+
+✅ Pros: Simple, immediate feedback
+❌ Cons: If Inventory Service slow = Order Service slow
+         If Inventory down = Order Service fails</code></pre>
+
+                    <h4>Asynchronous (Message Queue) - Fire and Forget</h4>
+                    <pre><code class="language-text">Order Service → (Publish Event) → Message Queue
+"Order created!"
+                                  ↓
+                          Inventory Service
+                          (processes when ready)
+
+✅ Pros: Services independent, no waiting
+❌ Cons: Eventual consistency (data not updated instantly)</code></pre>
+                </div>
+
+                <h3>4️⃣ API Gateway Pattern</h3>
+                <div class="concept-card">
+                    <p><strong>Single entry point for clients:</strong></p>
+                    <pre><code class="language-text">Client (Mobile App, Web)
+        ↓
+    ┌─────────────────────────┐
+    │   API Gateway           │
+    │ - Routes /products      │
+    │   to Product Service    │
+    │ - Routes /orders        │
+    │   to Order Service      │
+    │ - Handles auth          │
+    │ - Rate limiting         │
+    └─────────────────────────┘
+        ↓  ↓  ↓  ↓
+    (All Services)
+
+✅ Clients don't know service addresses
+✅ Can change service locations without client changes
+✅ Single point for security, logging</code></pre>
+                </div>
+
+                <h2>Code Example: REST Service Call</h2>
+                <pre><code class="language-csharp">// Order Service calling Inventory Service
+public class OrderService
+{
+    private readonly HttpClient _httpClient;
+
+    public OrderService(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
+    public async Task CreateOrder(Order order)
+    {
+        // Call Inventory Service to check stock
+        var response = await _httpClient.GetAsync(
+            "http://inventory-service:5004/api/inventory/" + order.ProductId
+        );
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception("Product out of stock!");
+        }
+
+        var inventory = await response.Content.ReadAsAsync<Inventory>();
+
+        if (inventory.QuantityAvailable < order.Quantity)
+        {
+            throw new Exception("Not enough stock!");
+        }
+
+        // Create order
+        order.Status = "Confirmed";
+        // Save to database...
+
+        // Notify Inventory Service (could be async/event)
+        await _httpClient.PutAsync(
+            $"http://inventory-service:5004/api/inventory/{order.ProductId}/reserve",
+            new StringContent(JsonConvert.SerializeObject(
+                new { quantity = order.Quantity }
+            ))
+        );
+    }
+}
+
+// Program.cs - Dependency Injection
+builder.Services.AddHttpClient<OrderService>();</code></pre>
+
+                <h2>Best Practices</h2>
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <h4>✅ Use API Gateway</h4>
+                        <p>Clients talk to gateway, not individual services. Easier to manage, secure.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>✅ Database Per Service</h4>
+                        <p>Each service owns its data. No shared databases!</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>✅ Versioning APIs</h4>
+                        <p>Use /v1, /v2 for backward compatibility. Services evolve independently.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>✅ Circuit Breaker Pattern</h4>
+                        <p>If service slow/down, fail fast instead of waiting forever.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>✅ Centralized Logging</h4>
+                        <p>All services log to one place. Easy debugging across services.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>✅ Health Checks</h4>
+                        <p>Each service has /health endpoint. Gateway knows who's alive.</p>
+                    </div>
+                </div>
+
+                <h2>Common Mistakes</h2>
+                <div class="callout callout-danger">
+                    <span class="callout-icon">⚠️</span>
+                    <div class="callout-content">
+                        <p class="callout-title">❌ Mistake: Too Many Tiny Services</p>
+                        <p class="callout-body">Breaking everything into 50 services = complexity nightmare. Complexity overhead becomes worse than monolith!</p>
+                    </div>
+                </div>
+
+                <div class="callout callout-danger">
+                    <span class="callout-icon">⚠️</span>
+                    <div class="callout-content">
+                        <p class="callout-title">❌ Mistake: Shared Database</p>
+                        <p class="callout-body">Services should NOT share database. Defeats the purpose (loose coupling). Access data via APIs only.</p>
+                    </div>
+                </div>
+
+                <div class="callout callout-danger">
+                    <span class="callout-icon">⚠️</span>
+                    <div class="callout-content">
+                        <p class="callout-title">❌ Mistake: All Synchronous Calls</p>
+                        <p class="callout-body">Service A calls Service B calls Service C = chain failures. Use async/events for non-critical operations.</p>
+                    </div>
+                </div>
+
+                <h2>When to Use Microservices?</h2>
+                <p><strong>✅ Use when:</strong></p>
+                <ul>
+                    <li>Multiple teams working on same product</li>
+                    <li>Different parts need different scaling</li>
+                    <li>Want to deploy independently</li>
+                    <li>Teams prefer different tech stacks</li>
+                    <li>System is complex, large codebase</li>
+                </ul>
+
+                <p><strong>❌ Don't use when:</strong></p>
+                <ul>
+                    <li>Small team, simple app</li>
+                    <li>Everything is tightly coupled</li>
+                    <li>Real-time consistency critical</li>
+                    <li>Network is unreliable (distributed system risks)</li>
+                </ul>
+
+                <h2>Interview Q&amp;A</h2>
+
+                <h3>Q1: When should you move from monolith to microservices?</h3>
+                <div class="concept-card">
+                    <p><strong>A:</strong> When:</p>
+                    <ul>
+                        <li>Teams are blocked (waiting on same code)</li>
+                        <li>Scaling one feature means scaling everything</li>
+                        <li>Deployment is risky (entire app to update one service)</li>
+                        <li>Different services have different requirements (tech, scaling, reliability)</li>
+                    </ul>
+                    <p>Not just because it's cool! Microservices add complexity.</p>
+                </div>
+
+                <h3>Q2: How do you handle transactions across services?</h3>
+                <div class="concept-card">
+                    <p><strong>A:</strong> Two approaches:</p>
+                    <p><strong>Saga Pattern (Distributed Transactions):</strong></p>
+                    <pre><code class="language-text">Order Service:
+1. Create order (status = PENDING)
+2. Call Payment Service → "Pay $100"
+3. If payment succeeds: Call Inventory → "Reserve product"
+4. If anything fails: Rollback all changes
+
+Challenge: Each service manages its own transaction
+Solution: Coordinating saga or choreography pattern</code></pre>
+                </div>
+
+                <h3>Q3: What's a circuit breaker?</h3>
+                <div class="concept-card">
+                    <p><strong>A:</strong> Pattern to handle service failures gracefully</p>
+                    <pre><code class="language-text">States:
+1. CLOSED (normal)     → Requests flow normally
+2. OPEN (circuit broken)→ Service is failing, STOP sending requests
+3. HALF_OPEN (testing)  → Try one request, see if service recovered
+
+Example: Inventory Service down
+  Order Service detects failures
+  → Stops calling Inventory Service (OPEN)
+  → Returns "Out of stock" to prevent cascading failures
+  → After timeout, tries again (HALF_OPEN)
+  → If works: back to normal (CLOSED)</code></pre>
+                </div>
+
+                <nav class="page-nav">
+                    <a href="interview.html" class="page-nav-item prev">
+                        <span class="page-nav-arrow">←</span>
+                        <div><span class="page-nav-label">Previous</span><span class="page-nav-title">Interview prep</span></div>
+                    </a>
+                    <a href="event-driven-architecture.html" class="page-nav-item">
+                        <div><span class="page-nav-label">Next</span><span class="page-nav-title">Event-Driven Architecture</span></div>
+                        <span class="page-nav-arrow">→</span>
+                    </a>
+                </nav>
+
+            </article>
+        </div>
+    </main>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <a href="index.html" class="footer-brand">
+            <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div>
+            DevDocs
+        </a>
+        <ul class="footer-links">
+            <li><a href="webapi.html">Web API</a></li>
+            <li><a href="ef-core.html">EF Core</a></li>
+            <li><a href="linq.html">LINQ</a></li>
+            <li><a href="interview.html">Interview</a></li>
+        </ul>
+        <p class="footer-copy">© 2025 DevDocs. For learning &amp; interview prep.</p>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

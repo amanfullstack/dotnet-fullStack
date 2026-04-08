@@ -308,7 +308,14 @@
     // Performance & Tools
     { title: 'Performance Optimization', section: 'Advanced', url: 'performance.html', icon: '⚡', keywords: 'performance optimization speed profiling', description: 'Optimize performance' },
     { title: 'Learning Paths', section: 'Guides', url: 'learning-paths.html', icon: '🎯', keywords: 'learning path guide roadmap', description: 'Structured learning paths' },
-    { title: 'Code Compiler', section: 'Tools', url: 'compiler.html', icon: '🚀', keywords: 'compiler execute code run', description: 'Online code compiler' }
+    { title: 'Code Compiler', section: 'Tools', url: 'compiler.html', icon: '🚀', keywords: 'compiler execute code run', description: 'Online code compiler' },
+
+    // Advanced Architecture
+    { title: 'Microservices Architecture', section: 'Advanced Architecture', url: 'microservices.html', icon: '🔌', keywords: 'microservices architecture breaking monolith services', description: 'Break monolithic backend into independent services' },
+    { title: 'Event-Driven Architecture', section: 'Advanced Architecture', url: 'event-driven-architecture.html', icon: '⚡', keywords: 'event driven architecture publishers subscribers event bus', description: 'Publish-subscribe pattern for decoupled services' },
+    { title: 'Kafka Message Streaming', section: 'Advanced Architecture', url: 'kafka.html', icon: '📡', keywords: 'kafka topics partitions consumers message streaming high throughput', description: 'Distributed event streaming platform for high-throughput scenarios' },
+    { title: 'RabbitMQ vs Kafka Comparison', section: 'Advanced Architecture', url: 'rabbitmq-kafka-comparison.html', icon: '⚔️', keywords: 'rabbitmq kafka comparison message broker when to use', description: 'Compare two message brokers and choose the right one' },
+    { title: 'Micro Frontends (MFE)', section: 'Advanced Architecture', url: 'mfe.html', icon: '🎨', keywords: 'micro frontend mfe module federation webpack independent deployment', description: 'Break frontend monolith into independent applications' }
   ];
 
   function initSearch() {
