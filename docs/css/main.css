@@ -2463,10 +2463,11 @@ details[open] .qa-chevron {
   .search-bar {
     min-width: auto;
     width: auto;
-    max-width: 140px;
-    padding: var(--sp-2) var(--sp-3);
+    max-width: 100px;
+    padding: var(--sp-1) var(--sp-2);
+    gap: 4px;
   }
-  .search-bar span { margin-right: var(--sp-1); }
+  .search-bar span { margin-right: 0; }
   .search-bar input { display: none; }
   .search-shortcut { display: none; }
 
@@ -2510,6 +2511,24 @@ details[open] .qa-chevron {
   .hero-cta .btn { justify-content: center; }
   .path-card { padding: var(--sp-5); }
   .project-card { padding: var(--sp-5); }
+
+  /* Phone - Search bar as icon-only button */
+  .search-bar {
+    max-width: 36px;
+    min-width: 36px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    justify-content: center;
+    gap: 0;
+  }
+  .search-bar span {
+    font-size: 1rem;
+    margin: 0;
+  }
 
   /* Prevent horizontal scroll from tables */
   .comparison-table,
