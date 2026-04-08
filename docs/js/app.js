@@ -321,7 +321,54 @@
     { title: 'Docker - Containerization', section: 'DevOps', url: 'docker.html', icon: '🐳', keywords: 'docker container image dockerfile multi-stage build containerization', description: 'Package apps with dependencies, works everywhere - standardized, reproducible deployment' },
     { title: 'Kubernetes - Orchestration', section: 'DevOps', url: 'kubernetes.html', icon: '☸️', keywords: 'kubernetes k8s pods deployment service auto-scaling self-healing rolling update', description: 'Orchestrate containers, auto-scaling, self-healing, zero-downtime deployments' },
     { title: 'Git & Version Control', section: 'DevOps', url: 'git-version-control.html', icon: '🔀', keywords: 'git version control branches pull request code review ci/cd pipeline github', description: 'Collaborate on code, track changes, code review, automated CI/CD pipeline' },
-    { title: 'Complete Deployment Flow', section: 'DevOps', url: 'git-docker-kubernetes-flow.html', icon: '🚀', keywords: 'deployment pipeline git docker kubernetes cicd continuous integration automatic rollback', description: 'End-to-end: commit code → tests → Docker build → K8s deploy → Live in production' }
+    { title: 'Complete Deployment Flow', section: 'DevOps', url: 'git-docker-kubernetes-flow.html', icon: '🚀', keywords: 'deployment pipeline git docker kubernetes cicd continuous integration automatic rollback', description: 'End-to-end: commit code → tests → Docker build → K8s deploy → Live in production' },
+
+    // React Inner Topics
+    { title: 'useState & useEffect Hooks', section: 'React', url: 'react-hooks.html', icon: '⚙️', keywords: 'usestate useeffect hooks state side effects dependency array cleanup', description: 'Core hooks for state management and side effects' },
+    { title: 'React Context API & Prop Drilling', section: 'React', url: 'react-context.html', icon: '🎯', keywords: 'context createcontext usecontent prop drilling state sharing', description: 'Avoid prop drilling with Context API for global state' },
+    { title: 'React Forms & Validation', section: 'React', url: 'react-forms.html', icon: '📝', keywords: 'form input controlled component validation submission handling', description: 'Build and validate forms, handle submissions' },
+
+    // Angular Inner Topics
+    { title: 'Angular Components & Decorators', section: 'Angular', url: 'angular-components.html', icon: '🧩', keywords: 'component decorator selector template binding lifecycle', description: 'Create components with decorators, bindings, lifecycle hooks' },
+    { title: 'Angular Forms & Validation', section: 'Angular', url: 'angular-forms.html', icon: '📝', keywords: 'formcontrol formgroup validators reactive forms template driven', description: 'Build reactive and template-driven forms' },
+
+    // MVC Inner Topics
+    { title: 'MVC Controllers & Routing', section: 'MVC', url: 'mvc-controllers.html', icon: '🎮', keywords: 'controller routing action method http verbs post get put delete filters', description: 'Create controllers, define routes, handle HTTP requests' },
+    { title: 'Razor Views & Templates', section: 'MVC', url: 'mvc-views.html', icon: '👁️', keywords: 'razor view template layout partial html asp.net', description: 'Build dynamic views with Razor syntax, layouts, and partials' },
+
+    // Web API Inner Topics
+    { title: 'REST Controllers & Endpoints', section: 'Web API', url: 'webapi-controllers.html', icon: '🎮', keywords: 'rest api controller action endpoint http routing', description: 'Design REST API controllers and endpoints' },
+    { title: 'Models, DTOs & Validation', section: 'Web API', url: 'webapi-models.html', icon: '📦', keywords: 'model dto data transfer object validation automapper', description: 'Create models and DTOs, map between layers' },
+
+    // Data Access Inner Topics
+    { title: 'Entity Framework CRUD Operations', section: 'Data Access', url: 'ef-core.html', icon: '🗄️', keywords: 'entity framework crud create read update delete migrations relationships', description: 'CRUD operations, migrations, relationships in EF Core' },
+    { title: 'LINQ Queries & Filtering', section: 'Data Access', url: 'linq.html', icon: '🔗', keywords: 'linq where select orderby groupby join aggregate performance', description: 'Write efficient LINQ queries for data filtering and transformation' },
+
+    // Web API Advanced Topics
+    { title: 'Dependency Injection & IoC', section: 'Web API', url: 'webapi-di.html', icon: '💉', keywords: 'dependency injection ioc container services registration scoped singleton', description: 'Implement DI for loose coupling and testability' },
+    { title: 'Middleware Pipeline & Request Flow', section: 'Web API', url: 'webapi-middleware.html', icon: '⚙️', keywords: 'middleware pipeline request response cors authentication error handling', description: 'Understand middleware execution and request processing' },
+    { title: 'API Caching & Performance', section: 'Web API', url: 'webapi-caching.html', icon: '⚡', keywords: 'cache caching performance redis distributed memory output response cache', description: 'Improve API performance with caching strategies' },
+    { title: 'Error Handling & Responses', section: 'Web API', url: 'webapi-error-handling.html', icon: '🚨', keywords: 'error exception handling validation response status code problem details', description: 'Proper error handling and response formatting' },
+    { title: 'Data Access Patterns', section: 'Web API', url: 'webapi-data-access.html', icon: '🗾', keywords: 'database repository pattern query database access data layer', description: 'Implement data access patterns and repository pattern' },
+    { title: 'GraphQL APIs with HotChocolate', section: 'Web API', url: 'webapi-graphql.html', icon: '📊', keywords: 'graphql query mutation hotchocolate schema types resolvers', description: 'Build GraphQL APIs as alternative to REST' },
+
+    // MVC Advanced Topics
+    { title: 'MVC Models & ViewModels', section: 'MVC', url: 'mvc-models.html', icon: '📦', keywords: 'model viewmodel data binding validation mapping strongly typed', description: 'Design models and ViewModels for MVC views' },
+    { title: 'MVC Services & Business Logic', section: 'MVC', url: 'mvc-services.html', icon: '⚙️', keywords: 'service business logic repository pattern dependency injection', description: 'Implement services for business logic separation' },
+
+    // C# Features & Concepts
+    { title: 'C# Syntax & Fundamentals', section: 'C#', url: 'csharp.html', icon: '💠', keywords: 'csharp language syntax classes methods properties variables types', description: 'Learn C# language basics and syntax' },
+
+    // Architecture Concepts - More Detailed
+    { title: 'Microservices Deployment & Scaling', section: 'Advanced Architecture', url: 'microservices.html', icon: '🔌', keywords: 'microservices scaling deployment docker kubernetes orchestration', description: 'Deploy and scale microservices with containers' },
+    { title: 'Event Bus & Message Brokers', section: 'Advanced Architecture', url: 'event-driven-architecture.html', icon: '⚡', keywords: 'event bus kafka rabbitmq publishers subscribers event handling', description: 'Implement event-driven patterns with message brokers' },
+    { title: 'Kafka Topics & Consumers', section: 'Advanced Architecture', url: 'kafka.html', icon: '📡', keywords: 'kafka topics partitions consumer groups offset producer throughput', description: 'Master Kafka architecture and consumer patterns' },
+    { title: 'Message Broker Selection Guide', section: 'Advanced Architecture', url: 'rabbitmq-kafka-comparison.html', icon: '⚔️', keywords: 'rabbitmq kafka comparison choosing broker throughput latency guarantees', description: 'Compare message brokers and choose the right one' },
+    { title: 'Module Federation & MFE', section: 'Advanced Architecture', url: 'mfe.html', icon: '🎨', keywords: 'micro frontend module federation webpack independent deployment shared libraries', description: 'Implement micro frontends for independent frontend teams' },
+
+    // Performance & Learning
+    { title: 'Performance Profiling & Optimization', section: 'Advanced', url: 'performance.html', icon: '⚡', keywords: 'performance profiling dotnet benchmark memory cpu caching optimization', description: 'Profile and optimize application performance' },
+    { title: 'Structured Learning & Skill Paths', section: 'Guides', url: 'learning-paths.html', icon: '🎯', keywords: 'learning path guide roadmap curriculum backend frontend full stack', description: 'Follow guided learning paths for different skill levels' }
   ];
 
   function initSearch() {
