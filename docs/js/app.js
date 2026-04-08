@@ -45,6 +45,14 @@
     menuBtn.addEventListener('click', toggleSidebar);
     if (overlay) overlay.addEventListener('click', closeSidebar);
 
+    // Clear scroll history when clicking logo to go home
+    const logo = document.querySelector('.site-logo');
+    if (logo) {
+      logo.addEventListener('click', () => {
+        sessionStorage.removeItem('sidebarScrollPos');
+      });
+    }
+
     // Save sidebar scroll position before clicking links
     document.querySelectorAll('.sidebar-link').forEach(link => {
       link.addEventListener('click', () => {
@@ -88,12 +96,19 @@
     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
     const sidebar = document.getElementById('sidebar');
 
-    // Restore sidebar scroll position if saved
-    const savedScroll = sessionStorage.getItem('sidebarScrollPos');
-    if (sidebar && savedScroll) {
-      setTimeout(() => {
-        sidebar.scrollTop = parseInt(savedScroll);
-      }, 0);
+    // Restore sidebar scroll position if saved (but not on homepage)
+    const isHomepage = currentPath === '' || currentPath === 'index.html';
+    if (!isHomepage && sidebar) {
+      const savedScroll = sessionStorage.getItem('sidebarScrollPos');
+      if (savedScroll) {
+        setTimeout(() => {
+          sidebar.scrollTop = parseInt(savedScroll);
+        }, 0);
+      }
+    } else if (isHomepage && sidebar) {
+      // Always scroll to top on homepage
+      sidebar.scrollTop = 0;
+      sessionStorage.removeItem('sidebarScrollPos');
     }
 
     document.querySelectorAll('.sidebar-link').forEach(link => {
