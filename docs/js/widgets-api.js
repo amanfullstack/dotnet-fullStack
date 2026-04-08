@@ -164,12 +164,12 @@ class WidgetsAPI {
       // Try to fetch from a simple version API
       // Using jsDelivr CDN list which is more reliable
       const versionMap = {
+        'C#': 'https://api.github.com/repos/dotnet/roslyn/releases/latest',
         '.NET': 'https://api.github.com/repos/dotnet/runtime/releases/latest',
         'React': 'https://api.github.com/repos/facebook/react/releases/latest',
         'Angular': 'https://api.github.com/repos/angular/angular/releases/latest',
         'Node.js': 'https://api.github.com/repos/nodejs/node/releases/latest',
-        'TypeScript': 'https://api.github.com/repos/microsoft/TypeScript/releases/latest',
-        'Vue': 'https://api.github.com/repos/vuejs/core/releases/latest'
+        'TypeScript': 'https://api.github.com/repos/microsoft/TypeScript/releases/latest'
       };
 
       // Try to fetch but immediately fallback since we're likely offline or rate-limited
@@ -199,12 +199,12 @@ class WidgetsAPI {
       console.warn('⚠ Using fallback versions');
       // Fallback versions
       this.versions = [
+        { name: 'C#', version: '13.0', stable: true },
         { name: '.NET', version: '8.0.12', stable: true },
         { name: 'React', version: '19.0', stable: true },
         { name: 'Angular', version: '17.2', stable: true },
         { name: 'Node.js', version: '22.0', stable: true },
-        { name: 'TypeScript', version: '5.5', stable: true },
-        { name: 'Vue', version: '3.4', stable: true }
+        { name: 'TypeScript', version: '5.5', stable: true }
       ];
     }
   }
