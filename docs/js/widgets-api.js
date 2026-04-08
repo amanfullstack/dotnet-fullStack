@@ -18,14 +18,14 @@ class WidgetsAPI {
   async init() {
     console.log('🎯 Initializing widgets...');
 
-    // Fetch data in parallel
-    await Promise.all([
+    // Fetch data in parallel with individual error handling
+    await Promise.allSettled([
       this.loadQuotes(),
       this.loadNews(),
       this.loadVersions()
     ]);
 
-    // Render widgets
+    // Render widgets - they'll have fallback data if APIs failed
     this.renderQuotesBanner();
     this.renderNewsCards();
     this.renderVersionsBar();
@@ -35,25 +35,41 @@ class WidgetsAPI {
   }
 
   /**
-   * Load inspirational coding quotes
+   * Load inspirational coding quotes from Quotable API
    */
   async loadQuotes() {
     try {
-      console.log('📚 Fetching quotes...');
+      console.log('📚 Fetching quotes from Quotable API...');
 
-      // Use Quotable API for quotes
-      const response = await fetch('https://api.quotable.io/random?tags=inspirational');
+      // Fetch multiple quotes about programming/technology
+      const tags = ['programming', 'technology', 'code'];
+      const quotes = [];
 
-      if (!response.ok) throw new Error('Failed to fetch quote');
+      for (const tag of tags) {
+        try {
+          const response = await fetch(`https://api.quotable.io/random?tags=${tag}`, { timeout: 5000 });
+          if (response.ok) {
+            const data = await response.json();
+            quotes.push({
+              text: data.content,
+              author: data.author.replace(', type.fit', '').replace(/\(.*\)/, '').trim()
+            });
+          }
+        } catch (e) {
+          console.log(`Failed to fetch ${tag} quote`);
+        }
+      }
 
-      const data = await response.json();
-
-      // Create quote array with fetched quote + fallback ones
+      if (quotes.length > 0) {
+        this.quotes = quotes;
+        console.log('✓ Quotes loaded from API:', this.quotes.length);
+      } else {
+        throw new Error('No quotes fetched from API');
+      }
+    } catch (err) {
+      console.warn('⚠ API failed, using fallback quotes');
+      // Enhanced fallback quotes with current industry insights
       this.quotes = [
-        {
-          text: data.content,
-          author: data.author.replace(', type.fit', '')
-        },
         {
           text: "Code is poetry. It tells the story of what you intended the computer to do.",
           author: "Donald Knuth"
@@ -65,139 +81,160 @@ class WidgetsAPI {
         {
           text: "First, solve the problem. Then, write the code.",
           author: "John Johnson"
-        }
-      ];
-
-      console.log('✓ Quotes loaded:', this.quotes.length);
-    } catch (err) {
-      console.warn('⚠ Using fallback quotes');
-      // Fallback quotes
-      this.quotes = [
-        {
-          text: "The only way to do great work is to love what you do.",
-          author: "Steve Jobs"
         },
         {
-          text: "Innovation distinguishes between a leader and a follower.",
-          author: "Steve Jobs"
+          text: "Clean code always looks like it was written by someone who cares.",
+          author: "Robert C. Martin"
         },
         {
-          text: "Code is poetry written in a language computers understand.",
-          author: "Unknown"
-        },
-        {
-          text: "Any fool can write code. Good programmers write code for humans.",
+          text: "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
           author: "Martin Fowler"
         },
         {
-          text: "The best code is no code at all.",
-          author: "Jeff Atwood"
+          text: "The most important property of a program is that it accomplishes the intention of the user.",
+          author: "C.A.R. Hoare"
         }
       ];
     }
   }
 
   /**
-   * Load tech and development news
+   * Load tech and development news from multiple sources
    */
   async loadNews() {
     try {
-      console.log('📰 Fetching tech news...');
+      console.log('📰 Fetching tech news from Dev.to API...');
 
-      // Use Dev.to API (no auth required) for tech news
-      const response = await fetch('https://dev.to/api/articles?per_page=3');
+      // Primary source: Dev.to API - fresh developer content
+      const devtoResponse = await fetch('https://dev.to/api/articles?tags=programming,webdev,dotnet&per_page=5', {
+        timeout: 8000
+      });
 
-      if (!response.ok) throw new Error('Failed to fetch news');
+      if (devtoResponse.ok) {
+        const articles = await devtoResponse.json();
+        this.news = articles.slice(0, 3).map(article => ({
+          title: article.title,
+          description: article.description || article.title.substring(0, 100),
+          url: article.url,
+          image: article.social_image,
+          source: 'Dev.to',
+          date: new Date(article.published_at).toLocaleDateString(),
+          tags: article.tag_list.slice(0, 2)
+        }));
 
-      const articles = await response.json();
-
-      this.news = articles.slice(0, 3).map(article => ({
-        title: article.title,
-        description: article.description || article.title,
-        url: article.url,
-        image: article.social_image,
-        source: 'Dev.to',
-        date: new Date(article.published_at).toLocaleDateString(),
-        tags: article.tag_list.slice(0, 2)
-      }));
-
-      console.log('✓ News loaded:', this.news.length);
+        console.log('✓ News loaded from API:', this.news.length);
+        return;
+      }
     } catch (err) {
-      console.warn('⚠ Using fallback news');
-      // Fallback news
-      this.news = [
-        {
-          title: '.NET 8 Performance Enhancements Released',
-          description: 'New SIMD improvements and native AOT compilation features for faster applications',
-          url: 'https://devblogs.microsoft.com/dotnet',
-          source: 'Microsoft',
-          date: new Date().toLocaleDateString(),
-          tags: ['.NET', 'Performance']
-        },
-        {
-          title: 'React 19 Introduces New Server Components',
-          description: 'Revolutionary approach to building full-stack applications with improved developer experience',
-          url: 'https://react.dev',
-          source: 'React Blog',
-          date: new Date().toLocaleDateString(),
-          tags: ['React', 'JavaScript']
-        },
-        {
-          title: 'Angular 17 Delivers Major Performance Boost',
-          description: 'Standalone components now default, significant reduction in bundle size and faster rendering',
-          url: 'https://angular.io/blog',
-          source: 'Angular',
-          date: new Date().toLocaleDateString(),
-          tags: ['Angular', 'TypeScript']
-        }
-      ];
+      console.warn('⚠ Dev.to API request failed, trying alternative sources...');
     }
+
+    try {
+      // Secondary source: HackerNews API - technology industry news
+      console.log('📰 Fetching from Hacker News...');
+      const hnResponse = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json', { timeout: 8000 });
+
+      if (hnResponse.ok) {
+        const storyIds = await hnResponse.json();
+        const topStories = storyIds.slice(0, 5);
+
+        const stories = await Promise.all(
+          topStories.map(id =>
+            fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)
+              .then(r => r.ok ? r.json() : null)
+              .catch(() => null)
+          )
+        );
+
+        this.news = stories
+          .filter(s => s && s.title)
+          .slice(0, 3)
+          .map(story => ({
+            title: story.title,
+            description: story.title.substring(0, 100),
+            url: story.url || `https://news.ycombinator.com/item?id=${story.id}`,
+            image: null,
+            source: 'Hacker News',
+            date: new Date(story.time * 1000).toLocaleDateString(),
+            tags: ['tech', 'news']
+          }));
+
+        if (this.news.length > 0) {
+          console.log('✓ News loaded from Hacker News:', this.news.length);
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn('⚠ Hacker News API failed');
+    }
+
+    // Fallback news with latest industry updates
+    console.warn('⚠ Using fallback news');
+    this.news = [
+      {
+        title: 'Latest .NET 8 Features: Performance & Innovation',
+        description: 'Explore cutting-edge features in .NET 8 including improved SIMD support, native AOT compilation, and advanced caching strategies.',
+        url: 'https://devblogs.microsoft.com/dotnet',
+        image: null,
+        source: 'Microsoft Devblogs',
+        date: new Date().toLocaleDateString(),
+        tags: ['.NET', 'Backend']
+      },
+      {
+        title: 'React 19: Server Components & New Patterns',
+        description: 'React 19 introduces server-side rendering improvements and new patterns for building modern full-stack applications efficiently.',
+        url: 'https://react.dev/blog',
+        image: null,
+        source: 'React Blog',
+        date: new Date().toLocaleDateString(),
+        tags: ['React', 'Frontend']
+      },
+      {
+        title: 'Angular 17+: Performance & Standalone Components',
+        description: 'Discover how Angular has evolved with standalone components, improved change detection, and significantly reduced bundle sizes.',
+        url: 'https://angular.io/blog',
+        image: null,
+        source: 'Angular Team',
+        date: new Date().toLocaleDateString(),
+        tags: ['Angular', 'Frontend']
+      }
+    ];
   }
 
   /**
-   * Load latest tech versions
+   * Load latest tech versions from reliable APIs
    */
   async loadVersions() {
     try {
-      console.log('📦 Loading tech versions...');
+      console.log('📦 Loading tech versions from APIs...');
 
-      // Try to fetch from a simple version API
-      // Using jsDelivr CDN list which is more reliable
-      const versionMap = {
-        'C#': 'https://api.github.com/repos/dotnet/roslyn/releases/latest',
-        '.NET': 'https://api.github.com/repos/dotnet/runtime/releases/latest',
-        'React': 'https://api.github.com/repos/facebook/react/releases/latest',
-        'Angular': 'https://api.github.com/repos/angular/angular/releases/latest',
-        'Node.js': 'https://api.github.com/repos/nodejs/node/releases/latest',
-        'TypeScript': 'https://api.github.com/repos/microsoft/TypeScript/releases/latest'
+      const versionPromises = {
+        'C#': this.fetchCSharpVersion(),
+        '.NET': this.fetchDotNetVersion(),
+        'React': this.fetchNpmVersion('react'),
+        'Angular': this.fetchNpmVersion('@angular/core'),
+        'Node.js': this.fetchNodeVersion(),
+        'TypeScript': this.fetchNpmVersion('typescript')
       };
 
-      // Try to fetch but immediately fallback since we're likely offline or rate-limited
-      const timeout = Promise.race([
-        Promise.all(Object.entries(versionMap).map(async ([name, url]) => {
-          try {
-            const res = await fetch(url);
-            if (!res.ok) return null;
-            const data = await res.json();
-            return { name, version: data.tag_name.replace(/^v/, '').substring(0, 5) };
-          } catch {
-            return null;
-          }
-        })),
-        new Promise(resolve => setTimeout(() => resolve(null), 3000)) // 3 second timeout
-      ]);
+      const results = await Promise.allSettled(Object.entries(versionPromises).map(async ([name, promise]) => {
+        const version = await promise;
+        return { name, version };
+      }));
 
-      const results = await timeout;
-      if (results && results.some(v => v)) {
-        this.versions = results.filter(v => v);
-      } else {
-        throw new Error('API timeout or failed');
+      this.versions = results
+        .filter(r => r.status === 'fulfilled' && r.value.version)
+        .map(r => ({ ...r.value, stable: true }))
+        .slice(0, 6);
+
+      if (this.versions.length > 0) {
+        console.log('✓ Versions loaded from APIs:', this.versions.length);
+        return;
       }
-
-      console.log('✓ Versions loaded:', this.versions.length);
+      throw new Error('No versions fetched');
     } catch (err) {
-      console.warn('⚠ Using fallback versions');
-      // Fallback versions
+      console.warn('⚠ Version API failed, using fallback data');
+      // Fallback versions with current stable releases
       this.versions = [
         { name: 'C#', version: '13.0', stable: true },
         { name: '.NET', version: '8.0.12', stable: true },
@@ -207,6 +244,79 @@ class WidgetsAPI {
         { name: 'TypeScript', version: '5.5', stable: true }
       ];
     }
+  }
+
+  /**
+   * Fetch latest .NET version
+   */
+  async fetchDotNetVersion() {
+    try {
+      const response = await fetch('https://raw.githubusercontent.com/dotnet/release-notes/main/release-notes.json', { timeout: 5000 });
+      if (response.ok) {
+        const data = await response.json();
+        return data.releases?.[0]?.latest?.release || '8.0';
+      }
+    } catch (e) {
+      // Try alternative source
+      try {
+        const res = await fetch('https://api.github.com/repos/dotnet/runtime/releases?per_page=1', { timeout: 5000 });
+        if (res.ok) {
+          const [release] = await res.json();
+          return release.tag_name.replace(/^v/, '').substring(0, 5);
+        }
+      } catch (e2) {}
+    }
+    return '8.0.12';
+  }
+
+  /**
+   * Fetch latest C# version
+   */
+  async fetchCSharpVersion() {
+    try {
+      const response = await fetch('https://api.github.com/repos/dotnet/roslyn/releases?per_page=1', { timeout: 5000 });
+      if (response.ok) {
+        const [release] = await response.json();
+        return release.tag_name.replace(/^[a-zA-Z-]/, '').substring(0, 5);
+      }
+    } catch (e) {}
+    return '13.0';
+  }
+
+  /**
+   * Fetch latest Node.js version
+   */
+  async fetchNodeVersion() {
+    try {
+      const response = await fetch('https://api.github.com/repos/nodejs/node/releases?per_page=1', { timeout: 5000 });
+      if (response.ok) {
+        const [release] = await response.json();
+        return release.tag_name.replace(/^v/, '').substring(0, 5);
+      }
+    } catch (e) {}
+    return '22.0';
+  }
+
+  /**
+   * Fetch latest version from NPM registry
+   */
+  async fetchNpmVersion(packageName) {
+    try {
+      const response = await fetch(`https://registry.npmjs.org/${packageName}`, { timeout: 5000 });
+      if (response.ok) {
+        const data = await response.json();
+        const latestVersion = data['dist-tags']?.latest || '1.0.0';
+        return latestVersion.substring(0, 5);
+      }
+    } catch (e) {}
+
+    // Fallback versions by package
+    const fallbacks = {
+      'react': '19.0',
+      '@angular/core': '17.2',
+      'typescript': '5.5'
+    };
+    return fallbacks[packageName] || '1.0';
   }
 
   /**
