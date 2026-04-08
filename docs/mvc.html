@@ -98,17 +98,20 @@
           <a href="angular-rxjs.html" class="sidebar-link"><span style="margin-right: 4px;">〰️</span> RxJS &amp; Observables</a>
           <a href="angular-forms.html" class="sidebar-link"><span style="margin-right: 4px;">📋</span> Reactive Forms</a>
           <a href="angular-router.html" class="sidebar-link"><span style="margin-right: 4px;">🗺️</span> Router &amp; Navigation</a>
+          <a href="angular-parent-child.html" class="sidebar-link"><span style="margin-right: 4px;">👨‍👧</span> Parent-Child Communication</a>
         </div>
 
         <!-- React Topics -->
         <div class="project-topics-list" data-topics="react" style="display: none;">
           <a href="react.html" class="sidebar-link"><span style="margin-right: 4px;">📙</span> Overview</a>
           <a href="react-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
-          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🎣</span> Hooks &amp; State</a>
-          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🔄</span> Custom Hooks</a>
-          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🌍</span> Context API</a>
-          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">📋</span> Forms &amp; Validation</a>
-          <a href="#" class="sidebar-link"><span style="margin-right: 4px;">🗺️</span> React Router</a>
+          <a href="react-hooks.html" class="sidebar-link"><span style="margin-right: 4px;">🎣</span> Hooks &amp; State</a>
+          <a href="react-custom-hooks.html" class="sidebar-link"><span style="margin-right: 4px;">🔄</span> Custom Hooks</a>
+          <a href="react-context.html" class="sidebar-link"><span style="margin-right: 4px;">🌍</span> Context API</a>
+          <a href="react-forms.html" class="sidebar-link"><span style="margin-right: 4px;">📋</span> Forms &amp; Validation</a>
+          <a href="react-router.html" class="sidebar-link"><span style="margin-right: 4px;">🗺️</span> React Router</a>
+          <a href="react-parent-child.html" class="sidebar-link"><span style="margin-right: 4px;">👨‍👧</span> Parent-Child Communication</a>
+          <a href="react-redux.html" class="sidebar-link"><span style="margin-right: 4px;">🏪</span> Redux State Management</a>
         </div>
       </div>
 
@@ -172,6 +175,272 @@
                         <p class="callout-body">MVC (Model-View-Controller) separates your application into three layers. The server renders HTML and sends complete web pages to the browser. Perfect for traditional web applications with rich user experiences.</p>
                     </div>
                 </div>
+
+                <h2>The MVC Pattern Explained</h2>
+                <p>MVC is a design pattern that separates an application into three interconnected components:</p>
+
+                <div class="concept-card">
+                    <h3>🎮 Model</h3>
+                    <p>Represents the application's data and business logic. Models are responsible for:</p>
+                    <ul class="content-list">
+                        <li>Defining data structures (Product, Category, Order)</li>
+                        <li>Implementing business rules and validation</li>
+                        <li>Communicating with the database through repositories/services</li>
+                        <li>Example: <code>Product { Id, Name, Price, Category }</code></li>
+                    </ul>
+                </div>
+
+                <div class="concept-card">
+                    <h3>👁️ View</h3>
+                    <p>The user interface - HTML/CSS/JavaScript that the user sees and interacts with. Views are responsible for:</p>
+                    <ul class="content-list">
+                        <li>Displaying data received from the controller</li>
+                        <li>Capturing user input (forms, buttons)</li>
+                        <li>No business logic - just presentation</li>
+                        <li>Uses Razor syntax to render dynamic content</li>
+                    </ul>
+                </div>
+
+                <div class="concept-card">
+                    <h3>🎯 Controller</h3>
+                    <p>The middleman that handles user requests and coordinates between Model and View:</p>
+                    <ul class="content-list">
+                        <li>Receives HTTP requests from the browser</li>
+                        <li>Processes user input and calls business logic (services)</li>
+                        <li>Retrieves data from the model/database</li>
+                        <li>Passes data to the appropriate view</li>
+                        <li>Returns the rendered HTML to the browser</li>
+                    </ul>
+                </div>
+
+                <h2>Request/Response Flow Diagram</h2>
+                <pre style="background: #f5f5f5; padding: 15px; border-radius: 8px; overflow-x: auto;">
+1. USER makes HTTP request
+   └─> GET /products/5
+
+2. ROUTING matches request to controller action
+   └─> ProductsController.Details(id=5)
+
+3. CONTROLLER processes request
+   ├─> Validates input
+   ├─> Calls service/repository
+   └─> Gets data from MODEL/DATABASE
+
+4. MODEL/DATABASE returns data
+   └─> Product { Id=5, Name="Widget", Price=9.99 }
+
+5. CONTROLLER passes data to VIEW
+   └─> ViewBag.Product = product
+
+6. VIEW renders HTML with data
+   └─> HTML: &lt;h1&gt;Widget - $9.99&lt;/h1&gt;
+
+7. RESPONSE sent to browser
+   └─> Browser displays complete HTML page
+                </pre>
+
+                <h2>Real-World Example: ProductCatalog</h2>
+                <p>Here's how the ProductCatalog MVC application handles viewing a product:</p>
+
+                <h3>1. User Request</h3>
+                <pre><code class="language-html">User clicks: &lt;a href="/products/details/5"&gt;View Product&lt;/a&gt;</code></pre>
+
+                <h3>2. Controller Action</h3>
+                <pre><code class="language-csharp">// ProductsController.cs
+public class ProductsController : Controller {
+    private readonly IProductService _service;
+
+    public ProductsController(IProductService service) {
+        _service = service;
+    }
+
+    // Handle GET /products/details/5
+    public async Task&lt;IActionResult&gt; Details(int id) {
+        try {
+            // Step 1: Get data from service (which calls API/database)
+            var product = await _service.GetProductByIdAsync(id);
+
+            if (product == null) {
+                return NotFound(); // Return 404 if product doesn't exist
+            }
+
+            // Step 2: Pass data to view
+            return View(product); // Renders Details.cshtml with product data
+        } catch (Exception ex) {
+            // Handle errors gracefully
+            return RedirectToAction("Error");
+        }
+    }
+}</code></pre>
+
+                <h3>3. Model (Data Structure)</h3>
+                <pre><code class="language-csharp">// Models/Product.cs
+public class Product {
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public decimal Price { get; set; }
+    public string Category { get; set; }
+    public int Stock { get; set; }
+    public DateTime CreatedDate { get; set; }
+}</code></pre>
+
+                <h3>4. Service Layer (Business Logic)</h3>
+                <pre><code class="language-csharp">// Services/ProductService.cs
+public class ProductService : IProductService {
+    private readonly HttpClient _httpClient;
+
+    public async Task&lt;Product&gt; GetProductByIdAsync(int id) {
+        try {
+            // Call the ProductCatalogAPI
+            var response = await _httpClient.GetAsync(
+                $"http://localhost:5000/api/products/{id}"
+            );
+
+            if (!response.IsSuccessStatusCode) {
+                return null;
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+            var product = JsonConvert.DeserializeObject&lt;Product&gt;(json);
+            return product;
+        } catch {
+            return null;
+        }
+    }
+}</code></pre>
+
+                <h3>5. View (HTML/Razor)</h3>
+                <pre><code class="language-html">@* Views/Products/Details.cshtml *@
+@model Product
+
+&lt;div class="product-detail"&gt;
+    &lt;h1&gt;@Model.Name&lt;/h1&gt;
+
+    &lt;p class="price"&gt;$@Model.Price.ToString("F2")&lt;/p&gt;
+    &lt;p class="description"&gt;@Model.Description&lt;/p&gt;
+
+    &lt;div class="details"&gt;
+        &lt;p&gt;&lt;strong&gt;Category:&lt;/strong&gt; @Model.Category&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;In Stock:&lt;/strong&gt; @Model.Stock units&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Added:&lt;/strong&gt; @Model.CreatedDate.ToString("MMM dd, yyyy")&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;button class="btn btn-primary"&gt;Add to Cart&lt;/button&gt;
+    &lt;a href="/products" class="btn btn-secondary"&gt;Back to List&lt;/a&gt;
+&lt;/div&gt;</code></pre>
+
+                <h3>6. HTML Response to Browser</h3>
+                <pre><code class="language-html">&lt;!-- Complete HTML sent to browser --&gt;
+&lt;div class="product-detail"&gt;
+    &lt;h1&gt;Wireless Mouse&lt;/h1&gt;
+
+    &lt;p class="price"&gt;$29.99&lt;/p&gt;
+    &lt;p class="description"&gt;High-precision wireless mouse with ergonomic design...&lt;/p&gt;
+
+    &lt;div class="details"&gt;
+        &lt;p&gt;&lt;strong&gt;Category:&lt;/strong&gt; Electronics&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;In Stock:&lt;/strong&gt; 15 units&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Added:&lt;/strong&gt; Jan 05, 2025&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;button class="btn btn-primary"&gt;Add to Cart&lt;/button&gt;
+    &lt;a href="/products" class="btn btn-secondary"&gt;Back to List&lt;/a&gt;
+&lt;/div&gt;</code></pre>
+
+                <h2>MVC vs Other Patterns</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Pattern</th>
+                            <th>Pros</th>
+                            <th>Cons</th>
+                            <th>Best For</th>
+                        </tr>
+                        <tr>
+                            <td><strong>MVC</strong></td>
+                            <td>Clear separation, easy to test, good for traditional web apps</td>
+                            <td>Slower (server rendering), more server load</td>
+                            <td>Content-heavy sites, traditional web apps</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SPA (React/Angular)</strong></td>
+                            <td>Fast (client rendering), responsive, rich interactivity</td>
+                            <td>Complex setup, API needed, harder SEO</td>
+                            <td>Highly interactive apps, dashboards</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Microservices</strong></td>
+                            <td>Scalable, independent services, easy to update</td>
+                            <td>Complex setup, network latency, debugging harder</td>
+                            <td>Large-scale enterprise applications</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h2>MVC Best Practices</h2>
+                <ol class="content-list">
+                    <li>
+                        <strong>Keep Controllers Thin:</strong> Controllers should only handle HTTP concerns (getting requests, returning responses). Business logic belongs in services.
+                        <pre><code class="language-csharp">// ❌ Bad - business logic in controller
+public IActionResult Create(Product model) {
+    if (model.Price < 0) return BadRequest("Invalid price");
+    model.DiscountedPrice = model.Price * 0.9m;
+    _context.Products.Add(model);
+    _context.SaveChanges();
+    return Ok();
+}
+
+// ✅ Good - business logic in service
+public IActionResult Create(Product model) {
+    var created = _service.CreateProduct(model);
+    return Ok(created);
+}</code></pre>
+                    </li>
+                    <li>
+                        <strong>Use Dependency Injection:</strong> Inject services into controllers, not creating with <code>new</code>.
+                        <pre><code class="language-csharp">// ✅ Correct - dependency injection
+public class ProductsController : Controller {
+    private readonly IProductService _service;
+
+    public ProductsController(IProductService service) {
+        _service = service; // Injected by ASP.NET
+    }
+}</code></pre>
+                    </li>
+                    <li>
+                        <strong>Validate in Models:</strong> Use data annotations and validation attributes.
+                        <pre><code class="language-csharp">public class Product {
+    [Required(ErrorMessage = "Name is required")]
+    [StringLength(100, MinimumLength = 3)]
+    public string Name { get; set; }
+
+    [Range(0.01, 999999.99)]
+    public decimal Price { get; set; }
+}</code></pre>
+                    </li>
+                    <li>
+                        <strong>Use ViewModels for Complex Views:</strong> Create specific models for views instead of using domain models directly.
+                        <pre><code class="language-csharp">// View-specific model
+public class ProductDetailViewModel {
+    public Product Product { get; set; }
+    public List&lt;Review&gt; Reviews { get; set; }
+    public RelatedProducts[] RelatedItems { get; set; }
+}</code></pre>
+                    </li>
+                    <li>
+                        <strong>Handle Errors Gracefully:</strong> Use try-catch, return appropriate status codes, log errors.
+                    </li>
+                    <li>
+                        <strong>Use Routing Correctly:</strong> Make URLs RESTful and meaningful.
+                        <pre><code class="language-csharp">// ✅ Good routes
+GET /products          // List all
+GET /products/5        // Get single
+POST /products         // Create
+PUT /products/5        // Update
+DELETE /products/5     // Delete</code></pre>
+                    </li>
+                </ol>
 
                 <h2>Features</h2>
                 <ul>
@@ -246,6 +515,56 @@ dotnet run
                         <p><strong>Best for:</strong> Traditional web applications, content-heavy sites, real-time HTML rendering, quick server-side validation.</p>
                     </div>
                 </div>
+
+                <!-- Interview Q&A -->
+                <section class="content-section interview-section">
+                    <h2>🎓 Interview Q&A</h2>
+
+                    <div class="qa-item">
+                        <h3>Q1: What is the MVC pattern and why use it?</h3>
+                        <p><strong>Answer:</strong> MVC (Model-View-Controller) separates an application into three interconnected components:</p>
+                        <ul class="content-list">
+                            <li><strong>Model:</strong> Data and business logic, no UI concerns</li>
+                            <li><strong>View:</strong> User interface (HTML/CSS), displays data from model</li>
+                            <li><strong>Controller:</strong> Handles user input, coordinates between model and view</li>
+                        </ul>
+                        <p><strong>Why use it?</strong> Clear separation of concerns makes code easier to maintain, test, and scale.</p>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q2: What's the difference between MVC and SPA (Single Page Application)?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>MVC (ASP.NET MVC):</strong> Server renders complete HTML, sends to browser. Page reload on navigation.</li>
+                            <li><strong>SPA (React/Angular):</strong> Server provides API, client (browser) renders HTML. No page reload, fast navigation.</li>
+                        </ul>
+                        <p><strong>Which to choose?</strong></p>
+                        <ul class="content-list">
+                            <li>MVC: Traditional web apps, content-heavy sites, SEO important</li>
+                            <li>SPA: Highly interactive apps, dashboards, real-time features</li>
+                        </ul>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q3: How does routing work in ASP.NET MVC?</h3>
+                        <p><strong>Answer:</strong> Routing maps URLs to controller actions:</p>
+                        <pre><code class="language-csharp">// URL: /products/details/5
+// Route: /[controller]/[action]/[id]
+// Maps to: ProductsController.Details(id: 5)
+
+// Conventional routing in Program.cs
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// Attribute routing (recommended)
+[Route("api/[controller]")]
+public class ProductsController : Controller {
+    [HttpGet("{id}")]
+    public IActionResult GetById(int id) { ... }
+}</code></pre>
+                    </div>
+                </section>
 
             </article>
         </div>

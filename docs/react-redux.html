@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redux State Management - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div> DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="webapi.html">Web API</a>
+            <a href="ef-core.html">EF Core</a>
+            <a href="linq.html">LINQ</a>
+            <a href="interview.html">Interview</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <!-- Home -->
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li>
+            <a href="index.html" class="sidebar-link">
+              <span class="sidebar-link-icon">🏠</span> Home
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Project Tabs (Modern Tab Navigation) -->
+      <div class="project-tabs-section">
+        <div class="project-tabs">
+          <button class="project-tab " data-project="webapi" title="Webapi">🌐</button>
+          <button class="project-tab" data-project="mvc" title="MVC">🖥️</button>
+          <button class="project-tab" data-project="angular" title="Angular">🅰️</button>
+          <button class="project-tab active" data-project="react" title="react">⚛️</button>
+        </div>
+
+        <!-- Web API Topics -->
+        <div class="project-topics-list" data-topics="webapi" style="display: none;">
+          <a href="webapi-architecture.html" class="sidebar-link"><span style="margin-right: 4px;">🏗️</span> Architecture</a>
+          <a href="webapi-controllers.html" class="sidebar-link"><span style="margin-right: 4px;">🎮</span> Controllers &amp; REST</a>
+          <a href="webapi-models.html" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Models &amp; DTOs</a>
+          <a href="webapi-di.html" class="sidebar-link"><span style="margin-right: 4px;">💉</span> Dependency Injection</a>
+          <a href="webapi-middleware.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Middleware</a>
+          <a href="webapi-caching.html" class="sidebar-link"><span style="margin-right: 4px;">⚡</span> Caching Strategies</a>
+          <a href="webapi-error-handling.html" class="sidebar-link"><span style="margin-right: 4px;">🚨</span> Error Handling</a>
+          <a href="webapi-graphql.html" class="sidebar-link"><span style="margin-right: 4px;">🌐</span> GraphQL</a>
+        </div>
+
+        <!-- MVC Topics -->
+        <div class="project-topics-list" data-topics="mvc" style="display: none;">
+          <a href="mvc.html" class="sidebar-link"><span style="margin-right: 4px;">📘</span> Overview</a>
+          <a href="mvc-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
+          <a href="mvc-controllers.html" class="sidebar-link"><span style="margin-right: 4px;">🎮</span> Controllers &amp; Actions</a>
+          <a href="mvc-views.html" class="sidebar-link"><span style="margin-right: 4px;">👁️</span> Views &amp; Razor</a>
+          <a href="mvc-models.html" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Models &amp; Validation</a>
+          <a href="mvc-services.html" class="sidebar-link"><span style="margin-right: 4px;">💼</span> Services &amp; HttpClient</a>
+        </div>
+
+        <!-- Angular Topics -->
+        <div class="project-topics-list" data-topics="angular" style="display: none;">
+          <a href="angular.html" class="sidebar-link"><span style="margin-right: 4px;">📗</span> Overview</a>
+          <a href="angular-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
+          <a href="angular-components.html" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Components &amp; Templates</a>
+          <a href="angular-services.html" class="sidebar-link"><span style="margin-right: 4px;">💼</span> Services &amp; DI</a>
+          <a href="angular-rxjs.html" class="sidebar-link"><span style="margin-right: 4px;">〰️</span> RxJS &amp; Observables</a>
+          <a href="angular-forms.html" class="sidebar-link"><span style="margin-right: 4px;">📋</span> Reactive Forms</a>
+          <a href="angular-router.html" class="sidebar-link"><span style="margin-right: 4px;">🗺️</span> Router &amp; Navigation</a>
+        </div>
+
+        <!-- React Topics -->
+        <div class="project-topics-list" data-topics="react" style="display: flex;">
+          <a href="react.html" class="sidebar-link"><span style="margin-right: 4px;">📙</span> Overview</a>
+          <a href="react-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
+          <a href="react-hooks.html" class="sidebar-link"><span style="margin-right: 4px;">🎣</span> Hooks &amp; State</a>
+          <a href="react-custom-hooks.html" class="sidebar-link"><span style="margin-right: 4px;">🔄</span> Custom Hooks</a>
+          <a href="react-context.html" class="sidebar-link"><span style="margin-right: 4px;">🌍</span> Context API</a>
+          <a href="react-redux.html" class="sidebar-link"><span style="margin-right: 4px;">🔴</span> Redux</a>
+          <a href="react-forms.html" class="sidebar-link"><span style="margin-right: 4px;">📋</span> Forms &amp; Validation</a>
+          <a href="react-router.html" class="sidebar-link"><span style="margin-right: 4px;">🗺️</span> React Router</a>
+        </div>
+      </div>
+
+      <!-- Data Access -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span style="margin-right: 4px;">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span style="margin-right: 4px;">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span style="margin-right: 4px;">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span style="margin-right: 4px;">📊</span> Collections</a></li>
+        </ul>
+      </div>
+
+      <!-- Interview Prep -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span style="margin-right: 4px;">💡</span> All Questions</a></li>
+          <li><a href="interview-coding.html" class="sidebar-link"><span style="margin-right: 4px;">💻</span> Coding Challenges</a></li>
+          <li><a href="interview-solid.html" class="sidebar-link"><span style="margin-right: 4px;">📐</span> SOLID Principles</a></li>
+          <li><a href="interview-patterns.html" class="sidebar-link"><span style="margin-right: 4px;">🎨</span> Design Patterns</a></li>
+          <li><a href="interview-mvc-extended.html" class="sidebar-link"><span style="margin-right: 4px;">🖥️</span> ASP.NET MVC</a></li>
+          <li><a href="interview-angular-extended.html" class="sidebar-link"><span style="margin-right: 4px;">🅰️</span> Angular</a></li>
+          <li><a href="interview-react-extended.html" class="sidebar-link"><span style="margin-right: 4px;">⚛️</span> React</a></li>
+        </ul>
+      </div>
+
+      <!-- Tools -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🛠️ Tools</h3>
+        <ul class="sidebar-links">
+          <li><a href="compiler.html" class="sidebar-link"><span style="margin-right: 4px;">🚀</span> Interactive Compiler</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <article class="article">
+                <nav class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="sep">/</span>
+                    <a href="react.html">React</a>
+                    <span class="sep">/</span>
+                    <span class="current">Redux</span>
+                </nav>
+
+                <div class="page-title-block">
+                    <h1 class="page-title">🔴 Redux - Predictable State Management</h1>
+                    <p class="page-subtitle">Master Redux for managing complex application state across multiple components without prop drilling.</p>
+                </div>
+
+                <h2>What is Redux?</h2>
+                <p><strong>Redux</strong> is a JavaScript library for managing application state in a predictable way. Instead of each component managing its own state, Redux creates a single source of truth (the store) where all state lives. Components dispatch actions to update state, triggering automatic UI updates.</p>
+
+                <div class="callout callout-info">
+                    <span class="callout-icon">💡</span>
+                    <div class="callout-content">
+                        <p><strong>Key Idea:</strong> Redux replaces "prop drilling" with a centralized state store. No more passing data through 5 levels of components!</p>
+                    </div>
+                </div>
+
+                <h2>Redux vs Context API vs Local State</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Solution</th>
+                            <th>Best For</th>
+                            <th>Complexity</th>
+                            <th>Performance</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Local useState</strong></td>
+                            <td>Simple component state (forms, toggles)</td>
+                            <td>Low</td>
+                            <td>Fast (minimal re-renders)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Context API</strong></td>
+                            <td>Shared state (theme, auth, small datasets)</td>
+                            <td>Medium</td>
+                            <td>Good (but whole tree re-renders)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Redux</strong></td>
+                            <td>Complex state, many components, time-travel debugging</td>
+                            <td>High</td>
+                            <td>Excellent (selective re-renders)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h2>Redux Architecture: The Three Pillars</h2>
+
+                <div class="concept-card">
+                    <h3>1. Actions - "What happened?"</h3>
+                    <p>Actions are plain objects that describe what happened. They MUST have a <code>type</code> property.</p>
+                    <pre><code class="language-javascript">// Action (simple object)
+{
+  type: 'ADD_PRODUCT',
+  payload: { id: 1, name: 'Widget', price: 9.99 }
+}
+
+// Action Creator (function that returns action)
+const addProduct = (product) => ({
+  type: 'ADD_PRODUCT',
+  payload: product
+});</code></pre>
+                </div>
+
+                <div class="concept-card">
+                    <h3>2. Reducers - "How does state change?"</h3>
+                    <p>Pure functions that take current state and an action, return new state. Never mutate state directly!</p>
+                    <pre><code class="language-javascript">// Reducer function
+const productReducer = (state = [], action) => {
+  switch(action.type) {
+    case 'ADD_PRODUCT':
+      // ❌ Wrong: mutating state
+      // state.push(action.payload);
+
+      // ✅ Correct: return new array
+      return [...state, action.payload];
+
+    case 'REMOVE_PRODUCT':
+      return state.filter(p => p.id !== action.payload);
+
+    default:
+      return state;
+  }
+}</code></pre>
+                </div>
+
+                <div class="concept-card">
+                    <h3>3. Store - "Where does state live?"</h3>
+                    <p>Single centralized store holding the entire application state. Created from reducers.</p>
+                    <pre><code class="language-javascript">import { createStore } from 'redux';
+
+// Combine reducers if multiple
+import { combineReducers } from 'redux';
+
+const rootReducer = combineReducers({
+  products: productReducer,
+  filter: filterReducer,
+  user: userReducer
+});
+
+// Create store from reducer
+const store = createStore(rootReducer);
+
+// Store has methods:
+store.getState();           // Get current state
+store.dispatch(action);     // Send action
+store.subscribe(listener);  // Listen for changes</code></pre>
+                </div>
+
+                <h2>Redux Flow Diagram</h2>
+                <pre style="background: #f5f5f5; padding: 15px; border-radius: 8px; overflow-x: auto;">
+1. USER INTERACTION
+   └─> User clicks "Add to Cart" button
+
+2. ACTION DISPATCHED
+   └─> dispatch({ type: 'ADD_TO_CART', payload: product })
+
+3. REDUCER PROCESSES
+   └─> cartReducer receives action
+   └─> Returns new state with product added
+
+4. STORE UPDATED
+   └─> state.cart = [...state.cart, product]
+
+5. SUBSCRIBERS NOTIFIED
+   └─> All components using cart state are notified
+
+6. COMPONENTS RE-RENDER
+   └─> Only components using changed state re-render
+   └─> UI shows updated cart count
+                </pre>
+
+                <h2>Real-World Example: ProductCatalog with Redux</h2>
+
+                <h3>Step 1: Define Actions</h3>
+                <pre><code class="language-javascript">// actions/productActions.js
+export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
+export const FETCH_PRODUCTS_SUCCESS = 'FETCH_PRODUCTS_SUCCESS';
+export const FETCH_PRODUCTS_ERROR = 'FETCH_PRODUCTS_ERROR';
+export const ADD_TO_CART = 'ADD_TO_CART';
+export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
+
+// Action creators
+export const fetchProductsSuccess = (products) => ({
+  type: FETCH_PRODUCTS_SUCCESS,
+  payload: products
+});
+
+export const addToCart = (product) => ({
+  type: ADD_TO_CART,
+  payload: product
+});
+
+export const removeFromCart = (productId) => ({
+  type: REMOVE_FROM_CART,
+  payload: productId
+});</code></pre>
+
+                <h3>Step 2: Create Reducers</h3>
+                <pre><code class="language-javascript">// reducers/productReducer.js
+import {
+  FETCH_PRODUCTS_SUCCESS,
+  FETCH_PRODUCTS_ERROR
+} from '../actions/productActions';
+
+const initialState = {
+  items: [],
+  loading: false,
+  error: null
+};
+
+export const productReducer = (state = initialState, action) => {
+  switch(action.type) {
+    case FETCH_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        items: action.payload,
+        loading: false,
+        error: null
+      };
+
+    case FETCH_PRODUCTS_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false
+      };
+
+    default:
+      return state;
+  }
+};
+
+// reducers/cartReducer.js
+import { ADD_TO_CART, REMOVE_FROM_CART } from '../actions/productActions';
+
+const initialState = {
+  items: [],
+  total: 0
+};
+
+export const cartReducer = (state = initialState, action) => {
+  switch(action.type) {
+    case ADD_TO_CART:
+      // Check if product already in cart
+      const existing = state.items.find(p => p.id === action.payload.id);
+
+      if (existing) {
+        // Increase quantity
+        return {
+          ...state,
+          items: state.items.map(p =>
+            p.id === action.payload.id
+              ? { ...p, quantity: p.quantity + 1 }
+              : p
+          ),
+          total: state.total + action.payload.price
+        };
+      } else {
+        // Add new product
+        return {
+          ...state,
+          items: [...state.items, { ...action.payload, quantity: 1 }],
+          total: state.total + action.payload.price
+        };
+      }
+
+    case REMOVE_FROM_CART:
+      const removed = state.items.find(p => p.id === action.payload);
+      return {
+        ...state,
+        items: state.items.filter(p => p.id !== action.payload),
+        total: state.total - (removed?.price || 0)
+      };
+
+    default:
+      return state;
+  }
+};</code></pre>
+
+                <h3>Step 3: Create Store</h3>
+                <pre><code class="language-javascript">// store.js
+import { createStore, combineReducers } from 'redux';
+import { productReducer } from './reducers/productReducer';
+import { cartReducer } from './reducers/cartReducer';
+
+const rootReducer = combineReducers({
+  products: productReducer,
+  cart: cartReducer
+});
+
+const store = createStore(rootReducer);
+
+export default store;</code></pre>
+
+                <h3>Step 4: Connect React with react-redux</h3>
+                <pre><code class="language-javascript">// App.js
+import React from 'react';
+import { Provider } from 'react-redux';
+import store from './store';
+import ProductList from './components/ProductList';
+import Cart from './components/Cart';
+
+function App() {
+  return (
+    &lt;Provider store={store}&gt;
+      &lt;div className="app"&gt;
+        &lt;h1&gt;ProductCatalog&lt;/h1&gt;
+        &lt;ProductList /&gt;
+        &lt;Cart /&gt;
+      &lt;/div&gt;
+    &lt;/Provider&gt;
+  );
+}
+
+export default App;</code></pre>
+
+                <h3>Step 5: Use Redux in Components</h3>
+                <pre><code class="language-javascript">// components/ProductList.js
+import { useSelector, useDispatch } from 'react-redux';
+import { addToCart } from '../actions/productActions';
+
+function ProductList() {
+  // Read from Redux store
+  const { items, loading, error } = useSelector(state => state.products);
+  const dispatch = useDispatch();
+
+  const handleAddToCart = (product) => {
+    // Dispatch action to Redux
+    dispatch(addToCart(product));
+  };
+
+  if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+  if (error) return &lt;div&gt;Error: {error}&lt;/div&gt;;
+
+  return (
+    &lt;div className="product-list"&gt;
+      {items.map(product => (
+        &lt;div key={product.id} className="product-card"&gt;
+          &lt;h3&gt;{product.name}&lt;/h3&gt;
+          &lt;p&gt;${product.price}&lt;/p&gt;
+          &lt;button onClick={() => handleAddToCart(product)}&gt;
+            Add to Cart
+          &lt;/button&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+// components/Cart.js
+import { useSelector, useDispatch } from 'react-redux';
+import { removeFromCart } from '../actions/productActions';
+
+function Cart() {
+  const { items, total } = useSelector(state => state.cart);
+  const dispatch = useDispatch();
+
+  return (
+    &lt;div className="cart"&gt;
+      &lt;h2&gt;Shopping Cart ({items.length} items)&lt;/h2&gt;
+
+      {items.map(item => (
+        &lt;div key={item.id} className="cart-item"&gt;
+          &lt;span&gt;{item.name} x{item.quantity}&lt;/span&gt;
+          &lt;span&gt;${(item.price * item.quantity).toFixed(2)}&lt;/span&gt;
+          &lt;button onClick={() => dispatch(removeFromCart(item.id))}&gt;
+            Remove
+          &lt;/button&gt;
+        &lt;/div&gt;
+      ))}
+
+      &lt;h3&gt;Total: ${total.toFixed(2)}&lt;/h3&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+                <h2>Handling Async Operations with Middleware</h2>
+                <p>Middleware lets you handle async operations (API calls) in Redux. Popular choices: <code>redux-thunk</code> or <code>redux-saga</code>.</p>
+
+                <h3>Using Redux Thunk</h3>
+                <pre><code class="language-javascript">// Setup with thunk middleware
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
+
+// Action that calls API
+export const fetchProducts = () => {
+  return async (dispatch) => {
+    try {
+      // Call API
+      const response = await fetch('http://localhost:5000/api/products');
+      const data = await response.json();
+
+      // Dispatch success action
+      dispatch({
+        type: FETCH_PRODUCTS_SUCCESS,
+        payload: data
+      });
+    } catch (error) {
+      // Dispatch error action
+      dispatch({
+        type: FETCH_PRODUCTS_ERROR,
+        payload: error.message
+      });
+    }
+  };
+};
+
+// Use in component
+function ProductList() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Dispatch thunk action
+    dispatch(fetchProducts());
+  }, [dispatch]);
+}</code></pre>
+
+                <h2>Best Practices</h2>
+                <ol class="content-list">
+                    <li>
+                        <strong>Keep Reducers Pure:</strong> No side effects, same input = same output
+                    </li>
+                    <li>
+                        <strong>Normalize State Shape:</strong> Store data by ID for easy updates
+                        <pre><code class="language-javascript">// ❌ Wrong - nested data
+{ products: [{ id: 1, reviews: [...] }] }
+
+// ✅ Correct - normalized
+{
+  products: { 1: { id: 1, name: '...' } },
+  reviews: { 1: { id: 1, productId: 1, text: '...' } }
+}</code></pre>
+                    </li>
+                    <li>
+                        <strong>Use Selectors:</strong> Avoid accessing state directly
+                        <pre><code class="language-javascript">// ❌ Wrong
+const cart = useSelector(state => state.cart.items);
+
+// ✅ Better - create selector
+export const selectCartItems = (state) => state.cart.items;
+const cart = useSelector(selectCartItems);</code></pre>
+                    </li>
+                    <li>
+                        <strong>Split by Feature:</strong> Organize reducers by domain (products, cart, auth)
+                    </li>
+                    <li>
+                        <strong>Use Redux DevTools:</strong> Debug state changes with time-travel
+                    </li>
+                </ol>
+
+                <h2>Interview Q&A</h2>
+
+                <div class="qa-item">
+                    <h3>Q1: What are the benefits of Redux over local state?</h3>
+                    <p><strong>Answer:</strong></p>
+                    <ul class="content-list">
+                        <li><strong>Single Source of Truth:</strong> All state in one store, easier to debug</li>
+                        <li><strong>No Prop Drilling:</strong> Access state from any component directly, no need to pass through 5 parent components</li>
+                        <li><strong>Time-Travel Debugging:</strong> Redux DevTools let you step backward/forward through state changes</li>
+                        <li><strong>Predictable:</strong> Pure reducers make behavior predictable and testable</li>
+                        <li><strong>Performance:</strong> Only components using changed state re-render</li>
+                    </ul>
+                </div>
+
+                <div class="qa-item">
+                    <h3>Q2: When should you use Redux vs Context API?</h3>
+                    <p><strong>Answer:</strong></p>
+                    <ul class="content-list">
+                        <li><strong>Use Context API:</strong> Global theme, auth status, or small datasets that rarely change</li>
+                        <li><strong>Use Redux:</strong> Complex state (shopping cart, filters, user preferences), frequent updates, many nested components</li>
+                        <li><strong>Rule of Thumb:</strong> Start with Context API. Switch to Redux if prop drilling becomes painful</li>
+                    </ul>
+                </div>
+
+                <div class="qa-item">
+                    <h3>Q3: What's the difference between actions and reducers?</h3>
+                    <p><strong>Answer:</strong></p>
+                    <ul class="content-list">
+                        <li><strong>Actions:</strong> Objects describing "what happened" (ADD_PRODUCT, REMOVE_PRODUCT). Must have <code>type</code>.</li>
+                        <li><strong>Reducers:</strong> Pure functions that calculate "how state changes" given action. Input: (state, action) => newState</li>
+                        <li><strong>Analogy:</strong> Action = event description, Reducer = business logic that responds to event</li>
+                    </ul>
+                </div>
+            </article>
+        </div>
+    </main>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <a href="index.html" class="footer-brand">
+            <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div> DevDocs
+        </a>
+        <p class="footer-copy">© 2025 DevDocs. For learning & interviews.</p>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

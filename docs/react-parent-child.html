@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Parent-Child Communication - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div> DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="webapi.html">Web API</a>
+            <a href="ef-core.html">EF Core</a>
+            <a href="linq.html">LINQ</a>
+            <a href="interview.html">Interview</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <!-- Home -->
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li>
+            <a href="index.html" class="sidebar-link">
+              <span class="sidebar-link-icon">🏠</span> Home
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Project Tabs (Modern Tab Navigation) -->
+      <div class="project-tabs-section">
+        <div class="project-tabs">
+          <button class="project-tab " data-project="webapi" title="Webapi">🌐</button>
+          <button class="project-tab" data-project="mvc" title="MVC">🖥️</button>
+          <button class="project-tab" data-project="angular" title="Angular">🅰️</button>
+          <button class="project-tab active" data-project="react" title="react">⚛️</button>
+        </div>
+
+        <!-- Web API Topics -->
+        <div class="project-topics-list" data-topics="webapi" style="display: none;">
+          <a href="webapi-architecture.html" class="sidebar-link"><span style="margin-right: 4px;">🏗️</span> Architecture</a>
+          <a href="webapi-controllers.html" class="sidebar-link"><span style="margin-right: 4px;">🎮</span> Controllers &amp; REST</a>
+          <a href="webapi-models.html" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Models &amp; DTOs</a>
+          <a href="webapi-di.html" class="sidebar-link"><span style="margin-right: 4px;">💉</span> Dependency Injection</a>
+          <a href="webapi-middleware.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Middleware</a>
+          <a href="webapi-caching.html" class="sidebar-link"><span style="margin-right: 4px;">⚡</span> Caching Strategies</a>
+          <a href="webapi-error-handling.html" class="sidebar-link"><span style="margin-right: 4px;">🚨</span> Error Handling</a>
+          <a href="webapi-graphql.html" class="sidebar-link"><span style="margin-right: 4px;">🌐</span> GraphQL</a>
+        </div>
+
+        <!-- MVC Topics -->
+        <div class="project-topics-list" data-topics="mvc" style="display: none;">
+          <a href="mvc.html" class="sidebar-link"><span style="margin-right: 4px;">📘</span> Overview</a>
+          <a href="mvc-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
+          <a href="mvc-controllers.html" class="sidebar-link"><span style="margin-right: 4px;">🎮</span> Controllers &amp; Actions</a>
+          <a href="mvc-views.html" class="sidebar-link"><span style="margin-right: 4px;">👁️</span> Views &amp; Razor</a>
+          <a href="mvc-models.html" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Models &amp; Validation</a>
+          <a href="mvc-services.html" class="sidebar-link"><span style="margin-right: 4px;">💼</span> Services &amp; HttpClient</a>
+        </div>
+
+        <!-- Angular Topics -->
+        <div class="project-topics-list" data-topics="angular" style="display: none;">
+          <a href="angular.html" class="sidebar-link"><span style="margin-right: 4px;">📗</span> Overview</a>
+          <a href="angular-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
+          <a href="angular-components.html" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Components &amp; Templates</a>
+          <a href="angular-services.html" class="sidebar-link"><span style="margin-right: 4px;">💼</span> Services &amp; DI</a>
+          <a href="angular-rxjs.html" class="sidebar-link"><span style="margin-right: 4px;">〰️</span> RxJS &amp; Observables</a>
+          <a href="angular-forms.html" class="sidebar-link"><span style="margin-right: 4px;">📋</span> Reactive Forms</a>
+          <a href="angular-router.html" class="sidebar-link"><span style="margin-right: 4px;">🗺️</span> Router &amp; Navigation</a>
+        </div>
+
+        <!-- React Topics -->
+        <div class="project-topics-list" data-topics="react" style="display: flex;">
+          <a href="react.html" class="sidebar-link"><span style="margin-right: 4px;">📙</span> Overview</a>
+          <a href="react-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
+          <a href="react-hooks.html" class="sidebar-link"><span style="margin-right: 4px;">🎣</span> Hooks &amp; State</a>
+          <a href="react-custom-hooks.html" class="sidebar-link"><span style="margin-right: 4px;">🔄</span> Custom Hooks</a>
+          <a href="react-context.html" class="sidebar-link"><span style="margin-right: 4px;">🌍</span> Context API</a>
+          <a href="react-redux.html" class="sidebar-link"><span style="margin-right: 4px;">🔴</span> Redux</a>
+          <a href="react-parent-child.html" class="sidebar-link"><span style="margin-right: 4px;">👨‍👧‍👦</span> Parent-Child</a>
+          <a href="react-forms.html" class="sidebar-link"><span style="margin-right: 4px;">📋</span> Forms &amp; Validation</a>
+          <a href="react-router.html" class="sidebar-link"><span style="margin-right: 4px;">🗺️</span> React Router</a>
+        </div>
+      </div>
+
+      <!-- Data Access -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span style="margin-right: 4px;">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span style="margin-right: 4px;">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span style="margin-right: 4px;">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span style="margin-right: 4px;">📊</span> Collections</a></li>
+        </ul>
+      </div>
+
+      <!-- Interview Prep -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span style="margin-right: 4px;">💡</span> All Questions</a></li>
+          <li><a href="interview-coding.html" class="sidebar-link"><span style="margin-right: 4px;">💻</span> Coding Challenges</a></li>
+          <li><a href="interview-solid.html" class="sidebar-link"><span style="margin-right: 4px;">📐</span> SOLID Principles</a></li>
+          <li><a href="interview-patterns.html" class="sidebar-link"><span style="margin-right: 4px;">🎨</span> Design Patterns</a></li>
+          <li><a href="interview-mvc-extended.html" class="sidebar-link"><span style="margin-right: 4px;">🖥️</span> ASP.NET MVC</a></li>
+          <li><a href="interview-angular-extended.html" class="sidebar-link"><span style="margin-right: 4px;">🅰️</span> Angular</a></li>
+          <li><a href="interview-react-extended.html" class="sidebar-link"><span style="margin-right: 4px;">⚛️</span> React</a></li>
+        </ul>
+      </div>
+
+      <!-- Tools -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🛠️ Tools</h3>
+        <ul class="sidebar-links">
+          <li><a href="compiler.html" class="sidebar-link"><span style="margin-right: 4px;">🚀</span> Interactive Compiler</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <article class="article">
+                <nav class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="sep">/</span>
+                    <a href="react.html">React</a>
+                    <span class="sep">/</span>
+                    <span class="current">Parent-Child Communication</span>
+                </nav>
+
+                <div class="page-title-block">
+                    <h1 class="page-title">👨‍👧‍👦 Parent-Child Communication</h1>
+                    <p class="page-subtitle">Master props, callbacks, and data flow between React components. Essential for building complex component trees.</p>
+                </div>
+
+                <h2>React Data Flow Principles</h2>
+                <p>React follows a one-way data flow:</p>
+                <pre style="background: #f5f5f5; padding: 15px; border-radius: 8px; overflow-x: auto;">
+┌─────────────────────────────────────────┐
+│ PARENT COMPONENT                        │
+│ ┌────────────────────────────────────┐  │
+│ │ State: products = [...]            │  │
+│ │                                    │  │
+│ │ ┌──────────────────────────────┐   │  │
+│ │ │ CHILD 1                      │   │  │
+│ │ │ Receives: products (props)   │   │  │
+│ │ │ Sends: onSelect callback     │   │  │
+│ │ └──────────────────────────────┘   │  │
+│ │                                    │  │
+│ │ ┌──────────────────────────────┐   │  │
+│ │ │ CHILD 2                      │   │  │
+│ │ │ Receives: selected (props)   │   │  │
+│ │ │ Displays selected product    │   │  │
+│ │ └──────────────────────────────┘   │  │
+│ └────────────────────────────────────┘  │
+└─────────────────────────────────────────┘
+
+DATA FLOW:
+Parent → Children (props)
+Children → Parent (callback functions)
+                </pre>
+
+                <h2>Method 1: Props (Parent to Child)</h2>
+                <p>The primary way to pass data from parent to child. Props are read-only and flow downward.</p>
+
+                <h3>Simple Props Example</h3>
+                <pre><code class="language-javascript">// Parent Component
+function Parent() {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Product Store&lt;/h1&gt;
+
+      &lt;!-- Pass data as props --&gt;
+      &lt;ProductCard
+        name="Laptop"
+        price={999.99}
+        inStock={true}
+      /&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Child Component
+function ProductCard(props) {
+  // Access props
+  return (
+    &lt;div className="card"&gt;
+      &lt;h2&gt;{props.name}&lt;/h2&gt;
+      &lt;p&gt;${props.price}&lt;/p&gt;
+      &lt;p&gt;{props.inStock ? 'In Stock' : 'Out of Stock'}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Or use destructuring (cleaner)
+function ProductCard({ name, price, inStock }) {
+  return (
+    &lt;div className="card"&gt;
+      &lt;h2&gt;{name}&lt;/h2&gt;
+      &lt;p&gt;${price}&lt;/p&gt;
+      &lt;p&gt;{inStock ? 'In Stock' : 'Out of Stock'}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+                <h2>Method 2: Callback Functions (Child to Parent)</h2>
+                <p>When a child needs to send data back to parent, the parent passes a callback function as a prop.</p>
+
+                <h3>Real Example: ProductCatalog with Filtering</h3>
+                <pre><code class="language-javascript">// Parent Component - Has state and passes callbacks to children
+function ProductCatalog() {
+  const [products, setProducts] = useState([
+    { id: 1, name: 'Laptop', category: 'Electronics', price: 999 },
+    { id: 2, name: 'Mouse', category: 'Electronics', price: 29 },
+    { id: 3, name: 'Desk', category: 'Furniture', price: 299 }
+  ]);
+
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  // Filter logic
+  const filteredProducts = selectedCategory === 'All'
+    ? products
+    : products.filter(p => p.category === selectedCategory);
+
+  // Callback function passed to child
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
+
+  return (
+    &lt;div className="catalog"&gt;
+      &lt;h1&gt;Product Catalog&lt;/h1&gt;
+
+      &lt;!-- Pass callback to FilterPanel --&gt;
+      &lt;FilterPanel
+        categories={['Electronics', 'Furniture']}
+        selectedCategory={selectedCategory}
+        onCategoryChange={handleCategoryChange}
+      /&gt;
+
+      &lt;!-- Pass filtered data to ProductList --&gt;
+      &lt;ProductList products={filteredProducts} /&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Child 1: Filter panel - calls parent's callback
+function FilterPanel({
+  categories,
+  selectedCategory,
+  onCategoryChange
+}) {
+  return (
+    &lt;div className="filter-panel"&gt;
+      &lt;h3&gt;Filter by Category&lt;/h3&gt;
+      &lt;button
+        onClick={() => onCategoryChange('All')}
+        className={selectedCategory === 'All' ? 'active' : ''}
+      &gt;
+        All
+      &lt;/button&gt;
+
+      {categories.map(cat => (
+        &lt;button
+          key={cat}
+          onClick={() => onCategoryChange(cat)}
+          className={selectedCategory === cat ? 'active' : ''}
+        &gt;
+          {cat}
+        &lt;/button&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+// Child 2: Product list - displays filtered data
+function ProductList({ products }) {
+  return (
+    &lt;div className="product-list"&gt;
+      {products.map(product => (
+        &lt;div key={product.id} className="product"&gt;
+          &lt;h4&gt;{product.name}&lt;/h4&gt;
+          &lt;p&gt;${product.price}&lt;/p&gt;
+          &lt;p&gt;Category: {product.category}&lt;/p&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+                <h2>Method 3: Lifting State Up</h2>
+                <p>When multiple children need to share state, move the state to their common parent.</p>
+
+                <h3>Example: Product Details with Add to Cart</h3>
+                <pre><code class="language-javascript">// Parent - holds shared state
+function App() {
+  const [cart, setCart] = useState([]);
+  const [product] = useState({
+    id: 1,
+    name: 'Wireless Mouse',
+    price: 29.99,
+    description: 'High precision wireless mouse'
+  });
+
+  // Callback for when child adds to cart
+  const handleAddToCart = (productToAdd) => {
+    setCart([...cart, productToAdd]);
+  };
+
+  return (
+    &lt;div className="app"&gt;
+      &lt;!-- Pass product and callback --&gt;
+      &lt;ProductDetail
+        product={product}
+        onAddToCart={handleAddToCart}
+      /&gt;
+
+      &lt;!-- Pass cart data --&gt;
+      &lt;ShoppingCart items={cart} /&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Child 1: Shows product and button
+function ProductDetail({ product, onAddToCart }) {
+  return (
+    &lt;div className="product-detail"&gt;
+      &lt;h2&gt;{product.name}&lt;/h2&gt;
+      &lt;p&gt;{product.description}&lt;/p&gt;
+      &lt;p className="price"&gt;${product.price}&lt;/p&gt;
+
+      &lt;!-- Call parent's callback when clicked --&gt;
+      &lt;button onClick={() => onAddToCart(product)}&gt;
+        Add to Cart
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Child 2: Shows cart
+function ShoppingCart({ items }) {
+  const total = items.reduce((sum, item) => sum + item.price, 0);
+
+  return (
+    &lt;div className="cart"&gt;
+      &lt;h3&gt;Cart ({items.length} items)&lt;/h3&gt;
+      {items.map((item, idx) => (
+        &lt;div key={idx}&gt;{item.name} - ${item.price}&lt;/div&gt;
+      ))}
+      &lt;h4&gt;Total: ${total.toFixed(2)}&lt;/h4&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+                <h2>The Prop Drilling Problem</h2>
+                <p>When data needs to flow through many levels of components just to reach a deeply nested child.</p>
+
+                <pre><code class="language-javascript">// ❌ Bad: Prop drilling through 5 levels
+function App() {
+  const [user] = useState({ name: 'John', role: 'admin' });
+  return &lt;Level1 user={user} /&gt;;
+}
+
+function Level1({ user }) {
+  return &lt;Level2 user={user} /&gt;;
+}
+
+function Level2({ user }) {
+  return &lt;Level3 user={user} /&gt;;
+}
+
+function Level3({ user }) {
+  return &lt;Level4 user={user} /&gt;;
+}
+
+function Level4({ user }) {
+  return &lt;Level5 user={user} /&gt;;
+}
+
+// Finally need the data!
+function Level5({ user }) {
+  return &lt;div&gt;Welcome {user.name}&lt;/div&gt;;
+}</code></pre>
+
+                <h2>Solutions to Prop Drilling</h2>
+
+                <h3>Solution 1: Context API (Built-in)</h3>
+                <pre><code class="language-javascript">// Create context
+const UserContext = React.createContext();
+
+// Wrap app with provider
+function App() {
+  const [user] = useState({ name: 'John', role: 'admin' });
+
+  return (
+    &lt;UserContext.Provider value={user}&gt;
+      &lt;Level1 /&gt;
+    &lt;/UserContext.Provider&gt;
+  );
+}
+
+// Skip to the component that needs it - no drilling!
+function Level5() {
+  const user = useContext(UserContext);
+  return &lt;div&gt;Welcome {user.name}&lt;/div&gt;;
+}</code></pre>
+
+                <h3>Solution 2: Redux (For Complex State)</h3>
+                <p>Use Redux for global state management (see redux.html)</p>
+
+                <h3>Solution 3: Composition (Pass JSX as Props)</h3>
+                <pre><code class="language-javascript">// Instead of passing data through levels,
+// pass complete components as children
+
+function App() {
+  const [user] = useState({ name: 'John' });
+
+  return (
+    &lt;Layout&gt;
+      &lt;Header user={user} /&gt;
+      &lt;Content /&gt;
+      &lt;Footer /&gt;
+    &lt;/Layout&gt;
+  );
+}
+
+// Layout doesn't need to know about user
+function Layout({ children }) {
+  return (
+    &lt;div className="layout"&gt;
+      {children}
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+                <h2>Best Practices</h2>
+                <ol class="content-list">
+                    <li>
+                        <strong>Keep Props Simple:</strong> Don't pass unnecessary props
+                        <pre><code class="language-javascript">// ❌ Bad - passing whole object
+&lt;ProductCard product={product} /&gt;
+// Then accessing: product.name, product.price, product.id
+
+// ✅ Better - pass only what you need
+&lt;ProductCard name={name} price={price} /&gt;</code></pre>
+                    </li>
+                    <li>
+                        <strong>Use Destructuring:</strong> Cleaner and documents expectations
+                        <pre><code class="language-javascript">// ❌ Bad
+function Card(props) { return &lt;h1&gt;{props.title}&lt;/h1&gt;; }
+
+// ✅ Good
+function Card({ title, description, price }) {
+  return &lt;div&gt;...&lt;/div&gt;;
+}</code></pre>
+                    </li>
+                    <li>
+                        <strong>Name Callbacks Clearly:</strong> Use on[Event] pattern
+                        <pre><code class="language-javascript">// ❌ Unclear
+&lt;Button onClick={handleClick} /&gt;
+
+// ✅ Clear
+&lt;Button onAddToCart={handleAddToCart} /&gt;
+&lt;Button onDelete={handleDelete} /&gt;</code></pre>
+                    </li>
+                    <li>
+                        <strong>Consider Performance:</strong> Avoid passing new functions on every render
+                        <pre><code class="language-javascript">// ❌ Bad - new function every render
+&lt;Child onClick={() => handleClick(id)} /&gt;
+
+// ✅ Better - use useCallback
+const memoizedCallback = useCallback(() => {
+  handleClick(id);
+}, [id]);
+&lt;Child onClick={memoizedCallback} /&gt;</code></pre>
+                    </li>
+                </ol>
+
+                <h2>Interview Q&A</h2>
+
+                <div class="qa-item">
+                    <h3>Q1: How do you pass data from child to parent in React?</h3>
+                    <p><strong>Answer:</strong> Parent passes a callback function as a prop. When child needs to send data, it calls the callback with the data as an argument.</p>
+                    <pre><code class="language-javascript">// Parent
+function Parent() {
+  const handleChildData = (data) => console.log(data);
+  return &lt;Child onSendData={handleChildData} /&gt;;
+}
+
+// Child calls the callback
+function Child({ onSendData }) {
+  return &lt;button onClick={() => onSendData('Hello Parent')}&gt;
+    Send Data
+  &lt;/button&gt;;
+}</code></pre>
+                </div>
+
+                <div class="qa-item">
+                    <h3>Q2: What is prop drilling and why is it a problem?</h3>
+                    <p><strong>Answer:</strong> Prop drilling is passing data through multiple intermediate components just to reach a nested child that needs it. Problems:</p>
+                    <ul class="content-list">
+                        <li>Hard to maintain - don't know which props are actually used where</li>
+                        <li>Performance - unnecessary re-renders of intermediate components</li>
+                        <li>Fragile - renaming props requires changes through entire tree</li>
+                    </ul>
+                    <p><strong>Solutions:</strong> Context API, Redux, component composition</p>
+                </div>
+
+                <div class="qa-item">
+                    <h3>Q3: When should you lift state up?</h3>
+                    <p><strong>Answer:</strong> Lift state up to the lowest common ancestor when:</p>
+                    <ul class="content-list">
+                        <li>Multiple children need access to same state</li>
+                        <li>One child's state affects another child</li>
+                        <li>Parent needs to coordinate between children</li>
+                    </ul>
+                    <p><strong>Example:</strong> If ProductDetail and ShoppingCart both need to know what's selected, lift selection state to App (their common parent).</p>
+                </div>
+            </article>
+        </div>
+    </main>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <a href="index.html" class="footer-brand">
+            <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div> DevDocs
+        </a>
+        <p class="footer-copy">© 2025 DevDocs. For learning & interviews.</p>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

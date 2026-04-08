@@ -852,124 +852,667 @@ public ProductService(IOptions&lt;CacheSettings&gt; options) {
             <summary class="qa-question">Q36. What are the 4 pillars of OOP? <span class="qa-chevron">▼</span></summary>
             <div class="qa-answer">
               <ul>
-                <li><strong>Encapsulation:</strong> bundle data and methods together, hide internal details, expose only necessary interface.</li>
-                <li><strong>Inheritance:</strong> derive classes from base classes to reuse code and establish hierarchies.</li>
-                <li><strong>Polymorphism:</strong> same method name, different implementations based on object type (overriding) or parameters (overloading).</li>
-                <li><strong>Abstraction:</strong> simplify complexity by defining essential features and hiding implementation details. Use abstract classes/interfaces.</li>
+                <li><strong>Encapsulation:</strong> Bundle data and methods together, hide internal details, expose only necessary interface.</li>
+                <li><strong>Inheritance:</strong> Derive classes from base classes to reuse code and establish hierarchies.</li>
+                <li><strong>Polymorphism:</strong> Same method name, different implementations based on object type (overriding) or parameters (overloading).</li>
+                <li><strong>Abstraction:</strong> Simplify complexity by defining essential features and hiding implementation details. Use abstract classes/interfaces.</li>
               </ul>
+              <p><strong>Real Example from ProductCatalogAPI:</strong></p>
+              <pre><code class="language-csharp">// Abstraction: Define what products must have
+public abstract class ProductBase {
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public abstract decimal CalculateDiscount();
+}
+
+// Inheritance: SpecialProduct extends ProductBase
+public class SpecialProduct : ProductBase {
+    public override decimal CalculateDiscount() {
+        return Price * 0.20m; // 20% off
+    }
+}
+
+// Polymorphism: Treat different products same way
+var products = new List&lt;ProductBase&gt;();
+foreach (var product in products) {
+    // Calls correct CalculateDiscount based on actual type
+    var discount = product.CalculateDiscount();
+}</code></pre>
             </div>
           </details>
           <details class="qa-item">
             <summary class="qa-question">Q37. What is encapsulation? <span class="qa-chevron">▼</span></summary>
             <div class="qa-answer">
               <p>Encapsulation hides internal details and prevents invalid states. Expose only what's necessary via public properties with validation.</p>
-              <div class="code-block">
-                <div class="code-block-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">csharp</span></div>
-                <pre><code class="language-csharp">// GOOD: property with validation
+              <h4>Wrong Way - Public field (no control)</h4>
+              <pre><code class="language-csharp">// ❌ BAD: Anyone can set price to negative!
+public class Product {
+    public decimal Price; // Direct access, no validation
+}
+
+var product = new Product();
+product.Price = -100; // Invalid state!
+</code></pre>
+              <h4>Correct Way - Property with validation</h4>
+              <pre><code class="language-csharp">// ✅ GOOD: Encapsulated with validation
 public class Product {
     private decimal _price;
+
     public decimal Price {
         get =&gt; _price;
-        set =&gt; _price = value &lt; 0 ? throw new ArgumentException("Cannot be negative") : value;
+        set {
+            if (value &lt; 0)
+                throw new ArgumentException("Price cannot be negative");
+            _price = value;
+        }
     }
-}</code></pre>
-              </div>
-              <p>Benefits: prevents invalid states, allows logic changes later without breaking API.</p>
+}
+
+var product = new Product();
+product.Price = 99.99m; // Valid
+product.Price = -100;   // Throws exception, prevents invalid state
+</code></pre>
+              <p><strong>Benefits:</strong> Prevents invalid states, allows internal changes without breaking API, enables validation logic</p>
             </div>
           </details>
           <details class="qa-item">
-            <summary class="qa-question">Q38. What is inheritance? <span class="qa-chevron">▼</span></summary>
+            <summary class="qa-question">Q38. What is inheritance? Class vs Interface? <span class="qa-chevron">▼</span></summary>
             <div class="qa-answer">
-              <p>Inheritance allows a class (child) to inherit properties and methods from another class (parent), promoting code reuse and establishing hierarchies. C# supports single inheritance but multiple interface implementation.</p>
+              <p>Inheritance allows a class (child) to inherit properties and methods from another class (parent), promoting code reuse. C# supports single class inheritance but multiple interface implementation.</p>
+              <h4>Class Inheritance Example</h4>
+              <pre><code class="language-csharp">// Base class
+public class Entity {
+    public int Id { get; set; }
+    public DateTime CreatedDate { get; set; }
+}
+
+// Derived class inherits from Entity
+public class Product : Entity {
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+}
+
+// Product now has Id and CreatedDate from Entity
+var product = new Product {
+    Id = 1,
+    CreatedDate = DateTime.Now,
+    Name = "Laptop",
+    Price = 999.99m
+};
+</code></pre>
+              <h4>Interface Implementation (Multiple Allowed)</h4>
+              <pre><code class="language-csharp">// Interfaces define contracts
+public interface IRepository&lt;T&gt; {
+    Task&lt;T&gt; GetByIdAsync(int id);
+    Task SaveAsync(T entity);
+}
+
+public interface ITimestamped {
+    DateTime CreatedDate { get; set; }
+}
+
+// Class implements multiple interfaces
+public class ProductRepository : IRepository&lt;Product&gt;, ITimestamped {
+    public DateTime CreatedDate { get; set; }
+
+    public async Task&lt;Product&gt; GetByIdAsync(int id) { ... }
+    public async Task SaveAsync(Product entity) { ... }
+}
+</code></pre>
             </div>
           </details>
           <details class="qa-item">
-            <summary class="qa-question">Q39. What is polymorphism? <span class="qa-chevron">▼</span></summary>
+            <summary class="qa-question">Q39. What is polymorphism? Overloading vs Overriding? <span class="qa-chevron">▼</span></summary>
             <div class="qa-answer">
-              <p>Polymorphism = "many forms" = same method name, different behavior. Compile-time (overloading): same name, different parameters. Runtime (overriding): child class overrides parent's virtual method.</p>
+              <p>Polymorphism = "many forms" = same method name, different behavior.</p>
+              <h4>Method Overloading (Compile-time)</h4>
+              <pre><code class="language-csharp">// ✅ GOOD: Same name, different parameters
+public class Calculator {
+    // Overload 1: two ints
+    public int Add(int a, int b) {
+        return a + b;
+    }
+
+    // Overload 2: two decimals
+    public decimal Add(decimal a, decimal b) {
+        return a + b;
+    }
+
+    // Overload 3: three ints
+    public int Add(int a, int b, int c) {
+        return a + b + c;
+    }
+}
+
+var calc = new Calculator();
+var result1 = calc.Add(5, 10);              // Calls int version
+var result2 = calc.Add(5.5m, 10.5m);       // Calls decimal version
+var result3 = calc.Add(5, 10, 15);         // Calls three-param version
+</code></pre>
+              <h4>Method Overriding (Runtime Polymorphism)</h4>
+              <pre><code class="language-csharp">public abstract class PaymentProcessor {
+    public abstract void Process(decimal amount);
+}
+
+public class CreditCardProcessor : PaymentProcessor {
+    public override void Process(decimal amount) {
+        Console.WriteLine($"Processing {amount} via Credit Card");
+    }
+}
+
+public class PayPalProcessor : PaymentProcessor {
+    public override void Process(decimal amount) {
+        Console.WriteLine($"Processing {amount} via PayPal");
+    }
+}
+
+// Polymorphic behavior - calls correct Process based on actual type
+PaymentProcessor processor = new CreditCardProcessor();
+processor.Process(99.99m); // Calls CreditCardProcessor.Process
+
+processor = new PayPalProcessor();
+processor.Process(99.99m); // Calls PayPalProcessor.Process
+</code></pre>
             </div>
           </details>
           <details class="qa-item">
-            <summary class="qa-question">Q40. What is abstraction? <span class="qa-chevron">▼</span></summary>
+            <summary class="qa-question">Q40. What is abstraction? Abstract class vs Interface? <span class="qa-chevron">▼</span></summary>
             <div class="qa-answer">
-              <p>Abstraction simplifies complexity by hiding implementation and exposing only essential features. Use abstract classes and interfaces. Example: IPaymentProcessor defines Process(amount). CreditCardProcessor and PayPalProcessor implement it. Calling code doesn't know HOW, only WHAT.</p>
-            </div>
-          </details>
-          <details class="qa-item">
-            <summary class="qa-question">Q41. What is a constructor? Types? <span class="qa-chevron">▼</span></summary>
-            <div class="qa-answer">
+              <p>Abstraction simplifies complexity by hiding implementation and exposing only essential features.</p>
+              <h4>Abstract Class (Is-A Relationship)</h4>
+              <pre><code class="language-csharp">// Abstract class: Can have implementation + abstract methods
+public abstract class Vehicle {
+    // Concrete method (implementation provided)
+    public void Start() {
+        Console.WriteLine("Vehicle starting...");
+    }
+
+    // Abstract method (must be overridden)
+    public abstract void Drive();
+}
+
+public class Car : Vehicle {
+    public override void Drive() {
+        Console.WriteLine("Car is driving on road");
+    }
+}
+
+public class Boat : Vehicle {
+    public override void Drive() {
+        Console.WriteLine("Boat is sailing on water");
+    }
+}
+</code></pre>
+              <h4>Interface (Implements Contract)</h4>
+              <pre><code class="language-csharp">// Interface: Only defines contracts (C# 8+ allows default implementations)
+public interface IPaymentProcessor {
+    bool ValidatePayment(decimal amount);
+    void ProcessPayment(decimal amount);
+    string GetProcessorName();
+}
+
+public class StripeProcessor : IPaymentProcessor {
+    public bool ValidatePayment(decimal amount) =&gt; amount &gt; 0;
+    public void ProcessPayment(decimal amount) { ... }
+    public string GetProcessorName() =&gt; "Stripe";
+}
+</code></pre>
+              <p><strong>When to use what:</strong></p>
               <ul>
-                <li><strong>Default:</strong> no parameters. Provided automatically by C# if not defined.</li>
-                <li><strong>Parameterized:</strong> accepts arguments to initialize fields.</li>
-                <li><strong>Copy:</strong> accepts another instance to clone it.</li>
-                <li><strong>Static:</strong> runs once when class loads (static fields initialization).</li>
+                <li>Abstract class: Shared code, related objects (Employee, Manager, Developer)</li>
+                <li>Interface: Contract for unrelated classes (IDisposable, IComparable)</li>
               </ul>
             </div>
           </details>
           <details class="qa-item">
-            <summary class="qa-question">Q42. Destructor vs Finalize? <span class="qa-chevron">▼</span></summary>
+            <summary class="qa-question">Q41. What is a constructor? Types and use cases? <span class="qa-chevron">▼</span></summary>
             <div class="qa-answer">
-              <p>Both clean up resources. <strong>Destructor (~):</strong> syntax sugar for Finalize. Called by garbage collector (unpredictable timing). <strong>Best practice:</strong> use IDisposable.Dispose() instead for immediate cleanup. Destructors/Finalize are fallback for unmanaged resources if Dispose isn't called.</p>
+              <pre><code class="language-csharp">public class Product {
+    // Default constructor (no params)
+    public Product() {
+        CreatedDate = DateTime.Now;
+    }
+
+    // Parameterized constructor
+    public Product(string name, decimal price) {
+        Name = name;
+        Price = price;
+        CreatedDate = DateTime.Now;
+    }
+
+    // Copy constructor
+    public Product(Product other) {
+        Id = other.Id;
+        Name = other.Name;
+        Price = other.Price;
+        CreatedDate = other.CreatedDate;
+    }
+
+    // Static constructor (runs once when class loads)
+    static Product() {
+        Console.WriteLine("Product class initialized");
+    }
+
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+    public DateTime CreatedDate { get; set; }
+}
+
+// Usage
+var p1 = new Product();                           // Default
+var p2 = new Product("Laptop", 999.99m);         // Parameterized
+var p3 = new Product(p2);                        // Copy
+</code></pre>
             </div>
           </details>
           <details class="qa-item">
-            <summary class="qa-question">Q43. What are generics? <span class="qa-chevron">▼</span></summary>
+            <summary class="qa-question">Q42. What is IDisposable? Dispose vs Finalize? <span class="qa-chevron">▼</span></summary>
             <div class="qa-answer">
-              <p>Generics enable type-safe code reuse. Define methods/classes that work with any type. Example: Repository&lt;T&gt; works with any entity. Benefits: type-safe at compile-time, no boxing/unboxing, IntelliSense support.</p>
+              <h4>Wrong Way - Resource leak</h4>
+              <pre><code class="language-csharp">// ❌ BAD: File never gets closed if error occurs
+using (var file = File.Open("data.txt", FileMode.Open)) {
+    var content = file.ReadAllText(); // If error here, Dispose never called
+}
+</code></pre>
+              <h4>Correct Way - IDisposable Pattern</h4>
+              <pre><code class="language-csharp">// ✅ GOOD: Implement IDisposable for cleanup
+public class DatabaseConnection : IDisposable {
+    private SqlConnection _connection;
+    private bool _disposed = false;
+
+    public DatabaseConnection() {
+        _connection = new SqlConnection("connection string");
+    }
+
+    public void Dispose() {
+        Dispose(true);
+        GC.SuppressFinalize(this); // Don't call finalizer
+    }
+
+    protected virtual void Dispose(bool disposing) {
+        if (!_disposed) {
+            if (disposing) {
+                _connection?.Close();
+                _connection?.Dispose();
+            }
+            _disposed = true;
+        }
+    }
+
+    // Finalizer - fallback if Dispose not called
+    ~DatabaseConnection() {
+        Dispose(false);
+    }
+}
+
+// Usage - guaranteed cleanup with using
+using (var db = new DatabaseConnection()) {
+    // Use database
+} // Dispose() automatically called here
+</code></pre>
             </div>
           </details>
           <details class="qa-item">
-            <summary class="qa-question">Q44. What are constraints in generics? <span class="qa-chevron">▼</span></summary>
+            <summary class="qa-question">Q43. What are generics? Benefits? <span class="qa-chevron">▼</span></summary>
             <div class="qa-answer">
+              <h4>Without Generics (Type Unsafe)</h4>
+              <pre><code class="language-csharp">// ❌ BAD: No type safety, boxing/unboxing overhead
+public class Repository {
+    private List _items = new List();
+
+    public void Add(object item) {
+        _items.Add(item);
+    }
+
+    public object Get(int index) {
+        return _items[index]; // Returns object, need casting
+    }
+}
+
+var repo = new Repository();
+repo.Add("John");
+var name = (string)repo.Get(0); // Casting required, error-prone
+</code></pre>
+              <h4>With Generics (Type Safe)</h4>
+              <pre><code class="language-csharp">// ✅ GOOD: Type-safe at compile time
+public class Repository&lt;T&gt; {
+    private List&lt;T&gt; _items = new List&lt;T&gt;();
+
+    public void Add(T item) {
+        _items.Add(item);
+    }
+
+    public T Get(int index) {
+        return _items[index]; // No casting needed
+    }
+}
+
+var productRepo = new Repository&lt;Product&gt;();
+productRepo.Add(new Product { Name = "Laptop", Price = 999.99m });
+var product = productRepo.Get(0); // IntelliSense knows it's Product
+</code></pre>
+              <p><strong>Benefits:</strong> Type-safe at compile-time, no boxing/unboxing, better performance, better IntelliSense</p>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q44. What are generic constraints? Examples? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <pre><code class="language-csharp">// Constraint: T must be a reference type
+public class Repository&lt;T&gt; where T : class {
+    public void Add(T item) { ... }
+}
+
+// Constraint: T must be a value type
+public class Cache&lt;T&gt; where T : struct {
+    public void Store(T value) { ... }
+}
+
+// Constraint: T must implement interface
+public class Comparer&lt;T&gt; where T : IComparable&lt;T&gt; {
+    public int Compare(T a, T b) {
+        return a.CompareTo(b);
+    }
+}
+
+// Constraint: T must have parameterless constructor
+public class Factory&lt;T&gt; where T : new() {
+    public T Create() {
+        return new T();
+    }
+}
+
+// Multiple constraints
+public class GenericClass&lt;T&gt; where T : class, IDisposable, new() {
+    // T must be a class, implement IDisposable, and have parameterless constructor
+}
+
+// Constraint: Inheritance
+public class BaseClass { }
+public class DerivedRepository&lt;T&gt; where T : BaseClass {
+    // T must derive from BaseClass
+}
+</code></pre>
+            </div>
+          </details>
+          <details class="qa-item">
+            <summary class="qa-question">Q45. What is <code>ref</code> vs <code>out</code> keyword? <span class="qa-chevron">▼</span></summary>
+            <div class="qa-answer">
+              <h4>ref Keyword (Read AND Modify)</h4>
+              <pre><code class="language-csharp">// ref: Pass by reference, must be initialized before call
+public static void Increment(ref int value) {
+    value++; // Modifies original variable
+}
+
+int number = 5;
+Increment(ref number); // Must use 'ref' keyword
+Console.WriteLine(number); // 6 - modified!
+
+// Wrong: ref requires initialization
+int uninitialized;
+Increment(ref uninitialized); // ERROR: uninitialized
+</code></pre>
+              <h4>out Keyword (Output Parameter)</h4>
+              <pre><code class="language-csharp">// out: For returning multiple values
+public static bool TryParsePrice(string input, out decimal price) {
+    price = 0;
+    if (decimal.TryParse(input, out decimal result)) {
+        price = result;
+        return true;
+    }
+    return false;
+}
+
+decimal parsedPrice;
+if (TryParsePrice("99.99", out parsedPrice)) {
+    Console.WriteLine(parsedPrice); // 99.99
+}
+
+// out does NOT require pre-initialization
+decimal value;
+TryParsePrice("50.00", out value); // OK - value initialized inside method
+</code></pre>
+              <p><strong>Summary:</strong></p>
               <ul>
-                <li><code>where T : class</code> — reference type only</li>
-                <li><code>where T : struct</code> — value type only</li>
-                <li><code>where T : IComparable</code> — must implement interface</li>
-                <li><code>where T : new()</code> — must have parameterless constructor</li>
+                <li>ref: Read AND modify, must be initialized before</li>
+                <li>out: Write value for return, method must initialize</li>
               </ul>
             </div>
           </details>
           <details class="qa-item">
-            <summary class="qa-question">Q45. What is <code>ref</code> vs <code>out</code>? <span class="qa-chevron">▼</span></summary>
+            <summary class="qa-question">Q46. What is <code>is</code> vs <code>as</code> operator? <span class="qa-chevron">▼</span></summary>
             <div class="qa-answer">
-              <ul>
-                <li><strong>ref:</strong> pass by reference. Method can read AND modify original variable. Must be initialized before call.</li>
-                <li><strong>out:</strong> pass by reference for OUTPUT. Method must assign before returning. Doesn't need to be initialized before call.</li>
-              </ul>
+              <h4>is Operator - Type Check</h4>
+              <pre><code class="language-csharp">// is: Returns bool, safe checking
+var product = new Product { Name = "Laptop" };
+
+if (product is Product) {
+    Console.WriteLine("It's a Product"); // true
+}
+
+if (product is Entity) {
+    Console.WriteLine("It's an Entity"); // true (if Product derives from Entity)
+}
+
+// Type pattern matching (C# 7+)
+if (product is not null) {
+    Console.WriteLine("Product is not null");
+}
+</code></pre>
+              <h4>as Operator - Safe Casting</h4>
+              <pre><code class="language-csharp">// as: Attempts cast, returns null if fails
+object obj = "Hello";
+
+string text = obj as string;
+Console.WriteLine(text); // "Hello"
+
+Product product = obj as Product;
+Console.WriteLine(product); // null (obj is string, not Product)
+
+// Avoid: Direct casting throws exception if wrong type
+string wrongCast = (string)123; // InvalidCastException!
+
+// Better: Use as and check for null
+var result = obj as string;
+if (result != null) {
+    Console.WriteLine("Casting succeeded");
+}
+</code></pre>
             </div>
           </details>
           <details class="qa-item">
-            <summary class="qa-question">Q46. What is <code>is</code> vs <code>as</code> operators? <span class="qa-chevron">▼</span></summary>
+            <summary class="qa-question">Q47. What are extension methods? Use cases? <span class="qa-chevron">▼</span></summary>
             <div class="qa-answer">
-              <ul>
-                <li><strong>is:</strong> returns bool. Check if object is of type. Safe, no exceptions.</li>
-                <li><strong>as:</strong> returns object (or null). Cast safely. Returns null if cast fails.</li>
-              </ul>
+              <p>Extension methods add new methods to existing classes without inheritance. First parameter uses <code>this</code> keyword.</p>
+              <pre><code class="language-csharp">// ✅ GOOD: Extend existing types
+public static class StringExtensions {
+    // Add method to string without inheritance
+    public static bool IsValidEmail(this string value) {
+        try {
+            var addr = new System.Net.Mail.MailAddress(value);
+            return addr.Address == value;
+        } catch {
+            return false;
+        }
+    }
+
+    public static string Truncate(this string value, int length) {
+        return value.Length &gt; length ? value.Substring(0, length) + "..." : value;
+    }
+}
+
+public static class ProductExtensions {
+    public static decimal GetDiscountedPrice(this Product product, decimal discountPercent) {
+        return product.Price * (1 - (discountPercent / 100));
+    }
+}
+
+// Usage - looks like built-in methods!
+string email = "john@example.com";
+if (email.IsValidEmail()) {
+    Console.WriteLine("Email is valid");
+}
+
+string title = "This is a very long title";
+Console.WriteLine(title.Truncate(10)); // "This is a..."
+
+var product = new Product { Price = 100m };
+Console.WriteLine(product.GetDiscountedPrice(20)); // 80
+</code></pre>
+              <p><strong>Rules:</strong> Must be in static class, only adds methods (not state/properties), heavily used in LINQ</p>
             </div>
           </details>
           <details class="qa-item">
-            <summary class="qa-question">Q47. What are extension methods? <span class="qa-chevron">▼</span></summary>
+            <summary class="qa-question">Q48. What is POCO? What makes good POCO? <span class="qa-chevron">▼</span></summary>
             <div class="qa-answer">
-              <p>Add new methods to existing classes without inheritance. First parameter uses <code>this</code> keyword. Heavily used in LINQ. Must be in static class. Limited to adding methods, not state/properties.</p>
+              <p>POCO = Plain Old CLR Object. Simple class with no dependencies on framework, no special base class.</p>
+              <pre><code class="language-csharp">// ✅ GOOD POCO: Simple, reusable, testable
+public class Product {
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+    public string Category { get; set; }
+    public DateTime CreatedDate { get; set; }
+}
+
+// Use as entity model
+public class ProductEntity : Product { } // Database model
+
+// Use as DTO
+public class ProductDto : Product { } // API contract
+
+// Use in business logic
+public class ProductValidator {
+    public bool IsValid(Product product) {
+        return !string.IsNullOrEmpty(product.Name) &&
+               product.Price > 0;
+    }
+}
+
+// ❌ WRONG: Not a POCO - depends on framework
+public class BadProduct : DbContext {
+    // Mixes business logic with database concerns
+    public void Save() { ... }
+    public void Delete() { ... }
+}
+</code></pre>
+              <p><strong>Benefits:</strong> Testable, serializable, reusable across layers (API, database, business logic)</p>
             </div>
           </details>
           <details class="qa-item">
-            <summary class="qa-question">Q48. What is POCO? <span class="qa-chevron">▼</span></summary>
+            <summary class="qa-question">Q49. What are attributes? Common examples? <span class="qa-chevron">▼</span></summary>
             <div class="qa-answer">
-              <p>POCO = Plain Old CLR Object. Simple class with no dependencies, no special base class. Just properties. Entity models are POCOs. DTOs are POCOs. Benefits: testable, serializable, reusable across layers.</p>
+              <p>Attributes provide metadata to code. Framework reads them at runtime for validation, configuration, authorization.</p>
+              <pre><code class="language-csharp">public class Product {
+    // Validation attributes
+    [Required(ErrorMessage = "Name is required")]
+    [StringLength(100, MinimumLength = 3)]
+    public string Name { get; set; }
+
+    [Range(0.01, 999999.99, ErrorMessage = "Price must be positive")]
+    public decimal Price { get; set; }
+
+    // Database attributes (EF Core)
+    [Key]
+    public int Id { get; set; }
+
+    [Column("CategoryName")]
+    public string Category { get; set; }
+
+    [Timestamp]
+    public byte[] RowVersion { get; set; }
+}
+
+public class ProductController : ControllerBase {
+    // Authorization attribute
+    [Authorize(Roles = "Admin")]
+    [HttpPost("create")]
+    public async Task&lt;IActionResult&gt; CreateProduct(Product product) {
+        // Only admins can access
+        return Ok(product);
+    }
+
+    // Caching attribute
+    [ResponseCache(Duration = 60)]
+    [HttpGet("{id}")]
+    public async Task&lt;IActionResult&gt; GetProduct(int id) {
+        // Response cached for 60 seconds
+        return Ok();
+    }
+}
+</code></pre>
             </div>
           </details>
           <details class="qa-item">
-            <summary class="qa-question">Q49. What are attributes? Examples? <span class="qa-chevron">▼</span></summary>
+            <summary class="qa-question">Q50. What is a delegate? Events? Real-world use? <span class="qa-chevron">▼</span></summary>
             <div class="qa-answer">
-              <p>Attributes provide metadata to code. Framework reads them at runtime. [Required] for validation, [Authorize] for security, [Table] for EF Core configuration.</p>
+              <p>Delegate is a type-safe function pointer. Represents a method signature. Enables passing methods as parameters (callbacks).</p>
+              <h4>Basic Delegate Example</h4>
+              <pre><code class="language-csharp">// Define delegate type (method signature)
+public delegate void LogDelegate(string message);
+
+public class Logger {
+    private LogDelegate _logCallback;
+
+    public Logger(LogDelegate callback) {
+        _logCallback = callback;
+    }
+
+    public void LogMessage(string message) {
+        _logCallback?.Invoke(message);
+    }
+}
+
+// Usage: Pass different methods
+public static void ConsoleLog(string message) =&gt; Console.WriteLine(message);
+public static void FileLog(string message) =&gt; File.AppendAllText("log.txt", message);
+
+var consoleLogger = new Logger(ConsoleLog);
+consoleLogger.LogMessage("Hello"); // Prints to console
+
+var fileLogger = new Logger(FileLog);
+fileLogger.LogMessage("Hello"); // Writes to file
+</code></pre>
+              <h4>Events Pattern (Delegates + EventHandler)</h4>
+              <pre><code class="language-csharp">// Event example: Button click notifications
+public class Button {
+    // Define event
+    public event EventHandler OnClick;
+
+    public void Click() {
+        Console.WriteLine("Button clicked");
+        OnClick?.Invoke(this, EventArgs.Empty);
+    }
+}
+
+public class Form {
+    private Button submitButton = new Button();
+
+    public Form() {
+        // Subscribe to event
+        submitButton.OnClick += HandleButtonClick;
+    }
+
+    private void HandleButtonClick(object sender, EventArgs e) {
+        Console.WriteLine("Form received click event");
+    }
+}
+
+// Modern approach: Use Func&lt;T, TResult&gt; and Action&lt;T&gt;
+public class Repository&lt;T&gt; {
+    private Action&lt;string&gt; _logger;
+
+    public Repository(Action&lt;string&gt; logger) {
+        _logger = logger;
+    }
+
+    public void Save(T entity) {
+        _logger($"Saving {typeof(T).Name}");
+    }
+}
+</code></pre>
             </div>
           </details>
-          <details class="qa-item">
-            <summary class="qa-question">Q50. What is a delegate? <span class="qa-chevron">▼</span></summary>
-            <div class="qa-answer">
-              <p>Delegate is a type-safe function pointer. Represents a method signature. Enables passing methods as parameters (callbacks, events). Events use delegates. Func&lt;T, TResult&gt; and Action&lt;T&gt; are built-in delegates.</p>
-            </div>
           </details>
         </div><!-- /.qa-list csharp-oop -->
 

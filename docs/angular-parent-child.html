@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Parent-Child Communication - DevDocs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('docsTheme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body>
+<div id="readingProgress" style="position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0ea5e9,#8b5cf6);z-index:999;transition:width 0.1s;"></div>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="site-logo">
+            <div class="logo-badge">D</div> DevDocs
+        </a>
+        <nav class="header-nav">
+            <a href="index.html">Home</a>
+            <a href="webapi.html">Web API</a>
+            <a href="ef-core.html">EF Core</a>
+            <a href="linq.html">LINQ</a>
+            <a href="interview.html">Interview</a>
+        </nav>
+        <div class="header-actions">
+            <div class="search-bar" data-search-open onclick="openSearch()">
+                <span>🔍</span>
+                <input type="text" placeholder="Search..." readonly>
+                <div class="search-shortcut"><kbd>Ctrl</kbd><kbd>K</kbd></div>
+            </div>
+            <a href="compiler.html" class="compiler-btn" title="Open Compiler">🚀</a>
+            <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrapper">
+    <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <!-- Home -->
+      <div class="sidebar-section">
+        <ul class="sidebar-links">
+          <li>
+            <a href="index.html" class="sidebar-link">
+              <span class="sidebar-link-icon">🏠</span> Home
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Project Tabs (Modern Tab Navigation) -->
+      <div class="project-tabs-section">
+        <div class="project-tabs">
+          <button class="project-tab " data-project="webapi" title="Webapi">🌐</button>
+          <button class="project-tab" data-project="mvc" title="MVC">🖥️</button>
+          <button class="project-tab active" data-project="angular" title="Angular">🅰️</button>
+          <button class="project-tab" data-project="react" title="react">⚛️</button>
+        </div>
+
+        <!-- Web API Topics -->
+        <div class="project-topics-list" data-topics="webapi" style="display: none;">
+          <a href="webapi-architecture.html" class="sidebar-link"><span style="margin-right: 4px;">🏗️</span> Architecture</a>
+          <a href="webapi-controllers.html" class="sidebar-link"><span style="margin-right: 4px;">🎮</span> Controllers &amp; REST</a>
+          <a href="webapi-models.html" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Models &amp; DTOs</a>
+          <a href="webapi-di.html" class="sidebar-link"><span style="margin-right: 4px;">💉</span> Dependency Injection</a>
+          <a href="webapi-middleware.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Middleware</a>
+          <a href="webapi-caching.html" class="sidebar-link"><span style="margin-right: 4px;">⚡</span> Caching Strategies</a>
+          <a href="webapi-error-handling.html" class="sidebar-link"><span style="margin-right: 4px;">🚨</span> Error Handling</a>
+          <a href="webapi-graphql.html" class="sidebar-link"><span style="margin-right: 4px;">🌐</span> GraphQL</a>
+        </div>
+
+        <!-- MVC Topics -->
+        <div class="project-topics-list" data-topics="mvc" style="display: none;">
+          <a href="mvc.html" class="sidebar-link"><span style="margin-right: 4px;">📘</span> Overview</a>
+          <a href="mvc-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
+          <a href="mvc-controllers.html" class="sidebar-link"><span style="margin-right: 4px;">🎮</span> Controllers &amp; Actions</a>
+          <a href="mvc-views.html" class="sidebar-link"><span style="margin-right: 4px;">👁️</span> Views &amp; Razor</a>
+          <a href="mvc-models.html" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Models &amp; Validation</a>
+          <a href="mvc-services.html" class="sidebar-link"><span style="margin-right: 4px;">💼</span> Services &amp; HttpClient</a>
+        </div>
+
+        <!-- Angular Topics -->
+        <div class="project-topics-list" data-topics="angular" style="display: flex;">
+          <a href="angular.html" class="sidebar-link"><span style="margin-right: 4px;">📗</span> Overview</a>
+          <a href="angular-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
+          <a href="angular-components.html" class="sidebar-link"><span style="margin-right: 4px;">📦</span> Components &amp; Templates</a>
+          <a href="angular-services.html" class="sidebar-link"><span style="margin-right: 4px;">💼</span> Services &amp; DI</a>
+          <a href="angular-rxjs.html" class="sidebar-link"><span style="margin-right: 4px;">〰️</span> RxJS &amp; Observables</a>
+          <a href="angular-forms.html" class="sidebar-link"><span style="margin-right: 4px;">📋</span> Reactive Forms</a>
+          <a href="angular-router.html" class="sidebar-link"><span style="margin-right: 4px;">🗺️</span> Router &amp; Navigation</a>
+          <a href="angular-parent-child.html" class="sidebar-link"><span style="margin-right: 4px;">👨‍👧‍👦</span> Parent-Child</a>
+        </div>
+
+        <!-- React Topics -->
+        <div class="project-topics-list" data-topics="react" style="display: none;">
+          <a href="react.html" class="sidebar-link"><span style="margin-right: 4px;">📙</span> Overview</a>
+          <a href="react-setup.html" class="sidebar-link"><span style="margin-right: 4px;">⚙️</span> Setup &amp; Install</a>
+          <a href="react-hooks.html" class="sidebar-link"><span style="margin-right: 4px;">🎣</span> Hooks &amp; State</a>
+          <a href="react-custom-hooks.html" class="sidebar-link"><span style="margin-right: 4px;">🔄</span> Custom Hooks</a>
+          <a href="react-context.html" class="sidebar-link"><span style="margin-right: 4px;">🌍</span> Context API</a>
+          <a href="react-redux.html" class="sidebar-link"><span style="margin-right: 4px;">🔴</span> Redux</a>
+          <a href="react-parent-child.html" class="sidebar-link"><span style="margin-right: 4px;">👨‍👧‍👦</span> Parent-Child</a>
+          <a href="react-forms.html" class="sidebar-link"><span style="margin-right: 4px;">📋</span> Forms &amp; Validation</a>
+          <a href="react-router.html" class="sidebar-link"><span style="margin-right: 4px;">🗺️</span> React Router</a>
+        </div>
+      </div>
+
+      <!-- Data Access -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🟢 Data Access</h3>
+        <ul class="sidebar-links">
+          <li><a href="ef-core.html" class="sidebar-link"><span style="margin-right: 4px;">🗄️</span> Entity Framework Core</a></li>
+          <li><a href="ado-net.html" class="sidebar-link"><span style="margin-right: 4px;">💾</span> ADO.NET</a></li>
+          <li><a href="linq.html" class="sidebar-link"><span style="margin-right: 4px;">🔗</span> LINQ &amp; Filtering</a></li>
+          <li><a href="collections.html" class="sidebar-link"><span style="margin-right: 4px;">📊</span> Collections</a></li>
+        </ul>
+      </div>
+
+      <!-- Interview Prep -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🎓 Interview Prep</h3>
+        <ul class="sidebar-links">
+          <li><a href="interview.html" class="sidebar-link"><span style="margin-right: 4px;">💡</span> All Questions</a></li>
+          <li><a href="interview-coding.html" class="sidebar-link"><span style="margin-right: 4px;">💻</span> Coding Challenges</a></li>
+          <li><a href="interview-solid.html" class="sidebar-link"><span style="margin-right: 4px;">📐</span> SOLID Principles</a></li>
+          <li><a href="interview-patterns.html" class="sidebar-link"><span style="margin-right: 4px;">🎨</span> Design Patterns</a></li>
+          <li><a href="interview-mvc-extended.html" class="sidebar-link"><span style="margin-right: 4px;">🖥️</span> ASP.NET MVC</a></li>
+          <li><a href="interview-angular-extended.html" class="sidebar-link"><span style="margin-right: 4px;">🅰️</span> Angular</a></li>
+          <li><a href="interview-react-extended.html" class="sidebar-link"><span style="margin-right: 4px;">⚛️</span> React</a></li>
+        </ul>
+      </div>
+
+      <!-- Tools -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-category">🛠️ Tools</h3>
+        <ul class="sidebar-links">
+          <li><a href="compiler.html" class="sidebar-link"><span style="margin-right: 4px;">🚀</span> Interactive Compiler</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+    <main class="main-content">
+        <div class="content-wrapper">
+            <article class="article">
+                <nav class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="sep">/</span>
+                    <a href="angular.html">Angular</a>
+                    <span class="sep">/</span>
+                    <span class="current">Parent-Child Communication</span>
+                </nav>
+
+                <div class="page-title-block">
+                    <h1 class="page-title">👨‍👧‍👦 Parent-Child Communication</h1>
+                    <p class="page-subtitle">Master @Input, @Output, EventEmitter, and template references for component communication in Angular.</p>
+                </div>
+
+                <h2>Angular Component Communication Methods</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Method</th>
+                            <th>Direction</th>
+                            <th>Use Case</th>
+                        </tr>
+                        <tr>
+                            <td><strong>@Input</strong></td>
+                            <td>Parent → Child</td>
+                            <td>Pass data from parent to child</td>
+                        </tr>
+                        <tr>
+                            <td><strong>@Output + EventEmitter</strong></td>
+                            <td>Child → Parent</td>
+                            <td>Send events/data from child to parent</td>
+                        </tr>
+                        <tr>
+                            <td><strong>@ViewChild</strong></td>
+                            <td>Parent accesses Child</td>
+                            <td>Direct access to child component/element</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Services + Subjects</strong></td>
+                            <td>Any → Any</td>
+                            <td>Complex communication, siblings</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h2>Method 1: @Input (Parent to Child)</h2>
+                <p>Pass data from parent to child component using @Input decorator.</p>
+
+                <h3>Simple @Input Example</h3>
+                <pre><code class="language-typescript">// Parent Component
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-parent',
+  template: `
+    &lt;div&gt;
+      &lt;h1&gt;Parent Component&lt;/h1&gt;
+
+      &lt;!-- Pass data as @Input --&gt;
+      &lt;app-product-card
+        [productName]="'Laptop'"
+        [productPrice]="999.99"
+        [inStock]="true"
+      &gt;&lt;/app-product-card&gt;
+    &lt;/div&gt;
+  `
+})
+export class ParentComponent {}
+
+// Child Component
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-product-card',
+  template: `
+    &lt;div class="card"&gt;
+      &lt;h2&gt;{{ productName }}&lt;/h2&gt;
+      &lt;p&gt;Price: ${{ productPrice }}&lt;/p&gt;
+      &lt;p&gt;{{ inStock ? 'In Stock' : 'Out of Stock' }}&lt;/p&gt;
+    &lt;/div&gt;
+  `
+})
+export class ProductCardComponent {
+  @Input() productName: string = '';
+  @Input() productPrice: number = 0;
+  @Input() inStock: boolean = false;
+}</code></pre>
+
+                <h2>Method 2: @Output + EventEmitter (Child to Parent)</h2>
+                <p>Send events from child to parent using @Output and EventEmitter.</p>
+
+                <h3>Real Example: ProductCatalog with Category Filter</h3>
+                <pre><code class="language-typescript">// Parent Component
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-catalog',
+  template: `
+    &lt;div class="catalog"&gt;
+      &lt;h1&gt;Product Catalog&lt;/h1&gt;
+
+      &lt;!-- Listen for onCategoryChange event from child --&gt;
+      &lt;app-filter-panel
+        (onCategoryChange)="handleCategoryChange($event)"
+      &gt;&lt;/app-filter-panel&gt;
+
+      &lt;!-- Display filtered products --&gt;
+      &lt;app-product-list
+        [products]="filteredProducts"
+        (onAddToCart)="addToCart($event)"
+      &gt;&lt;/app-product-list&gt;
+    &lt;/div&gt;
+  `
+})
+export class CatalogComponent {
+  products = [
+    { id: 1, name: 'Laptop', category: 'Electronics', price: 999 },
+    { id: 2, name: 'Mouse', category: 'Electronics', price: 29 },
+    { id: 3, name: 'Desk', category: 'Furniture', price: 299 }
+  ];
+
+  selectedCategory = 'All';
+  filteredProducts = this.products;
+
+  handleCategoryChange(category: string) {
+    this.selectedCategory = category;
+    // Filter products
+    this.filteredProducts = category === 'All'
+      ? this.products
+      : this.products.filter(p => p.category === category);
+  }
+
+  addToCart(product: any) {
+    console.log('Added to cart:', product);
+  }
+}
+
+// Child 1: Filter Panel - emits events
+import { Component, Output, EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'app-filter-panel',
+  template: `
+    &lt;div class="filter-panel"&gt;
+      &lt;h3&gt;Filter by Category&lt;/h3&gt;
+      &lt;button
+        *ngFor="let cat of categories"
+        (click)="selectCategory(cat)"
+        [class.active]="selectedCategory === cat"
+      &gt;
+        {{ cat }}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  `
+})
+export class FilterPanelComponent {
+  @Output() onCategoryChange = new EventEmitter&lt;string&gt;();
+
+  categories = ['All', 'Electronics', 'Furniture'];
+  selectedCategory = 'All';
+
+  selectCategory(category: string) {
+    this.selectedCategory = category;
+    // Emit event to parent
+    this.onCategoryChange.emit(category);
+  }
+}
+
+// Child 2: Product List
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'app-product-list',
+  template: `
+    &lt;div class="product-list"&gt;
+      &lt;div *ngFor="let product of products" class="product"&gt;
+        &lt;h4&gt;{{ product.name }}&lt;/h4&gt;
+        &lt;p&gt;${{ product.price }}&lt;/p&gt;
+        &lt;p&gt;Category: {{ product.category }}&lt;/p&gt;
+        &lt;button (click)="addToCart(product)"&gt;
+          Add to Cart
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  `
+})
+export class ProductListComponent {
+  @Input() products: any[] = [];
+  @Output() onAddToCart = new EventEmitter&lt;any&gt;();
+
+  addToCart(product: any) {
+    this.onAddToCart.emit(product);
+  }
+}</code></pre>
+
+                <h2>Method 3: @ViewChild (Parent Accesses Child)</h2>
+                <p>Directly access child component methods and properties from parent.</p>
+
+                <h3>Example: Timer Control</h3>
+                <pre><code class="language-typescript">// Parent Component
+import { Component, ViewChild } from '@angular/core';
+import { TimerComponent } from './timer.component';
+
+@Component({
+  selector: 'app-parent',
+  template: `
+    &lt;div&gt;
+      &lt;h1&gt;Timer Controls&lt;/h1&gt;
+
+      &lt;!-- Template reference variable #timer --&gt;
+      &lt;app-timer #timer&gt;&lt;/app-timer&gt;
+
+      &lt;!-- Call child methods directly --&gt;
+      &lt;button (click)="startTimer()"&gt;Start&lt;/button&gt;
+      &lt;button (click)="stopTimer()"&gt;Stop&lt;/button&gt;
+      &lt;button (click)="resetTimer()"&gt;Reset&lt;/button&gt;
+      &lt;button (click)="showElapsedTime()"&gt;Show Time&lt;/button&gt;
+    &lt;/div&gt;
+  `
+})
+export class ParentComponent {
+  // @ViewChild gets reference to child component
+  @ViewChild('timer') timerComponent!: TimerComponent;
+
+  startTimer() {
+    this.timerComponent.start();
+  }
+
+  stopTimer() {
+    this.timerComponent.stop();
+  }
+
+  resetTimer() {
+    this.timerComponent.reset();
+  }
+
+  showElapsedTime() {
+    const elapsed = this.timerComponent.getElapsedTime();
+    alert(`Elapsed: ${elapsed}s`);
+  }
+}
+
+// Child Component: Timer
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-timer',
+  template: `
+    &lt;div class="timer"&gt;
+      &lt;h2&gt;Timer: {{ seconds }}s&lt;/h2&gt;
+    &lt;/div&gt;
+  `
+})
+export class TimerComponent {
+  seconds = 0;
+  private interval: any;
+
+  start() {
+    if (!this.interval) {
+      this.interval = setInterval(() => {
+        this.seconds++;
+      }, 1000);
+    }
+  }
+
+  stop() {
+    if (this.interval) {
+      clearInterval(this.interval);
+      this.interval = null;
+    }
+  }
+
+  reset() {
+    this.seconds = 0;
+    this.stop();
+  }
+
+  getElapsedTime(): number {
+    return this.seconds;
+  }
+}</code></pre>
+
+                <h2>Method 4: Two-Way Binding with [(ngModel)]</h2>
+                <p>Combine @Input and @Output for two-way data binding.</p>
+
+                <pre><code class="language-typescript">// Parent Component
+@Component({
+  template: `
+    &lt;app-counter [(count)]="myCount"&gt;&lt;/app-counter&gt;
+    &lt;p&gt;Count from parent: {{ myCount }}&lt;/p&gt;
+  `
+})
+export class ParentComponent {
+  myCount = 0;
+}
+
+// Child Component with two-way binding
+@Component({
+  selector: 'app-counter',
+  template: `
+    &lt;div&gt;
+      &lt;button (click)="increment()"&gt;+&lt;/button&gt;
+      &lt;span&gt;{{ count }}&lt;/span&gt;
+      &lt;button (click)="decrement()"&gt;-&lt;/button&gt;
+    &lt;/div&gt;
+  `
+})
+export class CounterComponent {
+  @Input() count: number = 0;
+  @Output() countChange = new EventEmitter&lt;number&gt;();
+
+  increment() {
+    this.count++;
+    this.countChange.emit(this.count);
+  }
+
+  decrement() {
+    this.count--;
+    this.countChange.emit(this.count);
+  }
+}</code></pre>
+
+                <h2>Angular vs React: Parent-Child Communication</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Angular</th>
+                            <th>React</th>
+                        </tr>
+                        <tr>
+                            <td>Parent → Child</td>
+                            <td>@Input decorator</td>
+                            <td>Props</td>
+                        </tr>
+                        <tr>
+                            <td>Child → Parent</td>
+                            <td>@Output + EventEmitter</td>
+                            <td>Callback function props</td>
+                        </tr>
+                        <tr>
+                            <td>Parent accesses child</td>
+                            <td>@ViewChild</td>
+                            <td>useRef hook</td>
+                        </tr>
+                        <tr>
+                            <td>Two-way binding</td>
+                            <td>[(ngModel)] or Custom</td>
+                            <td>useState + onChange</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h2>Best Practices</h2>
+                <ol class="content-list">
+                    <li>
+                        <strong>Use @Input for data, @Output for events:</strong> Keep the component contract clear
+                        <pre><code class="language-typescript">// ✅ Good - clear separation
+@Input() productName: string = '';
+@Output() onDelete = new EventEmitter&lt;string&gt;();
+
+// ❌ Wrong - using @Output for data flow
+@Output() productData = new EventEmitter&lt;Product&gt;();</code></pre>
+                    </li>
+                    <li>
+                        <strong>Avoid @ViewChild when possible:</strong> Use @Output/EventEmitter instead
+                        <pre><code class="language-typescript">// ❌ Bad - tight coupling
+@ViewChild(ChildComponent) child!: ChildComponent;
+this.child.doSomething();
+
+// ✅ Better - loose coupling via @Output
+@Output() onEvent = new EventEmitter();</code></pre>
+                    </li>
+                    <li>
+                        <strong>Type your @Output EventEmitter:</strong> Provides type safety
+                        <pre><code class="language-typescript">// ❌ Bad - no type
+@Output() onSelect = new EventEmitter();
+
+// ✅ Good - typed
+@Output() onSelect = new EventEmitter&lt;Product&gt;();</code></pre>
+                    </li>
+                    <li>
+                        <strong>Consider OnChanges for @Input updates:</strong> Detect when inputs change
+                        <pre><code class="language-typescript">import { OnChanges, SimpleChanges } from '@angular/core';
+
+export class ChildComponent implements OnChanges {
+  @Input() productId: number = 0;
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['productId']) {
+      // React to productId change
+      this.loadProduct(this.productId);
+    }
+  }
+}</code></pre>
+                    </li>
+                </ol>
+
+                <h2>Interview Q&A</h2>
+
+                <div class="qa-item">
+                    <h3>Q1: What's the difference between @Input and @Output?</h3>
+                    <p><strong>Answer:</strong></p>
+                    <ul class="content-list">
+                        <li><strong>@Input:</strong> Receives data FROM parent component. Used with property binding [property]="value"</li>
+                        <li><strong>@Output:</strong> Sends events/data TO parent component. Used with event binding (event)="handler($event)"</li>
+                    </ul>
+                    <pre><code class="language-typescript">// Child receives data via @Input
+@Input() productName: string = '';
+
+// Child sends data via @Output
+@Output() onSelect = new EventEmitter&lt;Product&gt;();</code></pre>
+                </div>
+
+                <div class="qa-item">
+                    <h3>Q2: How do you pass data from child to parent in Angular?</h3>
+                    <p><strong>Answer:</strong> Using @Output decorator with EventEmitter. Child emits an event with data, parent listens to it.</p>
+                    <pre><code class="language-typescript">// Child
+@Output() onSelect = new EventEmitter&lt;Product&gt;();
+selectProduct(product: Product) {
+  this.onSelect.emit(product);
+}
+
+// Parent listens
+&lt;app-child (onSelect)="handleSelect($event)"&gt;&lt;/app-child&gt;
+handleSelect(product: Product) {
+  console.log(product);
+}</code></pre>
+                </div>
+
+                <div class="qa-item">
+                    <h3>Q3: When should you use @ViewChild vs @Output?</h3>
+                    <p><strong>Answer:</strong></p>
+                    <ul class="content-list">
+                        <li><strong>Use @Output:</strong> For event-driven communication, loose coupling, standard component communication</li>
+                        <li><strong>Use @ViewChild:</strong> When you need direct access to child methods/properties, for imperative operations</li>
+                        <li><strong>Prefer @Output:</strong> It's the Angular way and maintains clean component contracts</li>
+                    </ul>
+                </div>
+            </article>
+        </div>
+    </main>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <a href="index.html" class="footer-brand">
+            <div class="logo-badge" style="width:28px;height:28px;font-size:14px;">D</div> DevDocs
+        </a>
+        <p class="footer-copy">© 2025 DevDocs. For learning & interviews.</p>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

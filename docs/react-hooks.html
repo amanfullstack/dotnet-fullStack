@@ -109,6 +109,8 @@
           <a href="react-context.html" class="sidebar-link"><span style="margin-right: 4px;">🌍</span> Context API</a>
           <a href="react-forms.html" class="sidebar-link"><span style="margin-right: 4px;">📋</span> Forms &amp; Validation</a>
           <a href="react-router.html" class="sidebar-link"><span style="margin-right: 4px;">🗺️</span> React Router</a>
+          <a href="react-parent-child.html" class="sidebar-link"><span style="margin-right: 4px;">👨‍👧</span> Parent-Child Communication</a>
+          <a href="react-redux.html" class="sidebar-link"><span style="margin-right: 4px;">🏪</span> Redux State Management</a>
         </div>
       </div>
 
@@ -168,6 +170,304 @@
                     <h2>What Are Hooks?</h2>
                     <p><strong>Hooks</strong> are special functions that let you "hook into" React features from functional components. Before hooks, you needed class components to use state and lifecycle methods. Now with hooks, functional components can do everything!</p>
                     <p>Think of hooks as superpowers for functional components - <code>useState</code> adds state, <code>useEffect</code> adds side effects, and more.</p>
+                </section>
+
+                <!-- Class vs Functional Components -->
+                <section class="content-section">
+                    <h2>Class Components vs Functional Components</h2>
+                    <p><strong>Modern React uses functional components with hooks.</strong> Class components are the old way, but understanding both helps for interviews and legacy codebases.</p>
+
+                    <h3>Side-by-Side Comparison: Counter Component</h3>
+                    <div class="concept-card">
+                        <h4>Class Component (Old Way)</h4>
+                        <pre><code class="language-javascript">import React from 'react';
+
+class CounterClass extends React.Component {
+  constructor(props) {
+    super(props);
+    // Initialize state
+    this.state = { count: 0 };
+  }
+
+  // Lifecycle method - runs on mount
+  componentDidMount() {
+    console.log('Component mounted');
+  }
+
+  // Lifecycle method - runs after update
+  componentDidUpdate() {
+    console.log('Component updated, count:', this.state.count);
+  }
+
+  // Lifecycle method - runs before unmount
+  componentWillUnmount() {
+    console.log('Component unmounting');
+  }
+
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;h1&gt;Count: {this.state.count}&lt;/h1&gt;
+        &lt;button onClick={() => this.setState({ count: this.state.count + 1 })}&gt;
+          Increment
+        &lt;/button&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+export default CounterClass;</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h4>Functional Component with Hooks (Modern Way)</h4>
+                        <pre><code class="language-javascript">import React, { useState, useEffect } from 'react';
+
+function CounterFunctional() {
+  // Hook: Add state
+  const [count, setCount] = useState(0);
+
+  // Hook: Lifecycle methods combined
+  useEffect(() => {
+    console.log('Component mounted or updated');
+    return () => console.log('Component unmounting');
+  }, []);
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Count: {count}&lt;/h1&gt;
+      &lt;button onClick={() => setCount(count + 1)}&gt;
+        Increment
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default CounterFunctional;</code></pre>
+                    </div>
+
+                    <h3>API Fetch Example: Class vs Functional</h3>
+                    <div class="concept-card">
+                        <h4>Class Component - Multiple Lifecycle Methods</h4>
+                        <pre><code class="language-javascript">class ProductListClass extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: [],
+      loading: true,
+      error: null
+    };
+  }
+
+  // Load data when component mounts
+  componentDidMount() {
+    this.loadProducts();
+  }
+
+  // Update when productId prop changes
+  componentDidUpdate(prevProps) {
+    if (prevProps.productId !== this.props.productId) {
+      this.loadProducts();
+    }
+  }
+
+  loadProducts = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/products');
+      const data = await response.json();
+      this.setState({ products: data, loading: false });
+    } catch (error) {
+      this.setState({ error: error.message, loading: false });
+    }
+  };
+
+  render() {
+    if (this.state.loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+    if (this.state.error) return &lt;div&gt;Error: {this.state.error}&lt;/div&gt;;
+
+    return (
+      &lt;ul&gt;
+        {this.state.products.map(p => (
+          &lt;li key={p.id}&gt;{p.name}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    );
+  }
+}</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h4>Functional Component - Cleaner with Hooks</h4>
+                        <pre><code class="language-javascript">function ProductListFunctional({ productId }) {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Load products when component mounts or productId changes
+    const loadProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('http://localhost:5000/api/products');
+        const data = await response.json();
+        setProducts(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, [productId]); // Re-run if productId changes
+
+  if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+  if (error) return &lt;div&gt;Error: {error}&lt;/div&gt;;
+
+  return (
+    &lt;ul&gt;
+      {products.map(p => (
+        &lt;li key={p.id}&gt;{p.name}&lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}</code></pre>
+                    </div>
+
+                    <h3>Comparison Table</h3>
+                    <div class="table-wrapper">
+                        <table>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Class Component</th>
+                                <th>Functional Component (Hooks)</th>
+                            </tr>
+                            <tr>
+                                <td><strong>Syntax</strong></td>
+                                <td>class MyComponent extends React.Component</td>
+                                <td>function MyComponent()</td>
+                            </tr>
+                            <tr>
+                                <td><strong>State</strong></td>
+                                <td>this.state = {}, this.setState()</td>
+                                <td>useState() hook</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mount</strong></td>
+                                <td>componentDidMount()</td>
+                                <td>useEffect(() => {}, [])</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Update</strong></td>
+                                <td>componentDidUpdate()</td>
+                                <td>useEffect(() => {}, [deps])</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Unmount</strong></td>
+                                <td>componentWillUnmount()</td>
+                                <td>return () => {} in useEffect</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bundle Size</strong></td>
+                                <td>Larger (more boilerplate)</td>
+                                <td>Smaller (less boilerplate)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Testing</strong></td>
+                                <td>Test class instances</td>
+                                <td>Test pure functions (easier)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Learning Curve</strong></td>
+                                <td>Steeper (this binding, inheritance)</td>
+                                <td>Easier (just functions)</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <h3>Form Handling Example: Class vs Functional</h3>
+                    <div class="concept-card">
+                        <h4>Class Component Form</h4>
+                        <pre><code class="language-javascript">class FormClass extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { name: '', email: '' };
+  }
+
+  handleChange = (e) => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(this.state);
+  };
+
+  render() {
+    return (
+      &lt;form onSubmit={this.handleSubmit}&gt;
+        &lt;input
+          name="name"
+          value={this.state.name}
+          onChange={this.handleChange}
+        /&gt;
+        &lt;input
+          name="email"
+          value={this.state.email}
+          onChange={this.handleChange}
+        /&gt;
+        &lt;button type="submit"&gt;Submit&lt;/button&gt;
+      &lt;/form&gt;
+    );
+  }
+}</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h4>Functional Component Form (Much Simpler!)</h4>
+                        <pre><code class="language-javascript">function FormFunctional() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log({ name, email });
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      /&gt;
+      &lt;input
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      /&gt;
+      &lt;button type="submit"&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+                    </div>
+
+                    <h2>Why Modern React Uses Functional Components</h2>
+                    <ol class="content-list">
+                        <li><strong>Simpler Syntax:</strong> Just write functions, no class boilerplate</li>
+                        <li><strong>Easier to Test:</strong> Pure functions are easier to unit test</li>
+                        <li><strong>Better Performance:</strong> Hooks enable better optimization, smaller bundle</li>
+                        <li><strong>Code Organization:</strong> Related logic grouped in useEffect, not split across lifecycle methods</li>
+                        <li><strong>Easier to Share Logic:</strong> Custom hooks reuse logic between components</li>
+                        <li><strong>No 'this' Keyword:</strong> No binding issues, no confusion about context</li>
+                        <li><strong>Smaller Learning Curve:</strong> JavaScript functions are more familiar than OOP classes</li>
+                    </ol>
+
+                    <div class="callout callout-success">
+                        <span class="callout-icon">✓</span>
+                        <div class="callout-content">
+                            <p><strong>Best Practice:</strong> Always use functional components with hooks for new React code. Class components should only be used in legacy projects or when specifically required.</p>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- Why It Matters -->
