@@ -163,13 +163,406 @@
                     <p class="page-subtitle">Understand MVC models, data annotations, and validation strategies.</p>
                 </div>
 
-                <div class="callout callout-info">
-                    <span class="callout-icon">ℹ️</span>
-                    <div class="callout-content">
-                        <p><strong>Coming Soon:</strong> Comprehensive guide on MVC Models and Validation</p>
-                        <p>Topics will include: Model binding, data annotations, custom validation, ModelState, and error handling.</p>
+                <!-- Introduction -->
+                <section class="content-section">
+                    <h2>What Are Models & ViewModels?</h2>
+                    <p>In MVC, <strong>models</strong> represent your data. The "M" in MVC. A <strong>ViewModel</strong> is a model specifically designed for the View—it contains only the data the view needs, formatted the way the view expects.</p>
+                    <p><strong>Key difference:</strong> Don't pass your database entity directly to views. Create a ViewModel instead. This keeps your database schema private and lets views work with the exact data structure they need.</p>
+                </section>
+
+                <!-- Why It Matters -->
+                <section class="content-section">
+                    <h2>Why Models Matter</h2>
+                    <ul class="content-list">
+                        <li><strong>Validation:</strong> Catch bad data before it reaches the database</li>
+                        <li><strong>Type safety:</strong> Know exactly what data you're working with</li>
+                        <li><strong>Separation:</strong> Database entities stay hidden from views</li>
+                        <li><strong>Formatting:</strong> Display data in the format users expect (formatted dates, currency)</li>
+                        <li><strong>Security:</strong> Don't expose sensitive fields to clients</li>
+                    </ul>
+                </section>
+
+                <!-- Key Concepts -->
+                <section class="content-section">
+                    <h2>Key Concepts</h2>
+
+                    <div class="concept-card">
+                        <h3>📋 ViewModels</h3>
+                        <p>Custom classes designed for specific views. Only include data the view needs:</p>
+                        <pre><code class="language-csharp">// Bad: Using database entity in view
+public IActionResult Index()
+{
+    var products = _db.Products.ToList(); // Exposes internal structure
+    return View(products);
+}
+
+// Good: Using ViewModel
+public IActionResult Index()
+{
+    var products = _db.Products
+        .Select(p => new ProductViewModel
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Price = p.Price
+            // Sensitive fields like DatabasePassword are NOT here
+        })
+        .ToList();
+    return View(products);
+}
+</code></pre>
                     </div>
-                </div>
+
+                    <div class="concept-card">
+                        <h3>✅ Data Annotations</h3>
+                        <p>Attributes that specify validation rules and display hints:</p>
+                        <ul class="content-list">
+                            <li><code>[Required]</code> - Field cannot be empty</li>
+                            <li><code>[StringLength(50)]</code> - Max 50 characters</li>
+                            <li><code>[EmailAddress]</code> - Must be valid email</li>
+                            <li><code>[Range(0, 1000)]</code> - Between 0 and 1000</li>
+                            <li><code>[Display(Name = "Product Name")]</code> - Label for UI</li>
+                            <li><code>[RegularExpression(@"^\d{3}-\d{4}$")]</code> - Match pattern</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🔍 ModelState</h3>
+                        <p><strong>ModelState</strong> tracks validation errors. Check it in POST actions:</p>
+                        <pre><code class="language-csharp">if (!ModelState.IsValid)
+{
+    // Some validation failed, show form with errors
+    return View(model);
+}
+// All validation passed, proceed
+</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🔄 Model Binding</h3>
+                        <p>Automatic mapping of form/URL data to model properties. Works with nested objects:</p>
+                        <ul class="content-list">
+                            <li>Simple properties: <code>Name</code> → form field <code>name="Name"</code></li>
+                            <li>Nested objects: <code>Address.City</code> → form field <code>name="Address.City"</code></li>
+                            <li>Collections: <code>Items[0].Name</code> → indexed form fields</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section class="content-section">
+                    <h2>Code Examples</h2>
+
+                    <h3>Example 1: ViewModel with Validation Attributes</h3>
+                    <pre><code class="language-csharp">using System.ComponentModel.DataAnnotations;
+
+public class ProductViewModel
+{
+    public int Id { get; set; }
+
+    [Required(ErrorMessage = "Product name is required")]
+    [StringLength(100, MinimumLength = 3,
+        ErrorMessage = "Product name must be 3-100 characters")]
+    [Display(Name = "Product Name")]
+    public string Name { get; set; }
+
+    [Required]
+    [Range(0.01, 999999,
+        ErrorMessage = "Price must be between $0.01 and $999,999")]
+    [Display(Name = "Price")]
+    [DataType(DataType.Currency)]
+    public decimal Price { get; set; }
+
+    [StringLength(500)]
+    [Display(Name = "Description")]
+    public string Description { get; set; }
+
+    [Required]
+    [Range(1, int.MaxValue, ErrorMessage = "Please select a category")]
+    [Display(Name = "Category")]
+    public int CategoryId { get; set; }
+
+    [EmailAddress(ErrorMessage = "Invalid email address")]
+    [Display(Name = "Supplier Email")]
+    public string SupplierEmail { get; set; }
+
+    [Phone]
+    [Display(Name = "Supplier Phone")]
+    public string SupplierPhone { get; set; }
+
+    [Url]
+    [Display(Name = "Website")]
+    public string Website { get; set; }
+
+    [Range(0, 5)]
+    [Display(Name = "Rating")]
+    public int Rating { get; set; }
+
+    [Display(Name = "Created Date")]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
+        ApplyFormatInEditMode = true)]
+    public DateTime CreatedDate { get; set; }
+}
+</code></pre>
+
+                    <h3>Example 2: Custom Validation</h3>
+                    <pre><code class="language-csharp">// Custom validation attribute
+[AttributeUsage(AttributeTargets.Property)]
+public class PriceGreaterThanAttribute : ValidationAttribute
+{
+    private readonly decimal _minPrice;
+
+    public PriceGreaterThanAttribute(double minPrice)
+    {
+        _minPrice = (decimal)minPrice;
+    }
+
+    protected override ValidationResult IsValid(
+        object value, ValidationContext context)
+    {
+        if (value == null)
+            return ValidationResult.Success;
+
+        if (decimal.TryParse(value.ToString(), out decimal price))
+        {
+            if (price > _minPrice)
+                return ValidationResult.Success;
+        }
+
+        return new ValidationResult(
+            $"Price must be greater than ${_minPrice}");
+    }
+}
+
+// Usage in ViewModel
+public class ProductViewModel
+{
+    [Required]
+    [PriceGreaterThan(9.99)]
+    public decimal Price { get; set; }
+}
+</code></pre>
+
+                    <h3>Example 3: Validating in Controller</h3>
+                    <pre><code class="language-csharp">[HttpPost]
+public async Task&lt;IActionResult&gt; Create(ProductViewModel model)
+{
+    // ModelState automatically filled by model binding
+    // All validation attributes are checked
+
+    if (!ModelState.IsValid)
+    {
+        // Show form with validation errors highlighted
+        // ValidationMessageFor in view shows these errors
+        return View(model);
+    }
+
+    try
+    {
+        // Map ViewModel to database entity
+        var product = new Product
+        {
+            Name = model.Name,
+            Price = model.Price,
+            Description = model.Description,
+            CategoryId = model.CategoryId
+        };
+
+        // Save to database
+        await _context.Products.AddAsync(product);
+        await _context.SaveChangesAsync();
+
+        TempData["Success"] = "Product created successfully!";
+        return RedirectToAction(nameof(Index));
+    }
+    catch (Exception ex)
+    {
+        ModelState.AddModelError("",
+            "Error saving product: " + ex.Message);
+        return View(model);
+    }
+}
+</code></pre>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>✅ Best Practices</h2>
+
+                    <div class="best-practice">
+                        <h3>1. Always Use ViewModels, Never Pass Entities</h3>
+                        <p><strong>Why:</strong> Hides database structure, improves security, makes schema changes easier</p>
+                        <p><strong>❌ Bad:</strong></p>
+                        <pre><code class="language-csharp">public IActionResult Details(int id)
+{
+    var product = _context.Products.Find(id);
+    return View(product); // Exposes all fields including internal data
+}
+</code></pre>
+                        <p><strong>✅ Good:</strong></p>
+                        <pre><code class="language-csharp">public IActionResult Details(int id)
+{
+    var product = _context.Products.Where(p => p.Id == id)
+        .Select(p => new ProductViewModel
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Price = p.Price // Only what view needs
+        })
+        .FirstOrDefault();
+    return View(product);
+}
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>2. Validate on Both Client and Server</h3>
+                        <p><strong>Why:</strong> Client validation improves UX, server validation protects against cheating</p>
+                        <p><strong>Client:</strong> HTML5 + jQuery Validation (fast feedback)</p>
+                        <p><strong>Server:</strong> ModelState.IsValid (security)</p>
+                        <p>Both use the same validation attributes!</p>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>3. Use [Display] for User-Friendly Labels</h3>
+                        <p><strong>Why:</strong> Automatic label generation, easy localization</p>
+                        <pre><code class="language-csharp">public class UserViewModel
+{
+    [Display(Name = "Email Address")] // Shows "Email Address" in forms
+    public string Email { get; set; }
+
+    [Display(Name = "First Name")]
+    public string FirstName { get; set; }
+}
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>4. Format Display Data with [DisplayFormat]</h3>
+                        <p><strong>Why:</strong> Shows data in user-friendly format without changing the actual value</p>
+                        <pre><code class="language-csharp">public class ProductViewModel
+{
+    [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = false)]
+    public decimal Price { get; set; } // Shows as $99.99
+
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    public DateTime CreatedDate { get; set; } // Shows as 2025-04-08
+}
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>5. Keep ViewModels Lean</h3>
+                        <p><strong>Why:</strong> Only include what the view needs, easier to understand and maintain</p>
+                        <p><strong>❌ Bad:</strong> ViewModel with 50 properties for a simple form</p>
+                        <p><strong>✅ Good:</strong> Separate ViewModels for different views</p>
+                        <pre><code class="language-csharp">// ProductListViewModel - for listing
+public class ProductListViewModel
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+}
+
+// ProductDetailViewModel - for details page
+public class ProductDetailViewModel : ProductListViewModel
+{
+    public string Description { get; set; }
+    public int CategoryId { get; set; }
+    public DateTime CreatedDate { get; set; }
+}
+
+// ProductEditViewModel - for forms
+public class ProductEditViewModel
+{
+    public int Id { get; set; }
+    [Required]
+    public string Name { get; set; }
+    // Only fields that can be edited
+}
+</code></pre>
+                    </div>
+                </section>
+
+                <!-- Resources -->
+                <section class="content-section">
+                    <h2>📚 Resources</h2>
+                    <ul class="content-list">
+                        <li><strong>Microsoft Docs:</strong> <a href="https://learn.microsoft.com/en-us/aspnet/core/mvc/models/model-binding" target="_blank">Model Binding in ASP.NET Core</a></li>
+                        <li><strong>Data Annotations:</strong> <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations" target="_blank">Validation Attributes Reference</a></li>
+                        <li><strong>Custom Validators:</strong> <a href="https://learn.microsoft.com/en-us/aspnet/core/mvc/models/validation" target="_blank">Model Validation Guide</a></li>
+                    </ul>
+                </section>
+
+                <!-- Interview Q&A -->
+                <section class="content-section interview-section">
+                    <h2>🎓 Interview Q&A</h2>
+
+                    <div class="qa-item">
+                        <h3>Q1: Why use ViewModels instead of passing database entities directly?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>Security:</strong> Don't expose internal fields (passwords, IDs)</li>
+                            <li><strong>Flexibility:</strong> Combine multiple entities into one model</li>
+                            <li><strong>Separation:</strong> Database changes don't break UI</li>
+                            <li><strong>Formatting:</strong> Format data for display without changing entity</li>
+                        </ul>
+                        <pre><code class="language-csharp">// Entity has sensitive data
+public class User
+{
+    public int Id { get; set; }
+    public string Email { get; set; }
+    public string PasswordHash { get; set; } // Don't expose this!
+    public string InternalNotes { get; set; } // Confidential
+}
+
+// ViewModel shows only needed fields
+public class UserViewModel
+{
+    public int Id { get; set; }
+    public string Email { get; set; }
+    // PasswordHash and InternalNotes not included
+}
+</code></pre>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q2: How does ModelState.IsValid work and what triggers validation?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>Triggered automatically:</strong> When model binding happens in POST action parameters</li>
+                            <li><strong>Checks:</strong> All [Required], [StringLength], [Email], etc. attributes</li>
+                            <li><strong>IsValid:</strong> Returns true only if ALL validation passes</li>
+                            <li><strong>Errors:</strong> Stored in ModelState dictionary with field names</li>
+                        </ul>
+                        <pre><code class="language-csharp">[HttpPost]
+public IActionResult Create(ProductViewModel model)
+{
+    // ModelState automatically populated during model binding
+    // Each validation attribute is checked
+
+    if (!ModelState.IsValid)
+    {
+        // Show form with errors
+        // View displays validation messages automatically
+        return View(model);
+    }
+    // Continue...
+}
+</code></pre>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q3: What's the difference between client-side and server-side validation?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>Client-side:</strong> Runs in browser using HTML5 + JavaScript. Fast, better UX, user sees errors immediately.</li>
+                            <li><strong>Server-side:</strong> Runs on server after form submission. Slower but NECESSARY—users can bypass client validation.</li>
+                            <li><strong>Both needed:</strong> Use same validation attributes, ASP.NET generates client validators automatically.</li>
+                        </ul>
+                        <p>The HTML5 attributes are auto-generated from your data annotations!</p>
+                    </div>
+                </section>
 
             </article>
         </div>

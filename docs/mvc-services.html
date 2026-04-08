@@ -163,13 +163,477 @@
                     <p class="page-subtitle">Build service layers and consume APIs using HttpClient in MVC applications.</p>
                 </div>
 
-                <div class="callout callout-info">
-                    <span class="callout-icon">ℹ️</span>
-                    <div class="callout-content">
-                        <p><strong>Coming Soon:</strong> Comprehensive guide on MVC Services and HttpClient</p>
-                        <p>Topics will include: Service layer pattern, HttpClient usage, async/await, error handling, and API integration.</p>
+                <!-- Introduction -->
+                <section class="content-section">
+                    <h2>What Are Services & HttpClient?</h2>
+                    <p><strong>Services</strong> are classes that contain business logic and handle operations like database access, API calls, or complex calculations. They're reusable, testable, and keep logic out of controllers.</p>
+                    <p><strong>HttpClient</strong> is .NET's tool for making HTTP requests to external APIs. Use it to consume REST APIs from other services, gather data, and integrate with third-party systems.</p>
+                </section>
+
+                <!-- Why It Matters -->
+                <section class="content-section">
+                    <h2>Why Services Matter</h2>
+                    <ul class="content-list">
+                        <li><strong>Separation of concerns:</strong> Business logic stays in services, not controllers</li>
+                        <li><strong>Reusability:</strong> Use the same service across multiple controllers</li>
+                        <li><strong>Testability:</strong> Easy to mock services for unit tests</li>
+                        <li><strong>Maintainability:</strong> Changes to business logic in one place</li>
+                        <li><strong>External integration:</strong> HttpClient lets you call other APIs seamlessly</li>
+                    </ul>
+                </section>
+
+                <!-- Key Concepts -->
+                <section class="content-section">
+                    <h2>Key Concepts</h2>
+
+                    <div class="concept-card">
+                        <h3>🏢 Service Layer Pattern</h3>
+                        <p>Services sit between controllers and data access. Clean architecture:</p>
+                        <ul class="content-list">
+                            <li><code>Controller</code> - Handles HTTP requests, calls services</li>
+                            <li><code>Service</code> - Business logic, calls repositories</li>
+                            <li><code>Repository</code> - Data access, talks to database</li>
+                            <li><code>Database</code> - Persists data</li>
+                        </ul>
                     </div>
-                </div>
+
+                    <div class="concept-card">
+                        <h3>📡 HttpClient Basics</h3>
+                        <p>Making HTTP requests to APIs:</p>
+                        <pre><code class="language-csharp">// GET - Retrieve data
+var response = await _httpClient.GetAsync("https://api.example.com/users");
+
+// POST - Send data
+var content = new StringContent(json, Encoding.UTF8, "application/json");
+var response = await _httpClient.PostAsync(url, content);
+
+// PUT - Update entire resource
+await _httpClient.PutAsync(url, content);
+
+// DELETE - Remove resource
+await _httpClient.DeleteAsync(url);
+</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🔄 Async/Await with HttpClient</h3>
+                        <p>HttpClient operations are async. Always use <code>async/await</code>:</p>
+                        <ul class="content-list">
+                            <li>Don't block threads waiting for network responses</li>
+                            <li>Improves server scalability dramatically</li>
+                            <li>Use <code>Task&lt;T&gt;</code> return type for async methods</li>
+                            <li>Let the caller decide to await or not</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🛡️ Error Handling in Services</h3>
+                        <p>Network calls can fail. Always handle exceptions:</p>
+                        <ul class="content-list">
+                            <li><code>HttpRequestException</code> - Network/DNS error</li>
+                            <li><code>TaskCanceledException</code> - Request timeout</li>
+                            <li><code>JsonException</code> - JSON deserialization failed</li>
+                            <li>Log errors, return user-friendly messages</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section class="content-section">
+                    <h2>Code Examples</h2>
+
+                    <h3>Example 1: Service with Repository Pattern</h3>
+                    <pre><code class="language-csharp">// Interface for dependency injection
+public interface IProductService
+{
+    Task&lt;IEnumerable&lt;ProductViewModel&gt;&gt; GetAllProductsAsync();
+    Task&lt;ProductViewModel&gt; GetProductByIdAsync(int id);
+    Task&lt;ProductViewModel&gt; CreateProductAsync(ProductViewModel model);
+    Task UpdateProductAsync(int id, ProductViewModel model);
+    Task DeleteProductAsync(int id);
+}
+
+// Implementation
+public class ProductService : IProductService
+{
+    private readonly IProductRepository _repository;
+    private readonly ILogger&lt;ProductService&gt; _logger;
+
+    public ProductService(IProductRepository repository, ILogger&lt;ProductService&gt; logger)
+    {
+        _repository = repository;
+        _logger = logger;
+    }
+
+    public async Task&lt;IEnumerable&lt;ProductViewModel&gt;&gt; GetAllProductsAsync()
+    {
+        try
+        {
+            var products = await _repository.GetAllAsync();
+            return products.Select(p => new ProductViewModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                Description = p.Description
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error fetching products");
+            throw;
+        }
+    }
+
+    public async Task&lt;ProductViewModel&gt; GetProductByIdAsync(int id)
+    {
+        if (id &lt;= 0)
+            throw new ArgumentException("Invalid product ID");
+
+        var product = await _repository.GetByIdAsync(id);
+
+        if (product == null)
+            throw new KeyNotFoundException($"Product {id} not found");
+
+        return new ProductViewModel
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Price = product.Price,
+            Description = product.Description
+        };
+    }
+
+    public async Task&lt;ProductViewModel&gt; CreateProductAsync(ProductViewModel model)
+    {
+        if (string.IsNullOrWhiteSpace(model.Name))
+            throw new ArgumentException("Product name required");
+
+        var product = new Product
+        {
+            Name = model.Name,
+            Price = model.Price,
+            Description = model.Description,
+            CreatedDate = DateTime.UtcNow
+        };
+
+        await _repository.AddAsync(product);
+        await _repository.SaveAsync();
+
+        model.Id = product.Id;
+        return model;
+    }
+}
+</code></pre>
+
+                    <h3>Example 2: Consuming External API with HttpClient</h3>
+                    <pre><code class="language-csharp">public interface IExternalWeatherService
+{
+    Task&lt;WeatherData&gt; GetWeatherAsync(string city);
+}
+
+public class ExternalWeatherService : IExternalWeatherService
+{
+    private readonly HttpClient _httpClient;
+    private readonly ILogger&lt;ExternalWeatherService&gt; _logger;
+    private const string ApiBaseUrl = "https://api.weatherapi.com/v1";
+    private readonly string _apiKey;
+
+    public ExternalWeatherService(HttpClient httpClient,
+        ILogger&lt;ExternalWeatherService&gt; logger,
+        IConfiguration config)
+    {
+        _httpClient = httpClient;
+        _logger = logger;
+        _apiKey = config["ExternalApis:WeatherApi:Key"];
+    }
+
+    public async Task&lt;WeatherData&gt; GetWeatherAsync(string city)
+    {
+        if (string.IsNullOrWhiteSpace(city))
+            throw new ArgumentException("City name required");
+
+        try
+        {
+            var url = $"{ApiBaseUrl}/current.json?key={_apiKey}&q={Uri.EscapeDataString(city)}";
+
+            // GET request with timeout
+            using (var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10)))
+            {
+                var response = await _httpClient.GetAsync(url, cts.Token);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogWarning($"Weather API returned {response.StatusCode}");
+                    return null;
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+                var weatherData = JsonSerializer.Deserialize&lt;WeatherData&gt;(json);
+                return weatherData;
+            }
+        }
+        catch (TaskCanceledException ex)
+        {
+            _logger.LogError(ex, "Weather API request timeout");
+            throw new Exception("Request to weather service timed out");
+        }
+        catch (HttpRequestException ex)
+        {
+            _logger.LogError(ex, "Error calling weather API");
+            throw new Exception("Failed to fetch weather data");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error in weather service");
+            throw;
+        }
+    }
+}
+
+// DTO for external API response
+public class WeatherData
+{
+    public Location Location { get; set; }
+    public Current Current { get; set; }
+}
+
+public class Location
+{
+    public string Name { get; set; }
+    public string Country { get; set; }
+}
+
+public class Current
+{
+    public decimal TempC { get; set; }
+    public string Condition { get; set; }
+}
+</code></pre>
+
+                    <h3>Example 3: Registering Services in Startup</h3>
+                    <pre><code class="language-csharp">// Program.cs
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services
+builder.Services.AddControllersWithViews();
+
+// Register custom services
+builder.Services.AddScoped&lt;IProductService, ProductService&gt;();
+builder.Services.AddScoped&lt;IProductRepository, ProductRepository&gt;();
+builder.Services.AddScoped&lt;IExternalWeatherService, ExternalWeatherService&gt;();
+
+// Register HttpClient with base URL and timeout
+builder.Services.AddHttpClient&lt;IExternalWeatherService, ExternalWeatherService&gt;()
+    .ConfigureHttpClient(client =&gt;
+    {
+        client.BaseAddress = new Uri("https://api.weatherapi.com");
+        client.Timeout = TimeSpan.FromSeconds(30);
+    });
+
+// Add logging
+builder.Services.AddLogging();
+
+var app = builder.Build();
+app.UseRouting();
+app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+app.Run();
+</code></pre>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>✅ Best Practices</h2>
+
+                    <div class="best-practice">
+                        <h3>1. Always Use Dependency Injection</h3>
+                        <p><strong>Why:</strong> Makes services testable, loosely coupled, easy to swap implementations</p>
+                        <p><strong>❌ Bad:</strong></p>
+                        <pre><code class="language-csharp">public class ProductController : Controller
+{
+    public IActionResult Index()
+    {
+        var service = new ProductService(); // Hard to test
+        var products = service.GetAll();
+        return View(products);
+    }
+}
+</code></pre>
+                        <p><strong>✅ Good:</strong></p>
+                        <pre><code class="language-csharp">public class ProductController : Controller
+{
+    private readonly IProductService _service;
+
+    public ProductController(IProductService service)
+    {
+        _service = service; // Injected
+    }
+
+    public async Task&lt;IActionResult&gt; Index()
+    {
+        var products = await _service.GetAllAsync();
+        return View(products);
+    }
+}
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>2. Always Use Async/Await</h3>
+                        <p><strong>Why:</strong> Prevents thread blocking, improves scalability</p>
+                        <p><strong>❌ Bad:</strong></p>
+                        <pre><code class="language-csharp">public List&lt;Product&gt; GetProducts()
+{
+    var data = _httpClient.GetStringAsync(url).Result; // Blocks thread!
+    return JsonConvert.DeserializeObject&lt;List&lt;Product&gt;&gt;(data);
+}
+</code></pre>
+                        <p><strong>✅ Good:</strong></p>
+                        <pre><code class="language-csharp">public async Task&lt;List&lt;Product&gt;&gt; GetProductsAsync()
+{
+    var data = await _httpClient.GetStringAsync(url); // Non-blocking
+    return JsonConvert.DeserializeObject&lt;List&lt;Product&gt;&gt;(data);
+}
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>3. Handle HttpClient Exceptions</h3>
+                        <p><strong>Why:</strong> Network calls can fail. Provide meaningful error messages</p>
+                        <pre><code class="language-csharp">try
+{
+    var response = await _httpClient.GetAsync(url);
+
+    if (!response.IsSuccessStatusCode)
+    {
+        _logger.LogWarning($"API returned {response.StatusCode}");
+        // Handle 404, 500, etc.
+    }
+
+    var content = await response.Content.ReadAsStringAsync();
+    return JsonConvert.DeserializeObject&lt;T&gt;(content);
+}
+catch (TaskCanceledException)
+{
+    _logger.LogError("Request timeout");
+    throw new Exception("External service is not responding");
+}
+catch (HttpRequestException ex)
+{
+    _logger.LogError(ex, "Network error");
+    throw new Exception("Unable to connect to external service");
+}
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>4. Use TimeSpans for Timeouts</h3>
+                        <p><strong>Why:</strong> Prevents hanging indefinitely on slow networks</p>
+                        <pre><code class="language-csharp">using (var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10)))
+{
+    var response = await _httpClient.GetAsync(url, cts.Token);
+}
+
+// Or configure globally
+builder.Services.AddHttpClient&lt;IMyService, MyService&gt;()
+    .ConfigureHttpClient(client =&gt; client.Timeout = TimeSpan.FromSeconds(30));
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>5. Map to DTOs, Not Entities</h3>
+                        <p><strong>Why:</strong> Insulates your app from external API changes</p>
+                        <pre><code class="language-csharp">// Don't deserialize directly to entity
+// var product = JsonConvert.DeserializeObject&lt;Product&gt;(json);
+
+// Instead, use a DTO
+public class ExternalProductDto
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+}
+
+// Then map to your entity
+var dto = JsonConvert.DeserializeObject&lt;ExternalProductDto&gt;(json);
+var product = new Product { Id = dto.Id, Name = dto.Name };
+</code></pre>
+                    </div>
+                </section>
+
+                <!-- Resources -->
+                <section class="content-section">
+                    <h2>📚 Resources</h2>
+                    <ul class="content-list">
+                        <li><strong>HttpClient Documentation:</strong> <a href="https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpclient" target="_blank">Microsoft HttpClient Reference</a></li>
+                        <li><strong>Dependency Injection:</strong> <a href="https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection" target="_blank">DI in .NET Core</a></li>
+                        <li><strong>Async/Await Guide:</strong> <a href="https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/" target="_blank">Async Programming in C#</a></li>
+                        <li><strong>HTTP Best Practices:</strong> <a href="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/http-requests" target="_blank">HTTP Client Factory</a></li>
+                    </ul>
+                </section>
+
+                <!-- Interview Q&A -->
+                <section class="content-section interview-section">
+                    <h2>🎓 Interview Q&A</h2>
+
+                    <div class="qa-item">
+                        <h3>Q1: Why use services instead of putting logic in controllers?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>Testability:</strong> Mock services for unit tests, test business logic independently</li>
+                            <li><strong>Reusability:</strong> Multiple controllers can use the same service</li>
+                            <li><strong>Maintainability:</strong> Change business logic once, applies everywhere</li>
+                            <li><strong>Single Responsibility:</strong> Controller handles HTTP, service handles logic</li>
+                        </ul>
+                        <p>Controllers are for HTTP concerns (routing, status codes). Services are for business logic (calculations, database operations).</p>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q2: What's the difference between HttpClient.Result vs async/await?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>.Result:</strong> Synchronous, blocks the current thread until the task completes. Can cause deadlocks and wastes thread pool threads.</li>
+                            <li><strong>async/await:</strong> Asynchronous, thread is freed while waiting. Other requests can use that thread. Much better scalability.</li>
+                        </ul>
+                        <pre><code class="language-csharp">// Bad - blocks thread
+var result = _httpClient.GetStringAsync(url).Result;
+
+// Good - frees thread
+var result = await _httpClient.GetStringAsync(url);
+</code></pre>
+                        <p><strong>Impact:</strong> With 100 threads and .Result, you can handle ~100 concurrent users. With async/await, you can handle 1000+.</p>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q3: How do you test a service that uses HttpClient?</h3>
+                        <p><strong>Answer:</strong> Mock the HttpClient using dependency injection:</p>
+                        <pre><code class="language-csharp">// Unit test
+[Fact]
+public async Task GetProductAsync_Returns_Product()
+{
+    // Arrange - Create mock
+    var mockHttpClient = new Mock&lt;HttpClient&gt;();
+    var mockResponse = new HttpResponseMessage
+    {
+        StatusCode = System.Net.HttpStatusCode.OK,
+        Content = new StringContent(JsonConvert.SerializeObject(new { id = 1, name = "Test" }))
+    };
+
+    mockHttpClient
+        .Setup(x => x.GetAsync(It.IsAny&lt;string&gt;(), It.IsAny&lt;CancellationToken&gt;()))
+        .ReturnsAsync(mockResponse);
+
+    var service = new ProductService(mockHttpClient.Object);
+
+    // Act
+    var result = await service.GetProductAsync(1);
+
+    // Assert
+    Assert.NotNull(result);
+    Assert.Equal("Test", result.Name);
+}
+</code></pre>
+                    </div>
+                </section>
 
             </article>
         </div>

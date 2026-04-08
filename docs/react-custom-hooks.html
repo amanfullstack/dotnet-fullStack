@@ -160,16 +160,475 @@
 
                 <div class="page-title-block">
                     <h1 class="page-title">🔄 Custom Hooks</h1>
-                    <p class="page-subtitle">Create reusable custom hooks and compose complex logic in React.</p>
+                    <p class="page-subtitle">Create reusable logic with custom hooks - extract common patterns into shareable functions.</p>
                 </div>
 
-                <div class="callout callout-info">
-                    <span class="callout-icon">ℹ️</span>
-                    <div class="callout-content">
-                        <p><strong>Coming Soon:</strong> Comprehensive guide on Custom React Hooks</p>
-                        <p>Topics will include: Creating custom hooks, hook composition, sharing stateful logic, and best practices.</p>
+                <!-- Introduction -->
+                <section class="content-section">
+                    <h2>What Are Custom Hooks?</h2>
+                    <p><strong>Custom hooks</strong> are JavaScript functions that use React hooks (like useState, useEffect) to extract component logic into reusable units. They follow the naming convention <code>use*</code> and let you share stateful logic between components without render props or higher-order components.</p>
+                    <p>Think of custom hooks as utilities that encapsulate complex logic - similar to how services work in Angular!</p>
+                </section>
+
+                <!-- Why It Matters -->
+                <section class="content-section">
+                    <h2>Why Custom Hooks Matter</h2>
+                    <ul class="content-list">
+                        <li><strong>Code Reuse:</strong> Share logic between components without duplicating code</li>
+                        <li><strong>Separation of Concerns:</strong> Keep component logic and UI separate</li>
+                        <li><strong>Testability:</strong> Test hook logic independently from components</li>
+                        <li><strong>Cleaner Components:</strong> Move complex logic out of component JSX</li>
+                        <li><strong>Team Standards:</strong> Build shared utilities that entire team uses</li>
+                    </ul>
+                </section>
+
+                <!-- Key Concepts -->
+                <section class="content-section">
+                    <h2>Key Concepts</h2>
+
+                    <div class="concept-card">
+                        <h3>📋 Hook Naming Convention</h3>
+                        <ul class="content-list">
+                            <li>Custom hooks MUST start with <code>use</code> (e.g., <code>useFetch</code>, <code>useForm</code>)</li>
+                            <li>React's linter enforces this rule</li>
+                            <li>Tells React and developers this function uses hooks</li>
+                        </ul>
                     </div>
-                </div>
+
+                    <div class="concept-card">
+                        <h3>🏗️ Hook Structure</h3>
+                        <p>Custom hooks are just functions that call React hooks:</p>
+                        <pre><code class="language-javascript">function useMyHook(params) {
+  // Can use any React hooks here
+  const [state, setState] = useState(...);
+  useEffect(() => { ... }, []);
+
+  // Return whatever you want
+  return { state, setState, someFunction };
+}</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>📦 What to Return</h3>
+                        <p>Return an object or array of values:</p>
+                        <pre><code class="language-javascript">// Return object (named access)
+return { data, loading, error };
+
+// Return array (positional access)
+return [data, loading];
+
+// Return function
+return updateData;</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🔄 Hook Composition</h3>
+                        <p>Custom hooks can use other hooks, including other custom hooks:</p>
+                        <pre><code class="language-javascript">// Hook using useState and useEffect
+function useFetch(url) {
+  const [data, setData] = useState(null);
+  useEffect(() => { ... }, [url]);
+  return data;
+}
+
+// Hook using another hook
+function useUser(userId) {
+  const data = useFetch(`/api/users/${userId}`);
+  return data;
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section class="content-section">
+                    <h2>Code Examples</h2>
+
+                    <h3>Example 1: useFetch Hook (API Calls)</h3>
+                    <pre><code class="language-javascript">import { useState, useEffect } from 'react';
+
+// Custom hook for fetching data
+function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Network error');
+        const json = await response.json();
+        setData(json);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [url]); // Re-fetch if URL changes
+
+  return { data, loading, error };
+}
+
+// Use in component
+function ProductList() {
+  const { data: products, loading, error } = useFetch('http://localhost:5000/api/products');
+
+  if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+  if (error) return &lt;div&gt;Error: {error}&lt;/div&gt;;
+
+  return (
+    &lt;ul&gt;
+      {products?.map(p => &lt;li key={p.id}&gt;{p.name}&lt;/li&gt;)}
+    &lt;/ul&gt;
+  );
+}
+</code></pre>
+
+                    <h3>Example 2: useLocalStorage Hook</h3>
+                    <pre><code class="language-javascript">import { useState, useEffect } from 'react';
+
+// Hook for managing localStorage
+function useLocalStorage(key, initialValue) {
+  // Get from localStorage or use initial value
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch {
+      return initialValue;
+    }
+  });
+
+  // Update localStorage when state changes
+  const setValue = (value) => {
+    try {
+      const valueToStore = value instanceof Function ? value(storedValue) : value;
+      setStoredValue(valueToStore);
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return [storedValue, setValue];
+}
+
+// Use in component
+function UserPreferences() {
+  const [theme, setTheme] = useLocalStorage('theme', 'light');
+  const [fontSize, setFontSize] = useLocalStorage('fontSize', 16);
+
+  return (
+    &lt;div&gt;
+      &lt;label&gt;
+        Theme:
+        &lt;select value={theme} onChange={e => setTheme(e.target.value)}&gt;
+          &lt;option&gt;light&lt;/option&gt;
+          &lt;option&gt;dark&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/label&gt;
+
+      &lt;label&gt;
+        Font Size:
+        &lt;input
+          type="number"
+          value={fontSize}
+          onChange={e => setFontSize(parseInt(e.target.value))}
+        /&gt;
+      &lt;/label&gt;
+
+      &lt;!-- Settings persist across page reloads! --&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+
+                    <h3>Example 3: useForm Hook</h3>
+                    <pre><code class="language-javascript">import { useState, useCallback } from 'react';
+
+// Hook for form handling
+function useForm(initialValues, onSubmit) {
+  const [values, setValues] = useState(initialValues);
+  const [errors, setErrors] = useState({});
+
+  const handleChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setValues(prev => ({ ...prev, [name]: value }));
+    // Clear error for this field
+    setErrors(prev => ({ ...prev, [name]: '' }));
+  }, []);
+
+  const handleSubmit = useCallback((e) => {
+    e.preventDefault();
+    onSubmit(values);
+  }, [values, onSubmit]);
+
+  const reset = useCallback(() => {
+    setValues(initialValues);
+    setErrors({});
+  }, [initialValues]);
+
+  return {
+    values,
+    errors,
+    setErrors,
+    handleChange,
+    handleSubmit,
+    reset
+  };
+}
+
+// Use in component
+function LoginForm() {
+  const { values, errors, handleChange, handleSubmit } = useForm(
+    { email: '', password: '' },
+    async (values) => {
+      try {
+        // API call
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          body: JSON.stringify(values)
+        });
+        if (!response.ok) throw new Error('Login failed');
+        // Success!
+      } catch (err) {
+        // Handle error
+      }
+    }
+  );
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input
+        name="email"
+        value={values.email}
+        onChange={handleChange}
+        placeholder="Email"
+      /&gt;
+      {errors.email && &lt;span&gt;{errors.email}&lt;/span&gt;}
+
+      &lt;input
+        name="password"
+        type="password"
+        value={values.password}
+        onChange={handleChange}
+        placeholder="Password"
+      /&gt;
+      {errors.password && &lt;span&gt;{errors.password}&lt;/span&gt;}
+
+      &lt;button type="submit"&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+</code></pre>
+
+                    <h3>Example 4: useWindowSize Hook</h3>
+                    <pre><code class="language-javascript">import { useState, useEffect } from 'react';
+
+// Hook to track window dimensions
+function useWindowSize() {
+  const [size, setSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return size;
+}
+
+// Use in component
+function ResponsiveLayout() {
+  const { width, height } = useWindowSize();
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Window: {width}x{height}&lt;/p&gt;
+      &lt;p&gt;{width &lt; 768 ? 'Mobile' : 'Desktop'} view&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>✅ Best Practices</h2>
+
+                    <div class="best-practice">
+                        <h3>1. Always Name Hooks with "use" Prefix</h3>
+                        <p><strong>Why:</strong> React's linter and developers will understand these are hooks</p>
+                        <pre><code class="language-javascript">// ✅ Good
+function useFetch() { }
+function useForm() { }
+function useLocalStorage() { }
+
+// ❌ Wrong - not recognizable as hook
+function fetchData() { }
+function getFormState() { }</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>2. Keep Hooks Simple and Focused</h3>
+                        <p><strong>Why:</strong> Each hook should do one thing well</p>
+                        <p><strong>❌ Bad:</strong> One hook that handles form, validation, API, and localization</p>
+                        <p><strong>✅ Good:</strong> useForm for form logic, useValidation for validation, useFetch for API</p>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>3. Return Consistent Shapes</h3>
+                        <p><strong>Why:</strong> Predictable API makes hooks easier to use</p>
+                        <pre><code class="language-javascript">// ✅ Consistent: always return object with meaningful keys
+return {
+  data: products,
+  loading: isLoading,
+  error: errorMessage,
+  refetch: () => { }
+};</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>4. Include Proper Dependencies in useEffect</h3>
+                        <p><strong>Why:</strong> Avoids stale data and infinite loops</p>
+                        <pre><code class="language-javascript">// Any variables from hook params should be in dependencies
+useEffect(() => {
+  fetch(url);
+}, [url]); // Include url if it's from params</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>5. Document Your Hooks</h3>
+                        <p><strong>Why:</strong> Other developers need to understand how to use them</p>
+                        <pre><code class="language-javascript">/**
+ * Fetches data from API
+ * @param {string} url - API endpoint
+ * @returns {{ data, loading, error }}
+ */
+function useFetch(url) {
+  // ...
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Common Mistakes -->
+                <section class="content-section">
+                    <h2>❌ Common Mistakes</h2>
+
+                    <div class="mistake-box">
+                        <h3>1. Forgetting to Handle Loading State</h3>
+                        <pre><code class="language-javascript">// ❌ Wrong - components don't know when data is loading
+return { data };
+
+// ✅ Correct
+return { data, loading, error };</code></pre>
+                    </div>
+
+                    <div class="mistake-box">
+                        <h3>2. Using Hooks Inside Conditions</h3>
+                        <pre><code class="language-javascript">// ❌ Wrong - hook order becomes inconsistent
+function useConditionalHook(condition) {
+  if (condition) {
+    useState(...); // Hook inside condition!
+  }
+}
+
+// ✅ Correct - always call hooks at top level
+function useConditionalLogic(condition) {
+  const [value, setValue] = useState(null);
+  // Conditional logic inside hook
+  if (condition) {
+    // Do something
+  }
+}</code></pre>
+                    </div>
+
+                    <div class="mistake-box">
+                        <h3>3. Not Handling Cleanup</h3>
+                        <p>Especially important for event listeners, timers, subscriptions</p>
+                        <pre><code class="language-javascript">// ❌ Wrong - listener never removed
+useEffect(() => {
+  window.addEventListener('resize', handleResize);
+}, []);
+
+// ✅ Correct - cleanup removes listener
+useEffect(() => {
+  window.addEventListener('resize', handleResize);
+  return () => window.removeEventListener('resize', handleResize);
+}, []);</code></pre>
+                    </div>
+                </section>
+
+                <!-- Resources -->
+                <section class="content-section">
+                    <h2>📚 Resources</h2>
+                    <ul class="content-list">
+                        <li><strong>Custom Hooks Guide:</strong> <a href="https://react.dev/learn/reusing-logic-with-custom-hooks" target="_blank">Official React Docs</a></li>
+                        <li><strong>Building Your Own Hooks:</strong> <a href="https://react.dev/reference/react#custom-hooks" target="_blank">React Reference</a></li>
+                        <li><strong>Awesome React Hooks:</strong> <a href="https://github.com/rehooks/awesome-react-hooks" target="_blank">Community Collection</a></li>
+                    </ul>
+                </section>
+
+                <!-- Interview Q&A -->
+                <section class="content-section interview-section">
+                    <h2>🎓 Interview Q&A</h2>
+
+                    <div class="qa-item">
+                        <h3>Q1: What's the difference between a custom hook and a utility function?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>Custom Hook:</strong> Calls React hooks (useState, useEffect), must start with "use"</li>
+                            <li><strong>Utility Function:</strong> Regular JavaScript function, no hook calls</li>
+                            <li><strong>Use hooks</strong> for logic with state/side effects</li>
+                            <li><strong>Use utils</strong> for pure logic (formatting, calculations)</li>
+                        </ul>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q2: Why do custom hooks need to start with "use"?</h3>
+                        <p><strong>Answer:</strong> The "use" prefix signals two important things:</p>
+                        <ul class="content-list">
+                            <li>React's linter can enforce hook rules</li>
+                            <li>Other developers know this function uses hooks</li>
+                            <li>Breaks the rules of hooks if used in unexpected ways</li>
+                        </ul>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q3: How do you share state between components using custom hooks?</h3>
+                        <p><strong>Answer:</strong> Each component gets its own state instance when using custom hooks. To share state between components, use Context API:</p>
+                        <pre><code class="language-javascript">// Each component gets own state
+const CompA = () => {
+  const [count, setCount] = useCounter(); // Count = 0
+};
+
+const CompB = () => {
+  const [count, setCount] = useCounter(); // Count = 0 (separate)
+};
+
+// To share state, use Context + custom hook
+const SharedCounterContext = createContext();
+
+function useSharedCounter() {
+  return useContext(SharedCounterContext);
+}
+
+// Now both components share the same state</code></pre>
+                    </div>
+                </section>
 
             </article>
         </div>

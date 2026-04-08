@@ -163,13 +163,262 @@
                     <p class="page-subtitle">Master React Router for client-side navigation and routing.</p>
                 </div>
 
-                <div class="callout callout-info">
-                    <span class="callout-icon">ℹ️</span>
-                    <div class="callout-content">
-                        <p><strong>Coming Soon:</strong> Comprehensive guide on React Router</p>
-                        <p>Topics will include: Route configuration, navigation, route parameters, nested routes, and protected routes.</p>
+                <!-- Introduction -->
+                <section class="content-section">
+                    <h2>What Is React Router?</h2>
+                    <p><strong>React Router v6</strong> is the standard library for handling navigation in React single-page applications. It enables bookmarkable URLs, browser back/forward buttons, and multi-page app experiences without full page reloads.</p>
+                    <p>Think of React Router as the navigation system for your React app - managing which component shows for which URL.</p>
+                </section>
+
+                <!-- Why It Matters -->
+                <section class="content-section">
+                    <h2>Why Router Matters</h2>
+                    <ul class="content-list">
+                        <li><strong>Bookmarkable URLs:</strong> Users can save and share app links</li>
+                        <li><strong>Browser Navigation:</strong> Back/forward buttons work naturally</li>
+                        <li><strong>Multi-Page Feel:</strong> Create apps with distinct pages/sections</li>
+                        <li><strong>Code Splitting:</strong> Load page modules on demand</li>
+                        <li><strong>Protected Routes:</strong> Restrict access to certain pages</li>
+                    </ul>
+                </section>
+
+                <!-- Key Concepts -->
+                <section class="content-section">
+                    <h2>Key Concepts</h2>
+
+                    <div class="concept-card">
+                        <h3>🌐 BrowserRouter</h3>
+                        <p>Wraps your app to enable routing:</p>
+                        <pre><code class="language-javascript">&lt;BrowserRouter&gt;
+  &lt;App /&gt;
+&lt;/BrowserRouter&gt;</code></pre>
                     </div>
-                </div>
+
+                    <div class="concept-card">
+                        <h3>🛣️ Routes & Route</h3>
+                        <p>Define which component shows for each URL:</p>
+                        <pre><code class="language-javascript">&lt;Routes&gt;
+  &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+  &lt;Route path="/products" element={&lt;Products /&gt;} /&gt;
+  &lt;Route path="/products/:id" element={&lt;Detail /&gt;} /&gt;
+&lt;/Routes&gt;</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🔗 Link & Navigate</h3>
+                        <ul class="content-list">
+                            <li><code>&lt;Link to="/path"&gt;</code> - Navigation link</li>
+                            <li><code>useNavigate()</code> - Programmatic navigation</li>
+                            <li><code>&lt;Navigate to="/path" /&gt;</code> - Redirect</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>📍 URL Params & Query</h3>
+                        <p>Get data from URL:</p>
+                        <pre><code class="language-javascript">const { id } = useParams(); // /products/123
+const [searchParams] = useSearchParams(); // /products?sort=price</code></pre>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section class="content-section">
+                    <h2>Code Examples</h2>
+
+                    <h3>Example 1: Basic Routing Setup</h3>
+                    <pre><code class="language-javascript">import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+
+// App setup
+function App() {
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;nav&gt;
+        &lt;Link to="/"&gt;Home&lt;/Link&gt;
+        &lt;Link to="/products"&gt;Products&lt;/Link&gt;
+        &lt;Link to="/about"&gt;About&lt;/Link&gt;
+      &lt;/nav&gt;
+
+      &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+        &lt;Route path="/products" element={&lt;Products /&gt;} /&gt;
+        &lt;Route path="/about" element={&lt;About /&gt;} /&gt;
+        &lt;Route path="*" element={&lt;NotFound /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  );
+}
+
+// Page components
+function Home() { return &lt;h1&gt;Welcome Home!&lt;/h1&gt;; }
+function Products() { return &lt;h1&gt;Our Products&lt;/h1&gt;; }
+function NotFound() { return &lt;h1&gt;404 - Not Found&lt;/h1&gt;; }
+</code></pre>
+
+                    <h3>Example 2: Dynamic Routes with Params</h3>
+                    <pre><code class="language-javascript">import { useParams } from 'react-router-dom';
+
+// Route definition
+&lt;Route path="/products/:id" element={&lt;ProductDetail /&gt;} /&gt;
+
+// Component using params
+function ProductDetail() {
+  const { id } = useParams();
+
+  const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    // Fetch product by ID
+    fetch(`http://localhost:5000/api/products/${id}`)
+      .then(r => r.json())
+      .then(data => setProduct(data));
+  }, [id]);
+
+  if (!product) return &lt;div&gt;Loading...&lt;/div&gt;;
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;{product.name}&lt;/h1&gt;
+      &lt;p&gt;Price: ${product.price}&lt;/p&gt;
+      &lt;!-- Navigation to other product --&gt;
+      &lt;Link to={`/products/${product.id + 1}`}&gt;
+        Next Product
+      &lt;/Link&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+
+                    <h3>Example 3: Nested Routes & Layouts</h3>
+                    <pre><code class="language-javascript">&lt;Routes&gt;
+  &lt;Route path="/" element={&lt;Layout /&gt;}&gt;
+    &lt;Route index element={&lt;Home /&gt;} /&gt;
+    &lt;Route path="products" element={&lt;Products /&gt;} /&gt;
+    &lt;Route path="products/:id" element={&lt;Detail /&gt;} /&gt;
+  &lt;/Route&gt;
+&lt;/Routes&gt;
+
+// Layout wraps all pages
+function Layout() {
+  return (
+    &lt;div&gt;
+      &lt;header&gt;Header&lt;/header&gt;
+      &lt;Outlet /&gt; {/* Child routes render here */}
+      &lt;footer&gt;Footer&lt;/footer&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+
+                    <h3>Example 4: Protected Routes with Auth</h3>
+                    <pre><code class="language-javascript">function ProtectedRoute({ children }) {
+  const { user } = useContext(AuthContext);
+
+  if (!user) {
+    return &lt;Navigate to="/login" /&gt;;
+  }
+
+  return children;
+}
+
+// Usage
+&lt;Route
+  path="/dashboard"
+  element={
+    &lt;ProtectedRoute&gt;
+      &lt;Dashboard /&gt;
+    &lt;/ProtectedRoute&gt;
+  }
+/&gt;
+</code></pre>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>✅ Best Practices</h2>
+
+                    <div class="best-practice">
+                        <h3>1. Use Link for Internal Navigation</h3>
+                        <p><strong>Why:</strong> No page reload, preserves app state</p>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>2. Handle 404 with Wildcard Route</h3>
+                        <p><strong>Why:</strong> Shows friendly error instead of blank</p>
+                        <pre><code class="language-javascript">&lt;Route path="*" element={&lt;NotFound /&gt;} /&gt;</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>3. Use useNavigate for Programmatic Nav</h3>
+                        <p><strong>Why:</strong> Navigate after form submission, API call, etc.</p>
+                        <pre><code class="language-javascript">const navigate = useNavigate();
+navigate('/success');
+navigate(-1); // Go back</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>4. Lazy Load Routes</h3>
+                        <p><strong>Why:</strong> Reduces initial bundle size</p>
+                        <pre><code class="language-javascript">const Admin = lazy(() => import('./Admin'));
+&lt;Route path="/admin" element={&lt;Suspense&gt;&lt;Admin /&gt;&lt;/Suspense&gt;} /&gt;</code></pre>
+                    </div>
+                </section>
+
+                <!-- Common Mistakes -->
+                <section class="content-section">
+                    <h2>❌ Common Mistakes</h2>
+
+                    <div class="mistake-box">
+                        <h3>1. Forgetting BrowserRouter Wrapper</h3>
+                        <p>Routes won't work without BrowserRouter at top level</p>
+                    </div>
+
+                    <div class="mistake-box">
+                        <h3>2. Using &lt;a&gt; Instead of &lt;Link&gt;</h3>
+                        <pre><code class="language-javascript">// ❌ Causes full page reload
+&lt;a href="/products"&gt;Products&lt;/a&gt;
+
+// ✅ Client-side navigation
+&lt;Link to="/products"&gt;Products&lt;/Link&gt;</code></pre>
+                    </div>
+
+                    <div class="mistake-box">
+                        <h3>3. Not Using activeClassName</h3>
+                        <p>Highlight current page with NavLink instead of Link</p>
+                        <pre><code class="language-javascript">import { NavLink } from 'react-router-dom';
+&lt;NavLink to="/products" className={({ isActive }) => isActive ? 'active' : ''}&gt;
+  Products
+&lt;/NavLink&gt;</code></pre>
+                    </div>
+                </section>
+
+                <!-- Resources -->
+                <section class="content-section">
+                    <h2>📚 Resources</h2>
+                    <ul class="content-list">
+                        <li><strong>React Router Docs:</strong> <a href="https://reactrouter.com/" target="_blank">Official Documentation</a></li>
+                        <li><strong>Migration Guide:</strong> <a href="https://reactrouter.com/start/overview" target="_blank">v5 to v6 Guide</a></li>
+                    </ul>
+                </section>
+
+                <!-- Interview Q&A -->
+                <section class="content-section interview-section">
+                    <h2>🎓 Interview Q&A</h2>
+
+                    <div class="qa-item">
+                        <h3>Q1: What's the difference between Link and &lt;a&gt; tags?</h3>
+                        <p><strong>Answer:</strong> Link does client-side navigation (no page reload). &lt;a&gt; causes full page reload. Use Link for internal navigation.</p>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q2: How do you protect routes from unauthorized access?</h3>
+                        <p><strong>Answer:</strong> Create a ProtectedRoute component that checks if user is logged in, redirects to login if not</p>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q3: What is useParams and how do you use it?</h3>
+                        <p><strong>Answer:</strong> useParams gets URL parameters from the route (e.g., /products/:id). Returns object with parameter values.</p>
+                    </div>
+                </section>
 
             </article>
         </div>

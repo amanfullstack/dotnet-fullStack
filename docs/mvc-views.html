@@ -163,13 +163,354 @@
                     <p class="page-subtitle">Learn Razor syntax, view layouts, and HTML templating in ASP.NET MVC.</p>
                 </div>
 
-                <div class="callout callout-info">
-                    <span class="callout-icon">ℹ️</span>
-                    <div class="callout-content">
-                        <p><strong>Coming Soon:</strong> Comprehensive guide on MVC Views and Razor Syntax</p>
-                        <p>Topics will include: Razor expressions, layouts, partial views, strongly-typed views, and templating best practices.</p>
+                <!-- Introduction -->
+                <section class="content-section">
+                    <h2>What Are Views & Razor?</h2>
+                    <p><strong>Views</strong> are HTML files that display data to users. They're the "V" in MVC. <strong>Razor</strong> is a templating syntax that lets you mix C# code with HTML to generate dynamic pages.</p>
+                    <p>Instead of returning raw HTML from your controller, you return a View with data (a model). Razor processes your template, fills in the dynamic content, and sends back pure HTML to the browser.</p>
+                </section>
+
+                <!-- Why It Matters -->
+                <section class="content-section">
+                    <h2>Why Views Matter</h2>
+                    <ul class="content-list">
+                        <li><strong>Separation of concerns:</strong> UI logic stays in views, business logic in controllers</li>
+                        <li><strong>Reusability:</strong> Layouts and partial views eliminate code duplication</li>
+                        <li><strong>Dynamic content:</strong> Show different data without creating separate HTML files</li>
+                        <li><strong>Type-safe:</strong> Strongly-typed views catch errors at compile time</li>
+                        <li><strong>Easy maintenance:</strong> Change UI without touching controller code</li>
+                    </ul>
+                </section>
+
+                <!-- Key Concepts -->
+                <section class="content-section">
+                    <h2>Key Concepts</h2>
+
+                    <div class="concept-card">
+                        <h3>📝 Razor Syntax Basics</h3>
+                        <p><strong>@</strong> is the magic symbol that starts C# code in Razor:</p>
+                        <ul class="content-list">
+                            <li><code>@Model.PropertyName</code> - Access model property</li>
+                            <li><code>@{ var x = 5; }</code> - Execute C# code block</li>
+                            <li><code>@if (...) { }</code> - Conditional logic</li>
+                            <li><code>@foreach (var item in list) { }</code> - Loop through collections</li>
+                            <li><code>@Html.ActionLink("Text", "Action", "Controller")</code> - Create links</li>
+                        </ul>
                     </div>
-                </div>
+
+                    <div class="concept-card">
+                        <h3>🎨 Layouts & Master Pages</h3>
+                        <p><strong>Layouts</strong> provide the common HTML structure (header, navigation, footer) for multiple views. Define once, use everywhere.</p>
+                        <ul class="content-list">
+                            <li><code>_Layout.cshtml</code> - Master template with @RenderBody()</li>
+                            <li>Views inherit layout automatically</li>
+                            <li>Reduces duplication, easier to update styles site-wide</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🔌 Partial Views</h3>
+                        <p><strong>Partial views</strong> are reusable view components (like a product card). Include them in multiple places:</p>
+                        <pre><code class="language-csharp">@Html.Partial("_ProductCard", product)</code></pre>
+                        <ul class="content-list">
+                            <li>Keep views DRY (Don't Repeat Yourself)</li>
+                            <li>Easier to test and maintain</li>
+                            <li>File name starts with underscore: _ComponentName.cshtml</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>📦 Strongly-Typed Views</h3>
+                        <p>Declare your model type at the top of the view for IntelliSense and compile-time checking:</p>
+                        <pre><code class="language-csharp">@model ProductViewModel
+@* Now you can use @Model.Name with full IntelliSense *@
+&lt;h1&gt;@Model.Name&lt;/h1&gt;</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>📚 View Data & Bag</h3>
+                        <p><strong>ViewData</strong> and <strong>ViewBag</strong> pass data from controller to view for non-model data:</p>
+                        <ul class="content-list">
+                            <li><code>ViewData["key"]</code> - Dictionary access, requires casting</li>
+                            <li><code>ViewBag.Key</code> - Dynamic property access, cleaner syntax</li>
+                            <li>Use for small bits of data (not full models)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section class="content-section">
+                    <h2>Code Examples</h2>
+
+                    <h3>Example 1: Strongly-Typed View with Display &amp; Forms</h3>
+                    <pre><code class="language-html">@* Product listing view *@
+@model List&lt;ProductViewModel&gt;
+
+&lt;div class="products-grid"&gt;
+    @if (Model != null &amp;&amp; Model.Count &gt; 0)
+    {
+        @foreach (var product in Model)
+        {
+            &lt;div class="product-card"&gt;
+                &lt;h3&gt;@product.Name&lt;/h3&gt;
+                &lt;p&gt;@Html.DisplayFor(m =&gt; product.Description)&lt;/p&gt;
+                &lt;p class="price"&gt;@product.Price.ToString("C")&lt;/p&gt;
+
+                @* Create links using HTML helpers *@
+                &lt;a href="@Url.Action("Details", new { id = product.Id })"&gt;
+                    View Details
+                &lt;/a&gt;
+
+                @* Show edit button only if user is admin *@
+                @if (User.IsInRole("Admin"))
+                {
+                    &lt;a href="@Url.Action("Edit", new { id = product.Id })"&gt;
+                        Edit
+                    &lt;/a&gt;
+                }
+            &lt;/div&gt;
+        }
+    }
+    else
+    {
+        &lt;p&gt;No products found.&lt;/p&gt;
+    }
+&lt;/div&gt;
+</code></pre>
+
+                    <h3>Example 2: Form Submission with Validation</h3>
+                    <pre><code class="language-html">@* Create/Edit product form view *@
+@model ProductViewModel
+
+&lt;div class="form-container"&gt;
+    &lt;h2&gt;@(Model.Id &gt; 0 ? "Edit" : "Create") Product&lt;/h2&gt;
+
+    &lt;!-- Display validation summary (shows all errors) --&gt;
+    @Html.ValidationSummary(false, "", new { @class = "error-summary" })
+
+    @using (Html.BeginForm("Save", "Product", FormMethod.Post))
+    {
+        &lt;!-- CSRF token protection --&gt;
+        @Html.AntiForgeryToken()
+
+        &lt;div class="form-group"&gt;
+            @Html.LabelFor(m =&gt; m.Name)
+            @Html.TextBoxFor(m =&gt; m.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m =&gt; m.Name) &lt;!-- Show errors for this field --&gt;
+        &lt;/div&gt;
+
+        &lt;div class="form-group"&gt;
+            @Html.LabelFor(m =&gt; m.Price)
+            @Html.TextBoxFor(m =&gt; m.Price, new { @class = "form-control", type = "number" })
+            @Html.ValidationMessageFor(m =&gt; m.Price)
+        &lt;/div&gt;
+
+        &lt;div class="form-group"&gt;
+            @Html.LabelFor(m =&gt; m.CategoryId)
+            @Html.DropDownListFor(m =&gt; m.CategoryId,
+                new SelectList(ViewBag.Categories, "Id", "Name"),
+                "-- Select Category --",
+                new { @class = "form-control" })
+            @Html.ValidationMessageFor(m =&gt; m.CategoryId)
+        &lt;/div&gt;
+
+        &lt;button type="submit" class="btn btn-primary"&gt;Save&lt;/button&gt;
+        &lt;a href="@Url.Action("Index")" class="btn btn-secondary"&gt;Cancel&lt;/a&gt;
+    }
+&lt;/div&gt;
+</code></pre>
+
+                    <h3>Example 3: Layout & Partial Views</h3>
+                    <pre><code class="language-html">@* _Layout.cshtml - Master template *@
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;@ViewData["Title"] - My Site&lt;/title&gt;
+    &lt;link rel="stylesheet" href="~/css/site.css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        @Html.Partial("_Header") &lt;!-- Include partial view --&gt;
+    &lt;/header&gt;
+
+    &lt;nav&gt;
+        @Html.Partial("_Navigation")
+    &lt;/nav&gt;
+
+    &lt;main&gt;
+        @RenderBody() &lt;!-- Page-specific content goes here --&gt;
+    &lt;/main&gt;
+
+    &lt;footer&gt;
+        @Html.Partial("_Footer")
+    &lt;/footer&gt;
+
+    &lt;script src="~/js/site.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+---
+
+@* _ProductCard.cshtml - Reusable partial view *@
+@model ProductViewModel
+
+&lt;div class="product-card"&gt;
+    &lt;img src="@Model.ImageUrl" alt="@Model.Name" /&gt;
+    &lt;h3&gt;@Model.Name&lt;/h3&gt;
+    &lt;p class="description"&gt;@Model.Description&lt;/p&gt;
+    &lt;span class="price"&gt;@Model.Price.ToString("C")&lt;/span&gt;
+    &lt;a href="@Url.Action("Details", new { id = Model.Id })"&gt;View Details&lt;/a&gt;
+&lt;/div&gt;
+
+---
+
+@* Index.cshtml - Uses layout and partial views *@
+@model List&lt;ProductViewModel&gt;
+@{
+    ViewData["Title"] = "Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+&lt;h1&gt;@ViewData["Title"]&lt;/h1&gt;
+
+&lt;div class="products-grid"&gt;
+    @foreach (var product in Model)
+    {
+        @Html.Partial("_ProductCard", product) &lt;!-- Reuse card component --&gt;
+    }
+&lt;/div&gt;
+</code></pre>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>✅ Best Practices</h2>
+
+                    <div class="best-practice">
+                        <h3>1. Always Use Strongly-Typed Views</h3>
+                        <p><strong>Why:</strong> Compile-time errors, IntelliSense support, safer refactoring</p>
+                        <p><strong>❌ Bad:</strong></p>
+                        <pre><code class="language-html">&lt;h1&gt;@ViewBag.ProductName&lt;/h1&gt; &lt;!-- No IntelliSense, runtime errors possible --&gt;
+</code></pre>
+                        <p><strong>✅ Good:</strong></p>
+                        <pre><code class="language-html">@model ProductViewModel
+&lt;h1&gt;@Model.Name&lt;/h1&gt; &lt;!-- Full IntelliSense, compile-time checking --&gt;
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>2. Use HTML Helpers for Dynamic Content</h3>
+                        <p><strong>Why:</strong> Cleaner code, automatic URL routing, CSRF protection</p>
+                        <p><strong>❌ Bad:</strong></p>
+                        <pre><code class="language-html">&lt;!-- Hard-coded URLs break when routes change --&gt;
+&lt;a href="/Product/Details/5"&gt;View Details&lt;/a&gt;
+</code></pre>
+                        <p><strong>✅ Good:</strong></p>
+                        <pre><code class="language-html">&lt;!-- Auto-generates correct URL based on routing --&gt;
+@Html.ActionLink("View Details", "Details", "Product", new { id = Model.Id })
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>3. Extract Reusable Parts into Partials</h3>
+                        <p><strong>Why:</strong> DRY principle, easier to test, consistent UI</p>
+                        <p><strong>❌ Bad:</strong> Repeat product card HTML in 10 different views</p>
+                        <p><strong>✅ Good:</strong> Create _ProductCard.cshtml, include with @Html.Partial()</p>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>4. Always Include @Html.AntiForgeryToken()</h3>
+                        <p><strong>Why:</strong> Prevents CSRF (Cross-Site Request Forgery) attacks</p>
+                        <pre><code class="language-html">@using (Html.BeginForm("Create", "Product", FormMethod.Post))
+{
+    @Html.AntiForgeryToken() &lt;!-- Always include this --&gt;
+
+    &lt;!-- form fields --&gt;
+}</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>5. Display Validation Messages</h3>
+                        <p><strong>Why:</strong> Users know what's wrong with their input</p>
+                        <pre><code class="language-html">&lt;!-- Show all errors at top --&gt;
+@Html.ValidationSummary()
+
+&lt;!-- Show error for specific field --&gt;
+&lt;div class="form-group"&gt;
+    @Html.LabelFor(m =&gt; m.Email)
+    @Html.TextBoxFor(m =&gt; m.Email)
+    @Html.ValidationMessageFor(m =&gt; m.Email) &lt;!-- Error appears here --&gt;
+&lt;/div&gt;
+</code></pre>
+                    </div>
+                </section>
+
+                <!-- Resources -->
+                <section class="content-section">
+                    <h2>📚 Resources</h2>
+                    <ul class="content-list">
+                        <li><strong>Microsoft Docs:</strong> <a href="https://learn.microsoft.com/en-us/aspnet/core/mvc/views/overview" target="_blank">Views in ASP.NET Core MVC</a></li>
+                        <li><strong>Razor Syntax:</strong> <a href="https://learn.microsoft.com/en-us/aspnet/core/mvc/views/razor" target="_blank">Complete Razor Reference</a></li>
+                        <li><strong>HTML Helpers:</strong> <a href="https://learn.microsoft.com/en-us/aspnet/core/mvc/views/html-helper" target="_blank">Built-in HTML Helper Methods</a></li>
+                        <li><strong>Tag Helpers:</strong> <a href="https://learn.microsoft.com/en-us/aspnet/core/mvc/views/tag-helpers/intro" target="_blank">ASP.NET Core Tag Helpers</a></li>
+                    </ul>
+                </section>
+
+                <!-- Interview Q&A -->
+                <section class="content-section interview-section">
+                    <h2>🎓 Interview Q&A</h2>
+
+                    <div class="qa-item">
+                        <h3>Q1: What's the difference between HTML Helpers and Tag Helpers?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>HTML Helpers:</strong> Old syntax, C# method calls, less intuitive</li>
+                            <li><strong>Tag Helpers:</strong> Modern syntax, looks like HTML attributes, more readable</li>
+                        </ul>
+                        <pre><code class="language-html">&lt;!-- HTML Helper (old) --&gt;
+@Html.TextBoxFor(m =&gt; m.Name)
+
+&lt;!-- Tag Helper (modern, preferred) --&gt;
+&lt;input asp-for="Name" class="form-control" /&gt;
+</code></pre>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q2: When should you use ViewBag vs strongly-typed models?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>Models:</strong> For main data (List of products, user details). Strongly typed, safe, preferred.</li>
+                            <li><strong>ViewBag:</strong> For small, secondary data (page title, list of categories for dropdown). No IntelliSense, less safe.</li>
+                        </ul>
+                        <pre><code class="language-csharp">// Controller
+public IActionResult Create()
+{
+    // Main data - use model
+    var model = new ProductViewModel();
+
+    // Secondary data - use ViewBag
+    ViewBag.Categories = _service.GetCategories();
+
+    return View(model);
+}
+</code></pre>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q3: What happens when you use @Html.Partial() vs @await Html.PartialAsync()?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>@Html.Partial():</strong> Synchronous, blocks page rendering until partial loads</li>
+                            <li><strong>@await Html.PartialAsync():</strong> Asynchronous, doesn't block, better performance. Use this for I/O operations.</li>
+                        </ul>
+                        <pre><code class="language-html">&lt;!-- Sync - simple partials with no async logic --&gt;
+@Html.Partial("_ProductCard", product)
+
+&lt;!-- Async - if partial does database queries or API calls --&gt;
+@await Html.PartialAsync("_RelatedProducts", product)
+</code></pre>
+                    </div>
+                </section>
 
             </article>
         </div>

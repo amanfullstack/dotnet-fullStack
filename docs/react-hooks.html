@@ -160,16 +160,468 @@
 
                 <div class="page-title-block">
                     <h1 class="page-title">🎣 Hooks & State</h1>
-                    <p class="page-subtitle">Master React hooks, state management, and functional components.</p>
+                    <p class="page-subtitle">Master useState, useEffect, and state management in functional components.</p>
                 </div>
 
-                <div class="callout callout-info">
-                    <span class="callout-icon">ℹ️</span>
-                    <div class="callout-content">
-                        <p><strong>Coming Soon:</strong> Comprehensive guide on React Hooks and State Management</p>
-                        <p>Topics will include: useState, useEffect, useCallback, useMemo, useRef, and hook best practices.</p>
+                <!-- Introduction -->
+                <section class="content-section">
+                    <h2>What Are Hooks?</h2>
+                    <p><strong>Hooks</strong> are special functions that let you "hook into" React features from functional components. Before hooks, you needed class components to use state and lifecycle methods. Now with hooks, functional components can do everything!</p>
+                    <p>Think of hooks as superpowers for functional components - <code>useState</code> adds state, <code>useEffect</code> adds side effects, and more.</p>
+                </section>
+
+                <!-- Why It Matters -->
+                <section class="content-section">
+                    <h2>Why Hooks Matter</h2>
+                    <ul class="content-list">
+                        <li><strong>Simpler Syntax:</strong> Functional components are easier to read and write than classes</li>
+                        <li><strong>Code Reuse:</strong> Share logic between components with custom hooks</li>
+                        <li><strong>Better Organization:</strong> Group related logic together instead of splitting across lifecycle methods</li>
+                        <li><strong>Easier Testing:</strong> Test pure functions instead of class instances</li>
+                        <li><strong>Smaller Bundle:</strong> Functional components compile to less code</li>
+                    </ul>
+                </section>
+
+                <!-- Key Concepts -->
+                <section class="content-section">
+                    <h2>Key Concepts</h2>
+
+                    <div class="concept-card">
+                        <h3>🔄 useState Hook</h3>
+                        <p>Adds state to functional components. Returns [currentValue, setterFunction]:</p>
+                        <pre><code class="language-javascript">const [count, setCount] = useState(0);
+// count = current value (0)
+// setCount = function to update count
+
+const [name, setName] = useState('John');
+const [items, setItems] = useState([]);
+const [user, setUser] = useState({ name: '', age: 0 });</code></pre>
                     </div>
-                </div>
+
+                    <div class="concept-card">
+                        <h3>⚡ useEffect Hook</h3>
+                        <p>Run side effects like API calls, timers, subscriptions after component renders:</p>
+                        <pre><code class="language-javascript">// Run after every render
+useEffect(() => {
+  console.log('Component rendered');
+});
+
+// Run after render only if dependencies changed
+useEffect(() => {
+  loadData();
+}, [userId]); // Re-run if userId changes
+
+// Run once on mount
+useEffect(() => {
+  console.log('Component mounted');
+}, []);</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🧹 Cleanup Function</h3>
+                        <p>Return a function from useEffect to clean up (unsubscribe, clear timers):</p>
+                        <pre><code class="language-javascript">useEffect(() => {
+  const timer = setTimeout(() => {
+    setCount(c => c + 1);
+  }, 1000);
+
+  // Cleanup function - called before component unmounts or effect re-runs
+  return () => clearTimeout(timer);
+}, []);</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🎯 Dependency Array</h3>
+                        <p>Controls when useEffect runs:</p>
+                        <ul class="content-list">
+                            <li><strong>No array:</strong> Runs after EVERY render (be careful!)</li>
+                            <li><strong>Empty []:</strong> Runs ONCE on mount (perfect for setup)</li>
+                            <li><strong>[dep1, dep2]:</strong> Runs when dependencies change</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>📏 Rules of Hooks</h3>
+                        <ul class="content-list">
+                            <li>Only call hooks at top level (not in loops, conditions)</li>
+                            <li>Only call hooks from functional components or custom hooks</li>
+                            <li>Use linter plugin to enforce (eslint-plugin-react-hooks)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section class="content-section">
+                    <h2>Code Examples</h2>
+
+                    <h3>Example 1: Counter with useState</h3>
+                    <pre><code class="language-javascript">import { useState } from 'react';
+
+function CounterComponent() {
+  // Declare state variable
+  const [count, setCount] = useState(0);
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Count: {count}&lt;/h1&gt;
+
+      &lt;!-- Update state by calling setter --&gt;
+      &lt;button onClick={() => setCount(count + 1)}&gt;
+        Increment
+      &lt;/button&gt;
+
+      &lt;!-- Or use function form --&gt;
+      &lt;button onClick={() => setCount(prev => prev - 1)}&gt;
+        Decrement
+      &lt;/button&gt;
+
+      &lt;button onClick={() => setCount(0)}&gt;
+        Reset
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default CounterComponent;
+</code></pre>
+
+                    <h3>Example 2: useEffect for API Call</h3>
+                    <pre><code class="language-javascript">import { useState, useEffect } from 'react';
+
+function ProductList() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Load products when component mounts
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('http://localhost:5000/api/products');
+        const data = await response.json();
+        setProducts(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, []); // Empty array = run once on mount
+
+  if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+  if (error) return &lt;div&gt;Error: {error}&lt;/div&gt;;
+
+  return (
+    &lt;ul&gt;
+      {products.map(product => (
+        &lt;li key={product.id}&gt;
+          {product.name} - ${product.price}
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+
+export default ProductList;
+</code></pre>
+
+                    <h3>Example 3: useState with Objects</h3>
+                    <pre><code class="language-javascript">import { useState } from 'react';
+
+function UserProfile() {
+  // State with object
+  const [user, setUser] = useState({
+    name: 'John',
+    email: 'john@example.com',
+    age: 30
+  });
+
+  // Update single field
+  const updateName = (newName) => {
+    setUser({
+      ...user, // Spread existing data
+      name: newName // Override just this field
+    });
+  };
+
+  // Or use functional form
+  const updateEmail = (newEmail) => {
+    setUser(prevUser => ({
+      ...prevUser,
+      email: newEmail
+    }));
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;{user.name}&lt;/h2&gt;
+      &lt;p&gt;Email: {user.email}&lt;/p&gt;
+      &lt;p&gt;Age: {user.age}&lt;/p&gt;
+
+      &lt;input
+        value={user.name}
+        onChange={e => updateName(e.target.value)}
+      /&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default UserProfile;
+</code></pre>
+
+                    <h3>Example 4: Cleanup with useEffect (Timer)</h3>
+                    <pre><code class="language-javascript">import { useState, useEffect } from 'react';
+
+function Timer() {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    // Start timer
+    const interval = setInterval(() => {
+      setSeconds(s => s + 1);
+    }, 1000);
+
+    // Cleanup: clear timer when component unmounts
+    return () => {
+      clearInterval(interval);
+      console.log('Timer cleaned up');
+    };
+  }, []); // Run once on mount
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Time Elapsed: {seconds}s&lt;/h1&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default Timer;
+</code></pre>
+
+                    <h3>Example 5: Multiple useState & useEffect</h3>
+                    <pre><code class="language-javascript">import { useState, useEffect } from 'react';
+
+function ProductDetail({ productId }) {
+  const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+
+  // Load product when productId changes
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/products/${productId}`)
+      .then(r => r.json())
+      .then(data => setProduct(data));
+  }, [productId]); // Re-run if productId changes
+
+  // Log quantity changes
+  useEffect(() => {
+    console.log('Quantity changed to:', quantity);
+  }, [quantity]); // Re-run if quantity changes
+
+  if (!product) return &lt;div&gt;Loading...&lt;/div&gt;;
+
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;{product.name}&lt;/h2&gt;
+      &lt;p&gt;Price: ${product.price}&lt;/p&gt;
+
+      &lt;input
+        type="number"
+        value={quantity}
+        onChange={e => setQuantity(parseInt(e.target.value))}
+      /&gt;
+
+      &lt;button&gt;
+        Add to Cart (Qty: {quantity})
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default ProductDetail;
+</code></pre>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>✅ Best Practices</h2>
+
+                    <div class="best-practice">
+                        <h3>1. Use Functional Form for State Updates</h3>
+                        <p><strong>Why:</strong> Ensures you're working with latest state, especially when updates happen quickly</p>
+                        <pre><code class="language-javascript">// ❌ Bad - uses stale state
+setCount(count + 1);
+
+// ✅ Good - guaranteed latest state
+setCount(prevCount => prevCount + 1);</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>2. Always Spread When Updating Objects/Arrays</h3>
+                        <p><strong>Why:</strong> React needs new object reference to detect changes</p>
+                        <pre><code class="language-javascript">// ❌ Wrong - mutates state
+user.name = 'John';
+setUser(user);
+
+// ✅ Correct - creates new object
+setUser({ ...user, name: 'John' });</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>3. Don't Call Hooks in Loops or Conditions</h3>
+                        <pre><code class="language-javascript">// ❌ Wrong - hook order changes
+if (condition) {
+  useState(...); // Bad!
+}
+
+// ✅ Correct - hooks always in same order
+useState(...);
+useEffect(() => { ... });
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>4. Clean Up Side Effects</h3>
+                        <p><strong>Why:</strong> Prevents memory leaks, duplicate listeners, etc.</p>
+                        <pre><code class="language-javascript">useEffect(() => {
+  const listener = () => console.log('Event');
+  window.addEventListener('resize', listener);
+
+  return () => window.removeEventListener('resize', listener);
+}, []);</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>5. Separate Concerns with Multiple useEffect</h3>
+                        <p><strong>Why:</strong> Easier to understand and maintain</p>
+                        <pre><code class="language-javascript">// Load data
+useEffect(() => { ... }, [userId]);
+
+// Scroll to top
+useEffect(() => { ... }, []);
+
+// Update page title
+useEffect(() => { ... }, [title]);</code></pre>
+                    </div>
+                </section>
+
+                <!-- Common Mistakes -->
+                <section class="content-section">
+                    <h2>❌ Common Mistakes</h2>
+
+                    <div class="mistake-box">
+                        <h3>1. Forgetting Dependency Array in useEffect</h3>
+                        <pre><code class="language-javascript">// ❌ Wrong - runs on every render (infinite loop!)
+useEffect(() => {
+  fetch('/api/data');
+});
+
+// ✅ Correct - runs once
+useEffect(() => {
+  fetch('/api/data');
+}, []);</code></pre>
+                    </div>
+
+                    <div class="mistake-box">
+                        <h3>2. Missing Dependencies in Dependency Array</h3>
+                        <pre><code class="language-javascript">// ❌ Wrong - userId not in dependencies
+const [user, setUser] = useState(null);
+useEffect(() => {
+  fetch(`/api/users/${userId}`);
+}, []); // userId used but not listed!
+
+// ✅ Correct
+useEffect(() => {
+  fetch(`/api/users/${userId}`);
+}, [userId]);</code></pre>
+                    </div>
+
+                    <div class="mistake-box">
+                        <h3>3. Setting State in Render</h3>
+                        <pre><code class="language-javascript">// ❌ Wrong - causes infinite loop
+function Component() {
+  const [count, setCount] = useState(0);
+  setCount(count + 1); // Renders, sets state, renders, sets state...
+  return &lt;div&gt;{count}&lt;/div&gt;;
+}
+
+// ✅ Correct - set state in event handler or useEffect
+function Component() {
+  const [count, setCount] = useState(0);
+  return &lt;button onClick={() => setCount(count + 1)}&gt;
+    Count: {count}
+  &lt;/button&gt;;
+}</code></pre>
+                    </div>
+
+                    <div class="mistake-box">
+                        <h3>4. Mutating State Directly</h3>
+                        <pre><code class="language-javascript">// ❌ Wrong - mutates state
+items.push(newItem);
+setItems(items);
+
+// ✅ Correct - creates new array
+setItems([...items, newItem]);</code></pre>
+                    </div>
+                </section>
+
+                <!-- Resources -->
+                <section class="content-section">
+                    <h2>📚 Resources</h2>
+                    <ul class="content-list">
+                        <li><strong>React Hooks Overview:</strong> <a href="https://react.dev/reference/react/hooks" target="_blank">Official React Docs</a></li>
+                        <li><strong>useState Documentation:</strong> <a href="https://react.dev/reference/react/useState" target="_blank">useState Hook Guide</a></li>
+                        <li><strong>useEffect Documentation:</strong> <a href="https://react.dev/reference/react/useEffect" target="_blank">useEffect Hook Guide</a></li>
+                        <li><strong>Rules of Hooks:</strong> <a href="https://react.dev/warnings/invalid-hook-call-warning" target="_blank">Hook Rules Explained</a></li>
+                    </ul>
+                </section>
+
+                <!-- Interview Q&A -->
+                <section class="content-section interview-section">
+                    <h2>🎓 Interview Q&A</h2>
+
+                    <div class="qa-item">
+                        <h3>Q1: What's the difference between state and props in React?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>State:</strong> Owned by component, can change, managed with useState</li>
+                            <li><strong>Props:</strong> Passed from parent, read-only, passed as function arguments</li>
+                            <li><strong>Rule:</strong> State for data that changes, props for passing data down</li>
+                        </ul>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q2: What does the dependency array in useEffect do?</h3>
+                        <p><strong>Answer:</strong> Controls when useEffect runs:</p>
+                        <ul class="content-list">
+                            <li><strong>No array:</strong> Runs after EVERY render (⚠️ can cause infinite loops)</li>
+                            <li><strong>[]:</strong> Runs ONCE on mount - use for initialization</li>
+                            <li><strong>[dep1, dep2]:</strong> Runs when any dependency changes</li>
+                            <li><strong>Lesson:</strong> If you use a variable in useEffect, it should be in dependencies</li>
+                        </ul>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q3: How do you prevent infinite loops with useState and useEffect?</h3>
+                        <p><strong>Answer:</strong> Common cause is setting state inside useEffect without dependencies:</p>
+                        <pre><code class="language-javascript">// ❌ Infinite loop
+useEffect(() => {
+  setCount(count + 1); // Sets state, triggers re-render, effect runs again
+});
+
+// ✅ Fixed with empty dependency array
+useEffect(() => {
+  console.log('Runs once');
+}, []);
+
+// ✅ Or include count in dependencies (still reruns though)
+useEffect(() => {
+  setCount(prev => prev + 1);
+}, [count]); // Explicit dependency</code></pre>
+                    </div>
+                </section>
 
             </article>
         </div>

@@ -163,13 +163,368 @@
                     <p class="page-subtitle">Master Angular components, property binding, and template syntax.</p>
                 </div>
 
-                <div class="callout callout-info">
-                    <span class="callout-icon">ℹ️</span>
-                    <div class="callout-content">
-                        <p><strong>Coming Soon:</strong> Comprehensive guide on Angular Components and Templates</p>
-                        <p>Topics will include: Component structure, property binding, event binding, two-way binding, directives, and lifecycle hooks.</p>
+                <!-- Introduction -->
+                <section class="content-section">
+                    <h2>What Are Angular Components?</h2>
+                    <p><strong>Components</strong> are the building blocks of Angular applications. They combine TypeScript logic, HTML templates, and CSS styling into reusable units. Every Angular app is a tree of components, starting from the root component.</p>
+                    <p>A component is a TypeScript class decorated with <code>@Component</code> that controls a piece of the screen (a view).</p>
+                </section>
+
+                <!-- Why It Matters -->
+                <section class="content-section">
+                    <h2>Why Components Matter</h2>
+                    <ul class="content-list">
+                        <li><strong>Reusability:</strong> Build components once, use in many places</li>
+                        <li><strong>Modularity:</strong> Break UI into manageable pieces</li>
+                        <li><strong>Maintainability:</strong> Easier to understand and update</li>
+                        <li><strong>Testability:</strong> Test components in isolation</li>
+                        <li><strong>Encapsulation:</strong> Components manage their own state and style</li>
+                    </ul>
+                </section>
+
+                <!-- Key Concepts -->
+                <section class="content-section">
+                    <h2>Key Concepts</h2>
+
+                    <div class="concept-card">
+                        <h3>🏗️ Component Anatomy</h3>
+                        <p>A component has three parts:</p>
+                        <ul class="content-list">
+                            <li><strong>Class:</strong> TypeScript code with logic (component.ts)</li>
+                            <li><strong>Template:</strong> HTML markup (component.html)</li>
+                            <li><strong>Style:</strong> CSS styling (component.css)</li>
+                        </ul>
                     </div>
-                </div>
+
+                    <div class="concept-card">
+                        <h3>🔗 Property Binding</h3>
+                        <p>Pass data from component to template:</p>
+                        <ul class="content-list">
+                            <li><code>[property]="value"</code> - One-way binding</li>
+                            <li><code>{{expression}}</code> - Interpolation (same as binding)</li>
+                            <li>Used for: displaying data, setting attributes, applying classes</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>⚡ Event Binding</h3>
+                        <p>Respond to user interactions:</p>
+                        <ul class="content-list">
+                            <li><code>(click)="handler()"</code> - Click events</li>
+                            <li><code>(keyup)="handler($event)"</code> - Keyboard events</li>
+                            <li><code>(change)="handler()"</code> - Form changes</li>
+                            <li><code>$event</code> - Browser event object</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🔄 Two-Way Binding</h3>
+                        <p>Synchronize data between template and component:</p>
+                        <pre><code class="language-html">&lt;input [(ngModel)]="name" /&gt;</code></pre>
+                        <ul class="content-list">
+                            <li>Requires FormsModule import</li>
+                            <li>Updates component property when user types</li>
+                            <li>Updates template when property changes</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>♻️ Lifecycle Hooks</h3>
+                        <p>Component lifecycle events:</p>
+                        <ul class="content-list">
+                            <li><code>OnInit</code> - After component created</li>
+                            <li><code>OnChanges</code> - When input properties change</li>
+                            <li><code>OnDestroy</code> - Before component destroyed</li>
+                            <li>Use for initialization, cleanup, responding to changes</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section class="content-section">
+                    <h2>Code Examples</h2>
+
+                    <h3>Example 1: Basic Component with Property & Event Binding</h3>
+                    <pre><code class="language-typescript">import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-product',
+  templateUrl: './product.component.html',
+  styleUrls: ['./product.component.css']
+})
+export class ProductComponent {
+  // Component properties (data)
+  productName = 'Laptop';
+  price = 999.99;
+  inStock = true;
+  quantity = 1;
+
+  // Methods (event handlers)
+  addToCart() {
+    console.log(`Added ${this.quantity} ${this.productName} to cart`);
+    alert('Product added!');
+  }
+
+  decreaseQuantity() {
+    if (this.quantity > 1) {
+      this.quantity--;
+    }
+  }
+
+  increaseQuantity() {
+    this.quantity++;
+  }
+}
+</code></pre>
+                    <pre><code class="language-html">&lt;!-- product.component.html --&gt;
+&lt;div class="product-card"&gt;
+  &lt;h2&gt;{{productName}}&lt;/h2&gt;
+  &lt;p class="price"&gt;Price: ${{price}}&lt;/p&gt;
+
+  &lt;!-- Show/hide based on condition --&gt;
+  &lt;p *ngIf="inStock" class="in-stock"&gt;In Stock&lt;/p&gt;
+  &lt;p *ngIf="!inStock" class="out-of-stock"&gt;Out of Stock&lt;/p&gt;
+
+  &lt;!-- Quantity selector --&gt;
+  &lt;div class="quantity-selector"&gt;
+    &lt;button (click)="decreaseQuantity()"&gt;-&lt;/button&gt;
+    &lt;span&gt;{{quantity}}&lt;/span&gt;
+    &lt;button (click)="increaseQuantity()"&gt;+&lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Add to cart button --&gt;
+  &lt;button
+    (click)="addToCart()"
+    [disabled]="!inStock"
+    [class.btn-primary]="inStock"
+    [class.btn-disabled]="!inStock"&gt;
+    Add to Cart
+  &lt;/button&gt;
+&lt;/div&gt;
+</code></pre>
+
+                    <h3>Example 2: Component with Lifecycle Hooks</h3>
+                    <pre><code class="language-typescript">import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core';
+
+@Component({
+  selector: 'app-product-list',
+  templateUrl: './product-list.component.html'
+})
+export class ProductListComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() categoryId: number = 0;
+  products: any[] = [];
+  loading = false;
+
+  ngOnInit() {
+    // Called once when component initializes
+    console.log('ProductListComponent initialized');
+    this.loadProducts();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // Called when @Input properties change
+    if (changes['categoryId']) {
+      console.log('Category changed to:', changes['categoryId'].currentValue);
+      this.loadProducts();
+    }
+  }
+
+  ngOnDestroy() {
+    // Called when component is destroyed
+    console.log('ProductListComponent destroyed');
+    // Clean up subscriptions, timers, etc.
+  }
+
+  loadProducts() {
+    this.loading = true;
+    // Simulate API call
+    setTimeout(() => {
+      this.products = [
+        { id: 1, name: 'Product 1', price: 100 },
+        { id: 2, name: 'Product 2', price: 200 }
+      ];
+      this.loading = false;
+    }, 1000);
+  }
+}
+</code></pre>
+
+                    <h3>Example 3: Two-Way Binding & Form Handling</h3>
+                    <pre><code class="language-typescript">import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-search',
+  templateUrl: './search.component.html'
+})
+export class SearchComponent {
+  searchTerm: string = '';
+  results: string[] = [];
+
+  onSearch() {
+    if (this.searchTerm.trim()) {
+      // Simulate search
+      this.results = [
+        `Result for "${this.searchTerm}" 1`,
+        `Result for "${this.searchTerm}" 2`,
+        `Result for "${this.searchTerm}" 3`
+      ];
+    } else {
+      this.results = [];
+    }
+  }
+
+  clearSearch() {
+    this.searchTerm = '';
+    this.results = [];
+  }
+}
+</code></pre>
+                    <pre><code class="language-html">&lt;!-- search.component.html --&gt;
+&lt;div class="search-container"&gt;
+  &lt;div class="search-input"&gt;
+    &lt;!-- Two-way binding with ngModel --&gt;
+    &lt;input
+      [(ngModel)]="searchTerm"
+      placeholder="Search products..."
+      (keyup.enter)="onSearch()"&gt;
+    &lt;button (click)="onSearch()"&gt;Search&lt;/button&gt;
+    &lt;button (click)="clearSearch()"&gt;Clear&lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Display search term --&gt;
+  &lt;p *ngIf="searchTerm"&gt;Searching for: {{searchTerm}}&lt;/p&gt;
+
+  &lt;!-- Display results --&gt;
+  &lt;div class="results" *ngIf="results.length > 0"&gt;
+    &lt;ul&gt;
+      &lt;li *ngFor="let result of results"&gt;{{result}}&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Show message if no results --&gt;
+  &lt;p *ngIf="searchTerm && results.length === 0"&gt;No results found&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>✅ Best Practices</h2>
+
+                    <div class="best-practice">
+                        <h3>1. Keep Components Focused</h3>
+                        <p><strong>Why:</strong> Single responsibility principle makes code easier to test and maintain</p>
+                        <p><strong>❌ Bad:</strong> ProductListComponent handles listing, filtering, sorting, AND API calls</p>
+                        <p><strong>✅ Good:</strong> ProductListComponent only displays, use service for API calls</p>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>2. Use @Input for Parent-to-Child Communication</h3>
+                        <p><strong>Why:</strong> Makes component reusable with different data</p>
+                        <pre><code class="language-typescript">@Component({selector: 'app-product-card'})
+export class ProductCardComponent {
+  @Input() product: any; // Parent passes data
+}
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>3. Use @Output for Child-to-Parent Events</h3>
+                        <p><strong>Why:</strong> Child notifies parent of important events</p>
+                        <pre><code class="language-typescript">@Component({selector: 'app-product-card'})
+export class ProductCardComponent {
+  @Output() addedToCart = new EventEmitter&lt;any&gt;();
+
+  onAddClick() {
+    this.addedToCart.emit(this.product); // Notify parent
+  }
+}
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>4. Always Unsubscribe from Observables</h3>
+                        <p><strong>Why:</strong> Prevents memory leaks when component is destroyed</p>
+                        <pre><code class="language-typescript">export class DataComponent implements OnInit, OnDestroy {
+  subscription: Subscription;
+
+  ngOnInit() {
+    this.subscription = this.service.getData().subscribe(data => {
+      // Handle data
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe(); // Clean up
+  }
+}
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>5. Use Async Pipe for Observable Subscriptions</h3>
+                        <p><strong>Why:</strong> Automatically unsubscribes, cleaner code</p>
+                        <pre><code class="language-html">&lt;!-- Instead of manual subscription --&gt;
+&lt;div&gt;{{data | async}}&lt;/div&gt;
+</code></pre>
+                    </div>
+                </section>
+
+                <!-- Resources -->
+                <section class="content-section">
+                    <h2>📚 Resources</h2>
+                    <ul class="content-list">
+                        <li><strong>Angular Components Guide:</strong> <a href="https://angular.io/guide/component-overview" target="_blank">Official Angular Docs</a></li>
+                        <li><strong>Template Syntax:</strong> <a href="https://angular.io/guide/template-syntax" target="_blank">Complete Template Reference</a></li>
+                        <li><strong>Lifecycle Hooks:</strong> <a href="https://angular.io/guide/lifecycle-hooks" target="_blank">Hook Documentation</a></li>
+                    </ul>
+                </section>
+
+                <!-- Interview Q&A -->
+                <section class="content-section interview-section">
+                    <h2>🎓 Interview Q&A</h2>
+
+                    <div class="qa-item">
+                        <h3>Q1: What's the difference between property binding and interpolation?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>Interpolation:</strong> <code>{{expression}}</code> - Only for text content, less powerful</li>
+                            <li><strong>Property binding:</strong> <code>[property]="value"</code> - Can set attributes, classes, properties</li>
+                        </ul>
+                        <pre><code class="language-html">&lt;!-- Interpolation - only for text --&gt;
+&lt;p&gt;Price: {{price}}&lt;/p&gt;
+
+&lt;!-- Property binding - more powerful --&gt;
+&lt;img [src]="imageUrl" /&gt;
+&lt;button [disabled]="isLoading"&gt;Submit&lt;/button&gt;
+</code></pre>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q2: What happens if you don't unsubscribe from observables?</h3>
+                        <p><strong>Answer:</strong> Memory leaks occur. Subscriptions keep running even after component is destroyed, causing:</p>
+                        <ul class="content-list">
+                            <li>Unnecessary API calls</li>
+                            <li>Increased memory usage</li>
+                            <li>Old data being processed</li>
+                        </ul>
+                        <p>Always unsubscribe in ngOnDestroy or use async pipe.</p>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q3: What's the order of lifecycle hooks?</h3>
+                        <p><strong>Answer:</strong> Components go through this sequence:</p>
+                        <ol class="content-list">
+                            <li>Constructor - Creates the component instance</li>
+                            <li>OnChanges - When input properties change</li>
+                            <li>OnInit - After first property binding</li>
+                            <li>DoCheck - Custom change detection</li>
+                            <li>AfterContentInit - After content projected</li>
+                            <li>AfterViewInit - After view initialized</li>
+                            <li>OnDestroy - Before component destroyed</li>
+                        </ol>
+                    </div>
+                </section>
 
             </article>
         </div>

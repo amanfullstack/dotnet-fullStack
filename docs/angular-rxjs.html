@@ -163,13 +163,169 @@
                     <p class="page-subtitle">Master reactive programming with RxJS observables, operators, and subscriptions.</p>
                 </div>
 
-                <div class="callout callout-info">
-                    <span class="callout-icon">ℹ️</span>
-                    <div class="callout-content">
-                        <p><strong>Coming Soon:</strong> Comprehensive guide on RxJS and Angular Observables</p>
-                        <p>Topics will include: Observable creation, operators, subjects, hot vs cold observables, and error handling.</p>
+                <!-- Introduction -->
+                <section class="content-section">
+                    <h2>What Are RxJS & Observables?</h2>
+                    <p><strong>RxJS</strong> is a library for reactive programming using Observables. An <strong>Observable</strong> is a stream of data that can be observed over time. Instead of imperative "do this then that", you declare "when X happens, do Y".</p>
+                    <p>Observables are core to Angular for handling async operations (HTTP, events, timers).</p>
+                </section>
+
+                <!-- Key Concepts -->
+                <section class="content-section">
+                    <h2>Key Concepts</h2>
+
+                    <div class="concept-card">
+                        <h3>〰️ What is an Observable?</h3>
+                        <p>A stream of values that can be observed:</p>
+                        <ul class="content-list">
+                            <li><strong>Lazy:</strong> Nothing happens until you subscribe</li>
+                            <li><strong>Cancellable:</strong> Unsubscribe to stop listening</li>
+                            <li><strong>Data over time:</strong> Can emit multiple values</li>
+                            <li><strong>Transformable:</strong> Use operators to manipulate data</li>
+                        </ul>
                     </div>
-                </div>
+
+                    <div class="concept-card">
+                        <h3>🔄 Operators</h3>
+                        <p>Functions that transform observable data:</p>
+                        <ul class="content-list">
+                            <li><code>map()</code> - Transform values</li>
+                            <li><code>filter()</code> - Keep only matching values</li>
+                            <li><code>switchMap()</code> - Switch to new observable</li>
+                            <li><code>catchError()</code> - Handle errors</li>
+                            <li><code>debounceTime()</code> - Wait before emitting</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🎯 Subject vs BehaviorSubject</h3>
+                        <ul class="content-list">
+                            <li><code>Subject</code> - New subscribers get future values only</li>
+                            <li><code>BehaviorSubject</code> - New subscribers get latest value immediately</li>
+                            <li>Use for: sharing data, event buses</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section class="content-section">
+                    <h2>Code Examples</h2>
+
+                    <h3>Example 1: Basic Observable & Subscription</h3>
+                    <pre><code class="language-typescript">import { Observable } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
+
+// Create observable
+const numbers$ = new Observable(subscriber => {
+  subscriber.next(1);
+  subscriber.next(2);
+  subscriber.next(3);
+  subscriber.complete();
+});
+
+// Subscribe to get values
+numbers$.subscribe(
+  value => console.log(value), // 1, 2, 3
+  error => console.error(error),
+  () => console.log('Complete')
+);
+</code></pre>
+
+                    <h3>Example 2: Using Operators</h3>
+                    <pre><code class="language-typescript">this.productService.getProducts()
+  .pipe(
+    // Transform each product
+    map(products => products.map(p => ({
+      ...p,
+      displayPrice: `$${p.price}`
+    }))),
+    // Keep only expensive items
+    filter(products => products.some(p => p.price > 100)),
+    // Handle errors
+    catchError(error => {
+      console.error('Error:', error);
+      return of([]); // Return empty array on error
+    })
+  )
+  .subscribe(filteredProducts => {
+    this.products = filteredProducts;
+  });
+</code></pre>
+
+                    <h3>Example 3: switchMap for Dependent Observables</h3>
+                    <pre><code class="language-typescript">import { switchMap } from 'rxjs/operators';
+
+// When category changes, fetch new products
+this.categoryId$
+  .pipe(
+    switchMap(categoryId => {
+      if (!categoryId) return of([]);
+      return this.service.getProductsByCategory(categoryId);
+    })
+  )
+  .subscribe(products => this.products = products);
+</code></pre>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>✅ Best Practices</h2>
+
+                    <div class="best-practice">
+                        <h3>1. Always Unsubscribe</h3>
+                        <p><strong>Why:</strong> Prevents memory leaks</p>
+                        <pre><code class="language-typescript">subscription = this.service.getData().subscribe(...);
+ngOnDestroy() { this.subscription.unsubscribe(); }
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>2. Use Async Pipe</h3>
+                        <p><strong>Why:</strong> Automatically unsubscribes</p>
+                        <pre><code class="language-html">{{ products$ | async }}</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>3. Handle Errors with catchError</h3>
+                        <p><strong>Why:</strong> Observable stops on error, need recovery strategy</p>
+                        <pre><code class="language-typescript">.pipe(
+  catchError(error => {
+    console.error('Error:', error);
+    return of(defaultValue);
+  })
+)
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>4. Use switchMap for Route Changes</h3>
+                        <p><strong>Why:</strong> Cancels previous subscription automatically</p>
+                    </div>
+                </section>
+
+                <!-- Interview Q&A -->
+                <section class="content-section interview-section">
+                    <h2>🎓 Interview Q&A</h2>
+
+                    <div class="qa-item">
+                        <h3>Q1: What's the difference between cold and hot observables?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>Cold:</strong> New data for each subscriber (HTTP requests)</li>
+                            <li><strong>Hot:</strong> Shared data stream, subscribers get current/future values (mouse events)</li>
+                        </ul>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q2: Why use switchMap instead of mergeMap?</h3>
+                        <p><strong>Answer:</strong> switchMap cancels the previous observable when a new one arrives. mergeMap runs all simultaneously. Use switchMap when you only care about the latest.</p>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q3: When should you use Subject vs Observable?</h3>
+                        <p><strong>Answer:</strong> Observable for data flow, Subject for event broadcasting. Subjects let you push values manually.</p>
+                    </div>
+                </section>
 
             </article>
         </div>

@@ -160,16 +160,418 @@
 
                 <div class="page-title-block">
                     <h1 class="page-title">🗺️ Router & Navigation</h1>
-                    <p class="page-subtitle">Master Angular routing, lazy loading, and navigation patterns.</p>
+                    <p class="page-subtitle">Build multi-page applications with routing, lazy loading, and route guards.</p>
                 </div>
 
-                <div class="callout callout-info">
-                    <span class="callout-icon">ℹ️</span>
-                    <div class="callout-content">
-                        <p><strong>Coming Soon:</strong> Comprehensive guide on Angular Router and Navigation</p>
-                        <p>Topics will include: Route configuration, lazy loading, route guards, resolvers, and query parameters.</p>
+                <!-- Introduction -->
+                <section class="content-section">
+                    <h2>What Is Angular Router?</h2>
+                    <p><strong>The Angular Router</strong> enables navigation between different components based on the URL. It turns your single-page app into a multi-page experience where users can bookmark URLs, use back/forward buttons, and navigate without full page reloads.</p>
+                    <p>Think of it like a sitemap for your Angular app - defining which component to show for each URL path.</p>
+                </section>
+
+                <!-- Why It Matters -->
+                <section class="content-section">
+                    <h2>Why Router Matters</h2>
+                    <ul class="content-list">
+                        <li><strong>Bookmarkable URLs:</strong> Users can save and share links to specific app pages</li>
+                        <li><strong>Browser Navigation:</strong> Back/forward buttons work naturally</li>
+                        <li><strong>Multi-Page Feel:</strong> Create apps that feel like traditional websites</li>
+                        <li><strong>Lazy Loading:</strong> Load feature modules only when needed (performance)</li>
+                        <li><strong>Route Guards:</strong> Protect pages behind authentication/authorization</li>
+                        <li><strong>URL Parameters:</strong> Pass data through the URL (e.g., /products/123)</li>
+                    </ul>
+                </section>
+
+                <!-- Key Concepts -->
+                <section class="content-section">
+                    <h2>Key Concepts</h2>
+
+                    <div class="concept-card">
+                        <h3>🛣️ Routes Configuration</h3>
+                        <p>Define all app routes in one place:</p>
+                        <pre><code class="language-typescript">const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+  { path: 'products', component: ProductListComponent },
+  { path: 'products/:id', component: ProductDetailComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '**', component: PageNotFoundComponent } // Catch-all
+];</code></pre>
                     </div>
-                </div>
+
+                    <div class="concept-card">
+                        <h3>🔗 RouterLink & RouterOutlet</h3>
+                        <ul class="content-list">
+                            <li><code>routerLink="/path"</code> - Navigate without page reload</li>
+                            <li><code>&lt;router-outlet&gt;</code> - Container for routed components</li>
+                            <li><code>routerLinkActive="active"</code> - Highlight current link</li>
+                        </ul>
+                        <pre><code class="language-html">&lt;a routerLink="/products" routerLinkActive="active"&gt;
+  Products
+&lt;/a&gt;
+
+&lt;!-- Routed component renders here --&gt;
+&lt;router-outlet&gt;&lt;/router-outlet&gt;</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>📍 Route Parameters</h3>
+                        <p>Capture dynamic values from URL:</p>
+                        <ul class="content-list">
+                            <li><strong>Route params:</strong> /products/123 (required, part of path)</li>
+                            <li><strong>Query params:</strong> /products?sort=name (optional, after ?)</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🔐 Route Guards</h3>
+                        <p>Control who can access routes:</p>
+                        <ul class="content-list">
+                            <li><code>CanActivate</code> - Can user enter this route?</li>
+                            <li><code>CanDeactivate</code> - Can user leave without saving?</li>
+                            <li><code>Resolve</code> - Load data before showing component</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>⚡ Lazy Loading</h3>
+                        <p>Load feature modules only when user navigates to them:</p>
+                        <pre><code class="language-typescript">{
+  path: 'admin',
+  loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section class="content-section">
+                    <h2>Code Examples</h2>
+
+                    <h3>Example 1: Basic Routing Setup</h3>
+                    <pre><code class="language-typescript">// app-routing.module.ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './pages/home/home.component';
+import { ProductListComponent } from './pages/products/product-list.component';
+import { ProductDetailComponent } from './pages/products/product-detail.component';
+import { PageNotFoundComponent } from './pages/page-not-found.component';
+
+const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+  { path: 'products', component: ProductListComponent },
+  { path: 'products/:id', component: ProductDetailComponent },
+
+  // Default route
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+
+  // Catch-all for 404
+  { path: '**', component: PageNotFoundComponent }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+</code></pre>
+
+                    <pre><code class="language-html">&lt;!-- app.component.html --&gt;
+&lt;nav&gt;
+  &lt;!-- Navigation links --&gt;
+  &lt;a routerLink="/home" routerLinkActive="active"&gt;Home&lt;/a&gt;
+  &lt;a routerLink="/products" routerLinkActive="active"&gt;Products&lt;/a&gt;
+&lt;/nav&gt;
+
+&lt;!-- Components render here based on current route --&gt;
+&lt;router-outlet&gt;&lt;/router-outlet&gt;
+</code></pre>
+
+                    <h3>Example 2: Route Parameters and Query Params</h3>
+                    <pre><code class="language-typescript">// product-detail.component.ts
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  selector: 'app-product-detail',
+  templateUrl: './product-detail.component.html'
+})
+export class ProductDetailComponent implements OnInit {
+  productId: number;
+  sortBy: string;
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    // Read route parameter (e.g., /products/123)
+    this.route.params.subscribe(params => {
+      this.productId = params['id'];
+      console.log('Product ID:', this.productId);
+      this.loadProduct();
+    });
+
+    // Read query parameters (e.g., /products/123?sort=price)
+    this.route.queryParams.subscribe(queryParams => {
+      this.sortBy = queryParams['sort'] || 'name';
+      console.log('Sort by:', this.sortBy);
+    });
+  }
+
+  loadProduct() {
+    // Fetch product based on ID
+    console.log('Loading product:', this.productId);
+  }
+}
+</code></pre>
+
+                    <pre><code class="language-html">&lt;!-- product-detail.component.html --&gt;
+&lt;h2&gt;Product #{{productId}}&lt;/h2&gt;
+&lt;p&gt;Sorted by: {{sortBy}}&lt;/p&gt;
+
+&lt;!-- Navigate with route params --&gt;
+&lt;a [routerLink]="['/products', 456]"&gt;View Product 456&lt;/a&gt;
+
+&lt;!-- Navigate with query params --&gt;
+&lt;a [routerLink]="['/products', productId]" [queryParams]="{sort: 'price'}"&gt;
+  Sort by Price
+&lt;/a&gt;
+</code></pre>
+
+                    <h3>Example 3: Route Guards (Authentication)</h3>
+                    <pre><code class="language-typescript">// auth.guard.ts
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
+import { AuthService } from './auth.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthGuard implements CanActivate {
+  constructor(private authService: AuthService, private router: Router) {}
+
+  canActivate(): boolean {
+    if (this.authService.isLoggedIn()) {
+      return true; // Allow navigation
+    } else {
+      // Redirect to login if not authenticated
+      this.router.navigate(['/login']);
+      return false;
+    }
+  }
+}
+
+// app-routing.module.ts
+const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [AuthGuard] // Protect this route
+  }
+];
+</code></pre>
+
+                    <h3>Example 4: Lazy Loading Feature Modules</h3>
+                    <pre><code class="language-typescript">// app-routing.module.ts
+const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+  { path: 'products', component: ProductListComponent },
+
+  // Lazy load admin module - only loads when user navigates to /admin
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+  },
+
+  // Lazy load reports module - only loads when user navigates to /reports
+  {
+    path: 'reports',
+    loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule)
+  }
+];
+
+// admin/admin-routing.module.ts
+const adminRoutes: Routes = [
+  { path: '', component: AdminDashboardComponent },
+  { path: 'users', component: UserManagementComponent },
+  { path: 'settings', component: SettingsComponent }
+];
+
+// Now available at /admin, /admin/users, /admin/settings
+</code></pre>
+
+                    <h3>Example 5: Nested Routes</h3>
+                    <pre><code class="language-typescript">const routes: Routes = [
+  {
+    path: 'products',
+    component: ProductsLayoutComponent, // Parent layout
+    children: [
+      { path: '', component: ProductListComponent },
+      { path: ':id', component: ProductDetailComponent },
+      { path: ':id/reviews', component: ProductReviewsComponent }
+    ]
+  }
+];
+
+// Now you can navigate to:
+// /products - Shows product list
+// /products/123 - Shows product 123 details
+// /products/123/reviews - Shows reviews for product 123
+</code></pre>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>✅ Best Practices</h2>
+
+                    <div class="best-practice">
+                        <h3>1. Use routerLink Instead of window.location</h3>
+                        <p><strong>Why:</strong> routerLink navigates without page reload, preserving app state</p>
+                        <p><strong>❌ Bad:</strong> <code>&lt;a href="/products"&gt;</code> or <code>window.location.href</code></p>
+                        <p><strong>✅ Good:</strong> <code>&lt;a routerLink="/products"&gt;</code></p>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>2. Use Lazy Loading for Feature Modules</h3>
+                        <p><strong>Why:</strong> Reduces initial bundle size, faster app startup</p>
+                        <p><strong>Rule:</strong> If a feature isn't needed on first load, lazy load it</p>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>3. Always Unsubscribe from Route Params</h3>
+                        <p><strong>Why:</strong> Prevents memory leaks when component is destroyed</p>
+                        <pre><code class="language-typescript">subscription = this.route.params.subscribe(...);
+
+ngOnDestroy() {
+  this.subscription.unsubscribe();
+}</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>4. Use Route Guards for Protected Routes</h3>
+                        <p><strong>Why:</strong> Enforce authentication before showing pages</p>
+                        <pre><code class="language-typescript">{
+  path: 'admin',
+  component: AdminComponent,
+  canActivate: [AuthGuard]
+}</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>5. Handle 404 with Wildcard Route</h3>
+                        <p><strong>Why:</strong> Shows friendly error page instead of blank screen</p>
+                        <pre><code class="language-typescript">// Always last in routes array
+{ path: '**', component: PageNotFoundComponent }</code></pre>
+                    </div>
+                </section>
+
+                <!-- Common Mistakes -->
+                <section class="content-section">
+                    <h2>❌ Common Mistakes</h2>
+
+                    <div class="mistake-box">
+                        <h3>1. Missing &lt;router-outlet&gt;</h3>
+                        <p>Routed components won't display without the outlet container</p>
+                        <pre><code class="language-html">&lt;!-- ✅ Correct - don't forget this --&gt;
+&lt;router-outlet&gt;&lt;/router-outlet&gt;</code></pre>
+                    </div>
+
+                    <div class="mistake-box">
+                        <h3>2. Route Order Matters</h3>
+                        <pre><code class="language-typescript">&lt;!-- ❌ Wrong - wildcard catches everything --&gt;
+{ path: '**', component: NotFoundComponent },
+{ path: 'admin', component: AdminComponent } // Never reached!
+
+&lt;!-- ✅ Correct - specific routes first --&gt;
+{ path: 'admin', component: AdminComponent },
+{ path: '**', component: NotFoundComponent }</code></pre>
+                    </div>
+
+                    <div class="mistake-box">
+                        <h3>3. Not Using pathMatch: 'full'</h3>
+                        <pre><code class="language-typescript">&lt;!-- ❌ Wrong - might match /home-settings too --&gt;
+{ path: 'home', redirectTo: '/dashboard' }
+
+&lt;!-- ✅ Correct - only matches exact path --&gt;
+{ path: 'home', redirectTo: '/dashboard', pathMatch: 'full' }</code></pre>
+                    </div>
+
+                    <div class="mistake-box">
+                        <h3>4. Forgetting to Export RouterModule</h3>
+                        <p>Child components won't have access to routing directives</p>
+                        <pre><code class="language-typescript">@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule] // Don't forget this!
+})</code></pre>
+                    </div>
+                </section>
+
+                <!-- Resources -->
+                <section class="content-section">
+                    <h2>📚 Resources</h2>
+                    <ul class="content-list">
+                        <li><strong>Angular Router Guide:</strong> <a href="https://angular.io/guide/router" target="_blank">Official Documentation</a></li>
+                        <li><strong>Router API:</strong> <a href="https://angular.io/api/router" target="_blank">Router API Reference</a></li>
+                        <li><strong>ActivatedRoute:</strong> <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute Documentation</a></li>
+                        <li><strong>Lazy Loading:</strong> <a href="https://angular.io/guide/lazy-loading-ngmodules" target="_blank">Lazy Loading Guide</a></li>
+                    </ul>
+                </section>
+
+                <!-- Interview Q&A -->
+                <section class="content-section interview-section">
+                    <h2>🎓 Interview Q&A</h2>
+
+                    <div class="qa-item">
+                        <h3>Q1: What's the difference between route params and query params?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>Route Params:</strong> Part of the URL path, required - /products/123</li>
+                            <li><strong>Query Params:</strong> After the ? in URL, optional - /products?sort=price&page=2</li>
+                            <li><strong>Use route params</strong> for essential data (product ID)</li>
+                            <li><strong>Use query params</strong> for optional filters (sorting, pagination)</li>
+                        </ul>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q2: How do you implement route guards and why would you use them?</h3>
+                        <p><strong>Answer:</strong> Route guards prevent unauthorized access using CanActivate, CanDeactivate, or Resolve:</p>
+                        <pre><code class="language-typescript">// CanActivate - Prevent entering a route
+@Injectable()
+export class AuthGuard implements CanActivate {
+  canActivate(route: ActivatedRouteSnapshot): boolean {
+    return this.authService.isLoggedIn() || this.router.navigate(['/login']);
+  }
+}
+
+// Use cases:
+// - Block admin pages unless user is admin
+// - Redirect to login if not authenticated
+// - Load required data before showing component
+// - Prevent navigation if form has unsaved changes</code></pre>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q3: What's the benefit of lazy loading and how do you implement it?</h3>
+                        <p><strong>Answer:</strong> Lazy loading loads feature modules only when user navigates to them, reducing initial bundle size and improving performance:</p>
+                        <pre><code class="language-typescript">{
+  path: 'admin',
+  loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+}
+
+// Benefits:
+// - Smaller initial bundle (faster first load)
+// - Better for large apps with many features
+// - Each feature loads independently
+
+// Child module has its own routes:
+// admin-routing.module.ts
+const routes = [
+  { path: '', component: AdminDashboard },
+  { path: 'users', component: UserMgmt }
+]
+// Now accessible at /admin and /admin/users</code></pre>
+                    </div>
+                </section>
 
             </article>
         </div>

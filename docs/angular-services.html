@@ -163,13 +163,308 @@
                     <p class="page-subtitle">Understand Angular services, dependency injection, and provider configuration.</p>
                 </div>
 
-                <div class="callout callout-info">
-                    <span class="callout-icon">ℹ️</span>
-                    <div class="callout-content">
-                        <p><strong>Coming Soon:</strong> Comprehensive guide on Angular Services and Dependency Injection</p>
-                        <p>Topics will include: Service creation, providers, injector hierarchy, and best practices for service organization.</p>
+                <!-- Introduction -->
+                <section class="content-section">
+                    <h2>What Are Services & DI?</h2>
+                    <p><strong>Services</strong> are singleton classes that contain reusable business logic, API calls, or data access code. They're injected into components via <strong>Dependency Injection (DI)</strong>, which automatically creates and provides service instances.</p>
+                    <p>DI is a design pattern that handles object creation, reducing tight coupling and improving testability.</p>
+                </section>
+
+                <!-- Why It Matters -->
+                <section class="content-section">
+                    <h2>Why Services & DI Matter</h2>
+                    <ul class="content-list">
+                        <li><strong>Code reuse:</strong> One service shared across many components</li>
+                        <li><strong>Separation of concerns:</strong> Components display, services handle logic</li>
+                        <li><strong>Testability:</strong> Mock services for unit tests</li>
+                        <li><strong>Single responsibility:</strong> Each service does one thing well</li>
+                        <li><strong>Maintainability:</strong> Change logic once, applies everywhere</li>
+                    </ul>
+                </section>
+
+                <!-- Key Concepts -->
+                <section class="content-section">
+                    <h2>Key Concepts</h2>
+
+                    <div class="concept-card">
+                        <h3>💉 Dependency Injection</h3>
+                        <p>Framework automatically provides dependencies to components:</p>
+                        <ul class="content-list">
+                            <li>Services registered in module providers or component</li>
+                            <li>Constructor injection - service passed to constructor</li>
+                            <li>Singleton by default - same instance across app</li>
+                            <li>Hierarchy: Root, Module, Component level providers</li>
+                        </ul>
                     </div>
-                </div>
+
+                    <div class="concept-card">
+                        <h3>🏢 Service Structure</h3>
+                        <p>Services are TypeScript classes decorated with @Injectable():</p>
+                        <pre><code class="language-typescript">@Injectable({providedIn: 'root'})
+export class DataService {
+  // Provide globally
+}</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>📡 HTTP Services</h3>
+                        <p>Services typically wrap HttpClient for API calls:</p>
+                        <ul class="content-list">
+                            <li>Inject HttpClient in service constructor</li>
+                            <li>Methods return Observables</li>
+                            <li>Components subscribe to get data</li>
+                            <li>Centralize API logic in one place</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🔄 Providers & Scope</h3>
+                        <p>Control when/where services are created:</p>
+                        <ul class="content-list">
+                            <li><code>providedIn: 'root'</code> - App-wide singleton</li>
+                            <li><code>providedIn: ModuleClass</code> - Module scope</li>
+                            <li><code>providers: [Service]</code> - Component scope (new instance)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section class="content-section">
+                    <h2>Code Examples</h2>
+
+                    <h3>Example 1: Basic Service with HTTP</h3>
+                    <pre><code class="language-typescript">import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root' // Available app-wide
+})
+export class ProductService {
+  private apiUrl = 'http://api.example.com/products';
+
+  constructor(private http: HttpClient) {} // DI in constructor
+
+  getProducts(): Observable&lt;any[]&gt; {
+    return this.http.get&lt;any[]&gt;(this.apiUrl);
+  }
+
+  getProductById(id: number): Observable&lt;any&gt; {
+    return this.http.get&lt;any&gt;(`${this.apiUrl}/${id}`);
+  }
+
+  createProduct(product: any): Observable&lt;any&gt; {
+    return this.http.post&lt;any&gt;(this.apiUrl, product);
+  }
+
+  updateProduct(id: number, product: any): Observable&lt;any&gt; {
+    return this.http.put&lt;any&gt;(`${this.apiUrl}/${id}`, product);
+  }
+
+  deleteProduct(id: number): Observable&lt;void&gt; {
+    return this.http.delete&lt;void&gt;(`${this.apiUrl}/${id}`);
+  }
+}
+</code></pre>
+
+                    <h3>Example 2: Using Service in Component</h3>
+                    <pre><code class="language-typescript">import { Component, OnInit } from '@angular/core';
+import { ProductService } from './services/product.service';
+
+@Component({
+  selector: 'app-product-list',
+  templateUrl: './product-list.component.html'
+})
+export class ProductListComponent implements OnInit {
+  products: any[] = [];
+  loading = true;
+  error: string | null = null;
+
+  constructor(private productService: ProductService) {} // Inject service
+
+  ngOnInit() {
+    this.loadProducts();
+  }
+
+  loadProducts() {
+    this.loading = true;
+    this.productService.getProducts().subscribe(
+      (data) => {
+        this.products = data;
+        this.loading = false;
+      },
+      (error) => {
+        this.error = 'Failed to load products';
+        this.loading = false;
+      }
+    );
+  }
+
+  deleteProduct(id: number) {
+    this.productService.deleteProduct(id).subscribe(
+      () => {
+        this.products = this.products.filter(p => p.id !== id);
+      },
+      (error) => console.error('Delete failed', error)
+    );
+  }
+}
+</code></pre>
+
+                    <h3>Example 3: Shared State Service</h3>
+                    <pre><code class="language-typescript">import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+
+@Injectable({providedIn: 'root'})
+export class ShoppingCartService {
+  private cartItems = new BehaviorSubject&lt;any[]&gt;([]);
+  cart$ = this.cartItems.asObservable();
+
+  addItem(item: any) {
+    const current = this.cartItems.value;
+    this.cartItems.next([...current, item]);
+  }
+
+  removeItem(id: number) {
+    const updated = this.cartItems.value.filter(item => item.id !== id);
+    this.cartItems.next(updated);
+  }
+
+  getTotal(): number {
+    return this.cartItems.value.reduce((sum, item) => sum + item.price, 0);
+  }
+}
+
+// Use in component
+export class CartComponent {
+  cartItems$ = this.cart.cart$;
+
+  constructor(private cart: ShoppingCartService) {}
+
+  onRemove(id: number) {
+    this.cart.removeItem(id);
+  }
+}
+</code></pre>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>✅ Best Practices</h2>
+
+                    <div class="best-practice">
+                        <h3>1. Use providedIn: 'root' for Global Services</h3>
+                        <p><strong>Why:</strong> Tree-shakeable, only included if used, modern approach</p>
+                        <pre><code class="language-typescript">@Injectable({providedIn: 'root'})
+export class MyService { }
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>2. Inject Services in Constructor</h3>
+                        <p><strong>Why:</strong> Clear dependencies, easier to test</p>
+                        <pre><code class="language-typescript">constructor(
+  private http: HttpClient,
+  private logger: LoggerService
+) { }
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>3. Return Observables, Let Components Subscribe</h3>
+                        <p><strong>Why:</strong> Services stay generic, components control subscription</p>
+                        <pre><code class="language-typescript">// Service - returns observable
+getData(): Observable&lt;Data&gt; {
+  return this.http.get&lt;Data&gt;(url);
+}
+
+// Component subscribes
+this.service.getData().subscribe(data => { });
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>4. Use BehaviorSubject for Shared State</h3>
+                        <p><strong>Why:</strong> Multiple components can access same state</p>
+                        <p>See Example 3 above for cart service pattern.</p>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>5. Handle Errors in Services</h3>
+                        <p><strong>Why:</strong> Provide meaningful error feedback</p>
+                        <pre><code class="language-typescript">getProducts(): Observable&lt;any[]&gt; {
+  return this.http.get&lt;any[]&gt;(this.apiUrl).pipe(
+    catchError(error => {
+      console.error('API error:', error);
+      return throwError(() => new Error('Failed to fetch products'));
+    })
+  );
+}
+</code></pre>
+                    </div>
+                </section>
+
+                <!-- Resources -->
+                <section class="content-section">
+                    <h2>📚 Resources</h2>
+                    <ul class="content-list">
+                        <li><strong>Angular Services:</strong> <a href="https://angular.io/guide/creating-injectable-service" target="_blank">Official Guide</a></li>
+                        <li><strong>Dependency Injection:</strong> <a href="https://angular.io/guide/dependency-injection" target="_blank">DI Documentation</a></li>
+                        <li><strong>HttpClient:</strong> <a href="https://angular.io/guide/http" target="_blank">HTTP Guide</a></li>
+                    </ul>
+                </section>
+
+                <!-- Interview Q&A -->
+                <section class="content-section interview-section">
+                    <h2>🎓 Interview Q&A</h2>
+
+                    <div class="qa-item">
+                        <h3>Q1: What's the difference between providedIn and providers array?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><code>providedIn: 'root'</code> - App-wide singleton, created once, tree-shakeable</li>
+                            <li><code>providers: [Service]</code> in component - New instance per component, never shared</li>
+                            <li><code>providedIn: ModuleClass</code> - Module scope singleton</li>
+                        </ul>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q2: How do you pass data between sibling components?</h3>
+                        <p><strong>Answer:</strong> Use a shared service with BehaviorSubject or Subject:</p>
+                        <pre><code class="language-typescript">// Service
+@Injectable()
+export class DataService {
+  private data$ = new BehaviorSubject&lt;string&gt;('');
+  data = this.data$.asObservable();
+
+  updateData(value: string) {
+    this.data$.next(value);
+  }
+}
+
+// Component A - sends data
+this.service.updateData('Hello');
+
+// Component B - receives data
+this.service.data.subscribe(value => console.log(value));
+</code></pre>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q3: What's a service provider and when would you create one?</h3>
+                        <p><strong>Answer:</strong> Provider configures how DI creates service instances. Use custom providers for:</p>
+                        <ul class="content-list">
+                            <li>Different implementations based on environment</li>
+                            <li>Configuration-based setup</li>
+                            <li>Factory functions</li>
+                        </ul>
+                        <pre><code class="language-typescript">// Use mock service in testing
+providers: [
+  { provide: ProductService, useClass: MockProductService }
+]
+</code></pre>
+                    </div>
+                </section>
 
             </article>
         </div>

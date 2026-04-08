@@ -163,13 +163,239 @@
                     <p class="page-subtitle">Manage global state with React Context API and providers.</p>
                 </div>
 
-                <div class="callout callout-info">
-                    <span class="callout-icon">ℹ️</span>
-                    <div class="callout-content">
-                        <p><strong>Coming Soon:</strong> Comprehensive guide on React Context API</p>
-                        <p>Topics will include: Creating contexts, providers, consumers, useContext hook, and state management patterns.</p>
+                <!-- Introduction -->
+                <section class="content-section">
+                    <h2>What Is Context API?</h2>
+                    <p><strong>Context API</strong> provides a way to pass data through the component tree without manually passing props at every level. It's perfect for sharing data like user authentication, theme preferences, or language settings across your entire app.</p>
+                    <p>Instead of prop drilling (passing props through many layers), use Context to make data globally available.</p>
+                </section>
+
+                <!-- Why It Matters -->
+                <section class="content-section">
+                    <h2>Why Context API Matters</h2>
+                    <ul class="content-list">
+                        <li><strong>Avoid Prop Drilling:</strong> No need to pass props through every component level</li>
+                        <li><strong>Global State:</strong> Share data across entire app easily</li>
+                        <li><strong>Theme Management:</strong> Switch themes without touching props</li>
+                        <li><strong>Authentication:</strong> Access user data from any component</li>
+                        <li><strong>Cleaner Code:</strong> Components don't pass irrelevant props</li>
+                    </ul>
+                </section>
+
+                <!-- Key Concepts -->
+                <section class="content-section">
+                    <h2>Key Concepts</h2>
+
+                    <div class="concept-card">
+                        <h3>📦 createContext</h3>
+                        <p>Creates a context object to hold data:</p>
+                        <pre><code class="language-javascript">const ThemeContext = createContext('light');</code></pre>
                     </div>
-                </div>
+
+                    <div class="concept-card">
+                        <h3>🔌 Provider</h3>
+                        <p>Wraps components and provides context value:</p>
+                        <pre><code class="language-javascript">&lt;ThemeContext.Provider value={{ theme, setTheme }}&gt;
+  &lt;App /&gt;
+&lt;/ThemeContext.Provider&gt;</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🎯 useContext Hook</h3>
+                        <p>Consume context value in any nested component:</p>
+                        <pre><code class="language-javascript">const { theme } = useContext(ThemeContext);</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>⚠️ When NOT to Use</h3>
+                        <ul class="content-list">
+                            <li>Frequently changing data (causes re-renders)</li>
+                            <li>Complex state management (use Redux instead)</li>
+                            <li>Simple prop passing between 1-2 levels</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section class="content-section">
+                    <h2>Code Examples</h2>
+
+                    <h3>Example 1: Theme Context</h3>
+                    <pre><code class="language-javascript">import { createContext, useState, useContext } from 'react';
+
+// Create context
+const ThemeContext = createContext();
+
+// Provider component
+export function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState('light');
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
+
+  return (
+    &lt;ThemeContext.Provider value={{ theme, toggleTheme }}&gt;
+      {children}
+    &lt;/ThemeContext.Provider&gt;
+  );
+}
+
+// Custom hook
+export function useTheme() {
+  return useContext(ThemeContext);
+}
+
+// App setup
+function App() {
+  return (
+    &lt;ThemeProvider&gt;
+      &lt;Header /&gt;
+    &lt;/ThemeProvider&gt;
+  );
+}
+
+// Any component can use theme
+function Button() {
+  const { theme, toggleTheme } = useTheme();
+  return (
+    &lt;button
+      onClick={toggleTheme}
+      style={{ background: theme === 'light' ? '#fff' : '#333' }}
+    &gt;
+      Toggle Theme
+    &lt;/button&gt;
+  );
+}
+</code></pre>
+
+                    <h3>Example 2: Authentication Context</h3>
+                    <pre><code class="language-javascript">const AuthContext = createContext();
+
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Check if logged in
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/me');
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkAuth();
+  }, []);
+
+  return (
+    &lt;AuthContext.Provider value={{ user, loading }}&gt;
+      {children}
+    &lt;/AuthContext.Provider&gt;
+  );
+}
+
+// Protected component
+function Dashboard() {
+  const { user, loading } = useContext(AuthContext);
+  if (loading) return &lt;div&gt;Loading...&lt;/div&gt;;
+  if (!user) return &lt;Navigate to="/login" /&gt;;
+  return &lt;h1&gt;Welcome, {user.name}!&lt;/h1&gt;;
+}
+</code></pre>
+
+                    <h3>Example 3: Notification Context</h3>
+                    <pre><code class="language-javascript">const NotificationContext = createContext();
+
+export function NotificationProvider({ children }) {
+  const [notifications, setNotifications] = useState([]);
+
+  const addNotification = (message, type = 'info') => {
+    const id = Date.now();
+    setNotifications(prev => [...prev, { id, message, type }]);
+    setTimeout(() => {
+      setNotifications(prev => prev.filter(n => n.id !== id));
+    }, 3000);
+  };
+
+  return (
+    &lt;NotificationContext.Provider value={{ addNotification }}&gt;
+      {children}
+      &lt;NotificationList notifications={notifications} /&gt;
+    &lt;/NotificationContext.Provider&gt;
+  );
+}
+
+// Usage
+function SaveForm() {
+  const { addNotification } = useContext(NotificationContext);
+
+  const handleSave = async () => {
+    try {
+      await fetch('/api/save', { method: 'POST' });
+      addNotification('Saved!', 'success');
+    } catch (err) {
+      addNotification('Error: ' + err.message, 'error');
+    }
+  };
+
+  return &lt;button onClick={handleSave}&gt;Save&lt;/button&gt;;
+}
+</code></pre>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>✅ Best Practices</h2>
+
+                    <div class="best-practice">
+                        <h3>1. Always Create Custom Hook Wrapper</h3>
+                        <p><strong>Why:</strong> Cleaner and enforces that providers exist</p>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>2. Split Large Contexts</h3>
+                        <p><strong>Why:</strong> Context changes cause all consumers to re-render</p>
+                        <p>Use separate contexts for theme, auth, and notifications</p>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>3. Memoize Context Value</h3>
+                        <p><strong>Why:</strong> Prevents unnecessary re-renders</p>
+                    </div>
+                </section>
+
+                <!-- Resources -->
+                <section class="content-section">
+                    <h2>📚 Resources</h2>
+                    <ul class="content-list">
+                        <li><strong>Context API Guide:</strong> <a href="https://react.dev/reference/react/useContext" target="_blank">Official React Docs</a></li>
+                    </ul>
+                </section>
+
+                <!-- Interview Q&A -->
+                <section class="content-section interview-section">
+                    <h2>🎓 Interview Q&A</h2>
+
+                    <div class="qa-item">
+                        <h3>Q1: What's prop drilling and how does Context solve it?</h3>
+                        <p><strong>Answer:</strong> Prop drilling means passing props through many intermediate components. Context makes data globally available, avoiding this.</p>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q2: When should you use Context vs Redux?</h3>
+                        <p><strong>Answer:</strong> Context for simple state (theme, auth). Redux for complex apps with many state changes and debugging needs.</p>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q3: Why do all consumers re-render when context changes?</h3>
+                        <p><strong>Answer:</strong> React can't know which consumers only need part of it. Solution: split into smaller contexts or memoize.</p>
+                    </div>
+                </section>
 
             </article>
         </div>

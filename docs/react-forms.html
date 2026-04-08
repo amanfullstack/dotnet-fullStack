@@ -163,13 +163,327 @@
                     <p class="page-subtitle">Handle forms, input validation, and form submission in React.</p>
                 </div>
 
-                <div class="callout callout-info">
-                    <span class="callout-icon">ℹ️</span>
-                    <div class="callout-content">
-                        <p><strong>Coming Soon:</strong> Comprehensive guide on React Forms and Validation</p>
-                        <p>Topics will include: Controlled components, form submission, validation libraries, and error handling.</p>
+                <!-- Introduction -->
+                <section class="content-section">
+                    <h2>Working with Forms in React</h2>
+                    <p><strong>React forms</strong> are controlled components where React manages the form state. Unlike HTML forms, React inputs don't automatically handle state - you control them via state variables and onChange handlers.</p>
+                    <p>This gives you full control over form validation, submission, and user experience.</p>
+                </section>
+
+                <!-- Why It Matters -->
+                <section class="content-section">
+                    <h2>Why Forms Matter</h2>
+                    <ul class="content-list">
+                        <li><strong>Real-time Validation:</strong> Validate as user types</li>
+                        <li><strong>State Control:</strong> Know exactly what user entered</li>
+                        <li><strong>Better UX:</strong> Clear error messages, disabled submit, etc.</li>
+                        <li><strong>Flexibility:</strong> Custom validation rules for your app</li>
+                        <li><strong>Security:</strong> Validate before sending to server</li>
+                    </ul>
+                </section>
+
+                <!-- Key Concepts -->
+                <section class="content-section">
+                    <h2>Key Concepts</h2>
+
+                    <div class="concept-card">
+                        <h3>🎮 Controlled Components</h3>
+                        <p>React state controls the input value:</p>
+                        <pre><code class="language-javascript">const [email, setEmail] = useState('');
+
+&lt;input
+  value={email}
+  onChange={e => setEmail(e.target.value)}
+/&gt;</code></pre>
                     </div>
-                </div>
+
+                    <div class="concept-card">
+                        <h3>✅ Form Validation</h3>
+                        <ul class="content-list">
+                            <li>Required fields check</li>
+                            <li>Email format validation</li>
+                            <li>Password strength rules</li>
+                            <li>Minimum length checks</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>📤 Form Submission</h3>
+                        <p>Handle submission with preventDefault:</p>
+                        <pre><code class="language-javascript">const handleSubmit = (e) => {
+  e.preventDefault();
+  // Send data to API
+};</code></pre>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section class="content-section">
+                    <h2>Code Examples</h2>
+
+                    <h3>Example 1: Simple Login Form</h3>
+                    <pre><code class="language-javascript">import { useState } from 'react';
+
+function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate
+    if (!email || !password) {
+      setError('All fields required');
+      return;
+    }
+
+    // Send to API
+    try {
+      const response = await fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (response.ok) {
+        console.log('Login successful!');
+      } else {
+        setError('Invalid credentials');
+      }
+    } catch (err) {
+      setError('Error: ' + err.message);
+    }
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;div&gt;
+        &lt;label&gt;Email&lt;/label&gt;
+        &lt;input
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label&gt;Password&lt;/label&gt;
+        &lt;input
+          type="password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        /&gt;
+      &lt;/div&gt;
+
+      {error && &lt;p className="error"&gt;{error}&lt;/p&gt;}
+
+      &lt;button type="submit"&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+</code></pre>
+
+                    <h3>Example 2: Form with Validation</h3>
+                    <pre><code class="language-javascript">function ProductForm() {
+  const [form, setForm] = useState({
+    name: '',
+    price: '',
+    category: ''
+  });
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!form.name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+
+    if (!form.price || parseFloat(form.price) &lt;= 0) {
+      newErrors.price = 'Price must be positive';
+    }
+
+    if (!form.category) {
+      newErrors.category = 'Category is required';
+    }
+
+    return newErrors;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+    // Clear error for this field
+    setErrors(prev => ({ ...prev, [name]: '' }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    console.log('Form valid, submitting:', form);
+    // Send to API
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;div&gt;
+        &lt;label&gt;Product Name&lt;/label&gt;
+        &lt;input
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+        /&gt;
+        {errors.name && &lt;span className="error"&gt;{errors.name}&lt;/span&gt;}
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label&gt;Price&lt;/label&gt;
+        &lt;input
+          type="number"
+          name="price"
+          value={form.price}
+          onChange={handleChange}
+        /&gt;
+        {errors.price && &lt;span className="error"&gt;{errors.price}&lt;/span&gt;}
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label&gt;Category&lt;/label&gt;
+        &lt;select name="category" value={form.category} onChange={handleChange}&gt;
+          &lt;option value=""&gt;Select...&lt;/option&gt;
+          &lt;option value="electronics"&gt;Electronics&lt;/option&gt;
+          &lt;option value="clothing"&gt;Clothing&lt;/option&gt;
+        &lt;/select&gt;
+        {errors.category && &lt;span className="error"&gt;{errors.category}&lt;/span&gt;}
+      &lt;/div&gt;
+
+      &lt;button type="submit"&gt;Add Product&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+</code></pre>
+
+                    <h3>Example 3: Password Strength Indicator</h3>
+                    <pre><code class="language-javascript">function SignupForm() {
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
+  const getPasswordStrength = (pwd) => {
+    if (!pwd) return 'weak';
+
+    let strength = 'weak';
+    if (pwd.length >= 8 && /[0-9]/.test(pwd) && /[A-Z]/.test(pwd)) {
+      strength = 'medium';
+    }
+    if (pwd.length >= 12 && /[!@#$%^&*]/.test(pwd)) {
+      strength = 'strong';
+    }
+
+    return strength;
+  };
+
+  const strength = getPasswordStrength(password);
+
+  return (
+    &lt;div&gt;
+      &lt;input
+        type={showPassword ? 'text' : 'password'}
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+        placeholder="Enter password"
+      /&gt;
+
+      &lt;button
+        type="button"
+        onClick={() => setShowPassword(!showPassword)}
+      &gt;
+        {showPassword ? 'Hide' : 'Show'}
+      &lt;/button&gt;
+
+      &lt;!-- Strength indicator --&gt;
+      &lt;div&gt;
+        &lt;div className={`strength-bar ${strength}`}&gt;&lt;/div&gt;
+        &lt;p&gt;Strength: {strength}&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Requirements checklist --&gt;
+      &lt;ul&gt;
+        &lt;li className={password.length >= 8 ? 'ok' : 'bad'}&gt;
+          At least 8 characters
+        &lt;/li&gt;
+        &lt;li className={/[0-9]/.test(password) ? 'ok' : 'bad'}&gt;
+          Has number
+        &lt;/li&gt;
+        &lt;li className={/[A-Z]/.test(password) ? 'ok' : 'bad'}&gt;
+          Has uppercase
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>✅ Best Practices</h2>
+
+                    <div class="best-practice">
+                        <h3>1. Use Controlled Components</h3>
+                        <p><strong>Why:</strong> React controls the state, not the browser</p>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>2. Validate on Submit AND Change</h3>
+                        <p><strong>Why:</strong> Catch errors early, but don't overwhelm user</p>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>3. Use preventDefault()</h3>
+                        <p><strong>Why:</strong> Stop browser from submitting form normally</p>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>4. Show Clear Error Messages</h3>
+                        <p><strong>Why:</strong> Helps users fix issues quickly</p>
+                    </div>
+                </section>
+
+                <!-- Resources -->
+                <section class="content-section">
+                    <h2>📚 Resources</h2>
+                    <ul class="content-list">
+                        <li><strong>React Forms Guide:</strong> <a href="https://react.dev/reference/react-dom/components/input" target="_blank">Official Docs</a></li>
+                        <li><strong>Form Validation Libraries:</strong> <a href="https://react-hook-form.com/" target="_blank">React Hook Form</a>, <a href="https://formik.org/" target="_blank">Formik</a></li>
+                    </ul>
+                </section>
+
+                <!-- Interview Q&A -->
+                <section class="content-section interview-section">
+                    <h2>🎓 Interview Q&A</h2>
+
+                    <div class="qa-item">
+                        <h3>Q1: What's the difference between controlled and uncontrolled components?</h3>
+                        <p><strong>Answer:</strong> Controlled components are managed by React state. Uncontrolled let the browser manage state. Use controlled for validation and control.</p>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q2: When should you validate forms?</h3>
+                        <p><strong>Answer:</strong> On change (show feedback), on blur (not too intrusive), on submit (final check)</p>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q3: How do you handle complex forms with many fields?</h3>
+                        <p><strong>Answer:</strong> Use useReducer for state or form libraries like React Hook Form/Formik</p>
+                    </div>
+                </section>
 
             </article>
         </div>

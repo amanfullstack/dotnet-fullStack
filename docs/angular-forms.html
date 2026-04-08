@@ -160,16 +160,573 @@
 
                 <div class="page-title-block">
                     <h1 class="page-title">📋 Reactive Forms</h1>
-                    <p class="page-subtitle">Master reactive forms, form controls, and validation in Angular.</p>
+                    <p class="page-subtitle">Build powerful, testable forms with FormBuilder, validation, and reactive patterns.</p>
                 </div>
 
-                <div class="callout callout-info">
-                    <span class="callout-icon">ℹ️</span>
-                    <div class="callout-content">
-                        <p><strong>Coming Soon:</strong> Comprehensive guide on Angular Reactive Forms</p>
-                        <p>Topics will include: FormControl, FormGroup, FormBuilder, validation, async validators, and form array patterns.</p>
+                <!-- Introduction -->
+                <section class="content-section">
+                    <h2>What Are Reactive Forms?</h2>
+                    <p><strong>Reactive Forms</strong> give you full programmatic control over form structure and validation. Instead of putting logic in templates, you write it in your TypeScript component using <code>FormControl</code>, <code>FormGroup</code>, and <code>FormBuilder</code>.</p>
+                    <p>This approach is perfect for complex validation, dynamic fields, real-time form state management, and unit testing.</p>
+                </section>
+
+                <!-- Why It Matters -->
+                <section class="content-section">
+                    <h2>Why Reactive Forms Matter</h2>
+                    <ul class="content-list">
+                        <li><strong>Testability:</strong> Validation logic is in code, not templates - easy to test</li>
+                        <li><strong>Flexibility:</strong> Build forms dynamically with FormArray and nested FormGroups</li>
+                        <li><strong>Reactive:</strong> Subscribe to form changes with observables</li>
+                        <li><strong>Powerful Validation:</strong> Mix built-in and custom validators, sync and async</li>
+                        <li><strong>Type Safety:</strong> Work with strongly-typed form data</li>
+                    </ul>
+                </section>
+
+                <!-- Key Concepts -->
+                <section class="content-section">
+                    <h2>Key Concepts</h2>
+
+                    <div class="concept-card">
+                        <h3>🎮 FormControl</h3>
+                        <p>Represents a single form field. Tracks value, validation state, and touched/dirty status.</p>
+                        <pre><code class="language-typescript">// Create a single control
+const nameControl = new FormControl('', Validators.required);
+
+// Check state
+console.log(nameControl.value);        // Current value
+console.log(nameControl.valid);        // Is it valid?
+console.log(nameControl.touched);      // Has user interacted?
+console.log(nameControl.dirty);        // Has value changed?</code></pre>
                     </div>
-                </div>
+
+                    <div class="concept-card">
+                        <h3>📦 FormGroup</h3>
+                        <p>Groups multiple FormControls together. Useful for complex forms with related fields.</p>
+                        <pre><code class="language-typescript">// Group multiple controls
+const form = new FormGroup({
+  firstName: new FormControl(''),
+  lastName: new FormControl(''),
+  email: new FormControl('')
+});
+
+// Access individual controls
+form.get('firstName').value;
+form.get('email').hasError('email');</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🔄 FormArray</h3>
+                        <p>Dynamic array of FormControls or FormGroups. Perfect for "Add More" features.</p>
+                        <pre><code class="language-typescript">// Create array of addresses
+const addressArray = new FormArray([
+  new FormGroup({
+    street: new FormControl(''),
+    city: new FormControl('')
+  })
+]);
+
+// Add more addresses dynamically
+addressArray.push(new FormGroup({
+  street: new FormControl(''),
+  city: new FormControl('')
+}));</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🛠️ FormBuilder</h3>
+                        <p>Convenient shorthand for creating forms. Much less verbose than manual FormGroup/FormControl.</p>
+                        <pre><code class="language-typescript">// Using FormBuilder (recommended)
+this.form = this.fb.group({
+  email: ['', [Validators.required, Validators.email]],
+  password: ['', [Validators.required, Validators.minLength(8)]]
+});
+
+// Instead of manual creation:
+// this.form = new FormGroup({
+//   email: new FormControl('', [Validators.required, Validators.email]),
+//   password: new FormControl('', [Validators.required, Validators.minLength(8)])
+// });</code></pre>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>✅ Validators</h3>
+                        <p>Built-in and custom validation functions:</p>
+                        <ul class="content-list">
+                            <li><strong>Synchronous:</strong> Validators.required, email, minLength, pattern, etc.</li>
+                            <li><strong>Asynchronous:</strong> Check email availability, username uniqueness via API</li>
+                            <li><strong>Custom:</strong> Write your own ValidatorFn for specific business logic</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section class="content-section">
+                    <h2>Code Examples</h2>
+
+                    <h3>Example 1: Basic Login Form</h3>
+                    <pre><code class="language-typescript">import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent implements OnInit {
+  loginForm: FormGroup;
+
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit() {
+    // Create form with validation
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8)
+      ]],
+      rememberMe: [false] // Optional field
+    });
+  }
+
+  // Helper getters for template
+  get email() { return this.loginForm.get('email'); }
+  get password() { return this.loginForm.get('password'); }
+
+  onSubmit() {
+    if (this.loginForm.valid) {
+      console.log('Form Value:', this.loginForm.value);
+      // {
+      //   email: 'user@example.com',
+      //   password: 'securePassword123',
+      //   rememberMe: false
+      // }
+      // Call authentication service here
+    }
+  }
+
+  reset() {
+    this.loginForm.reset(); // Clear all values
+  }
+}
+</code></pre>
+
+                    <pre><code class="language-html">&lt;!-- login.component.html --&gt;
+&lt;form [formGroup]="loginForm" (ngSubmit)="onSubmit()"&gt;
+  &lt;!-- Email field --&gt;
+  &lt;div class="form-group"&gt;
+    &lt;label for="email"&gt;Email&lt;/label&gt;
+    &lt;input
+      id="email"
+      type="email"
+      formControlName="email"
+      placeholder="Enter your email"
+      class="form-control"&gt;
+    &lt;!-- Show error only after user touches field --&gt;
+    &lt;small class="error" *ngIf="email.invalid && email.touched"&gt;
+      &lt;span *ngIf="email.hasError('required')"&gt;Email is required&lt;/span&gt;
+      &lt;span *ngIf="email.hasError('email')"&gt;Invalid email format&lt;/span&gt;
+    &lt;/small&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Password field --&gt;
+  &lt;div class="form-group"&gt;
+    &lt;label for="password"&gt;Password&lt;/label&gt;
+    &lt;input
+      id="password"
+      type="password"
+      formControlName="password"
+      placeholder="Minimum 8 characters"
+      class="form-control"&gt;
+    &lt;small class="error" *ngIf="password.invalid && password.touched"&gt;
+      &lt;span *ngIf="password.hasError('required')"&gt;Password is required&lt;/span&gt;
+      &lt;span *ngIf="password.hasError('minlength')"&gt;
+        Password must be at least {{password.getError('minlength').requiredLength}} characters
+      &lt;/span&gt;
+    &lt;/small&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Checkbox --&gt;
+  &lt;div class="form-group"&gt;
+    &lt;input
+      id="rememberMe"
+      type="checkbox"
+      formControlName="rememberMe"&gt;
+    &lt;label for="rememberMe"&gt;Remember me&lt;/label&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Submit button disabled until form is valid --&gt;
+  &lt;button type="submit" [disabled]="loginForm.invalid"&gt;
+    Login
+  &lt;/button&gt;
+  &lt;button type="button" (click)="reset()"&gt;Clear&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+
+                    <h3>Example 2: Product Form with Dynamic Addresses (FormArray)</h3>
+                    <pre><code class="language-typescript">import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-product-form',
+  templateUrl: './product-form.component.html'
+})
+export class ProductFormComponent implements OnInit {
+  productForm: FormGroup;
+
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit() {
+    this.productForm = this.fb.group({
+      productName: ['', [Validators.required, Validators.minLength(3)]],
+      description: ['', Validators.required],
+      price: ['', [Validators.required, Validators.min(0)]],
+      // FormArray for multiple warehouse locations
+      warehouses: this.fb.array([
+        this.createWarehouseControl()
+      ])
+    });
+  }
+
+  // Helper to create a warehouse control
+  private createWarehouseControl(): FormGroup {
+    return this.fb.group({
+      location: ['', Validators.required],
+      quantity: ['', [Validators.required, Validators.min(1)]]
+    });
+  }
+
+  // Getter for warehouses array
+  get warehouses(): FormArray {
+    return this.productForm.get('warehouses') as FormArray;
+  }
+
+  // Add new warehouse
+  addWarehouse() {
+    this.warehouses.push(this.createWarehouseControl());
+  }
+
+  // Remove warehouse at index
+  removeWarehouse(index: number) {
+    this.warehouses.removeAt(index);
+  }
+
+  onSubmit() {
+    if (this.productForm.valid) {
+      console.log('Product:', this.productForm.value);
+      // {
+      //   productName: 'Laptop',
+      //   description: 'High-performance laptop',
+      //   price: 1299,
+      //   warehouses: [
+      //     { location: 'NY', quantity: 50 },
+      //     { location: 'CA', quantity: 30 }
+      //   ]
+      // }
+    }
+  }
+}
+</code></pre>
+
+                    <pre><code class="language-html">&lt;!-- product-form.component.html --&gt;
+&lt;form [formGroup]="productForm" (ngSubmit)="onSubmit()"&gt;
+  &lt;!-- Product Name --&gt;
+  &lt;div&gt;
+    &lt;label&gt;Product Name&lt;/label&gt;
+    &lt;input formControlName="productName" type="text"&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Description --&gt;
+  &lt;div&gt;
+    &lt;label&gt;Description&lt;/label&gt;
+    &lt;textarea formControlName="description"&gt;&lt;/textarea&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Price --&gt;
+  &lt;div&gt;
+    &lt;label&gt;Price&lt;/label&gt;
+    &lt;input formControlName="price" type="number"&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Warehouses (FormArray) --&gt;
+  &lt;div formArrayName="warehouses"&gt;
+    &lt;h3&gt;Warehouse Locations&lt;/h3&gt;
+    &lt;div *ngFor="let warehouse of warehouses.controls; let i = index" [formGroupName]="i"&gt;
+      &lt;div&gt;
+        &lt;label&gt;Location {{i + 1}}&lt;/label&gt;
+        &lt;input formControlName="location" type="text" placeholder="e.g., New York"&gt;
+      &lt;/div&gt;
+      &lt;div&gt;
+        &lt;label&gt;Quantity&lt;/label&gt;
+        &lt;input formControlName="quantity" type="number"&gt;
+      &lt;/div&gt;
+      &lt;button type="button" (click)="removeWarehouse(i)" *ngIf="warehouses.length > 1"&gt;
+        Remove Location
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Add warehouse button --&gt;
+  &lt;button type="button" (click)="addWarehouse()"&gt;
+    + Add Warehouse Location
+  &lt;/button&gt;
+
+  &lt;!-- Submit --&gt;
+  &lt;button type="submit" [disabled]="productForm.invalid"&gt;Save Product&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+
+                    <h3>Example 3: Custom Validator for Password Matching</h3>
+                    <pre><code class="language-typescript">import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+
+// Custom validator function
+function passwordMatchValidator(): ValidatorFn {
+  return (formGroup: AbstractControl): ValidationErrors | null => {
+    const password = formGroup.get('password');
+    const confirmPassword = formGroup.get('confirmPassword');
+
+    if (!password || !confirmPassword) {
+      return null;
+    }
+
+    // Compare passwords
+    if (password.value === confirmPassword.value) {
+      return null; // Valid
+    } else {
+      confirmPassword.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true }; // Invalid
+    }
+  };
+}
+
+@Component({
+  selector: 'app-signup',
+  templateUrl: './signup.component.html'
+})
+export class SignupComponent implements OnInit {
+  signupForm: FormGroup;
+
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit() {
+    this.signupForm = this.fb.group({
+      username: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(20)
+      ]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8),
+        // Custom: must have uppercase, lowercase, number
+        this.passwordStrengthValidator()
+      ]],
+      confirmPassword: ['', Validators.required]
+    }, {
+      // Apply group-level validator
+      validators: passwordMatchValidator()
+    });
+  }
+
+  // Custom validator for password strength
+  private passwordStrengthValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+
+      if (!value) {
+        return null;
+      }
+
+      const hasUpperCase = /[A-Z]/.test(value);
+      const hasLowerCase = /[a-z]/.test(value);
+      const hasNumeric = /[0-9]/.test(value);
+
+      const valid = hasUpperCase && hasLowerCase && hasNumeric;
+
+      if (!valid) {
+        return { weakPassword: true };
+      }
+
+      return null;
+    };
+  }
+
+  onSubmit() {
+    if (this.signupForm.valid) {
+      console.log('New User:', this.signupForm.value);
+    }
+  }
+
+  get password() { return this.signupForm.get('password'); }
+  get confirmPassword() { return this.signupForm.get('confirmPassword'); }
+}
+</code></pre>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>✅ Best Practices</h2>
+
+                    <div class="best-practice">
+                        <h3>1. Use FormBuilder for Cleaner Code</h3>
+                        <p><strong>Why:</strong> FormBuilder shorthand is much more readable than manual FormGroup/FormControl</p>
+                        <p><strong>❌ Bad:</strong> Creating controls manually with new FormControl everywhere</p>
+                        <p><strong>✅ Good:</strong> Use this.fb.group() to create entire form structure in one place</p>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>2. Show Errors Only After User Interaction</h3>
+                        <p><strong>Why:</strong> Users get frustrated seeing errors before they finish typing</p>
+                        <pre><code class="language-html">&lt;!-- Only show error if field is invalid AND touched --&gt;
+&lt;span *ngIf="email.invalid && email.touched" class="error"&gt;
+  Invalid email
+&lt;/span&gt;</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>3. Use Helper Getters in Template</h3>
+                        <p><strong>Why:</strong> Makes templates cleaner and easier to read</p>
+                        <pre><code class="language-typescript">// In component
+get email() { return this.form.get('email'); }
+get password() { return this.form.get('password'); }
+
+// In template - much cleaner
+&lt;span *ngIf="email.hasError('required')"&gt;Email required&lt;/span&gt;</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>4. Disable Submit Button Until Form Valid</h3>
+                        <p><strong>Why:</strong> Prevents invalid submissions and guides user</p>
+                        <pre><code class="language-html">&lt;button type="submit" [disabled]="form.invalid"&gt;
+  Submit
+&lt;/button&gt;</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>5. Import ReactiveFormsModule in Your Module</h3>
+                        <p><strong>Why:</strong> Reactive forms require this module to work</p>
+                        <pre><code class="language-typescript">import { ReactiveFormsModule } from '@angular/forms';
+
+@NgModule({
+  imports: [ReactiveFormsModule],
+  // ...
+})
+export class YourModule { }</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>6. Use Async Validators for API Calls</h3>
+                        <p><strong>Why:</strong> Check email availability, username uniqueness without blocking form</p>
+                        <pre><code class="language-typescript">email: ['', [Validators.email], [this.emailAvailabilityValidator()]]
+// Note: async validators go in third array</code></pre>
+                    </div>
+                </section>
+
+                <!-- Common Mistakes -->
+                <section class="content-section">
+                    <h2>❌ Common Mistakes</h2>
+
+                    <div class="mistake-box">
+                        <h3>1. Forgetting to Use formControlName on Inputs</h3>
+                        <pre><code class="language-html">&lt;!-- ❌ Wrong - input won't be tied to form control --&gt;
+&lt;input [(ngModel)]="email"&gt;
+
+&lt;!-- ✅ Correct --&gt;
+&lt;input formControlName="email"&gt;</code></pre>
+                    </div>
+
+                    <div class="mistake-box">
+                        <h3>2. Mixing ngModel with Reactive Forms</h3>
+                        <pre><code class="language-html">&lt;!-- ❌ Wrong - don't mix these approaches --&gt;
+&lt;input formControlName="email" [(ngModel)]="email"&gt;
+
+&lt;!-- ✅ Correct - use only formControlName --&gt;
+&lt;input formControlName="email"&gt;</code></pre>
+                    </div>
+
+                    <div class="mistake-box">
+                        <h3>3. Not Casting FormArray Controls</h3>
+                        <pre><code class="language-typescript">&lt;!-- ❌ Wrong - TypeScript won't know the type --&gt;
+get warehouses() { return this.form.get('warehouses'); }
+
+&lt;!-- ✅ Correct - cast to FormArray --&gt;
+get warehouses() { return this.form.get('warehouses') as FormArray; }</code></pre>
+                    </div>
+
+                    <div class="mistake-box">
+                        <h3>4. Showing Errors on All Invalid Fields</h3>
+                        <p>Shows errors immediately before user can type, frustrating experience</p>
+                        <pre><code class="language-html">&lt;!-- ❌ Wrong - shows errors too early --&gt;
+&lt;span *ngIf="email.invalid"&gt;Invalid email&lt;/span&gt;
+
+&lt;!-- ✅ Correct - wait for user to interact --&gt;
+&lt;span *ngIf="email.invalid && (email.dirty || email.touched)"&gt;Invalid&lt;/span&gt;</code></pre>
+                    </div>
+                </section>
+
+                <!-- Resources -->
+                <section class="content-section">
+                    <h2>📚 Resources</h2>
+                    <ul class="content-list">
+                        <li><strong>Angular Reactive Forms:</strong> <a href="https://angular.io/guide/reactive-forms" target="_blank">Official Documentation</a></li>
+                        <li><strong>Validators API:</strong> <a href="https://angular.io/api/forms/Validators" target="_blank">Built-in Validators Reference</a></li>
+                        <li><strong>Form Control Status:</strong> <a href="https://angular.io/api/forms/AbstractControl" target="_blank">AbstractControl API</a></li>
+                        <li><strong>FormBuilder Guide:</strong> <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder Documentation</a></li>
+                    </ul>
+                </section>
+
+                <!-- Interview Q&A -->
+                <section class="content-section interview-section">
+                    <h2>🎓 Interview Q&A</h2>
+
+                    <div class="qa-item">
+                        <h3>Q1: What's the difference between Template-Driven and Reactive Forms?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>Template-Driven:</strong> Logic in HTML, uses ngModel, easier for simple forms, harder to test</li>
+                            <li><strong>Reactive:</strong> Logic in TypeScript, uses FormControl, better for complex forms, easier to test</li>
+                            <li><strong>Rule of thumb:</strong> Use Reactive for complex validation, Template-Driven for simple CRUD forms</li>
+                        </ul>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q2: How do you validate that two password fields match?</h3>
+                        <p><strong>Answer:</strong> Use a group-level custom validator on the FormGroup, not on individual controls:</p>
+                        <pre><code class="language-typescript">function passwordMatchValidator(): ValidatorFn {
+  return (formGroup: AbstractControl): ValidationErrors | null => {
+    const password = formGroup.get('password');
+    const confirmPassword = formGroup.get('confirmPassword');
+
+    return password?.value === confirmPassword?.value ? null : { passwordMismatch: true };
+  };
+}
+
+// In component:
+this.form = this.fb.group({
+  password: ['', Validators.required],
+  confirmPassword: ['', Validators.required]
+}, { validators: passwordMatchValidator() });</code></pre>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q3: How do you implement async validation (e.g., check if email exists)?</h3>
+                        <p><strong>Answer:</strong> Pass an async validator function as the third parameter:</p>
+                        <pre><code class="language-typescript">email: ['', [Validators.email], [this.emailExistsValidator()]],
+
+// Async validator returns Observable/Promise of errors
+private emailExistsValidator(): AsyncValidatorFn {
+  return (control: AbstractControl): Observable&lt;ValidationErrors | null&gt; => {
+    return this.userService.checkEmailExists(control.value).pipe(
+      map(exists => exists ? { emailTaken: true } : null),
+      debounceTime(300),
+      first()
+    );
+  };
+}</code></pre>
+                    </div>
+                </section>
 
             </article>
         </div>

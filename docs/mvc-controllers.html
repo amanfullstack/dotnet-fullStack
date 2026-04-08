@@ -163,13 +163,420 @@
                     <p class="page-subtitle">Master MVC controllers, action methods, and handling HTTP requests.</p>
                 </div>
 
-                <div class="callout callout-info">
-                    <span class="callout-icon">ℹ️</span>
-                    <div class="callout-content">
-                        <p><strong>Coming Soon:</strong> Comprehensive guide on MVC Controllers and Actions</p>
-                        <p>Topics will include: Action methods, routing, parameters, return types, filters, and best practices.</p>
+                <!-- Introduction -->
+                <section class="content-section">
+                    <h2>What Are Controllers?</h2>
+                    <p>In ASP.NET MVC, a <strong>controller</strong> is a class that handles user requests, processes business logic, and returns responses. Think of it as the traffic controller of your web application—it receives requests, decides what to do, and sends back the appropriate response.</p>
+                    <p>Controllers contain <strong>action methods</strong> (or just "actions")—public methods that respond to specific URLs. When a user visits a URL, the router finds the matching controller and action, executes it, and returns a result (usually a View with HTML, JSON, or a redirect).</p>
+                </section>
+
+                <!-- Why It Matters -->
+                <section class="content-section">
+                    <h2>Why Controllers Matter</h2>
+                    <p>Controllers are the <strong>bridge between user requests and business logic</strong>. Without them:</p>
+                    <ul class="content-list">
+                        <li><strong>No organization:</strong> You wouldn't know where to put your code</li>
+                        <li><strong>No routing:</strong> URLs wouldn't map to specific functionality</li>
+                        <li><strong>No security:</strong> You couldn't authenticate/authorize users per action</li>
+                        <li><strong>Hard to test:</strong> Logic would be scattered everywhere</li>
+                    </ul>
+                    <p><strong>Real example:</strong> In ProductCatalog MVC, the <code>ProductController</code> handles all product-related requests: listing products, showing details, editing, and deleting.</p>
+                </section>
+
+                <!-- Key Concepts -->
+                <section class="content-section">
+                    <h2>Key Concepts</h2>
+                    <div class="concept-card">
+                        <h3>🎯 Action Methods</h3>
+                        <p>Public methods in a controller that respond to HTTP requests. Each action can:</p>
+                        <ul class="content-list">
+                            <li>Accept parameters from the URL, query string, or request body</li>
+                            <li>Return different types: <code>ViewResult</code>, <code>JsonResult</code>, <code>RedirectResult</code></li>
+                            <li>Be decorated with HTTP attributes: <code>[HttpGet]</code>, <code>[HttpPost]</code>, <code>[HttpPut]</code>, <code>[HttpDelete]</code></li>
+                        </ul>
                     </div>
-                </div>
+
+                    <div class="concept-card">
+                        <h3>🛣️ Routing</h3>
+                        <p>How URLs map to controllers and actions. The default route pattern is:</p>
+                        <pre><code class="language-csharp">/[Controller]/[Action]/[id]</code></pre>
+                        <p>Examples:</p>
+                        <ul class="content-list">
+                            <li><code>/Product/Index</code> → ProductController.Index()</li>
+                            <li><code>/Product/Details/5</code> → ProductController.Details(5)</li>
+                            <li><code>/Home/About</code> → HomeController.About()</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>📨 HTTP Verbs</h3>
+                        <p>Controllers respond to different HTTP methods:</p>
+                        <ul class="content-list">
+                            <li><strong>GET:</strong> Retrieve data (no side effects)</li>
+                            <li><strong>POST:</strong> Create or update data</li>
+                            <li><strong>PUT:</strong> Replace entire resource</li>
+                            <li><strong>DELETE:</strong> Remove data</li>
+                            <li><strong>PATCH:</strong> Partial update</li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-card">
+                        <h3>🔐 Action Filters</h3>
+                        <p>Attributes that run before or after an action executes:</p>
+                        <ul class="content-list">
+                            <li><code>[Authorize]</code> - Require login</li>
+                            <li><code>[HttpGet]</code> - Only respond to GET requests</li>
+                            <li><code>[ValidateAntiForgeryToken]</code> - Prevent CSRF attacks</li>
+                            <li><code>[ServiceFilter]</code> - Custom filter logic</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Code Examples -->
+                <section class="content-section">
+                    <h2>Code Examples</h2>
+
+                    <h3>Example 1: Basic Controller with GET and POST Actions</h3>
+                    <pre><code class="language-csharp">using Microsoft.AspNetCore.Mvc;
+using YourApp.Services;
+using YourApp.Models;
+
+[Route("[controller]")]
+public class ProductController : Controller
+{
+    private readonly IProductService _productService;
+
+    // Dependency Injection - service injected via constructor
+    public ProductController(IProductService productService)
+    {
+        _productService = productService;
+    }
+
+    // GET: /Product or /Product/Index
+    // Returns a list of all products
+    [HttpGet]
+    public async Task&lt;IActionResult&gt; Index()
+    {
+        try
+        {
+            var products = await _productService.GetAllProductsAsync();
+            return View(products); // Return View with model
+        }
+        catch (Exception ex)
+        {
+            TempData["Error"] = "Error loading products";
+            return RedirectToAction("Error", "Home");
+        }
+    }
+
+    // GET: /Product/Details/5
+    // id parameter comes from URL, model binding extracts it
+    [HttpGet("{id}")]
+    public async Task&lt;IActionResult&gt; Details(int id)
+    {
+        if (id &lt;= 0)
+            return BadRequest("Invalid product ID");
+
+        var product = await _productService.GetProductByIdAsync(id);
+
+        if (product == null)
+            return NotFound("Product not found");
+
+        return View(product);
+    }
+
+    // POST: /Product/Create
+    // Accepts form data, validates it, saves to database
+    [HttpPost]
+    [ValidateAntiForgeryToken] // CSRF protection
+    public async Task&lt;IActionResult&gt; Create([FromForm] ProductViewModel model)
+    {
+        // ModelState checks if validation passed
+        if (!ModelState.IsValid)
+        {
+            return View(model); // Return form with errors
+        }
+
+        try
+        {
+            await _productService.CreateProductAsync(model);
+            TempData["Success"] = "Product created successfully";
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", "Error creating product: " + ex.Message);
+            return View(model);
+        }
+    }
+}
+</code></pre>
+
+                    <h3>Example 2: Controller with Different Return Types</h3>
+                    <pre><code class="language-csharp">public class ProductController : Controller
+{
+    // Returns HTML (ViewResult)
+    public IActionResult Index()
+    {
+        var products = new List&lt;Product&gt; { /* ... */ };
+        return View(products); // Renders Index.cshtml
+    }
+
+    // Returns JSON (for AJAX calls, mobile apps, etc.)
+    [HttpGet("api/search")]
+    public IActionResult SearchJson(string term)
+    {
+        var results = _service.Search(term);
+        return Json(results); // Returns JSON data
+    }
+
+    // Returns redirect
+    [HttpPost]
+    public IActionResult Delete(int id)
+    {
+        _service.DeleteProduct(id);
+        return RedirectToAction(nameof(Index));
+    }
+
+    // Returns file download
+    [HttpGet("{id}/export")]
+    public async Task&lt;IActionResult&gt; ExportProductAsync(int id)
+    {
+        var data = await _service.ExportProductAsync(id);
+        return File(data, "application/pdf", "product.pdf");
+    }
+
+    // Returns error response
+    [HttpGet("{id}")]
+    public IActionResult Details(int id)
+    {
+        var product = _service.GetProduct(id);
+        if (product == null)
+            return NotFound(); // HTTP 404
+
+        if (!User.IsInRole("Admin"))
+            return Forbid(); // HTTP 403
+
+        return Ok(product); // HTTP 200
+    }
+}
+</code></pre>
+
+                    <h3>Example 3: Advanced Routing and Model Binding</h3>
+                    <pre><code class="language-csharp">// Custom route with constraints
+[Route("products/{year:int}/{month:int}")]
+public IActionResult GetByDate(int year, int month)
+{
+    // Only matches URLs like /products/2025/04
+    var products = _service.GetProductsByDate(year, month);
+    return View(products);
+}
+
+// Binding from different sources
+public IActionResult Search(
+    [FromQuery] string term,           // From query string: ?term=value
+    [FromRoute] int categoryId,        // From URL route
+    [FromBody] FilterModel filters,    // From JSON body (POST)
+    [FromHeader] string authorization) // From HTTP header
+{
+    // Use these parameters...
+    return View();
+}
+
+// Async action - doesn't block thread while database works
+public async Task&lt;IActionResult&gt; ListAsync()
+{
+    var products = await _service.GetAllAsync(); // Waits without blocking
+    return View(products);
+}
+</code></pre>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>✅ Best Practices</h2>
+
+                    <div class="best-practice">
+                        <h3>1. Use Async/Await for I/O Operations</h3>
+                        <p><strong>Why:</strong> Prevents blocking threads, improves scalability</p>
+                        <p><strong>❌ Bad:</strong></p>
+                        <pre><code class="language-csharp">public IActionResult GetProduct(int id)
+{
+    var product = _service.GetProduct(id); // Blocks thread
+    return View(product);
+}
+</code></pre>
+                        <p><strong>✅ Good:</strong></p>
+                        <pre><code class="language-csharp">public async Task&lt;IActionResult&gt; GetProduct(int id)
+{
+    var product = await _service.GetProductAsync(id); // Non-blocking
+    return View(product);
+}
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>2. Use Dependency Injection</h3>
+                        <p><strong>Why:</strong> Makes code testable, loosely coupled, and maintainable</p>
+                        <p><strong>❌ Bad:</strong></p>
+                        <pre><code class="language-csharp">public class ProductController : Controller
+{
+    public IActionResult Index()
+    {
+        var service = new ProductService(); // Tightly coupled
+        var products = service.GetAll();
+        return View(products);
+    }
+}
+</code></pre>
+                        <p><strong>✅ Good:</strong></p>
+                        <pre><code class="language-csharp">public class ProductController : Controller
+{
+    private readonly IProductService _service;
+
+    public ProductController(IProductService service)
+    {
+        _service = service; // Injected, loosely coupled
+    }
+
+    public async Task&lt;IActionResult&gt; Index()
+    {
+        var products = await _service.GetAllAsync();
+        return View(products);
+    }
+}
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>3. Validate Input and Handle Errors</h3>
+                        <p><strong>Why:</strong> Prevents bad data, improves user experience</p>
+                        <pre><code class="language-csharp">public async Task&lt;IActionResult&gt; Create([FromForm] ProductViewModel model)
+{
+    // Check if model passes validation
+    if (!ModelState.IsValid)
+        return View(model); // Show errors
+
+    try
+    {
+        await _service.CreateAsync(model);
+        return RedirectToAction(nameof(Index));
+    }
+    catch (Exception ex)
+    {
+        // Log error, show user-friendly message
+        ModelState.AddModelError("", "Failed to create product");
+        return View(model);
+    }
+}
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>4. Use Authorization Attributes</h3>
+                        <p><strong>Why:</strong> Protects sensitive actions from unauthorized access</p>
+                        <pre><code class="language-csharp">[Authorize] // Any authenticated user
+public IActionResult MyProfile() { }
+
+[Authorize(Roles = "Admin")] // Only admins
+public IActionResult AdminPanel() { }
+
+[Authorize(Policy = "CanEditProducts")] // Custom policy
+public IActionResult Edit(int id) { }
+</code></pre>
+                    </div>
+
+                    <div class="best-practice">
+                        <h3>5. Common Mistakes to Avoid</h3>
+                        <ul class="content-list">
+                            <li><strong>Not validating input:</strong> Always check ModelState.IsValid</li>
+                            <li><strong>Blocking operations:</strong> Use async/await for DB/API calls</li>
+                            <li><strong>Hard-coded values:</strong> Use dependency injection instead</li>
+                            <li><strong>No error handling:</strong> Always wrap business logic in try-catch</li>
+                            <li><strong>Forgetting CSRF protection:</strong> Add [ValidateAntiForgeryToken] to POST actions</li>
+                            <li><strong>Exposing sensitive data:</strong> Don't return passwords or keys in View</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Resources -->
+                <section class="content-section">
+                    <h2>📚 Resources</h2>
+                    <ul class="content-list">
+                        <li><strong>ProductCatalog MVC:</strong> <a href="https://github.com/yourusername/ProductCatalogMVC" target="_blank">View on GitHub</a> - Real example with controllers</li>
+                        <li><strong>Microsoft Docs:</strong> <a href="https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/actions" target="_blank">Controllers and Actions</a></li>
+                        <li><strong>ASP.NET Core Routing:</strong> <a href="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing" target="_blank">Routing Guide</a></li>
+                        <li><strong>Action Filters:</strong> <a href="https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/filters" target="_blank">Filter Documentation</a></li>
+                    </ul>
+                </section>
+
+                <!-- Interview Q&A -->
+                <section class="content-section interview-section">
+                    <h2>🎓 Interview Q&A</h2>
+
+                    <div class="qa-item">
+                        <h3>Q1: What's the difference between a Controller action returning <code>View()</code> vs <code>Json()</code>?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>View():</strong> Returns HTML rendered from a .cshtml file. Used for traditional web pages. The browser displays the HTML page.</li>
+                            <li><strong>Json():</strong> Returns JSON data. Used for APIs, AJAX calls, or mobile apps. The client (JavaScript, mobile app) receives data and processes it.</li>
+                        </ul>
+                        <pre><code class="language-csharp">// Returns HTML page
+public IActionResult Index() => View(products);
+
+// Returns JSON data
+[HttpGet("api/products")]
+public IActionResult GetJson() => Json(products);
+</code></pre>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q2: What is model binding and how does it work?</h3>
+                        <p><strong>Answer:</strong> Model binding automatically maps HTTP request data (URL, query string, form data, JSON body) to action method parameters. ASP.NET Core does this for you:</p>
+                        <pre><code class="language-csharp">// URL: /product/details/5
+[HttpGet("{id}")]
+public IActionResult Details(int id) // id=5, automatically from URL
+{
+}
+
+// POST form data
+[HttpPost]
+public IActionResult Create(ProductViewModel model) // Entire form mapped to model
+{
+}
+
+// Query string: ?name=Phone&price=99
+[HttpGet]
+public IActionResult Search(string name, decimal price)
+{
+}
+</code></pre>
+                    </div>
+
+                    <div class="qa-item">
+                        <h3>Q3: Why should actions be async and what happens if they're not?</h3>
+                        <p><strong>Answer:</strong></p>
+                        <ul class="content-list">
+                            <li><strong>Async actions:</strong> Don't block threads. One thread can handle many requests while waiting for database/API responses. Better scalability.</li>
+                            <li><strong>Sync actions:</strong> Block the thread for the entire duration. If your app has 100 threads and all are blocked, new requests fail. Wastes resources.</li>
+                        </ul>
+                        <p><strong>Impact:</strong> Async actions let your server handle 10x more concurrent users with the same hardware.</p>
+                        <pre><code class="language-csharp">// Sync - blocks thread for 2 seconds
+public IActionResult GetProduct(int id)
+{
+    var data = _db.Products.Find(id); // Thread blocked here
+    return View(data);
+}
+
+// Async - thread is freed up
+public async Task&lt;IActionResult&gt; GetProductAsync(int id)
+{
+    var data = await _db.Products.FindAsync(id); // Thread is free
+    return View(data);
+}
+</code></pre>
+                    </div>
+                </section>
 
             </article>
         </div>
